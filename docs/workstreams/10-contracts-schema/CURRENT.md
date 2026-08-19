@@ -236,7 +236,7 @@ RESULT: READY_FOR_REVIEW candidate
 - Git 기준선: `303adb9` (`feat(contracts): establish verified Stage 0 baseline`), 비공개 `origin/main` push 완료
 - 잔여 범위: 과학 모델 타당성, 실제 시험 원문, 단위 변환 엔진과 합성 Vertical Slice는 후속 Workstream에서 별도 검증
 
-## 채팅 세션 10의 다음 작업 패키지가 사용할 계약
+## Workstream 20의 첫 채팅 세션이 사용할 계약
 
 - 입력 payload는 7개 독립 스키마 중 하나를 따라야 한다.
 - 계산 결과는 `CALCULATED`와 재현 가능한 `calculation_run`을 사용하고, 데모값은 `SYNTHETIC`을 유지한다.

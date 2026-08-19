@@ -70,7 +70,7 @@ Control Tower는 작업 패키지를 독립 검증한 뒤 별도 요청을 기�
 
 - 검증 실패: 해당 `CURRENT.md`를 `CHANGES_REQUESTED`로 갱신하고 commit·push를 보류하며, 현재 작업 채팅에 전달할 change request Markdown을 기본 Downloads 폴더에 생성하거나 갱신한다.
 - 검증 통과: 해당 `CURRENT.md`와 검증된 체크리스트를 동기화하고, 소유 범위가 확인된 파일만 commit·push한다. 검증 통과만으로 현재 채팅을 종료하거나 다음 세션을 시작하지 않는다.
-- 새 채팅 템플릿은 실제로 세션 11 또는 12를 열기로 결정했을 때만 기본 Downloads 폴더에 생성한다. 템플릿과 change request는 프로젝트 저장소에 포함하지 않는다.
+- 같은 Workstream의 새 채팅은 다음 1단위 번호로, 다음 Workstream의 첫 채팅은 해당 십 단위 번호로 시작한다. 새 채팅이 실제로 필요할 때만 기본 Downloads 폴더에 템플릿을 생성하며, 템플릿과 change request는 프로젝트 저장소에 포함하지 않는다.
 - commit·push 전에는 현재 브랜치, 원격, staging 범위, 비밀정보·대용량 원문과 테스트 결과를 다시 확인한다.
 
 ## 완료 정의
