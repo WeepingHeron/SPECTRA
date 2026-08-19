@@ -233,6 +233,7 @@ RESULT: READY_FOR_REVIEW candidate
 - 데이터 확인: 실제·고객 데이터 없음. 정상 fixture와 모든 샘플 값은 `SYNTHETIC`이며 실제 방사선 보증 근거로 승격되지 않음
 - 판정: `INTEGRATED`
 - 통합 범위: Stage 0 EvidencePacket·입력·판정 계약, 검증 스크립트와 최소 False PASS 세트
+- Git 기준선: `303adb9` (`feat(contracts): establish verified Stage 0 baseline`), 비공개 `origin/main` push 완료
 - 잔여 범위: 과학 모델 타당성, 실제 시험 원문, 단위 변환 엔진과 합성 Vertical Slice는 후속 Workstream에서 별도 검증
 
 ## 세션 11이 사용할 계약

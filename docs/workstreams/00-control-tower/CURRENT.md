@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-19
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 상태: 로컬 Git 저장소, `main` 브랜치, 비공개 `origin`은 `https://github.com/WeepingHeron/SPECTRA.git`; 검증된 초기 기준선 반영 대상
+- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적하며, 검증된 초기 기준선 커밋 `303adb9`가 push됨
 
 ## 현재 확인된 산출물
 
@@ -27,7 +27,7 @@
 - 별도 위치에 합성 TID·SEU 데모가 있으나 이 프로젝트에는 아직 통합되지 않았다.
 - 실제 환경 모델 출력과 실제 부품 시험자료는 아직 수집·검증되지 않았다.
 - Multi-Agent·GCP 구현과 배포 증거는 아직 없다.
-- 로컬 Git 저장소는 `main` 브랜치로 초기화됐고 비공개 GitHub 원격 `origin`이 구성됐다. 아직 commit·push는 없다.
+- 검증된 Stage 0 기준선은 커밋 `303adb9`로 비공개 `origin/main`에 반영됐다.
 - 세션 10의 계약·스키마는 4차 수정 후 독립 재검증을 통과했다. 제공 fixture 28개와 독립 혼합 공격 7개에서 False PASS가 확인되지 않아 `INTEGRATED`로 판정했다.
 
 ## 알려진 한계
