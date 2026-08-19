@@ -85,3 +85,10 @@
 - False PASS 검토: BOM 부재, family-only·부분 식별·모순, 사건 유형 대체, zero-event 면역 승격, 권리·hash·locator·review 누락을 모두 지원 근거에서 제외한다.
 - 데이터 분류: 실제 BOM·부품 후보·시험 수치·시험 PDF·고객 자료·실제 EvidencePacket은 모두 0건이다.
 - 제한: Microchip 약관은 이번 자동 접근에서 403으로 원문 재확인하지 못했다. 문서가 해당 권리를 `RIGHTS_UNRESOLVED`로 유지하므로 운영 허가 근거로 사용하지 않는다.
+
+## Git 통합
+
+- 브랜치: `main`
+- 검증된 통합 commit: `ed4e0f8` — `docs(parts): integrate verified Stage 4 evidence research`
+- 원격: `origin` (`https://github.com/WeepingHeron/SPECTRA.git`), push 완료
+- 제외: 사용자 소유의 미추적 `.obsidian/`
