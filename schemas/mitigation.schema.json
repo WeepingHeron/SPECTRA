@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/mitigation.schema.json",
+  "title": "Mitigation Input v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "mitigation_id", "component_id", "method", "failure_modes", "parameters", "metadata"],
+  "properties": {
+    "kind": {"const": "MITIGATION"},
+    "mitigation_id": {"type": "string", "minLength": 1},
+    "component_id": {"type": "string", "minLength": 1},
+    "method": {"type": "string", "enum": ["ECC", "SCRUBBING", "TMR", "WATCHDOG", "CURRENT_LIMITING", "POWER_CYCLE", "REDUNDANCY"]},
+    "failure_modes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["TID", "SEU", "SEL", "SEB", "SEGR"]}},
+    "parameters": {"type": "object", "minProperties": 1, "additionalProperties": {"type": ["string", "number", "boolean"]}},
+    "effectiveness_factor": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+    "metadata": {"$ref": "common.schema.json#/$defs/recordMetadata"}
+  }
+}

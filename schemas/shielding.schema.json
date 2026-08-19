@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/shielding.schema.json",
+  "title": "Shielding Input v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "shielding_id", "material", "equivalent_thickness", "applies_to", "metadata"],
+  "properties": {
+    "kind": {"const": "SHIELDING"},
+    "shielding_id": {"type": "string", "minLength": 1},
+    "material": {"type": "string", "enum": ["ALUMINUM", "ALUMINUM_EQUIVALENT"]},
+    "equivalent_thickness": {"$ref": "common.schema.json#/$defs/quantity"},
+    "applies_to": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "metadata": {"$ref": "common.schema.json#/$defs/recordMetadata"}
+  }
+}

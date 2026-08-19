@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/radiation-environment.schema.json",
+  "title": "Radiation Environment Input v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["kind", "environment_id", "model_name", "model_version", "mission_id", "tid", "particle_flux", "valid_for", "metadata"],
+  "properties": {
+    "kind": {"const": "RADIATION_ENVIRONMENT"},
+    "environment_id": {"type": "string", "minLength": 1},
+    "model_name": {"type": "string", "minLength": 1},
+    "model_version": {"type": "string", "minLength": 1},
+    "mission_id": {"type": "string", "minLength": 1},
+    "tid": {"$ref": "common.schema.json#/$defs/quantity"},
+    "particle_flux": {"$ref": "common.schema.json#/$defs/quantity"},
+    "valid_for": {"type": "object", "additionalProperties": false, "required": ["start_at", "end_at"], "properties": {"start_at": {"type": "string", "format": "date-time"}, "end_at": {"type": "string", "format": "date-time"}}},
+    "metadata": {"$ref": "common.schema.json#/$defs/recordMetadata"}
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/common.schema.json",
+  "title": "SPECTRA Common Contract v1",
+  "$defs": {
+    "dataClass": {
+      "type": "string",
+      "enum": ["PUBLISHED", "CALCULATED", "ASSUMED", "SYNTHETIC", "CUSTOMER_VERIFIED"]
+    },
+    "reviewStatus": {
+      "type": "string",
+      "enum": ["NOT_STARTED", "IN_PROGRESS", "READY_FOR_REVIEW", "VERIFIED", "INTEGRATED", "CHANGES_REQUESTED", "HOLD"]
+    },
+    "assuranceDecision": {
+      "type": "string",
+      "enum": ["SUPPORTED_WITH_MITIGATION", "CONDITIONAL", "HOLD", "INSUFFICIENT_EVIDENCE"]
+    },
+    "processingStatus": {
+      "type": "string",
+      "enum": ["VALID", "INVALID_INPUT", "OUT_OF_MODEL_SCOPE", "MODEL_FAILURE", "STALE_EVIDENCE", "PROVENANCE_FAILURE", "CONFLICTING_EVIDENCE"]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "source_type", "uri", "location", "retrieved_at"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "source_type": {"type": "string", "enum": ["PUBLICATION", "TEST_REPORT", "MODEL_OUTPUT", "CUSTOMER_RECORD", "USER_INPUT", "FIXTURE_SPEC"]},
+        "uri": {"type": "string", "minLength": 1},
+        "location": {"type": "string", "minLength": 1},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "license_or_access": {"type": "string", "minLength": 1}
+      }
+    },
+    "calculationRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "engine", "engine_version", "input_hash", "output_hash", "executed_at"],
+      "properties": {
+        "run_id": {"type": "string", "minLength": 1},
+        "engine": {"type": "string", "minLength": 1},
+        "engine_version": {"type": "string", "minLength": 1},
+        "input_hash": {"$ref": "#/$defs/sha256"},
+        "output_hash": {"$ref": "#/$defs/sha256"},
+        "executed_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "recordMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data_class", "version", "created_at", "content_hash", "review_status"],
+      "properties": {
+        "data_class": {"$ref": "#/$defs/dataClass"},
+        "version": {"type": "string", "minLength": 1},
+        "created_at": {"type": "string", "format": "date-time"},
+        "content_hash": {"$ref": "#/$defs/sha256"},
+        "review_status": {"$ref": "#/$defs/reviewStatus"},
+        "source": {"$ref": "#/$defs/source"},
+        "calculation_run": {"$ref": "#/$defs/calculationRun"},
+        "assumptions": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      },
+      "oneOf": [
+        {"required": ["source"], "not": {"required": ["calculation_run"]}},
+        {"required": ["calculation_run"], "not": {"required": ["source"]}}
+      ],
+      "allOf": [
+        {"if": {"properties": {"data_class": {"enum": ["PUBLISHED", "CUSTOMER_VERIFIED"]}}, "required": ["data_class"]}, "then": {"required": ["source"]}},
+        {"if": {"properties": {"data_class": {"enum": ["CALCULATED", "SYNTHETIC"]}}, "required": ["data_class"]}, "then": {"required": ["calculation_run"]}},
+        {"if": {"properties": {"data_class": {"const": "ASSUMED"}}, "required": ["data_class"]}, "then": {"required": ["source", "assumptions"], "properties": {"assumptions": {"minItems": 1}}}}
+      ]
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "quantity_kind", "unit", "metadata"],
+      "properties": {
+        "value": {"type": "number"},
+        "quantity_kind": {"type": "string", "enum": ["TID", "SHIELDING", "DURATION", "PARTICLE_FLUX", "CROSS_SECTION", "ALTITUDE", "ANGLE", "COUNT", "RATE"]},
+        "unit": {"type": "string"},
+        "metadata": {"$ref": "#/$defs/recordMetadata"}
+      },
+      "allOf": [
+        {"if": {"properties": {"quantity_kind": {"const": "TID"}}}, "then": {"properties": {"unit": {"enum": ["rad(Si)", "krad(Si)", "Gy(Si)"]}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "SHIELDING"}}}, "then": {"properties": {"unit": {"enum": ["mm_Al_equivalent", "g/cm2"]}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "DURATION"}}}, "then": {"properties": {"unit": {"enum": ["s", "day", "year"]}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "PARTICLE_FLUX"}}}, "then": {"properties": {"unit": {"const": "particles/cm2/s"}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "CROSS_SECTION"}}}, "then": {"properties": {"unit": {"enum": ["cm2/device", "cm2/bit"]}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "ALTITUDE"}}}, "then": {"properties": {"unit": {"enum": ["km", "m"]}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "ANGLE"}}}, "then": {"properties": {"unit": {"const": "deg"}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "COUNT"}}}, "then": {"properties": {"unit": {"const": "count"}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "RATE"}}}, "then": {"properties": {"unit": {"enum": ["events/day", "events/mission"]}}}}
+      ]
+    },
+    "partIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manufacturer", "part_number"],
+      "properties": {
+        "manufacturer": {"type": "string", "minLength": 1},
+        "part_number": {"type": "string", "minLength": 1},
+        "process_id": {"type": "string", "minLength": 1},
+        "die_revision": {"type": "string", "minLength": 1},
+        "lot_id": {"type": "string", "minLength": 1},
+        "date_code": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

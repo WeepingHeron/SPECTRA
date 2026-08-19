@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/evidence-packet.schema.json",
+  "title": "SPECTRA EvidencePacket v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "packet_id", "created_at", "inputs", "trace", "decision", "review_status"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "packet_id": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "inputs": {
+      "type": "array", "minItems": 7,
+      "items": {"oneOf": [
+        {"$ref": "mission.schema.json"}, {"$ref": "bom.schema.json"}, {"$ref": "radiation-environment.schema.json"},
+        {"$ref": "part-test-evidence.schema.json"}, {"$ref": "shielding.schema.json"}, {"$ref": "mitigation.schema.json"}, {"$ref": "user-policy.schema.json"}
+      ]},
+      "allOf": [
+        {"contains": {"properties": {"kind": {"const": "MISSION"}}, "required": ["kind"]}, "minContains": 1},
+        {"contains": {"properties": {"kind": {"const": "BOM"}}, "required": ["kind"]}, "minContains": 1},
+        {"contains": {"properties": {"kind": {"const": "RADIATION_ENVIRONMENT"}}, "required": ["kind"]}, "minContains": 1},
+        {"contains": {"properties": {"kind": {"const": "PART_TEST_EVIDENCE"}}, "required": ["kind"]}, "minContains": 1},
+        {"contains": {"properties": {"kind": {"const": "SHIELDING"}}, "required": ["kind"]}, "minContains": 1},
+        {"contains": {"properties": {"kind": {"const": "MITIGATION"}}, "required": ["kind"]}, "minContains": 1},
+        {"contains": {"properties": {"kind": {"const": "USER_POLICY"}}, "required": ["kind"]}, "minContains": 1}
+      ]
+    },
+    "trace": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["trace_id", "input_pointer", "origin_pointer", "normalized_value", "applicability", "decision_rule_ids", "used_for_decision"],
+        "properties": {
+          "trace_id": {"type": "string", "minLength": 1},
+          "input_pointer": {"type": "string", "pattern": "^/inputs/"},
+          "origin_pointer": {"type": "string", "pattern": "^/inputs/"},
+          "normalized_value": {"$ref": "common.schema.json#/$defs/quantity"},
+          "applicability": {"type": "object", "additionalProperties": false, "required": ["status", "conditions"], "properties": {"status": {"type": "string", "enum": ["APPLICABLE", "NOT_APPLICABLE", "UNRESOLVED"]}, "conditions": {"type": "array", "items": {"type": "string", "minLength": 1}}}},
+          "decision_rule_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+          "used_for_decision": {"type": "boolean"}
+        }
+      }
+    },
+    "decision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["processing_status", "assurance_decision", "rule_results", "evidence_gaps"],
+      "properties": {
+        "processing_status": {"$ref": "common.schema.json#/$defs/processingStatus"},
+        "assurance_decision": {"$ref": "common.schema.json#/$defs/assuranceDecision"},
+        "rule_results": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["rule_id", "outcome", "trace_ids"], "properties": {"rule_id": {"type": "string", "minLength": 1}, "outcome": {"type": "string", "enum": ["PASS", "FAIL", "NOT_EVALUATED"]}, "trace_ids": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true}}}},
+        "evidence_gaps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["gap_code", "description", "blocking"],
+            "properties": {
+              "gap_code": {"type": "string", "minLength": 1},
+              "description": {"type": "string", "minLength": 1},
+              "blocking": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    },
+    "review_status": {"$ref": "common.schema.json#/$defs/reviewStatus"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"decision": {"properties": {"processing_status": {"not": {"const": "VALID"}}}}}},
+      "then": {"properties": {"decision": {"properties": {"assurance_decision": {"enum": ["HOLD", "INSUFFICIENT_EVIDENCE"]}}}}}
+    },
+    {
+      "if": {"properties": {"decision": {"properties": {"assurance_decision": {"const": "SUPPORTED_WITH_MITIGATION"}}}}},
+      "then": {"properties": {"decision": {"properties": {"processing_status": {"const": "VALID"}}}}}
+    }
+  ]
+}

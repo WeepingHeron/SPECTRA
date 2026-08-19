@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/mission.schema.json",
+  "title": "Mission Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "mission_id", "orbit_regime", "altitude", "inclination", "start_at", "duration", "metadata"],
+  "properties": {
+    "kind": {"const": "MISSION"},
+    "mission_id": {"type": "string", "minLength": 1},
+    "orbit_regime": {"type": "string", "enum": ["LEO"]},
+    "altitude": {"$ref": "common.schema.json#/$defs/quantity"},
+    "inclination": {"$ref": "common.schema.json#/$defs/quantity"},
+    "start_at": {"type": "string", "format": "date-time"},
+    "duration": {"$ref": "common.schema.json#/$defs/quantity"},
+    "metadata": {"$ref": "common.schema.json#/$defs/recordMetadata"}
+  }
+}
