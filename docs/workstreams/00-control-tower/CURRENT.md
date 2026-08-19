@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-19
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적하며, Workstream 20 합성 기준선 commit `35f36a2`가 push됐다. 사용자 소유의 미추적 `.obsidian/`은 통합에서 제외했다.
+- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적한다. 루트 README 기준선 `15be27b` 이후 Workstream 30 조사 패키지를 검증했으며, 사용자 소유의 미추적 `.obsidian/`은 통합에서 제외한다.
 
 ## 현재 확인된 산출물
 
@@ -32,6 +32,7 @@
 - 세션은 실제 채팅방을 뜻한다. Workstream은 십 단위로 구분하고 첫 채팅도 같은 번호를 사용하며, 같은 Workstream에서 새 채팅이 필요할 때만 1단위로 증가한다.
 - 잘못된 Control Tower 안내로 채팅 10에서 시작된 Workstream 20 후보는 채팅 20이 소유권을 인수해 보완했고, 번호를 Stage 1 계약 / Stage 2 합성 기준선으로 정렬했다.
 - Workstream 20은 독립 재실행으로 schema fixture 28개(정상 1·실패 27), simulation 19개 테스트와 5개 비교 시나리오를 통과했다. 지원 판정 승격·4.1 mm 외삽·비직렬화 입력 공격도 안전하게 `HOLD`로 종료해 합성 기준선 패키지를 `INTEGRATED`로 판정했다.
+- Workstream 30의 SPENVIS·OLTARIS 공식 도구·권리 조사와 Stage 3 계약 초안을 독립 대조해 조사 패키지를 `INTEGRATED`로 판정했다. 실제 모델 실행·출력·과학적 교차검산은 0건이며 Stage 3은 `IN_PROGRESS`다.
 
 ## 알려진 한계
 
@@ -42,9 +43,9 @@
 
 ## 다음 권장 작업
 
-1. 검증된 Workstream 20 범위만 Git commit·push하고, `.obsidian/` 등 소유 밖 변경은 제외한다.
-2. 채팅 30·40의 조사 산출물은 Stage 2 합성 기준선을 입력 계약으로만 참조하고, 실제 수치나 지원 판정은 아직 만들지 않는다.
-3. 외부 합성 데모/CSV/대시보드 원본 위치가 확인되면 별도 작업 패키지로 이관 범위를 결정한다.
+1. Workstream 10에 TID-only environment variant, model chain과 raw artifact manifest 계약 변경을 요청한다.
+2. 대표 원형 LEO 입력과 AE9/AP9·solar model uncertainty 정책을 승인하기 전 실제 run은 `HOLD`한다.
+3. Workstream 40 조사 결과는 별도로 검증하고, 실제 부품 수치나 지원 판정은 아직 만들지 않는다.
 
 ## 다음 Control Tower 검증 항목
 
