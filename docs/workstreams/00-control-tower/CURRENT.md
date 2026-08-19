@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-19
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적한다. 루트 README 기준선 `15be27b` 이후 Workstream 30 조사 패키지를 검증했으며, 사용자 소유의 미추적 `.obsidian/`은 통합에서 제외한다.
+- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적하며, Workstream 30 조사 패키지 commit `c26b15a`가 push됐다. 사용자 소유의 미추적 `.obsidian/`과 병렬 작업 중인 Workstream 40 파일은 통합에서 제외했다.
 
 ## 현재 확인된 산출물
 

@@ -93,3 +93,10 @@
 - 계약 대조: 현재 `RADIATION_ENVIRONMENT.particle_flux` 필수값, 단일 `model_name/model_version`, 제한된 `calculation_run`으로는 TID-only 외부 model chain을 안전하게 표현할 수 없다는 변경 요청이 실제 schema와 일치한다.
 - False PASS 검토: 실제 출력·수치·가짜 hash를 만들지 않았고, 상업·자동화·재배포·불확실성 정책이 미확인인 경로를 모두 `HOLD`로 유지했다.
 - 현재 한계: 실제 계정 실행 0건, 실제 환경 출력 0건, 과학적 교차검산 0건이다.
+
+## Git 통합
+
+- 브랜치: `main`
+- 검증된 통합 commit: `c26b15a` — `docs(env): integrate verified Stage 3 model research`
+- 원격: `origin` (`https://github.com/WeepingHeron/SPECTRA.git`), push 완료
+- 제외: 사용자 소유의 미추적 `.obsidian/`과 병렬 작업 중인 `docs/workstreams/40-parts-evidence/`
