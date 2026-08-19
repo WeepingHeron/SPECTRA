@@ -23,14 +23,15 @@
 ## 현재 진실
 
 - SPECTRA의 문제·범위·평가 기준 문서는 작성됐다.
-- Stage 0~7 로드맵과 단계별 체크리스트가 존재한다.
+- Stage 1~9 로드맵과 단계별 체크리스트가 존재하며, 각 Stage 번호는 주관 Workstream 앞자리와 일치한다.
 - 별도 위치에 합성 TID·SEU 데모가 있으나 이 프로젝트에는 아직 통합되지 않았다.
 - 실제 환경 모델 출력과 실제 부품 시험자료는 아직 수집·검증되지 않았다.
 - Multi-Agent·GCP 구현과 배포 증거는 아직 없다.
-- 검증된 Stage 0 기준선은 커밋 `303adb9`로 비공개 `origin/main`에 반영됐다.
+- 검증된 Stage 1 계약 기준선은 커밋 `303adb9`로 비공개 `origin/main`에 반영됐다. 해당 커밋 메시지의 `Stage 0` 표기는 번호 정렬 이전의 역사적 명칭이다.
 - 채팅 세션 10의 Contracts & Schema 작업은 4차 수정 후 독립 재검증과 Git 통합을 완료했다.
 - 세션은 실제 채팅방을 뜻한다. Workstream은 십 단위로 구분하고 첫 채팅도 같은 번호를 사용하며, 같은 Workstream에서 새 채팅이 필요할 때만 1단위로 증가한다.
-- 잘못된 Control Tower 안내로 채팅 10에서 Workstream 20 구현 후보가 생성됐다. 파일은 보존하되 채팅 20이 인수·재검증하기 전까지 미검증 상태이며 Git 통합 대상이 아니다.
+- 잘못된 Control Tower 안내로 채팅 10에서 시작된 Workstream 20 후보는 현재 채팅 20이 소유권을 인수해 보완 중이다. 아직 미추적·미검증 상태이며 Git 통합 대상이 아니다.
+- 채팅 20은 기존 번호 기준으로 `READY_FOR_REVIEW`를 제출했으나, Stage 1~9 정렬에 따라 소유 파일의 `Stage 0/1` 명칭을 `Stage 1/2`로 갱신하고 전체 테스트를 다시 실행해야 한다.
 
 ## 알려진 한계
 
@@ -41,9 +42,9 @@
 
 ## 다음 권장 작업
 
-1. 채팅 세션 10은 Workstream 20 파일의 추가 수정을 멈추고 현재 변경과 검증 결과를 인수인계한다.
-2. 채팅 세션 20이 미검증 Simulation Core 후보를 인수해 파일·계약·테스트를 독립적으로 다시 확인한다.
-3. 세션 20이 수정 책임을 수락하고 검증 증거를 남긴 뒤 `READY_FOR_REVIEW`를 다시 제출한다.
+1. 채팅 세션 20이 `SPECTRA_SESSION_20_STAGE_RENUMBER.md`의 명칭 정렬 요청을 반영한다.
+2. 세션 20이 Stage 1 계약과 Stage 2 Simulation 테스트를 다시 실행하고 `READY_FOR_REVIEW`를 갱신한다.
+3. Control Tower는 Stage 2 Exit Gate와 False PASS를 독립 검증한 뒤에만 Git 통합한다.
 
 ## 다음 Control Tower 검증 항목
 

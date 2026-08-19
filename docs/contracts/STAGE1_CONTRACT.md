@@ -1,8 +1,8 @@
-# SPECTRA Stage 0 공통 계약 v1
+# SPECTRA Stage 1 공통 계약 v1
 
 ## 목적과 범위
 
-이 계약은 Stage 1 합성 Vertical Slice와 이후 실제 방사선 증거가 같은 필드 구조를 사용하되, 데이터의 성격과 증거 적합성을 숨기지 않도록 한다. 이 계약은 비행 적합성 인증이나 실제 방사선 시험을 대체하지 않는다. 숫자 계산과 최종 게이트는 결정론적 코드가 수행하며 LLM 설명은 `decision`을 변경할 수 없다.
+이 계약은 Stage 2 합성 Vertical Slice와 이후 실제 방사선 증거가 같은 필드 구조를 사용하되, 데이터의 성격과 증거 적합성을 숨기지 않도록 한다. 이 계약은 비행 적합성 인증이나 실제 방사선 시험을 대체하지 않는다. 숫자 계산과 최종 게이트는 결정론적 코드가 수행하며 LLM 설명은 `decision`을 변경할 수 없다.
 
 기계 계약의 기준 파일은 `schemas/*.schema.json`, 의미 규칙의 기준 구현은 `tests/schema/validate_contracts.py`다.
 

@@ -23,7 +23,7 @@
 - `schemas/mitigation.schema.json`
 - `schemas/user-policy.schema.json`
 - `schemas/evidence-packet.schema.json`
-- `docs/contracts/STAGE0_CONTRACT.md`
+- `docs/contracts/STAGE1_CONTRACT.md`
 - `docs/workstreams/10-contracts-schema/BRIEF.md`
 - `docs/workstreams/10-contracts-schema/CURRENT.md`
 - `tests/schema/validate_contracts.py`
@@ -210,7 +210,7 @@ RESULT: READY_FOR_REVIEW candidate
 ## 알려진 한계
 
 - 실제 환경 모델 출력과 실제 시험 보고서에 대한 과학적·원문 검증은 수행하지 않았다.
-- Stage 0 의미 검증은 TID 범위를 같은 단위끼리 비교한다. 실제 단위 정규화 엔진은 Workstream 20/30에서 구현해야 한다.
+- Stage 1 의미 검증은 TID 범위를 같은 단위끼리 비교한다. 실제 단위 정규화 엔진은 Workstream 20/30에서 구현해야 한다.
 - `year` 환산 정의, 차폐 질량두께 변환, device/bit 단면적 변환은 모델별 추가 입력 없이는 자동 수행하지 않는다.
 - 현재 검증 명령은 Python 3.12.2, `jsonschema 4.21.1`, `referencing 0.34.0`에서 실행했다.
 - 빈 `trace_ids`는 JSON Schema와 의미 gate 양쪽에서 차단한다. trace 존재 여부, 직접 rule ID 연결, rule별 decision trace 연결은 `validate_contracts.py`의 결정론적 의미 gate에서 강제되므로 소비자는 JSON Schema 검사만 실행하지 말고 제공된 전체 검증 경로를 사용해야 한다.
@@ -232,8 +232,8 @@ RESULT: READY_FOR_REVIEW candidate
 - 독립 혼합 공격: 적용 불가·미해결 trace, 중복 trace/rule ID, 혼합 적용성, 합성 원본 재분류, 무관한 decision trace 우회를 포함한 7개 공격이 모두 의도한 fail-closed 코드로 거부됨
 - 데이터 확인: 실제·고객 데이터 없음. 정상 fixture와 모든 샘플 값은 `SYNTHETIC`이며 실제 방사선 보증 근거로 승격되지 않음
 - 판정: `INTEGRATED`
-- 통합 범위: Stage 0 EvidencePacket·입력·판정 계약, 검증 스크립트와 최소 False PASS 세트
-- Git 기준선: `303adb9` (`feat(contracts): establish verified Stage 0 baseline`), 비공개 `origin/main` push 완료
+- 통합 범위: Stage 1 EvidencePacket·입력·판정 계약, 검증 스크립트와 최소 False PASS 세트
+- Git 기준선: `303adb9` (`feat(contracts): establish verified Stage 0 baseline`), 비공개 `origin/main` push 완료. 커밋 메시지는 번호 정렬 이전의 역사적 명칭이다.
 - 잔여 범위: 과학 모델 타당성, 실제 시험 원문, 단위 변환 엔진과 합성 Vertical Slice는 후속 Workstream에서 별도 검증
 
 ## Workstream 20의 첫 채팅 세션이 사용할 계약
