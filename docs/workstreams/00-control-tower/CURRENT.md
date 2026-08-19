@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-19
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적하며, 검증된 초기 기준선 커밋 `303adb9`가 push됨
+- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적한다. Workstream 20 통합 커밋 전, 검증 범위만 분리해 staging을 준비 중이다.
 
 ## 현재 확인된 산출물
 
@@ -24,14 +24,14 @@
 
 - SPECTRA의 문제·범위·평가 기준 문서는 작성됐다.
 - Stage 1~9 로드맵과 단계별 체크리스트가 존재하며, 각 Stage 번호는 주관 Workstream 앞자리와 일치한다.
-- 별도 위치에 합성 TID·SEU 데모가 있으나 이 프로젝트에는 아직 통합되지 않았다.
+- 결정론적 합성 TID·SEE 기준선은 Workstream 20이 프로젝트에 통합했고, 모든 결과가 `SYNTHETIC/HOLD`를 유지한다.
 - 실제 환경 모델 출력과 실제 부품 시험자료는 아직 수집·검증되지 않았다.
 - Multi-Agent·GCP 구현과 배포 증거는 아직 없다.
 - 검증된 Stage 1 계약 기준선은 커밋 `303adb9`로 비공개 `origin/main`에 반영됐다. 해당 커밋 메시지의 `Stage 0` 표기는 번호 정렬 이전의 역사적 명칭이다.
 - 채팅 세션 10의 Contracts & Schema 작업은 4차 수정 후 독립 재검증과 Git 통합을 완료했다.
 - 세션은 실제 채팅방을 뜻한다. Workstream은 십 단위로 구분하고 첫 채팅도 같은 번호를 사용하며, 같은 Workstream에서 새 채팅이 필요할 때만 1단위로 증가한다.
-- 잘못된 Control Tower 안내로 채팅 10에서 시작된 Workstream 20 후보는 현재 채팅 20이 소유권을 인수해 보완 중이다. 아직 미추적·미검증 상태이며 Git 통합 대상이 아니다.
-- 채팅 20은 기존 번호 기준으로 `READY_FOR_REVIEW`를 제출했으나, Stage 1~9 정렬에 따라 소유 파일의 `Stage 0/1` 명칭을 `Stage 1/2`로 갱신하고 전체 테스트를 다시 실행해야 한다.
+- 잘못된 Control Tower 안내로 채팅 10에서 시작된 Workstream 20 후보는 채팅 20이 소유권을 인수해 보완했고, 번호를 Stage 1 계약 / Stage 2 합성 기준선으로 정렬했다.
+- Workstream 20은 독립 재실행으로 schema fixture 28개(정상 1·실패 27), simulation 19개 테스트와 5개 비교 시나리오를 통과했다. 지원 판정 승격·4.1 mm 외삽·비직렬화 입력 공격도 안전하게 `HOLD`로 종료해 합성 기준선 패키지를 `INTEGRATED`로 판정했다.
 
 ## 알려진 한계
 
@@ -42,9 +42,9 @@
 
 ## 다음 권장 작업
 
-1. 채팅 세션 20이 `SPECTRA_SESSION_20_STAGE_RENUMBER.md`의 명칭 정렬 요청을 반영한다.
-2. 세션 20이 Stage 1 계약과 Stage 2 Simulation 테스트를 다시 실행하고 `READY_FOR_REVIEW`를 갱신한다.
-3. Control Tower는 Stage 2 Exit Gate와 False PASS를 독립 검증한 뒤에만 Git 통합한다.
+1. 검증된 Workstream 20 범위만 Git commit·push하고, `.obsidian/` 등 소유 밖 변경은 제외한다.
+2. 채팅 30·40의 조사 산출물은 Stage 2 합성 기준선을 입력 계약으로만 참조하고, 실제 수치나 지원 판정은 아직 만들지 않는다.
+3. 외부 합성 데모/CSV/대시보드 원본 위치가 확인되면 별도 작업 패키지로 이관 범위를 결정한다.
 
 ## 다음 Control Tower 검증 항목
 

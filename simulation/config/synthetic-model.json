@@ -1,0 +1,18 @@
+{
+  "model_name": "SPECTRA_SYNTHETIC_BASELINE_NOT_PHYSICAL",
+  "model_version": "1.0.0",
+  "data_class": "SYNTHETIC",
+  "reference_duration_years": 1.0,
+  "shielding_factors_by_mm": {
+    "1": 0.8,
+    "2": 0.6,
+    "3": 0.45,
+    "4": 0.35
+  },
+  "see_exposure_scale": 0.000001,
+  "limitations": [
+    "Discrete synthetic shielding lookup; no interpolation or extrapolation.",
+    "SEE exposure scale is a demo coefficient, not a physical environment model.",
+    "Outputs cannot support radiation assurance and must remain HOLD."
+  ]
+}

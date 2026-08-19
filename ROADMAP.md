@@ -20,7 +20,7 @@
 | Stage | 검증 결과 | 주관 Workstream | 첫 채팅 | 주요 협업 Workstream | 선행 조건 | 현재 상태 |
 |---:|---|---|---:|---|---|---|
 | 1 | 프로젝트 계약과 기준선 | 10 Contracts & Schema | `10` | 00 Control Tower | 없음 | **IN_PROGRESS** — 계약·스키마는 통합, 팀 범위 검토 등 잔여 |
-| 2 | 재현 가능한 합성 Vertical Slice | 20 Simulation Core | `20` | 10 Contracts, 00 Control Tower | 검증된 Stage 1 데이터 계약 | **IN_PROGRESS** — 채팅 20이 후보 인수·보완 중 |
+| 2 | 재현 가능한 합성 Vertical Slice | 20 Simulation Core | `20` | 10 Contracts, 00 Control Tower | 검증된 Stage 1 데이터 계약 | **IN_PROGRESS** — 결정론적 합성 기준선은 통합; 원본 데모/CSV/대시보드 이관과 UI는 미완료 |
 | 3 | 실제 환경·TID 모델 경로 | 30 Environment Model | `30` | 10 Contracts, 20 Simulation, 60 Assurance | 안정된 합성 입출력 경로 | `NOT_STARTED` |
 | 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | `NOT_STARTED` |
 | 5 | 완화·사용자 정책 엔진 | 50 Mitigation & Policy | `50` | 20 Simulation, 40 Parts, 60 Assurance | 환경·부품 증거 인터페이스 | `NOT_STARTED` |
