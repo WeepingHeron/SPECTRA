@@ -8,6 +8,35 @@
 - 필수 증거가 없으면 기능 완성보다 `HOLD`가 먼저다.
 - 각 단계는 사용자 화면에서 확인 가능한 산출물과 재현 명령을 남긴다.
 
+## 번호 체계를 읽는 법
+
+- **Stage**는 검증해야 할 결과의 순서다. `Stage 2`가 채팅 20이나 Workstream 20을 뜻하지 않는다.
+- **Workstream**은 전문 책임 영역이며 십 단위 번호를 사용한다.
+- **Session**은 실제 채팅방이다. Workstream의 첫 채팅은 같은 십 단위 번호를 사용하고, 같은 Workstream에서 새 채팅이 필요할 때만 1단위로 증가한다.
+- Workstream 번호는 실행 순서가 아니다. 예를 들어 Assurance Workstream 60은 Platform Workstream 70의 결과까지 포함해 Stage 6에서 주관 검증할 수 있다.
+
+## Stage–Workstream–Session 대응표
+
+| Stage | 검증 결과 | 주관 Workstream | 첫 채팅 | 주요 협업 Workstream | 선행 조건 | 현재 상태 |
+|---:|---|---|---:|---|---|---|
+| 0 | 프로젝트 계약과 기준선 | 00 Control Tower, 10 Contracts | `00`, `10` | — | 없음 | **IN_PROGRESS** — 계약·스키마는 통합, 팀 범위 검토 등 잔여 |
+| 1 | 재현 가능한 합성 Vertical Slice | 20 Simulation Core | `20` | 10 Contracts, 00 Control Tower | 검증된 Stage 0 데이터 계약 | **HOLD** — 채팅 20 인수·재검증 대기 |
+| 2 | 실제 환경·TID 모델 경로 | 30 Environment Model | `30` | 10 Contracts, 20 Simulation, 60 Assurance | 안정된 합성 입출력 경로 | `NOT_STARTED` |
+| 3 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | `NOT_STARTED` |
+| 4 | 완화·사용자 정책 엔진 | 50 Mitigation & Policy | `50` | 20 Simulation, 40 Parts, 60 Assurance | 환경·부품 증거 인터페이스 | `NOT_STARTED` |
+| 5 | Multi-Agent·GCP 실행 경로 | 70 Platform & GCP | `70` | 30 Environment, 40 Parts, 50 Policy, 60 Assurance | Stage 2~4 서비스 계약 | `NOT_STARTED` |
+| 6 | 독립 신뢰성·성능 검증 | 60 Assurance & Evals | `60` | 20~70 전체 구현 Workstream | 통합 실행 경로와 공격 세트 | `NOT_STARTED` |
+| 7 | 제품·비즈니스·최종 시연 | 80 Product, 90 Business | `80`, `90` | 60 Assurance, 70 Platform | Stage 6 검증 기준선 | `NOT_STARTED` |
+
+`주관 Workstream`은 해당 Stage의 완료 증거를 만드는 책임 영역이다. `주요 협업 Workstream`은 입력이나 독립 검증을 제공하지만 그 Stage의 소유 채팅을 대신하지 않는다.
+
+### 병렬 진행 해석
+
+- Stage 완료 표시는 Exit Gate 순서대로 관리한다.
+- 선행 계약이 검증됐다면 후속 Workstream의 조사·준비 작업은 병렬로 시작할 수 있다.
+- 병렬 시작은 앞 Stage가 완료됐다는 뜻이 아니다. 의존 결과가 없으면 `HOLD` 또는 미검증 후보로 남긴다.
+- 예: 채팅 20이 합성 Vertical Slice를 구현하는 동안 채팅 30은 환경 모델 이용 조건을 조사할 수 있지만, Stage 2 통합 완료는 Stage 1의 안정된 출력 경로가 필요하다.
+
 ## 전체 흐름
 
 ```text
@@ -29,6 +58,8 @@ Stage 7  비즈니스·최종 시연 검증
 ```
 
 ## Stage 0 — 프로젝트 계약과 기준선
+
+> 주관: Workstream 00·10 · 첫 채팅: `00-control-tower`, `10-contracts-and-schema` · 다음 Stage 전달: 검증된 데이터·판정 계약
 
 ### 목표
 
@@ -59,6 +90,8 @@ Stage 7  비즈니스·최종 시연 검증
 
 ## Stage 1 — 합성 Vertical Slice 통합
 
+> 주관: Workstream 20 · 첫 채팅: `20-simulation-core` · 선행: Stage 0 데이터 계약 · 검토: Workstream 00
+
 ### 목표
 
 현재 합성 데모를 프로젝트 내부의 재현 가능한 기준선으로 통합한다.
@@ -86,6 +119,8 @@ Stage 7  비즈니스·최종 시연 검증
 - 고정 테스트에서 False PASS가 0건이다.
 
 ## Stage 2 — 실제 환경·TID 모델 연결
+
+> 주관: Workstream 30 · 첫 채팅: `30-environment-model` · 선행: Stage 1 입출력 경로 · 검토 지원: Workstream 60
 
 ### 목표
 
@@ -115,6 +150,8 @@ Stage 7  비즈니스·최종 시연 검증
 
 ## Stage 3 — 실제 부품 TID·SEE 증거 연결
 
+> 주관: Workstream 40 · 첫 채팅: `40-parts-evidence` · 선행: Stage 0 EvidencePacket 계약 · 검토 지원: Workstream 60
+
 ### 목표
 
 정확한 부품과 시험 조건을 추적할 수 있는 Evidence Packet을 만든다.
@@ -137,6 +174,8 @@ Stage 7  비즈니스·최종 시연 검증
 - 시험 조건이 임무 적용 조건과 다르면 자동 PASS하지 않는다.
 
 ## Stage 4 — 완화 및 사용자 정책 엔진
+
+> 주관: Workstream 50 · 첫 채팅: `50-mitigation-policy` · 선행: Stage 2·3 인터페이스 · 계산 연계: Workstream 20
 
 ### 목표
 
@@ -176,6 +215,8 @@ Stage 7  비즈니스·최종 시연 검증
 
 ## Stage 5 — Multi-Agent 및 GCP 통합
 
+> 주관: Workstream 70 · 첫 채팅: `70-platform-gcp` · 선행: Workstream 30·40·50 서비스 계약 · 감사 연계: Workstream 60
+
 ### 목표
 
 에이전트 협업과 GCP 인프라가 실제 처리 흐름과 장애 격리에 기여하도록 구현한다.
@@ -210,6 +251,8 @@ Stage 7  비즈니스·최종 시연 검증
 
 ## Stage 6 — 신뢰성·성능 검증
 
+> 주관: Workstream 60 · 첫 채팅: `60-assurance-evals` · 검토 대상: Workstream 20~70의 통합 결과
+
 ### 목표
 
 정상 데모뿐 아니라 누락·오염·충돌 데이터에서도 안전하게 실패함을 증명한다.
@@ -243,6 +286,8 @@ Stage 7  비즈니스·최종 시연 검증
 - 시연 실패를 대비한 고정 결과와 복구 절차가 있다.
 
 ## Stage 7 — 비즈니스 검증과 최종 시연
+
+> 공동 주관: Workstream 80·90 · 첫 채팅: `80-product-dashboard`, `90-business-presentation` · 선행: Stage 6 검증 기준선
 
 ### 목표
 
@@ -279,9 +324,9 @@ BOM·임무 입력
 
 ## 현재 우선순위
 
-1. Stage 0의 스키마와 검증 기준을 확정한다.
-2. 기존 합성 데모를 Stage 1 기준선으로 프로젝트에 통합한다.
-3. 실제 데이터 수집 전에 지원할 첫 궤도와 부품군을 제한한다.
-4. 환경 모델과 부품 증거를 각각 한 개씩 연결해 End-to-End 경로를 먼저 완성한다.
+1. Stage 0의 남은 팀 범위·비범위 검토를 닫되, 이미 통합된 계약·스키마를 다시 미완료로 돌리지 않는다.
+2. 채팅 `20-simulation-core`가 현재 미검증 합성 Vertical Slice 후보를 인수·재검증한다.
+3. Stage 1 통합과 충돌하지 않는 범위에서 채팅 `30`의 환경 모델 이용 조건 조사와 채팅 `40`의 실제 증거 후보 조사를 병렬 준비할 수 있다.
+4. Stage 1 Exit Gate가 통과되면 Stage 2·3의 실제 경로를 각각 하나로 제한해 연결한다.
 
-세부 진행 상태와 증거는 [CHECKLIST.md](CHECKLIST.md)에서 관리한다.
+세부 완료 항목과 증거는 [CHECKLIST.md](CHECKLIST.md)에서, 채팅 번호와 파일 소유 규칙은 [docs/workstreams/README.md](docs/workstreams/README.md)에서 관리한다.

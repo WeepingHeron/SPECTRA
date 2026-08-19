@@ -1,5 +1,7 @@
 # SPECTRA 단계별 체크리스트
 
+Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의 **Stage–Workstream–Session 대응표**를 따른다.
+
 ## 체크 규칙
 
 - `[x]`는 문서, 파일, 실행 로그 또는 검토 기록으로 재확인할 수 있을 때만 표시한다.

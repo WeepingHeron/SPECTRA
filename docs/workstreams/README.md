@@ -1,5 +1,7 @@
 # SPECTRA 채팅 세션·Workstream 운영 규칙
 
+Stage별 주관 Workstream, 첫 채팅과 선행 조건은 루트 [`ROADMAP.md`](../../ROADMAP.md)의 **Stage–Workstream–Session 대응표**를 기준으로 한다.
+
 ## 1. 기본 개념
 
 - **Stage:** 프로젝트의 진행 순서. `ROADMAP.md`에서 관리한다.
