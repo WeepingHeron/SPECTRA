@@ -36,4 +36,4 @@ Contracts & Schema Workstream은 SPECTRA의 입력·출력·EvidencePacket·상�
 python3 tests/schema/validate_contracts.py
 ```
 
-성공 출력은 스키마 수, 정상 fixture 수, 기대 코드로 거부된 실패 fixture 수를 각각 표시해야 한다. 작업 세션은 성공 후에도 `READY_FOR_REVIEW`까지만 선언한다.
+성공 출력은 스키마 수, 정상 fixture 수, 기대 코드로 거부된 실패 fixture 수를 각각 표시해야 한다. 작업 채팅은 이 작업 패키지에 대해 성공 후에도 `READY_FOR_REVIEW`까지만 선언한다.

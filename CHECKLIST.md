@@ -17,7 +17,7 @@
 - [x] `ROADMAP.md` 작성
 - [x] `CHECKLIST.md` 작성
 - [x] Control Tower Workstream 책임과 검토 규칙 작성
-- [x] Workstream·세션 번호 규칙 작성
+- [x] Workstream·채팅 세션·작업 패키지 구분 규칙 작성
 - [x] Control Tower 세션 시작 템플릿 작성
 - [ ] 프로젝트 한 문장 정의 팀 검토
 - [ ] 초기 사용자·지원 궤도·지원 부품 범위 확정
