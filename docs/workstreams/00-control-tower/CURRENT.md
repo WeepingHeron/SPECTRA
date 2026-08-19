@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-19
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적하며, Workstream 30 조사 패키지 commit `c26b15a`가 push됐다. 사용자 소유의 미추적 `.obsidian/`과 병렬 작업 중인 Workstream 40 파일은 통합에서 제외했다.
+- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적한다. Workstream 30 조사 기준선 `c26b15a` 이후 Workstream 40 조사 패키지를 독립 검증했으며 사용자 소유의 미추적 `.obsidian/`은 통합에서 제외한다.
 
 ## 현재 확인된 산출물
 
@@ -33,6 +33,7 @@
 - 잘못된 Control Tower 안내로 채팅 10에서 시작된 Workstream 20 후보는 채팅 20이 소유권을 인수해 보완했고, 번호를 Stage 1 계약 / Stage 2 합성 기준선으로 정렬했다.
 - Workstream 20은 독립 재실행으로 schema fixture 28개(정상 1·실패 27), simulation 19개 테스트와 5개 비교 시나리오를 통과했다. 지원 판정 승격·4.1 mm 외삽·비직렬화 입력 공격도 안전하게 `HOLD`로 종료해 합성 기준선 패키지를 `INTEGRATED`로 판정했다.
 - Workstream 30의 SPENVIS·OLTARIS 공식 도구·권리 조사와 Stage 3 계약 초안을 독립 대조해 조사 패키지를 `INTEGRATED`로 판정했다. 실제 모델 실행·출력·과학적 교차검산은 0건이며 Stage 3은 `IN_PROGRESS`다.
+- Workstream 40의 NASA·ESA·ESCIES·제조사 출처, 권리, 부품 identity, 사건별 시험 증거와 적용성 계약 초안을 독립 대조해 조사 패키지를 `INTEGRATED`로 판정했다. 승인 BOM·실제 원문·실제 수치·EvidencePacket은 0건이며 Stage 4는 `IN_PROGRESS`다.
 
 ## 알려진 한계
 
@@ -43,9 +44,9 @@
 
 ## 다음 권장 작업
 
-1. Workstream 10에 TID-only environment variant, model chain과 raw artifact manifest 계약 변경을 요청한다.
-2. 대표 원형 LEO 입력과 AE9/AP9·solar model uncertainty 정책을 승인하기 전 실제 run은 `HOLD`한다.
-3. Workstream 40 조사 결과는 별도로 검증하고, 실제 부품 수치나 지원 판정은 아직 만들지 않는다.
+1. Workstream 10에서 환경 model chain과 `PART_TEST_EVIDENCE v2` 또는 additive 확장 계약을 함께 검토한다.
+2. Workstream 40은 같은 채팅에서 계약 변경 요청과 adversarial fixture 명세를 구체화하되, 승인 BOM·권리 책임자·격리 저장소 없이는 실제 원문 수집을 `HOLD`한다.
+3. 대표 원형 LEO 입력과 AE9/AP9·solar uncertainty 정책을 승인하기 전 Workstream 30 실제 run도 `HOLD`한다.
 
 ## 다음 Control Tower 검증 항목
 

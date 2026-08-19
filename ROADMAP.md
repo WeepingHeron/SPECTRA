@@ -22,7 +22,7 @@
 | 1 | 프로젝트 계약과 기준선 | 10 Contracts & Schema | `10` | 00 Control Tower | 없음 | **IN_PROGRESS** — 계약·스키마는 통합, 팀 범위 검토 등 잔여 |
 | 2 | 재현 가능한 합성 Vertical Slice | 20 Simulation Core | `20` | 10 Contracts, 00 Control Tower | 검증된 Stage 1 데이터 계약 | **IN_PROGRESS** — 결정론적 합성 기준선은 통합; 원본 데모/CSV/대시보드 이관과 UI는 미완료 |
 | 3 | 실제 환경·TID 모델 경로 | 30 Environment Model | `30` | 10 Contracts, 20 Simulation, 60 Assurance | 안정된 합성 입출력 경로 | **IN_PROGRESS** — 공식 도구·권리 조사 통합; 실제 run·출력·parser는 미착수 |
-| 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | `NOT_STARTED` |
+| 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | **IN_PROGRESS** — 출처·권리·identity·적용성 조사 통합; 승인 BOM·실제 원문·수치는 0건 |
 | 5 | 완화·사용자 정책 엔진 | 50 Mitigation & Policy | `50` | 20 Simulation, 40 Parts, 60 Assurance | 환경·부품 증거 인터페이스 | `NOT_STARTED` |
 | 6 | 독립 보증·평가 기준선 | 60 Assurance & Evals | `60` | 20~50 구현 Workstream | 결정론적 계산·증거·정책 경로 | `NOT_STARTED` |
 | 7 | Multi-Agent·GCP 실행 경로 | 70 Platform & GCP | `70` | 30~60 전문 Workstream | Stage 3~6 서비스·감사 계약 | `NOT_STARTED` |
