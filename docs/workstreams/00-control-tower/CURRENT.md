@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-19
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적한다. Workstream 20 통합 커밋 전, 검증 범위만 분리해 staging을 준비 중이다.
+- Git 상태: 로컬 `main`이 비공개 `origin/main`을 추적하며, Workstream 20 합성 기준선 commit `35f36a2`가 push됐다. 사용자 소유의 미추적 `.obsidian/`은 통합에서 제외했다.
 
 ## 현재 확인된 산출물
 

@@ -185,6 +185,13 @@ manual_residual_ecc_0.1=0.0063072
 - 데이터 분류: 모델 설정·fixture·계산값은 모두 `SYNTHETIC`; 생성 결과의 `assurance_decision`은 모든 경로에서 `HOLD`다. 실제 물리값이나 시험값은 없다.
 - 남은 범위: 외부 합성 데모/CSV/대시보드 이관은 원본 위치가 확인되지 않아 수행하지 않았고, 제품 UI도 후속 Stage 범위다.
 
+## Git 통합
+
+- 브랜치: `main`
+- 검증된 통합 commit: `35f36a2` — `feat(sim): integrate verified synthetic Stage 2 baseline`
+- 원격: `origin` (`https://github.com/WeepingHeron/SPECTRA.git`), push 완료
+- 제외: 사용자 소유의 미추적 `.obsidian/`
+
 ## 다음 작업이 사용할 계약
 
 - Workstream 30은 `RADIATION_ENVIRONMENT`와 shielding output을 실제 모델 provenance로 교체한다.
