@@ -139,7 +139,7 @@ H03 로컬 구현은 `VERIFIED`지만 `INTEGRATED`, Stage 7 완료, checklist �
 - H02 당시 오염 입력 결함: schema-invalid `action_grants[].action` list, `artifact_id` list, `malware_scan` string, creation receipt의 list ID가 각각 `TypeError` 또는 `AttributeError`를 발생시켰다. H03에서는 unsafe semantic traversal 전에 구조 검증 실패로 종료한다.
 - H02 당시 provenance 결함: candidate manifest의 `storage_ref.project_id`, `bucket_id` 또는 `object_name`만 다른 값으로 바꿔도 기존 creation receipt가 그 object identity를 담지 않아 `ISSUE_ALLOWED`가 반환됐다. H03에서는 receipt를 exact project/bucket/object/generation에 결합한다.
 - 실제 후보 fixture의 선언 gap은 입력에서 복사된 주장일 뿐 외부 권리·provider 상태의 독립 검증이 아니다. `RAW_MANIFEST_CANDIDATE_MISSING`에 의한 HOLD 증거로만 해석한다.
-- 후속 제출: `/Users/taehoon/Downloads/SPECTRA_70_RIGHTS_RAW_MANIFEST_PREFLIGHT_HANDOFF_H03.md`; malformed-input safe failure와 exact storage receipt binding을 반영해 재검토를 요청한다.
+- 후속 제출: `docs/workstreams/70-platform-gcp/handoffs/SPECTRA_70_RIGHTS_RAW_MANIFEST_PREFLIGHT_HANDOFF_H03.md`; malformed-input safe failure와 exact storage receipt binding을 반영해 재검토를 요청한다.
 
 ## Control Tower H01 독립 검증 — 2026-08-20
 

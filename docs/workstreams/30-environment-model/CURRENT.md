@@ -29,7 +29,7 @@
 - 실제 bundle: `SHA256SUMS` 9/9와 set hash `aa299946677dc082fa48cfea4efa2501a10478a92fde04643c429ab77bbfc163`를 재현했다. 값 비노출 parser 구조 검사는 후보 4개·1/2/3/4 mm·전부 `HOLD_PENDING_PROVENANCE_AND_RIGHTS`를 재현했다.
 - 기존 source-role 누락·중복, artifact ID/path 재사용, manifest duplicate ID, alias·symlink 공격은 stable provenance HOLD로 차단됐다.
 - 남은 결함: `artifact_files[].path`에 NUL 문자를 넣으면 `Path.resolve()`에서 `ValueError: embedded null byte`가 발생한다. `ARTIFACT_INDEX_INVALID` 또는 동등한 stable code의 `PROVENANCE_FAILURE/HOLD`로 종료하지 못하므로 오염 입력 Exit Gate를 충족하지 못한다.
-- 다음 제출: `/Users/taehoon/Downloads/SPECTRA_31_ENVIRONMENT_INTAKE_GATE_HANDOFF_H02.md`; 실제 원문·dose 값·rights·provider reference·raw manifest HOLD는 그대로 유지한다.
+- 다음 제출: `docs/workstreams/30-environment-model/handoffs/SPECTRA_31_ENVIRONMENT_INTAKE_GATE_HANDOFF_H02.md`; 실제 원문·dose 값·rights·provider reference·raw manifest HOLD는 그대로 유지한다.
 
 ## 채팅 31 H02 — Invalid Path Fail-Closed 보완
 

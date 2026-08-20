@@ -2,9 +2,9 @@
 
 ## 상태
 
-`READY_FOR_REVIEW — H03 Business Validation Instrument`
+`INTEGRATED — H03 Business Validation Instrument / commit b2c8ef6`
 
-H02 7분 발표 서사 패키지의 `INTEGRATED / commit 379f3ad` 기준선은 유지한다. 최신 H03 상태는 `90-business-validation-instrument-v1` 문서 패키지에만 적용하며, Stage 9 비즈니스 검증 완료나 Git 통합을 뜻하지 않는다.
+H02 7분 발표 서사 패키지의 `INTEGRATED / commit 379f3ad` 기준선은 유지한다. H03 `90-business-validation-instrument-v1` 문서 패키지는 commit `b2c8ef6`로 통합했지만, Stage 9 비즈니스 검증 완료를 뜻하지 않는다.
 
 ## H03 Business Validation Instrument
 
@@ -39,6 +39,12 @@ H02 7분 발표 서사 패키지의 `INTEGRATED / commit 379f3ad` 기준선은 �
 ### 현재 판정
 
 모든 business hypothesis는 `UNVALIDATED`다. 실제 인터뷰·관찰·문서·계산 evidence가 없으므로 Stage 9은 계속 `IN_PROGRESS`이며 checklist를 완료 처리하지 않는다.
+
+### H03 Control Tower 통합 판정
+
+- 인터뷰·pilot·구매·가격 수치를 만들지 않고 모든 가설을 `UNVALIDATED`, 가격과 기준선을 `UNSET`으로 유지하는 실행 도구 문서만 검증했다.
+- 개인정보·고객 기밀·원문을 저장소 밖에 두는 경계와 evidence class·가설 상태·pilot 상태의 fail-closed 기록 규칙을 확인했다.
+- H03 문서 패키지는 commit `b2c8ef6`로 `INTEGRATED`했다. 실제 사용자 검증이나 비즈니스 가치 입증을 뜻하지 않는다.
 
 ## H02 통합 기준선
 

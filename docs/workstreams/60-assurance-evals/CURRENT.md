@@ -2,9 +2,9 @@
 
 ## 상태
 
-`VERIFIED — H03 Runtime Mitigation Independent Assurance / Control Tower 2026-08-20`
+`INTEGRATED — H03 Runtime Mitigation Independent Assurance / commit 32b6131`
 
-H01 고정 공격 기준선의 `VERIFIED`와 H02의 `INTEGRATED / commit 379f3ad` 상태는 유지한다. Control Tower는 H03의 `ASR-D03`이 Workstream 20 H03의 `evaluate_runtime_mitigation()`을 직접 독립 공격하는지 확인하고 전체 회귀를 재현해 `VERIFIED`로 판정했다. 실제 GCP 의존성 `ASR-D02`와 실제 과학·증거 검증은 남아 있으므로 Stage 6 완료나 `INTEGRATED`를 뜻하지 않는다.
+H01 고정 공격 기준선의 `VERIFIED`와 H02의 `INTEGRATED / commit 379f3ad` 상태는 유지한다. Control Tower는 H03의 `ASR-D03`이 Workstream 20 H03의 `evaluate_runtime_mitigation()`을 직접 독립 공격하는지 확인하고 전체 회귀를 재현한 뒤 commit `32b6131`로 통합했다. 실제 GCP 의존성 `ASR-D02`와 실제 과학·증거 검증은 남아 있으므로 Stage 6 완료를 뜻하지 않는다.
 
 ## 범위 경계
 

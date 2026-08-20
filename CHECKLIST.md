@@ -21,7 +21,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [ ] exact-part 시험 증거 묶음 1개와 원문 locator
 - [x] 결정론적 완화·사용자 정책 engine 합성 기준선
 - [x] 변경 전·후 결과와 무효화 근거 생성
-- [ ] UI가 검증된 결과 JSON·EvidencePacket을 소비
+- [x] UI가 검증된 결과 JSON·EvidencePacket을 소비
 - [ ] 5분 사용자 실행과 설명 가능성 검증
 - 근거가 부족한 작업은 `HOLD` 또는 `INSUFFICIENT_EVIDENCE`로 기록한다.
 
@@ -146,6 +146,8 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## Stage 4 — 실제 부품 TID·SEE 증거
 
+> 2026-08-20 Control Tower 검증: Workstream 40 H04는 TI 공식 자료에서 exact catalog part `5962L1420901VXC`와 SEE 시험 문서의 base SMD `5962L1420901VX`를 분리하고, scoped search 안에서 exact test-article destructive SEE 증거를 찾지 못한 상태를 `PARTIAL_IDENTITY`·`HOLD`로 유지했다. 적용성 규칙 3개만 완료로 반영하며, 실제 증거 수집·정규화·권리 해결 항목은 체크하지 않는다.
+
 ### 데이터 수집
 
 - [ ] 초기 실제 부품 5~10종 선정
@@ -171,11 +173,11 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ### 적용성 검토
 
-- [ ] 정확한 부품 일치 규칙
-- [ ] 유사 부품 후보와 확정 증거 분리
+- [x] 정확한 부품 일치 규칙
+- [x] 유사 부품 후보와 확정 증거 분리
 - [ ] 제조 공정 변경 탐지
 - [ ] 시험 조건과 임무 조건 대조
-- [ ] 시험 범위 밖 외삽 금지
+- [x] 시험 범위 밖 외삽 금지
 - [ ] 사람 검토·승인 이력 저장
 
 ### Exit Gate
@@ -186,16 +188,18 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## Stage 5 — 완화 및 정책 엔진
 
+> 2026-08-20 Control Tower 재검증: Workstream 20 H03는 결과 스키마를 공통 `processingStatus` `$ref`로 정렬하고 runtime processing 상태에서 `NOT_EVALUATED`를 제거했다. 전용 24개, simulation 55개와 전체 회귀를 재현했으며 합성·증거 부족 결과는 계속 `HOLD`다. 아래 표시는 H03가 직접 검증한 runtime·정책 안전 경계만 반영한다.
+
 ### 완화 모델
 
 - [ ] 차폐 변경
 - [ ] 내방사선 부품 교체
 - [ ] ECC 유형
 - [ ] 스크러빙 주기
-- [ ] TMR
-- [ ] Watchdog·재부팅
+- [x] TMR
+- [x] Watchdog·재부팅
 - [ ] 체크포인트·재시도
-- [ ] SEL 전류 감지·전원 차단
+- [x] SEL 전류 감지·전원 차단
 - [ ] 예비 장치 전환
 - [ ] 완화 방법별 적용 가능한 고장 유형 매핑
 
@@ -205,7 +209,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [ ] 최소 TID 잔여 마진
 - [ ] 최대 잔여 SEU 횟수
 - [ ] 한 번 이상 SEU 발생 확률
-- [ ] 최대 재부팅 횟수·장애시간
+- [x] 최대 재부팅 횟수·장애시간
 - [ ] 파괴성 SEE 증거 요구
 - [ ] 조직 기본 정책 팩
 - [ ] 커스텀 정책과 변경 사유
@@ -213,30 +217,32 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ### 신뢰성
 
-- [ ] 임의 완화율 입력 제거 또는 `ASSUMED` 처리
+- [x] 임의 완화율 입력 제거 또는 `ASSUMED` 처리
 - [ ] 완화 전·후 계산 분리
-- [ ] 미승인 정책으로 PASS 차단
-- [ ] ECC가 파괴성 SEE를 해결했다고 판단하지 않음
+- [x] 미승인 정책으로 PASS 차단
+- [x] ECC가 파괴성 SEE를 해결했다고 판단하지 않음
 - [ ] 정책 변경 영향 보고서 생성
 
 ### Exit Gate
 
-- [ ] 완화·정책 선택이 결정론적으로 결과에 반영됨
-- [ ] 모든 완화 계수에 근거 또는 가정 표시
-- [ ] 미승인 커스텀 정책에서 안전하게 보류
+- [x] 완화·정책 선택이 결정론적으로 결과에 반영됨
+- [x] 모든 완화 계수에 근거 또는 가정 표시
+- [x] 미승인 커스텀 정책에서 안전하게 보류
 
 ## Stage 6 — 독립 보증·평가 기준선
+
+> 2026-08-20 Control Tower 검증: manifest 1.2.0의 평가된 공격 실행 47개와 control 4개에서 failure 0, False PASS 0을 재현했다. 아래 완료 표시는 이 고정 합성 세트에 한정하며 실제 GCP `ASR-D02`는 `NOT_EVALUATED`, 실제 원문·과학 정확도·배포 경로는 미검증이다.
 
 ### 공격·오류 테스트
 
 - [x] 유사 부품번호 오탐
-- [ ] 제조사·로트 불일치
+- [x] 제조사·로트 불일치
 - [x] 단위 변환 오류
 - [ ] 시험 표 잘못 추출
 - [ ] 출처 링크 손상
-- [ ] 파일 해시 불일치
+- [x] 파일 해시 불일치
 - [ ] 오래된 모델 출력
-- [ ] SEE 증거 누락
+- [x] SEE 증거 누락
 - [x] 파괴성 SEE 증거 누락
 - [x] 범위 밖 외삽
 - [x] 미승인 정책 우회
@@ -245,7 +251,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 ### 지표
 
 - [x] False PASS 0건
-- [ ] 계산 재현율 100%
+- [x] 고정 합성 control의 계산 재현율 100%
 - [ ] 근거 링크·페이지 정확도 측정
 - [ ] 부품 식별 정확도 측정
 - [ ] 필수 필드 추출 정확도 측정
@@ -254,9 +260,9 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ### Exit Gate
 
-- [ ] 독립 검증 세트에서 False PASS 0건
-- [ ] 모든 실패가 설명 가능한 상태로 종료
-- [ ] 동일 입력의 계산·증거·정책 결과를 반복 재현
+- [x] 고정 독립 검증 세트에서 False PASS 0건
+- [x] 평가된 고정 세트의 모든 실패가 설명 가능한 상태로 종료
+- [x] 고정 합성 입력의 계산·증거·정책 결과를 반복 재현
 
 ## Stage 7 — Multi-Agent·GCP
 
@@ -293,13 +299,15 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## Stage 8 — 제품·대시보드
 
+> 2026-08-20 Control Tower 검증: H09는 `+0/-0` 양방향 본문 변조를 fail-closed로 닫고 H08 numeric parity·stale-hash 회귀와 실제 브라우저 세 runtime control·console을 통과했다. 아래 완료 표시는 검증된 합성 Product·runtime integrity 기준선에 한정하며 실제 API·원문 evidence·GCP resource 통합은 미완료다.
+
 ### 사용자 흐름
 
 - [ ] 임무·BOM·차폐·완화·정책 입력 흐름
 - [x] TID·SEE 결과와 완화 전후 비교
 - [x] Evidence Coverage Matrix
 - [ ] Evidence Packet 원문·계산 실행 추적
-- [ ] 변경 전후 영향 보고서
+- [x] 변경 전후 영향 보고서
 - [x] `HOLD`·증거 공백·미지원 범위 표시
 - [x] 합성·실제 데이터 분류 표시
 
@@ -317,6 +325,8 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [x] 대표 시나리오를 반복 재현
 
 ## Stage 9 — 비즈니스·발표·최종 시연
+
+> 2026-08-20 Control Tower 검증: Workstream 90 H03 비즈니스 검증 프로토콜은 실행 도구로서 확인했다. 실제 인터뷰·pilot·가격·기준선은 각각 0건 또는 `UNSET`이고 모든 가설이 `UNVALIDATED`이므로 비즈니스 검증 완료 항목은 체크하지 않는다.
 
 ### 비즈니스 검증
 

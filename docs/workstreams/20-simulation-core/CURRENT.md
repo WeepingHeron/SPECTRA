@@ -8,7 +8,7 @@
 
 ## Status
 
-`VERIFIED — H03 Mitigation Runtime Calculator / Control Tower 2026-08-20`
+`INTEGRATED — H03 Mitigation Runtime Calculator / commit 32b6131`
 
 현재 작업 패키지: `20-mitigation-runtime-calculator-v1` H03 검증 보완. Workstream 10 H06의 WATCHDOG·TMR·SEL_PROTECTION runtime 계약을 production-side에서 독립 계산하는 API, CLI와 결과 schema를 구현했다. 정상 control은 `processing_status=VALID`, `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`다. malformed·계약 위반·계산 eligibility 부족·projection/policy 변조는 `processing_status=INVALID_INPUT`, `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`로 닫힌다. Runtime `processing_status`는 공통 enum을 직접 참조하며 어떤 분기에서도 `NOT_EVALUATED`를 사용하지 않는다. H02 MVP Decision Engine의 `INTEGRATED` 기준선은 그대로 보존한다.
 

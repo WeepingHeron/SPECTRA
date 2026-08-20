@@ -2,7 +2,7 @@
 
 ## Status
 
-`READY_FOR_REVIEW — H06 mitigation runtime contract; H05 baseline remains INTEGRATED`
+`INTEGRATED — H06 mitigation runtime contract / commit 32b6131`
 
 ## 구현한 계약
 
@@ -833,3 +833,9 @@ RESULT: READY_FOR_REVIEW candidate
 - `PYTHONDONTWRITEBYTECODE=1 python3 docs/workstreams/70-platform-gcp/preflight/test_raw_manifest_preflight.py -v`: 2개 통과, exit `0`.
 - `git diff --check`: 출력 없음, exit `0`.
 - 실제 evidence, 실제 policy 승인, 실제 runtime 성능 또는 외부 실행을 추가하지 않았다. commit·push하지 않았으며 Workstream 80 동시 변경도 수정·정리·stage하지 않았다.
+
+## Control Tower H06 최종 통합 판정 — 2026-08-20
+
+- schema 14개, 정상 fixture 5개, 실패 fixture 116개와 malformed runtime 동시 오류 수집을 commit 직전 전체 회귀에서 재현했다.
+- simulation 55개, environment 23개, Assurance 공격 실행 47개·False PASS 0, Product 10개와 raw-manifest preflight 2개가 함께 통과했다.
+- H06 계약과 validator 패키지는 commit `32b6131`로 `INTEGRATED`했다. 이는 실제 mitigation 효과, 실제 policy 승인 또는 Stage 5 완료를 뜻하지 않는다.

@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-20
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 상태: 로컬 `main`과 비공개 `origin/main`은 통합 commit `379f3ad`에서 일치한다. Workstream 10 H05, 20 H02, 30/31 H02, 40 H03, 50 H02, 60 H02, 70 H03, 80 H04, 90 H02와 Control Tower 상태 동기화를 포함하며 working tree는 clean이다.
+- Git 통합 체크포인트: runtime 계약·engine·Assurance·Product H09는 commit `32b6131`, Parts H04·Business H03 문서 패키지는 commit `b2c8ef6`로 분리했다. 이 Control Tower 상태·운영 정리 commit과 함께 `main`을 `origin/main`에 한 번 push한다.
 
 ## 현재 확인된 산출물
 
@@ -62,6 +62,15 @@
 - 채팅 31 H02는 embedded NUL 앞·중간·끝과 예상 가능한 path/file 오류를 stable provenance HOLD로 보완했다. environment 23개와 전체 회귀, 실제 bundle 9/9·값 비노출 parser 구조를 독립 재현해 구현 패키지를 `VERIFIED`로 판정했다. 실제 contract emission과 Stage 3은 계속 `HOLD/IN_PROGRESS`다.
 - Workstream 70 H03은 malformed 입력을 semantic traversal 전에 차단하고 synthetic creation receipt를 exact project/bucket/object/generation에 결합했다. 별도 11개 공격과 전체 회귀를 통과해 local preflight 구현을 `VERIFIED`로 판정했다. 실제 GCP resource·rights·manifest·비용은 0이고 `ASR-D02`는 계속 `NOT_EVALUATED`다.
 - 위 누적 검증 범위 76개 파일은 commit `379f3ad`로 `main`과 `origin/main`에 통합했다. 이는 각 패키지의 Git 통합만 뜻하며 Stage 3~9 완료, 실제 environment contract, 실제 parts evidence, 실제 GCP 또는 radiation assurance 완료를 뜻하지 않는다.
+- Workstream 20 H03 보완은 runtime result의 `processing_status`를 공통 enum `$ref`에 정렬하고 processing 상태의 `NOT_EVALUATED` 사용을 제거했다. 전용 24개, simulation 55개, environment 23개, product 7개, preflight 2개와 assurance 29 evaluated attack executions/False PASS 0을 독립 재현해 합성 runtime calculator 패키지를 `VERIFIED`로 판정했다. 실제 효과 데이터·승인 policy·Stage 3·4 evidence가 없으므로 assurance는 계속 `HOLD`다.
+- Workstream 60 H03은 production runtime API를 직접 공격하는 `ASR-D03`을 추가했다. 전체 회귀에서 평가된 공격 실행 47개, control 4개, failure 0, False PASS 0을 독립 재현해 `VERIFIED`로 판정했다. 실제 GCP `ASR-D02`는 `NOT_EVALUATED`이고 Stage 6은 계속 `IN_PROGRESS`다.
+- Workstream 80 H06의 production runtime 결과 연결과 9개 Product 회귀는 재현됐지만, 브라우저가 runtime result 본문에서 canonical `output_hash`를 재계산하지 않는다. WATCHDOG downtime만 60에서 999로 변조하고 stale hash를 유지해도 수치가 표시됨을 재현해 H06만 `CHANGES_REQUESTED`로 판정했다. H05의 `VERIFIED`는 유지한다.
+- Workstream 80 H07은 H06 stale-hash False PASS를 닫았고 실제 브라우저에서 세 runtime control, console error 0, 발표 안내 문구의 1280×720·1440×900·1920×1080 한 줄과 horizontal overflow 0을 확인했다. 그러나 schema-valid TMR `p=0.001`의 projection `2.998e-06`을 JavaScript가 `0.000002998`로 직렬화해 production hash와 달라지고 정상 record를 거부했다. Python/JavaScript canonical number parity가 남아 H07은 `CHANGES_REQUESTED`, H05 `VERIFIED`는 유지한다.
+- Workstream 80 H08은 production canonical preimage로 일반 Python/JavaScript number parity와 기존 stale-hash 공격을 닫았고 Product 10개 테스트, numeric boundary controls와 실제 브라우저 세 runtime control·console warning/error 0을 통과했다. 그러나 result의 numeric `0`만 `-0`으로 바꾸고 기존 preimage·hash를 유지한 공격을 `jsonDeepExact()`가 수용해 H08은 `CHANGES_REQUESTED`다. assurance는 계속 `HOLD`이며 H05 `VERIFIED`는 유지한다.
+- Workstream 80 H09는 `Object.is()` number 비교로 `+0/-0` 양방향 본문 변조를 닫았다. Product 10개 테스트, 직접 signed-zero 공격, H08 numeric parity·stale-hash 회귀와 실제 브라우저 WATCHDOG/TMR/SEL·console warning/error 0을 독립 재현해 H09 runtime integrity 패키지를 `VERIFIED`로 판정했다. 실제 API·environment·parts evidence·GCP resource는 미통합이고 assurance는 계속 `HOLD`다.
+- commit 직전 전체 회귀에서 schema 14개·정상 5개·실패 116개, simulation 55개, environment 23개, Assurance 공격 실행 47개·False PASS 0, Product 10개와 raw-manifest preflight 2개를 통과했다. live GCP `ASR-D02` 1개는 계속 `NOT_EVALUATED`다.
+- Workstream 10 H06, 20 H03, 60 H03과 80 H09는 commit `32b6131`, Workstream 40 H04와 90 H03 문서 패키지는 commit `b2c8ef6`로 통합했다. 이 Git 통합은 실제 environment contract, 실제 parts evidence, 실제 GCP, 실제 사용자 검증 또는 radiation assurance 완료를 뜻하지 않는다.
+- 사용자가 채팅에 전달할 작업 지침과 change request는 해당 `docs/workstreams/<workstream>/instructions/`에 생성해 링크로 전달한다. 작업 채팅이 완료 후 제출하는 handoff는 같은 계층의 `handoffs/`에 저장한다. 두 폴더 모두 Git에서 제외하며, 기존 추적 handoff 6개는 로컬 파일을 보존한 채 Git index에서 제거했다. 작업 지침에는 항상 `병렬 가능 작업`을 포함하고 후보가 없으면 그 이유와 선행 의존성을 적는다.
 
 ## 알려진 한계
 
@@ -72,9 +81,9 @@
 
 ## 다음 권장 작업
 
-1. 발표자가 탭 전환을 포함한 7분 리허설과 3분 Q&A를 실제로 1회 측정하고, 가능하면 네트워크 차단 fallback도 확인한다.
-2. 검증된 31 H02·70 H03을 포함한 누적 working tree를 파일별로 분류하고, 실제 원문·비밀정보·대용량 파일이 staging 범위에 들어오지 않는지 확인한다.
-3. 그 다음 Workstream 80의 실제 결과 연결 또는 Stage 3→8 Core MVP 경로를 진행한다. provider reference·권리·승인 raw manifest와 live GCP 증거가 없으면 계속 `HOLD/NOT_EVALUATED`로 둔다.
+1. 정상 결과 → payload 수치 변조 → 수치·ID·hash 차단 및 HOLD 순서의 60~90초 Assurance Attack Demo를 설계한다.
+2. 발표 동선에서 H09 fail-closed가 실제 assurance 완료가 아니라 합성 Product integrity 검증임을 명시한다.
+3. 최종 통합 또는 commit 직전에만 schema·simulation·environment·assurance·product 전체 회귀를 한 번 실행한다. provider reference·권리·승인 raw manifest와 live GCP 증거가 없으면 계속 `HOLD/NOT_EVALUATED`로 둔다.
 
 ## 다음 Control Tower 검증 항목
 

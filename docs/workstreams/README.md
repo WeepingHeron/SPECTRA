@@ -57,7 +57,10 @@ SPECTRA_<채팅번호>_<작업패키지>_HANDOFF_H02.md
 - 같은 채팅에서 수정·재제출하면 다음 handoff 회차로 올린다.
 - 새 채팅의 첫 handoff는 `H01`부터 시작한다.
 - 이미 생성된 채팅 00~40의 번호 없는 handoff 파일은 이름을 바꾸지 않고 암묵적 `H01`로 취급한다. 해당 채팅의 다음 handoff부터 `H02`를 사용한다.
-- handoff는 일회성 전달 파일이므로 기본 Downloads 폴더에 두고 프로젝트 저장소에는 넣지 않는다.
+- 사용자가 각 채팅에 전달할 작업 지침과 change request Markdown은 해당 Workstream의 `docs/workstreams/<workstream>/instructions/`에 생성하고 사용자에게 파일 링크로 전달한다.
+- 작업 채팅이 종료 시 제출하는 handoff는 같은 계층의 `docs/workstreams/<workstream>/handoffs/`에 저장한다. 예를 들어 채팅 20은 `20-simulation-core/instructions/`와 `20-simulation-core/handoffs/`를 사용한다.
+- 모든 Workstream의 `instructions/`와 `handoffs/`는 루트 `.gitignore` 대상이다. 두 폴더는 로컬 채팅 전달용이며 commit·push 대상이 아니다.
+- 작업 지침, change request와 후속 작업 제안에는 반드시 `병렬 가능 작업` 절을 둔다. 병렬 작업이 있으면 대상 채팅·소유 파일·독립 Exit Gate를 적고, 없으면 `없음`과 선행 의존성을 적는다.
 
 ### 새 채팅을 여는 조건
 
@@ -81,6 +84,8 @@ SPECTRA_<채팅번호>_<작업패키지>_HANDOFF_H02.md
 - 충돌 가능성이 생기면 새 브랜치를 무조건 만들기보다 먼저 파일 소유 범위를 다시 나눈다.
 
 병렬 작업은 **서로 기다릴 이유가 없는 작업**에만 효과적이다. 같은 계약이나 같은 코드의 선후 관계가 강하면 한 채팅에서 순차적으로 처리한다.
+
+Control Tower가 작업 지침을 줄 때는 항상 현재 지침과 동시에 시작할 수 있는 독립 작업을 확인한다. 병렬 후보는 같은 파일을 수정하지 않고 현재 지침의 미검증 산출물에 의존하지 않아야 한다. 조건을 만족하는 후보가 없더라도 지침에 `병렬 가능 작업: 없음`을 명시한다.
 
 ## 5. 상태 체계
 
@@ -112,7 +117,7 @@ SPECTRA_<채팅번호>_<작업패키지>_HANDOFF_H02.md
 
 - 프로젝트 폴더에는 구현, 실행, 검증, Workstream 운영과 장기 인수인계에 계속 필요한 디렉터리와 파일을 둔다.
 - 활성 Workstream 디렉터리와 그 안의 `BRIEF.md`, `CURRENT.md`, 스키마, 검증 자료는 프로젝트의 영속 workflow로 유지한다.
-- 한 번 사용하고 끝나는 채팅 시작 템플릿, 복사용 프롬프트와 임시 보고서만 기본 Downloads 폴더에 저장한다.
+- 채팅 시작 템플릿, 작업 지침, change request와 복사용 프롬프트는 해당 Workstream의 ignored `instructions/`에 저장해 사용자에게 링크로 전달한다. 작업 완료 handoff는 같은 계층의 ignored `handoffs/`에 저장한다.
 - 활성 Workstream 디렉터리는 산출물이 아직 완성되지 않았다는 이유로 삭제하지 않는다.
 - 관련 없는 placeholder, 중복 문서와 채팅별 기록 사본은 미리 만들지 않는다.
 - 일회성 파일이 반복 사용되는 프로젝트 계약으로 승격될 때만 Control Tower 검토 후 프로젝트로 이동한다.

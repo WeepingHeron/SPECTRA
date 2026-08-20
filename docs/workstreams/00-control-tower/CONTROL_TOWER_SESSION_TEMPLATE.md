@@ -121,7 +121,7 @@ Checkpoint 이름은 다음과 같이 부여한다.
 
 ## 세션 종료 시 반드시 남길 인수인계
 
-handoff 파일은 기본 Downloads 폴더에 `SPECTRA_00_CONTROL_TOWER_HANDOFF_HNN.md` 형식으로 저장한다. `HNN`은 이 채팅의 handoff 제출 회차이며 새 Session 번호가 아니다. 같은 채팅에서 수정·재제출하면 `H01`, `H02` 순으로 증가시킨다.
+handoff 파일은 `docs/workstreams/00-control-tower/handoffs/SPECTRA_00_CONTROL_TOWER_HANDOFF_HNN.md` 형식으로 저장한다. `handoffs/`는 `.gitignore` 대상이며 commit·push하지 않는다. `HNN`은 이 채팅의 handoff 제출 회차이며 새 Session 번호가 아니다. 같은 채팅에서 수정·재제출하면 `H01`, `H02` 순으로 증가시킨다.
 
 ```markdown
 # 00 Control Tower Handoff
@@ -160,6 +160,12 @@ VERIFIED | INTEGRATED | CHANGES_REQUESTED | HOLD
 - 산출물:
 - 완료 조건:
 
+## 병렬 가능 작업
+- 대상 채팅: 있음 | 없음
+- 목표와 소유 파일:
+- 현재 작업과의 의존성:
+- 독립 Exit Gate:
+
 ## 다음 Control Tower 행동
 - ...
 ```
@@ -171,6 +177,7 @@ VERIFIED | INTEGRATED | CHANGES_REQUESTED | HOLD
 3. 문서의 현재 상태와 실제 상태가 다른 부분을 보고한다.
 4. 아직 승인되지 않은 변경은 실행하지 않는다.
 5. 현재 Workstream에서 이어갈 작업 패키지 1~3개를 구체적인 산출물과 Exit Gate로 제안한다. Workstream이 바뀌면 해당 십 단위 첫 채팅을, 같은 Workstream에서 새 채팅이 필요하면 다음 1단위 번호를 제안한다.
+6. 지침마다 독립적으로 병렬 실행할 수 있는 작업을 확인해 함께 제시한다. 없으면 `병렬 가능 작업: 없음`과 선행 의존성을 명시한다.
 
 ---
 

@@ -2,7 +2,7 @@
 
 ## 상태
 
-`VERIFIED — H09 Signed Zero Integrity / base 4920b6e`
+`INTEGRATED — H09 Signed Zero Integrity / commit 32b6131`
 
 H08의 production canonical preimage 방식과 numeric parity를 유지하면서 deep number comparison이 `+0/-0` 변조를 허용하던 결함을 H09로 보완했다. JSON number 비교는 `Object.is()`만 사용하며 signed zero가 다르면 대상 runtime record만 fail-closed한다. 실제 환경·부품·시험·GCP resource는 0이고 제품은 여전히 합성 오프라인 프로토타입이다.
 
@@ -17,7 +17,7 @@ H08의 production canonical preimage 방식과 numeric parity를 유지하면서
 
 ### 판정
 
-H09 Signed Zero Integrity 패키지는 `VERIFIED`다. H05 Product binding의 기존 `VERIFIED`, H07 발표 note와 H08 production canonical preimage 보완을 유지한다. working tree commit·push와 Stage 8 완료를 의미하지 않으며 실제 environment·parts evidence와 GCP resource는 여전히 0, 최종 assurance는 `HOLD`다.
+H09 Signed Zero Integrity 패키지는 독립 검증 후 commit `32b6131`로 `INTEGRATED`됐다. H05 Product binding의 기존 `VERIFIED`, H07 발표 note와 H08 production canonical preimage 보완을 유지한다. Stage 8 완료를 의미하지 않으며 실제 environment·parts evidence와 GCP resource는 여전히 0, 최종 assurance는 `HOLD`다.
 
 ## H09 Signed Zero Integrity — 2026-08-20
 

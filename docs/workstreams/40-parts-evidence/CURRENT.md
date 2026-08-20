@@ -2,7 +2,7 @@
 
 ## Status
 
-`READY_FOR_REVIEW — H04 destructive SEE gap research / HOLD`
+`INTEGRATED — H04 destructive SEE gap research / commit b2c8ef6 / HOLD`
 
 `40-exact-part-destructive-see-gap-research-v1`에서 TI `SLLA381`의 SEL·SEB·SEGR coverage와 exact test-article identity를 조사했다. 제한된 SEL zero-event 결과는 확인했지만 exact suffix와 lot/date-code traceability가 없어 `PARTIAL_IDENTITY`이며, SEB·SEGR은 독립 공백이다. 최종 decision은 `HOLD`다. H03까지의 기존 `INTEGRATED` 판정은 유지한다.
 
@@ -24,6 +24,12 @@
 - remaining gates: `BOM_MISSING`, `EXACT_TEST_ARTICLE_IDENTITY_UNRESOLVED`, `SEL_TEST_COMPLETENESS_PARTIAL`, `SEB_EVIDENCE_MISSING`, `SEGR_EVIDENCE_MISSING`, `RIGHTS_UNRESOLVED`, `MISSION_APPLICABILITY_UNAVAILABLE`, `REVIEW_APPROVAL_MISSING`.
 - 자체 검증: H04 source register에 공식 URL·문서 revision/date 또는 `NOT_DISPLAYED`·접근일·locator를 기록했고, `git diff --check`를 통과했다. 문서-only 변경이므로 schema·simulation runtime 회귀 테스트는 실행하지 않았다.
 - 공통 schema, fixture, 계산·assurance 코드, 다른 Workstream, demo와 루트 문서를 수정하지 않았다. commit·push·merge하지 않는다.
+
+### H04 Control Tower 통합 판정
+
+- 공식 source의 exact catalog suffix와 base SMD test-article identity를 분리하고, SEL zero-event 제한을 immunity로 승격하지 않으며 SEB·SEGR 공백을 독립 유지한 문서 패키지만 검증했다.
+- 실제 PDF, 승인 BOM, rights snapshot, raw manifest와 임무 적용성은 포함하지 않았고 최종 decision은 계속 `HOLD`다.
+- H04 문서 패키지는 commit `b2c8ef6`로 `INTEGRATED`했다. Stage 4 실제 evidence Exit Gate 완료를 뜻하지 않는다.
 
 ## H03 Control Tower 독립 검증 — 2026-08-20
 
