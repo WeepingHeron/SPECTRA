@@ -74,12 +74,101 @@
     {
       "name": "synthetic-policy-approved-string-support",
       "operations": [
-        {"op": "set", "path": "/inputs/6/approval", "value": {"status": "APPROVED", "approval_target_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "approval_scope_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "approved_by": "synthetic-fixture-reviewer", "approved_at": "2026-08-20T00:00:00Z", "valid_from": "2026-08-20T00:00:00Z", "valid_until": "2027-08-20T00:00:00Z"}},
+        {"op": "set", "path": "/inputs/6/approval", "value": {"status": "APPROVED", "approval_target_hash": "sha256:163e1ee3a194f61c82a25aa876a20397389b85d37146b53a7461cc9dbad8c2a7", "approval_scope_hash": "sha256:0bc1496c198ebe356b78a2b4e77eebb39f42e20e119feda77a4ded813b767dd6", "history_head_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "approved_by": "synthetic-fixture-reviewer", "approved_at": "2026-08-20T00:00:00Z", "valid_from": "2026-08-20T00:00:00Z", "valid_until": "2027-08-20T00:00:00Z"}},
         {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
         {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
         {"op": "set", "path": "/decision/evidence_gaps", "value": []}
       ],
       "expected": "SYNTHETIC_POLICY_WITH_SUPPORT"
+    },
+    {
+      "name": "watchdog-true-positive-coverage-missing",
+      "operations": [{"op": "delete", "path": "/inputs/5/design_parameters/true_positive_coverage"}],
+      "expected": "WATCHDOG_TRUE_POSITIVE_COVERAGE_MISSING"
+    },
+    {
+      "name": "watchdog-count-and-rate-conflict",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/target_event_model/event_rate_per_second", "value": 0.001}],
+      "expected": "ACTIVATION_COUNT_RATE_CONFLICT"
+    },
+    {
+      "name": "watchdog-denominator-window-mismatch",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/false_positive_model/denominator/scope", "value": "WATCHDOG"}],
+      "expected": "RECOVERY_DENOMINATOR_WINDOW_MISMATCH"
+    },
+    {
+      "name": "watchdog-action-fraction-not-one",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/false_positive_model/action_paths/0/fraction", "value": 0.8}],
+      "expected": "ACTION_PATH_FRACTION_INVALID"
+    },
+    {
+      "name": "watchdog-false-positive-excluded-from-totals",
+      "operations": [{"op": "set", "path": "/inputs/5/runtime_projection", "value": {"method": "WATCHDOG", "true_target_event_count": 0, "true_positive_activation_count": 0, "false_positive_activation_count": 0, "reboot_count_total": 0, "downtime_total_seconds": 0}}],
+      "expected": "WATCHDOG_FALSE_POSITIVE_IGNORED"
+    },
+    {
+      "name": "watchdog-detection-latency-double-counted",
+      "operations": [
+        {"op": "set", "path": "/inputs/5/design_parameters/target_event_model/event_count", "value": 1},
+        {"op": "set", "path": "/inputs/5/design_parameters/false_positive_model/activation_count", "value": 0},
+        {"op": "set", "path": "/inputs/5/runtime_projection", "value": {"method": "WATCHDOG", "true_target_event_count": 1, "true_positive_activation_count": 1, "false_positive_activation_count": 0, "reboot_count_total": 1, "downtime_total_seconds": 32}}
+      ],
+      "expected": "WATCHDOG_DETECTION_LATENCY_DOUBLE_COUNTED"
+    },
+    {
+      "name": "mitigation-effect-model-missing",
+      "operations": [{"op": "delete", "path": "/inputs/5/effect_model"}],
+      "expected": "MITIGATION_EFFECT_MODEL_MISSING"
+    },
+    {
+      "name": "mitigation-equation-id-missing",
+      "operations": [{"op": "delete", "path": "/inputs/5/effect_model/equation_id"}],
+      "expected": "MITIGATION_EQUATION_ID_MISSING"
+    },
+    {
+      "name": "mitigation-evidence-missing-with-support",
+      "operations": [
+        {"op": "delete", "path": "/inputs/5/verification_evidence_ids"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "MITIGATION_EFFECT_EVIDENCE_MISSING"
+    },
+    {
+      "name": "policy-canonical-approval-target-mismatch",
+      "operations": [{"op": "set", "path": "/inputs/6/approval/approval_target_hash", "value": "sha256:1111111111111111111111111111111111111111111111111111111111111111"}],
+      "expected": "POLICY_APPROVAL_TARGET_MISMATCH"
+    },
+    {
+      "name": "policy-canonical-scope-hash-mismatch",
+      "operations": [{"op": "set", "path": "/inputs/6/scope/scope_hash", "value": "sha256:2222222222222222222222222222222222222222222222222222222222222222"}],
+      "expected": "POLICY_SCOPE_HASH_MISMATCH"
+    },
+    {
+      "name": "policy-expired-reused-for-support",
+      "operations": [
+        {"op": "set", "path": "/inputs/6/approval", "value": {"status": "APPROVED", "approval_target_hash": "sha256:163e1ee3a194f61c82a25aa876a20397389b85d37146b53a7461cc9dbad8c2a7", "approval_scope_hash": "sha256:0bc1496c198ebe356b78a2b4e77eebb39f42e20e119feda77a4ded813b767dd6", "history_head_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "approved_by": "synthetic-fixture-reviewer", "approved_at": "2026-08-18T00:00:00Z", "valid_from": "2026-08-18T00:00:00Z", "valid_until": "2026-08-19T00:00:00Z"}},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "POLICY_EXPIRED"
+    },
+    {
+      "name": "policy-revoked-reused-for-support",
+      "operations": [
+        {"op": "set", "path": "/inputs/6/approval", "value": {"status": "REVOKED", "approval_target_hash": "sha256:163e1ee3a194f61c82a25aa876a20397389b85d37146b53a7461cc9dbad8c2a7", "approval_scope_hash": "sha256:0bc1496c198ebe356b78a2b4e77eebb39f42e20e119feda77a4ded813b767dd6", "history_head_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "valid_from": "2026-08-18T00:00:00Z", "revoked_at": "2026-08-19T00:00:00Z", "revocation_reason": "Synthetic revocation fixture"}},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "POLICY_REVOKED"
+    },
+    {
+      "name": "policy-scope-reused-for-other-mission",
+      "operations": [{"op": "set", "path": "/inputs/6/scope/mission_ids", "value": ["other-mission"]}],
+      "expected": "POLICY_SCOPE_REUSE_MISMATCH"
     }
   ]
 }

@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/simulation/mitigation-runtime-result.schema.json",
+  "title": "SPECTRA Mitigation Runtime Calculator Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "engine", "result_id", "runtime_contract_version", "identifiers", "method", "equation_id", "processing_status", "engineering_gate", "assurance_decision", "data_class", "normalized_counts", "computed_projection", "declared_projection_comparison", "policy_evaluation", "stable_error_codes", "input_hash", "output_hash"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "engine": {
+      "type": "object", "additionalProperties": false, "required": ["name", "version"],
+      "properties": {"name": {"const": "SPECTRA_RUNTIME_MITIGATION_CALCULATOR"}, "version": {"const": "1.0.0"}}
+    },
+    "result_id": {"type": "string", "pattern": "^runtime-[0-9a-f]{16}$"},
+    "runtime_contract_version": {"const": "1.0.0"},
+    "identifiers": {
+      "type": "object", "additionalProperties": false, "required": ["packet_id", "mitigation_id", "policy_id", "policy_version"],
+      "properties": {
+        "packet_id": {"type": ["string", "null"]},
+        "mitigation_id": {"type": ["string", "null"]},
+        "policy_id": {"type": ["string", "null"]},
+        "policy_version": {"type": ["string", "null"]}
+      }
+    },
+    "method": {"type": ["string", "null"]},
+    "equation_id": {"type": ["string", "null"]},
+    "processing_status": {"$ref": "https://spectra.local/schemas/common.schema.json#/$defs/processingStatus"},
+    "engineering_gate": {"enum": ["PASS", "FAIL", "NOT_EVALUATED"]},
+    "assurance_decision": {"const": "HOLD"},
+    "data_class": {"const": "SYNTHETIC"},
+    "normalized_counts": {
+      "type": "object", "additionalProperties": {"type": "number"}
+    },
+    "computed_projection": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/watchdogProjection"},
+        {"$ref": "#/$defs/tmrProjection"},
+        {"$ref": "#/$defs/selProjection"}
+      ]
+    },
+    "declared_projection_comparison": {
+      "type": "object", "additionalProperties": false,
+      "required": ["declared_projection", "matches", "mismatched_fields"],
+      "properties": {
+        "declared_projection": {"type": ["object", "null"]},
+        "matches": {"type": "boolean"},
+        "mismatched_fields": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "policy_evaluation": {"$ref": "#/$defs/policyEvaluation"},
+    "stable_error_codes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "input_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "output_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "watchdogProjection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "true_target_event_count", "true_positive_activation_count", "false_positive_activation_count", "reboot_count_total", "downtime_total_seconds"],
+      "properties": {
+        "method": {"const": "WATCHDOG"},
+        "true_target_event_count": {"type": "number"},
+        "true_positive_activation_count": {"type": "number"},
+        "false_positive_activation_count": {"type": "number"},
+        "reboot_count_total": {"type": "number"},
+        "downtime_total_seconds": {"type": "number"}
+      }
+    },
+    "tmrProjection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "system_failure_probability"],
+      "properties": {"method": {"const": "TMR"}, "system_failure_probability": {"type": "number", "minimum": 0, "maximum": 1}}
+    },
+    "selProjection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "true_sel_activation_count", "false_trip_activation_count", "power_cycle_count_total", "downtime_total_seconds"],
+      "properties": {
+        "method": {"const": "SEL_PROTECTION"},
+        "true_sel_activation_count": {"type": "number"},
+        "false_trip_activation_count": {"type": "number"},
+        "power_cycle_count_total": {"type": "number"},
+        "downtime_total_seconds": {"type": "number"}
+      }
+    },
+    "policyRule": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rule_id", "threshold_present", "threshold", "actual", "outcome"],
+      "properties": {
+        "rule_id": {"enum": ["MAXIMUM_REBOOTS", "MAXIMUM_DOWNTIME_SECONDS"]},
+        "threshold_present": {"type": "boolean"},
+        "threshold": {"type": ["number", "null"]},
+        "actual": {"type": ["number", "null"]},
+        "outcome": {"enum": ["PASS", "FAIL", "NOT_EVALUATED"]}
+      }
+    },
+    "policyEvaluation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "hash_contract_version", "computed_scope_hash", "computed_content_hash", "scope_matches", "content_matches", "approval_target_matches", "history_matches", "valid_at_packet_time", "approval_eligible", "evidence_eligible", "rule_results"],
+      "properties": {
+        "status": {"type": ["string", "null"]},
+        "hash_contract_version": {"type": ["string", "null"]},
+        "computed_scope_hash": {"type": ["string", "null"]},
+        "computed_content_hash": {"type": ["string", "null"]},
+        "scope_matches": {"type": "boolean"},
+        "content_matches": {"type": "boolean"},
+        "approval_target_matches": {"type": "boolean"},
+        "history_matches": {"type": "boolean"},
+        "valid_at_packet_time": {"type": "boolean"},
+        "approval_eligible": {"type": "boolean"},
+        "evidence_eligible": {"type": "boolean"},
+        "rule_results": {"type": "array", "items": {"$ref": "#/$defs/policyRule"}}
+      }
+    }
+  }
+}

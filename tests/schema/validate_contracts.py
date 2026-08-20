@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
+import math
 import re
 import sys
 from datetime import datetime
@@ -60,6 +62,60 @@ def load(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def canonical_sha256(value) -> str:
+    encoded = json.dumps(
+        value, ensure_ascii=False, allow_nan=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return f"sha256:{hashlib.sha256(encoded).hexdigest()}"
+
+
+def policy_scope_projection(policy: dict) -> dict:
+    scope = policy.get("scope", {})
+    if not isinstance(scope, dict):
+        scope = {}
+    component_ids = scope.get("component_ids", [])
+    mission_ids = scope.get("mission_ids", [])
+    if not isinstance(component_ids, list):
+        component_ids = []
+    if not isinstance(mission_ids, list):
+        mission_ids = []
+    component_ids = [value for value in component_ids if isinstance(value, str)]
+    mission_ids = [value for value in mission_ids if isinstance(value, str)]
+    return {
+        "component_ids": sorted(component_ids),
+        "mission_ids": sorted(mission_ids),
+        "tenant_id": scope.get("tenant_id"),
+    }
+
+
+def policy_content_projection(policy: dict, scope_hash: str) -> dict:
+    rules = copy.deepcopy(policy.get("rules", {}))
+    if not isinstance(rules, dict):
+        rules = {}
+    if isinstance(rules.get("required_destructive_modes"), list):
+        rules["required_destructive_modes"] = sorted(rules["required_destructive_modes"])
+    return {
+        "contract_version": policy.get("contract_version"),
+        "policy_id": policy.get("policy_id"),
+        "policy_version": policy.get("policy_version"),
+        "rules": rules,
+        "scope_hash": scope_hash,
+    }
+
+
+def tmr_limited_failure_probability(replica_failure_probability: float) -> float:
+    return 3 * replica_failure_probability**2 - 2 * replica_failure_probability**3
+
+
+def close_number(actual, expected) -> bool:
+    return (
+        isinstance(actual, (int, float))
+        and not isinstance(actual, bool)
+        and math.isfinite(actual)
+        and math.isclose(actual, expected, rel_tol=1e-12, abs_tol=1e-12)
+    )
+
+
 def walk(value):
     if isinstance(value, dict):
         yield value
@@ -105,8 +161,13 @@ def preflight_codes(packet: dict) -> set[str]:
 def semantic_codes(packet: dict) -> set[str]:
     codes = preflight_codes(packet)
     inputs = packet.get("inputs", [])
+    if not isinstance(inputs, list):
+        inputs = []
     by_kind = {}
     for item in inputs:
+        if not isinstance(item, dict):
+            codes.add("MALFORMED_INPUT_RECORD")
+            continue
         by_kind.setdefault(item.get("kind"), []).append(item)
     if not REQUIRED_INPUT_KINDS.issubset(by_kind):
         codes.add("REQUIRED_INPUT_KIND_MISSING")
@@ -142,28 +203,251 @@ def semantic_codes(packet: dict) -> set[str]:
         required_v2 = {"component_ids", "architecture_scope", "target_failure_modes", "excluded_failure_modes", "design_parameters", "applicability"}
         if not required_v2.issubset(mitigation):
             codes.add("V2_REQUIRED_FIELD_MISSING")
-        targets = set(mitigation.get("target_failure_modes", []))
-        excluded = set(mitigation.get("excluded_failure_modes", []))
+        raw_targets = mitigation.get("target_failure_modes", [])
+        raw_excluded = mitigation.get("excluded_failure_modes", [])
+        targets = set(raw_targets) if isinstance(raw_targets, list) else set()
+        excluded = set(raw_excluded) if isinstance(raw_excluded, list) else set()
         if targets.intersection(excluded):
             codes.add("MITIGATION_MODE_OVERLAP")
         parameters = mitigation.get("design_parameters", {})
+        if not isinstance(parameters, dict):
+            codes.add("MALFORMED_MITIGATION_PARAMETERS")
+            parameters = {}
         method = mitigation.get("method")
+        allowed_runtime_modes = {
+            "TMR": {"SEU", "SEFI", "SET", "FUNCTIONAL_INTERRUPT", "SILENT_DATA_CORRUPTION"},
+            "WATCHDOG": {"SEFI", "FUNCTIONAL_INTERRUPT"},
+            "SEL_PROTECTION": {"SEL"},
+        }
+        if method in allowed_runtime_modes and not targets.issubset(allowed_runtime_modes[method]):
+            codes.add("MITIGATION_METHOD_MODE_MISMATCH")
+        runtime_method = method in {"TMR", "WATCHDOG", "SEL_PROTECTION"}
+        if runtime_method and mitigation.get("runtime_contract_version") != "1.0.0":
+            codes.add("MITIGATION_RUNTIME_CONTRACT_MISSING")
+        effect_model = mitigation.get("effect_model")
+        if runtime_method and not isinstance(effect_model, dict):
+            codes.add("MITIGATION_EFFECT_MODEL_MISSING")
+        elif runtime_method and not effect_model.get("equation_id"):
+            codes.add("MITIGATION_EQUATION_ID_MISSING")
+        expected_equations = {
+            "TMR": "TMR_3P2_MINUS_2P3_V1",
+            "WATCHDOG": "WATCHDOG_TRUE_FALSE_PATH_V1",
+            "SEL_PROTECTION": "SEL_TRUE_FALSE_PATH_V1",
+        }
+        if runtime_method and isinstance(effect_model, dict) and effect_model.get("equation_id") and effect_model.get("equation_id") != expected_equations[method]:
+            codes.add("MITIGATION_EQUATION_ID_MISMATCH")
+        if runtime_method and not mitigation.get("verification_evidence_ids"):
+            codes.add("MITIGATION_EFFECT_EVIDENCE_MISSING")
+        projection = mitigation.get("runtime_projection")
+        if runtime_method and not isinstance(projection, dict):
+            codes.add("MITIGATION_RUNTIME_PROJECTION_MISSING")
+
+        def normalized_count(model: dict, count_key: str, rate_key: str, window: dict):
+            if not isinstance(model, dict):
+                return None
+            has_count = count_key in model
+            has_rate = rate_key in model
+            if has_count == has_rate:
+                codes.add("ACTIVATION_COUNT_RATE_CONFLICT")
+                return None
+            if has_count:
+                return model.get(count_key)
+            denominator = model.get("denominator", {})
+            if not isinstance(denominator, dict):
+                codes.add("MALFORMED_MITIGATION_PARAMETERS")
+                return None
+            denominator_count = denominator.get("count")
+            duration = window.get("duration_seconds") if isinstance(window, dict) else None
+            rate = model.get(rate_key)
+            if all(isinstance(value, (int, float)) and not isinstance(value, bool) for value in (rate, denominator_count, duration)):
+                return rate * denominator_count * duration
+            return None
+
+        def action_paths(model: dict) -> list[dict]:
+            if not isinstance(model, dict):
+                return []
+            paths = model.get("action_paths", [])
+            if not isinstance(paths, list):
+                codes.add("MALFORMED_ACTION_PATH")
+                return []
+            valid_paths = []
+            for path in paths:
+                if not isinstance(path, dict):
+                    codes.add("MALFORMED_ACTION_PATH")
+                    continue
+                valid_paths.append(path)
+            return valid_paths
+
+        def paths_are_complete(paths: list[dict]) -> bool:
+            fractions = [path.get("fraction") for path in paths]
+            if any(
+                not isinstance(fraction, (int, float)) or isinstance(fraction, bool)
+                for fraction in fractions
+            ):
+                codes.add("MALFORMED_ACTION_PATH")
+                return False
+            total = sum(fractions)
+            if not paths or not close_number(total, 1.0):
+                codes.add("ACTION_PATH_FRACTION_INVALID")
+                return False
+            return True
+
+        def denominator_matches(model: dict, window: dict):
+            if isinstance(model, dict) and isinstance(window, dict):
+                denominator = model.get("denominator", {})
+                if not isinstance(denominator, dict):
+                    codes.add("MALFORMED_MITIGATION_PARAMETERS")
+                elif denominator.get("scope") != window.get("denominator_scope"):
+                    codes.add("RECOVERY_DENOMINATOR_WINDOW_MISMATCH")
+
         if method == "TMR":
-            if not parameters.get("voter_model"):
+            voter_model = parameters.get("voter_model")
+            common_mode_model = parameters.get("common_mode_model")
+            repair_model = parameters.get("repair_model")
+            if not isinstance(voter_model, dict):
                 codes.add("TMR_VOTER_MODEL_MISSING")
-            if not parameters.get("common_mode_model"):
+            elif voter_model.get("susceptible") is not False:
+                codes.add("TMR_VOTER_SUSCEPTIBLE")
+            if not isinstance(common_mode_model, dict):
                 codes.add("TMR_COMMON_MODE_MODEL_MISSING")
-            if not parameters.get("evaluation_window") or not parameters.get("repair_model"):
+            elif common_mode_model.get("probability") != 0:
+                codes.add("TMR_COMMON_MODE_NONZERO")
+            if not isinstance(parameters.get("evaluation_window"), dict) or not isinstance(repair_model, dict):
                 codes.add("TMR_REPAIR_WINDOW_MISSING")
+            elif repair_model.get("repair_within_window") is not False:
+                codes.add("TMR_REPAIR_WINDOW_MISMATCH")
             if parameters.get("independence_verified") is not True:
                 codes.add("TMR_INDEPENDENCE_UNVERIFIED")
             if parameters.get("output_semantic") != "system_failure_probability":
                 codes.add("TMR_OUTPUT_SEMANTIC_MISMATCH")
-        if method == "WATCHDOG" and not parameters.get("false_positive_model"):
-            codes.add("WATCHDOG_FALSE_POSITIVE_MODEL_MISSING")
-        if method == "SEL_PROTECTION" and not parameters.get("false_trip_model"):
-            codes.add("SEL_FALSE_TRIP_MODEL_MISSING")
-        if assurance in OPTIMISTIC and mitigation.get("metadata", {}).get("data_class") in {"SYNTHETIC", "ASSUMED"}:
+            eligible = (
+                isinstance(voter_model, dict) and voter_model.get("susceptible") is False
+                and isinstance(common_mode_model, dict) and common_mode_model.get("probability") == 0
+                and parameters.get("independence_verified") is True
+                and isinstance(repair_model, dict) and repair_model.get("repair_within_window") is False
+                and isinstance(parameters.get("evaluation_window"), dict)
+                and parameters.get("output_semantic") == "system_failure_probability"
+            )
+            p = parameters.get("replica_failure_probability")
+            if eligible and isinstance(p, (int, float)) and not isinstance(p, bool) and isinstance(projection, dict):
+                expected = tmr_limited_failure_probability(p)
+                if not close_number(projection.get("system_failure_probability"), expected):
+                    codes.add("TMR_RUNTIME_PROJECTION_MISMATCH")
+
+        if method == "WATCHDOG":
+            window = parameters.get("evaluation_window", {})
+            target_model = parameters.get("target_event_model")
+            false_model = parameters.get("false_positive_model")
+            if parameters.get("true_positive_coverage") is None:
+                codes.add("WATCHDOG_TRUE_POSITIVE_COVERAGE_MISSING")
+            if not false_model:
+                codes.add("WATCHDOG_FALSE_POSITIVE_MODEL_MISSING")
+            denominator_matches(target_model, window)
+            denominator_matches(false_model, window)
+            target_paths = action_paths(target_model)
+            false_paths = action_paths(false_model)
+            target_paths_valid = paths_are_complete(target_paths)
+            false_paths_valid = paths_are_complete(false_paths)
+            target_count = normalized_count(target_model, "event_count", "event_rate_per_second", window)
+            false_count = normalized_count(false_model, "activation_count", "activation_rate_per_second", window)
+            coverage = parameters.get("true_positive_coverage")
+            if all(isinstance(value, (int, float)) and not isinstance(value, bool) for value in (target_count, false_count, coverage)) and target_paths_valid and false_paths_valid and isinstance(projection, dict):
+                true_count = target_count * coverage
+                durations_valid = all(
+                    isinstance(path.get("duration_seconds"), (int, float))
+                    and not isinstance(path.get("duration_seconds"), bool)
+                    for path in target_paths + false_paths
+                )
+                if not durations_valid:
+                    codes.add("MALFORMED_ACTION_PATH")
+                    continue
+                true_reboots = sum(true_count * path["fraction"] for path in target_paths if path.get("action") == "REBOOT")
+                false_reboots = sum(false_count * path["fraction"] for path in false_paths if path.get("action") == "REBOOT")
+                latency = parameters.get("detection_latency_seconds", 0)
+                if not isinstance(latency, (int, float)) or isinstance(latency, bool):
+                    codes.add("MALFORMED_MITIGATION_PARAMETERS")
+                    continue
+                true_downtime = sum(true_count * path["fraction"] * (latency + path["duration_seconds"]) for path in target_paths)
+                false_downtime = sum(false_count * path["fraction"] * path["duration_seconds"] for path in false_paths)
+                expected_reboots = true_reboots + false_reboots
+                expected_downtime = true_downtime + false_downtime
+                if not close_number(projection.get("true_target_event_count"), target_count) or not close_number(projection.get("true_positive_activation_count"), true_count):
+                    codes.add("WATCHDOG_RUNTIME_PROJECTION_MISMATCH")
+                if not close_number(projection.get("false_positive_activation_count"), false_count) or (
+                    false_count > 0 and (
+                        not close_number(projection.get("reboot_count_total"), expected_reboots)
+                        or not close_number(projection.get("downtime_total_seconds"), expected_downtime)
+                    )
+                ):
+                    codes.add("WATCHDOG_FALSE_POSITIVE_IGNORED")
+                double_latency = expected_downtime + true_count * latency
+                if true_count * latency > 0 and close_number(projection.get("downtime_total_seconds"), double_latency):
+                    codes.add("WATCHDOG_DETECTION_LATENCY_DOUBLE_COUNTED")
+                elif not close_number(projection.get("reboot_count_total"), expected_reboots) or not close_number(projection.get("downtime_total_seconds"), expected_downtime):
+                    codes.add("WATCHDOG_RUNTIME_PROJECTION_MISMATCH")
+
+        if method == "SEL_PROTECTION":
+            window = parameters.get("evaluation_window", {})
+            true_model = parameters.get("true_sel_model")
+            false_model = parameters.get("false_trip_model")
+            if not false_model:
+                codes.add("SEL_FALSE_TRIP_MODEL_MISSING")
+            required_sel_evidence = {
+                "prompt_failure_evidence_id", "latent_damage_evidence_id", "post_test_electrical_evidence_id"
+            }
+            if any(not parameters.get(field) for field in required_sel_evidence):
+                codes.add("SEL_PROTECTION_NOT_VALIDATED")
+            sel_paths = []
+            for model in (true_model, false_model):
+                denominator_matches(model, window)
+                paths = action_paths(model)
+                sel_paths.append(paths)
+                paths_are_complete(paths)
+                if any("duration_seconds" in path for path in paths):
+                    codes.add("SEL_DURATION_SEMANTIC_CONFLICT")
+            true_count = normalized_count(true_model, "activation_count", "activation_rate_per_second", window)
+            false_count = normalized_count(false_model, "activation_count", "activation_rate_per_second", window)
+            if all(isinstance(value, (int, float)) and not isinstance(value, bool) for value in (true_count, false_count)) and isinstance(projection, dict):
+                true_cycles = sum(true_count * path["fraction"] for path in sel_paths[0] if path.get("action") == "POWER_CYCLE")
+                false_cycles = sum(false_count * path["fraction"] for path in sel_paths[1] if path.get("action") == "POWER_CYCLE")
+                phase_values = [
+                    parameters.get(field, 0)
+                    for field in ("trip_delay_seconds", "off_time_seconds", "restart_time_seconds")
+                ]
+                if any(
+                    not isinstance(value, (int, float)) or isinstance(value, bool)
+                    for value in phase_values
+                ):
+                    codes.add("MALFORMED_MITIGATION_PARAMETERS")
+                    continue
+                phase_duration = sum(phase_values)
+                expected_cycles = true_cycles + false_cycles
+                expected_downtime = expected_cycles * phase_duration
+                if not close_number(projection.get("true_sel_activation_count"), true_count) or not close_number(projection.get("false_trip_activation_count"), false_count) or not close_number(projection.get("power_cycle_count_total"), expected_cycles):
+                    codes.add("SEL_RUNTIME_PROJECTION_MISMATCH")
+                if close_number(projection.get("downtime_total_seconds"), expected_downtime * 2) and expected_downtime > 0:
+                    codes.add("SEL_DURATION_DOUBLE_COUNTED")
+                elif not close_number(projection.get("downtime_total_seconds"), expected_downtime):
+                    codes.add("SEL_RUNTIME_PROJECTION_MISMATCH")
+        if runtime_method:
+            raw_declared_evidence = mitigation.get("verification_evidence_ids", [])
+            declared_evidence = set(raw_declared_evidence) if isinstance(raw_declared_evidence, list) else set()
+            parameter_evidence = {
+                value for key, value in parameters.items()
+                if key.endswith("_evidence_id") and isinstance(value, str)
+            }
+            for model_name in ("target_event_model", "false_positive_model", "true_sel_model", "false_trip_model", "voter_model", "common_mode_model"):
+                model = parameters.get(model_name)
+                if isinstance(model, dict):
+                    evidence_id = model.get("verification_evidence_id", model.get("evidence_id"))
+                    if evidence_id:
+                        parameter_evidence.add(evidence_id)
+            if not parameter_evidence.issubset(declared_evidence):
+                codes.add("MITIGATION_EVIDENCE_LINK_MISMATCH")
+        mitigation_metadata = mitigation.get("metadata", {})
+        if not isinstance(mitigation_metadata, dict):
+            mitigation_metadata = {}
+        if assurance in OPTIMISTIC and mitigation_metadata.get("data_class") in {"SYNTHETIC", "ASSUMED"}:
             codes.add("NON_EVIDENTIARY_MITIGATION_OPERAND")
 
     for policy in policies:
@@ -173,18 +457,88 @@ def semantic_codes(packet: dict) -> set[str]:
         if not required_v2.issubset(policy):
             codes.add("V2_REQUIRED_FIELD_MISSING")
         approval = policy.get("approval", {})
+        if not isinstance(approval, dict):
+            codes.add("MALFORMED_POLICY_APPROVAL")
+            approval = {}
         scope = policy.get("scope", {})
-        if approval.get("approval_target_hash") != policy.get("policy_content_hash") or approval.get("approval_scope_hash") != scope.get("scope_hash"):
+        if not isinstance(scope, dict):
+            codes.add("MALFORMED_POLICY_SCOPE")
+            scope = {}
+        rules = policy.get("rules", {})
+        if not isinstance(rules, dict):
+            codes.add("MALFORMED_POLICY_RULES")
+            rules = {}
+        history = policy.get("immutable_history_ref", {})
+        if not isinstance(history, dict):
+            codes.add("MALFORMED_POLICY_HISTORY")
+            history = {}
+        mission_ids = scope.get("mission_ids", [])
+        component_ids = scope.get("component_ids", [])
+        if (
+            not isinstance(mission_ids, list)
+            or not isinstance(component_ids, list)
+            or (isinstance(mission_ids, list) and any(not isinstance(value, str) for value in mission_ids))
+            or (isinstance(component_ids, list) and any(not isinstance(value, str) for value in component_ids))
+        ):
+            codes.add("MALFORMED_POLICY_SCOPE")
+            mission_ids = [value for value in mission_ids if isinstance(value, str)] if isinstance(mission_ids, list) else []
+            component_ids = [value for value in component_ids if isinstance(value, str)] if isinstance(component_ids, list) else []
+        destructive_modes = rules.get("required_destructive_modes", [])
+        if not isinstance(destructive_modes, list):
+            codes.add("MALFORMED_DESTRUCTIVE_MODES")
+            destructive_modes = []
+        hash_contract = policy.get("hash_contract_version") == "1.0.0"
+        if hash_contract:
+            computed_scope_hash = canonical_sha256(policy_scope_projection(policy))
+            computed_content_hash = canonical_sha256(policy_content_projection(policy, computed_scope_hash))
+            if scope.get("scope_hash") != computed_scope_hash:
+                codes.add("POLICY_SCOPE_HASH_MISMATCH")
+            if policy.get("policy_content_hash") != computed_content_hash:
+                codes.add("POLICY_CONTENT_HASH_MISMATCH")
+            if approval.get("approval_target_hash") != computed_content_hash:
+                codes.add("POLICY_APPROVAL_TARGET_MISMATCH")
+            if approval.get("approval_scope_hash") != computed_scope_hash:
+                codes.add("POLICY_SCOPE_HASH_MISMATCH")
+                codes.add("POLICY_APPROVAL_TARGET_MISMATCH")
+            if approval.get("history_head_hash") != history.get("head_hash"):
+                codes.add("POLICY_HISTORY_MISMATCH")
+            packet_mission_ids = {
+                mission.get("mission_id") for mission in by_kind.get("MISSION", []) if mission.get("mission_id")
+            }
+            packet_component_ids = {
+                component.get("component_id")
+                for bom in by_kind.get("BOM", [])
+                for component in bom.get("components", [])
+                if component.get("component_id")
+            }
+            if not packet_mission_ids.issubset(set(mission_ids)) or not {
+                component_id for mitigation in mitigations for component_id in mitigation.get("component_ids", [])
+            }.issubset(set(component_ids)) or not set(component_ids).issubset(packet_component_ids):
+                codes.add("POLICY_SCOPE_REUSE_MISMATCH")
+        elif approval.get("approval_target_hash") != policy.get("policy_content_hash") or approval.get("approval_scope_hash") != scope.get("scope_hash"):
             codes.add("POLICY_APPROVAL_TARGET_MISMATCH")
         created_at = parse_timestamp(packet.get("created_at"))
         valid_from = parse_timestamp(approval.get("valid_from"))
         valid_until = parse_timestamp(approval.get("valid_until"))
+        revoked = approval.get("status") == "REVOKED" or bool(approval.get("revoked_at"))
+        expired = bool(created_at and valid_until and created_at > valid_until)
+        if valid_from and valid_until and valid_from > valid_until:
+            codes.add("POLICY_VALIDITY_INVALID")
+        if revoked:
+            codes.add("POLICY_REVOKED")
+        if expired:
+            codes.add("POLICY_EXPIRED")
         if assurance in OPTIMISTIC:
-            if approval.get("status") != "APPROVED" or approval.get("revoked_at"):
+            if approval.get("status") != "APPROVED" or revoked:
                 codes.add("POLICY_PACK_NOT_APPROVED")
-            if created_at and ((valid_from and created_at < valid_from) or (valid_until and created_at > valid_until)):
+            if approval.get("status") == "APPROVED" and not hash_contract:
+                codes.add("POLICY_HASH_CONTRACT_MISSING")
+            if created_at and ((valid_from and created_at < valid_from) or expired):
                 codes.add("POLICY_PACK_NOT_APPROVED")
-            if policy.get("metadata", {}).get("data_class") in {"SYNTHETIC", "ASSUMED"}:
+            policy_metadata = policy.get("metadata", {})
+            if not isinstance(policy_metadata, dict):
+                policy_metadata = {}
+            if policy_metadata.get("data_class") in {"SYNTHETIC", "ASSUMED"}:
                 codes.add("SYNTHETIC_POLICY_WITH_SUPPORT")
 
     if processing and processing != "VALID" and assurance not in SAFE_FAILURE_DECISIONS:
@@ -393,10 +747,16 @@ def semantic_codes(packet: dict) -> set[str]:
         for evidence in by_kind.get("PART_TEST_EVIDENCE", []):
             if not destructive.intersection(evidence.get("evidence_types", [])):
                 codes.add("DESTRUCTIVE_SEE_EVIDENCE_MISSING")
-    required_destructive_modes = set().union(*(
-        set(policy.get("rules", {}).get("required_destructive_modes", []))
-        for policy in policies if policy.get("contract_version") == "2.0.0"
-    )) if policies else set()
+    required_destructive_modes = set()
+    for policy in policies:
+        if policy.get("contract_version") != "2.0.0":
+            continue
+        rules = policy.get("rules", {})
+        if not isinstance(rules, dict):
+            continue
+        modes = rules.get("required_destructive_modes", [])
+        if isinstance(modes, list):
+            required_destructive_modes.update(modes)
     if required_destructive_modes:
         available_modes = set().union(*(
             set(evidence.get("evidence_types", [])) for evidence in by_kind.get("PART_TEST_EVIDENCE", [])
@@ -695,7 +1055,10 @@ def semantic_codes(packet: dict) -> set[str]:
     if environments and evidences and policies:
         tid = environments[0].get("tid", environments[0].get("mission_dose", {}))
         limit = evidences[0].get("tid_test_limit", {})
-        factor = policies[0].get("tid_design_factor", policies[0].get("rules", {}).get("tid_design_factor"))
+        rules = policies[0].get("rules", {})
+        if not isinstance(rules, dict):
+            rules = {}
+        factor = policies[0].get("tid_design_factor", rules.get("tid_design_factor"))
         if tid.get("unit") == limit.get("unit") and isinstance(factor, (int, float)):
             if tid.get("value", 0) * factor > limit.get("value", float("-inf")):
                 codes.add("TEST_RANGE_EXCEEDED")
@@ -795,6 +1158,17 @@ def main() -> int:
         if version != "2.0.0":
             failures.append(f"{schema_name}: expected contract_version 2.0.0, got {version}")
     print("VERSION CONTRACTS: EvidencePacket 1.0.0/1.1.0 and v2 contracts checked")
+    expected_tmr_boundaries = {0.0: 0.0, 0.1: 0.028, 1.0: 1.0}
+    for p, expected in expected_tmr_boundaries.items():
+        if not close_number(tmr_limited_failure_probability(p), expected):
+            failures.append(f"TMR boundary p={p}: expected {expected}")
+    mitigation_v2 = load(SCHEMA_DIR / "mitigation-v2.schema.json")
+    policy_v2 = load(SCHEMA_DIR / "user-policy-v2.schema.json")
+    if mitigation_v2["properties"].get("runtime_contract_version", {}).get("const") != "1.0.0":
+        failures.append("mitigation runtime contract version 1.0.0 missing")
+    if policy_v2["properties"].get("hash_contract_version", {}).get("const") != "1.0.0":
+        failures.append("policy hash contract version 1.0.0 missing")
+    print("RUNTIME CONTRACTS: mitigation 1.0.0, policy hash 1.0.0, TMR boundaries checked")
     registry = build_registry(loaded_schemas)
     valid_files = sorted(VALID_DIR.glob("*.json"))
     for path in valid_files:
@@ -814,6 +1188,8 @@ def main() -> int:
             packet = apply_operations(base, case["operations"])
             errors = schema_errors(packet, packet_schema, registry)
             codes = semantic_codes(packet)
+            if case.get("require_schema_error") and not errors:
+                failures.append(f"invalid {case['name']}: expected schema error, got none")
             if not errors and not codes:
                 failures.append(f"invalid {case['name']}: unexpectedly passed")
             if case["expected"] not in codes:

@@ -1,0 +1,36 @@
+{
+  "base": "../valid/synthetic-sel-runtime-hold.json",
+  "cases": [
+    {
+      "name": "sel-false-trip-model-missing-runtime",
+      "operations": [{"op": "delete", "path": "/inputs/5/design_parameters/false_trip_model"}],
+      "expected": "SEL_FALSE_TRIP_MODEL_MISSING"
+    },
+    {
+      "name": "sel-duration-double-counted-runtime",
+      "operations": [{"op": "set", "path": "/inputs/5/runtime_projection/downtime_total_seconds", "value": 64}],
+      "expected": "SEL_DURATION_DOUBLE_COUNTED"
+    },
+    {
+      "name": "sel-action-path-repeats-phase-duration",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/true_sel_model/action_paths/0/duration_seconds", "value": 16}],
+      "expected": "SEL_DURATION_SEMANTIC_CONFLICT"
+    },
+    {
+      "name": "sel-latent-damage-evidence-missing-runtime",
+      "operations": [{"op": "delete", "path": "/inputs/5/design_parameters/latent_damage_evidence_id"}],
+      "expected": "SEL_PROTECTION_NOT_VALIDATED"
+    },
+    {
+      "name": "sel-protection-substituted-for-seb-segr",
+      "operations": [{"op": "set", "path": "/inputs/5/target_failure_modes", "value": ["SEL", "SEB", "SEGR"]}],
+      "expected": "MITIGATION_METHOD_MODE_MISMATCH"
+    },
+    {
+      "name": "sel-true-action-path-null",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/true_sel_model/action_paths", "value": [null]}],
+      "expected": "MALFORMED_ACTION_PATH",
+      "require_schema_error": true
+    }
+  ]
+}

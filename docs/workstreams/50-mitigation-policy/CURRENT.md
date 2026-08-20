@@ -106,7 +106,7 @@ H02 문서 계약은 Control Tower 독립 검토에서 `VERIFIED`됐다. `INTEGR
 - SEL current protection도 false-trip output을 주장하려면 오탐 모델/검증 입력을 요구하고, 없으면 해당 output을 `NOT_EVALUATED`로 둔다.
 - TMR 제한식의 출력명을 `system_failure_probability` 또는 동등한 명확한 이름으로 고정하고 success/availability와 서로 대체하지 못하게 한다.
 - `p=0`, `p=0.1`, `p=1` 경계 paired fixture와 voter/common-mode 누락 공격을 명세한다.
-- 다음 handoff는 `/Users/taehoon/Downloads/SPECTRA_50_MITIGATION_POLICY_HANDOFF_H02.md`로 제출하고 `READY_FOR_REVIEW`까지만 요청한다.
+- 다음 handoff는 `docs/workstreams/50-mitigation-policy/handoffs/SPECTRA_50_MITIGATION_POLICY_HANDOFF_H02.md`로 제출하고 `READY_FOR_REVIEW`까지만 요청한다.
 
 ## H02 변경 요청 반영 — 2026-08-20
 
@@ -137,5 +137,5 @@ H02 문서 계약은 Control Tower 독립 검토에서 `VERIFIED`됐다. `INTEGR
 - Workstream 20은 method별 calculator와 policy evaluator를 소유한다.
 - Workstream 60은 29개 공격·control fixture와 False PASS 검증을 소유한다.
 - Workstream 70은 immutable policy approval/audit anchor와 저장 계약을 소유한다.
-- 후속 구현에서 계약 모순이 발견될 때만 채팅 50에서 H03 보완을 재개한다. 제출이 필요하면 `/Users/taehoon/Downloads/SPECTRA_50_MITIGATION_POLICY_HANDOFF_H03.md`를 사용한다.
+- 후속 구현에서 계약 모순이 발견될 때만 채팅 50에서 H03 보완을 재개한다. 제출이 필요하면 `docs/workstreams/50-mitigation-policy/handoffs/SPECTRA_50_MITIGATION_POLICY_HANDOFF_H03.md`를 사용한다.
 - `INTEGRATED`, Stage 5 완료, checklist 완료와 Git 반영은 Control Tower가 별도로 판단한다.

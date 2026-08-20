@@ -1,0 +1,23 @@
+{
+  "base": "synthetic-v2-hold.json",
+  "operations": [
+    {"op": "set", "path": "/packet_id", "value": "fixture-packet-tmr-runtime-hold-001"},
+    {"op": "set", "path": "/inputs/5/method", "value": "TMR"},
+    {"op": "set", "path": "/inputs/5/target_failure_modes", "value": ["SEU"]},
+    {"op": "set", "path": "/inputs/5/excluded_failure_modes", "value": ["SEL", "SEB", "SEGR"]},
+    {"op": "set", "path": "/inputs/5/design_parameters", "value": {
+      "replica_count": 3,
+      "replica_failure_probability": 0.1,
+      "evaluation_window": {"duration_seconds": 3600, "denominator_scope": "SYSTEM"},
+      "independence_verified": true,
+      "voter_model": {"susceptible": false, "evidence_id": "synthetic-tmr-voter-evidence"},
+      "common_mode_model": {"probability": 0, "evidence_id": "synthetic-tmr-common-mode-evidence"},
+      "repair_model": {"repair_within_window": false, "model_ref": "synthetic-tmr-no-repair-window"},
+      "output_semantic": "system_failure_probability"
+    }},
+    {"op": "set", "path": "/inputs/5/effect_model", "value": {"model_id": "synthetic-tmr-limited-model", "model_version": "1.0.0", "equation_id": "TMR_3P2_MINUS_2P3_V1", "validity_domain": "Synthetic independent three-replica fixture only", "input_pointers": ["/inputs/5/design_parameters"]}},
+    {"op": "set", "path": "/inputs/5/verification_evidence_ids", "value": ["synthetic-tmr-voter-evidence", "synthetic-tmr-common-mode-evidence"]},
+    {"op": "set", "path": "/inputs/5/runtime_projection", "value": {"method": "TMR", "system_failure_probability": 0.028}},
+    {"op": "set", "path": "/inputs/5/applicability", "value": {"status": "UNRESOLVED", "conditions": ["Synthetic TMR boundary fixture; not assurance evidence"]}}
+  ]
+}

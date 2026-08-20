@@ -22,3 +22,19 @@ support promotion, and Change Impact postcondition deletion. Engine errors are
 normalized by this assurance runner to `INVALID_INPUT / NOT_EVALUATED / HOLD`;
 post-result mutations must be rejected while the original engine result remains
 `NOT_EVALUATED / HOLD`.
+
+`ASR-D03` directly calls the Workstream 20 H03 production API
+`evaluate_runtime_mitigation()`. Three synthetic controls separately pin the
+WATCHDOG, TMR, and SEL_PROTECTION arithmetic while remaining
+`VALID / NOT_EVALUATED / HOLD`. Eighteen single-intent attacks cover runtime
+eligibility, declared-projection conflicts, method and evidence links, policy
+hash/approval/history boundaries, and result postconditions. TMR eligibility
+failures and missing or mis-scoped destructive-mode inputs must not emit a
+computed projection. Result tampering is normalized to
+`INVALID_INPUT / NOT_EVALUATED / HOLD` only after the runtime result schema has
+rejected the mutated field.
+
+The JSON summary reports top-level cases, evaluated attack executions,
+evaluated controls, dependency-wait cases, False PASSes, and failures
+separately. `ASR-D02` remains `NOT_EVALUATED` until real deployed GCP bytes,
+generation metadata, and IAM behavior exist to attack.

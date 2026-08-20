@@ -1,0 +1,27 @@
+{
+  "base": "synthetic-v2-hold.json",
+  "operations": [
+    {"op": "set", "path": "/packet_id", "value": "fixture-packet-sel-runtime-hold-001"},
+    {"op": "set", "path": "/inputs/5/method", "value": "SEL_PROTECTION"},
+    {"op": "set", "path": "/inputs/5/target_failure_modes", "value": ["SEL"]},
+    {"op": "set", "path": "/inputs/5/excluded_failure_modes", "value": ["SEB", "SEGR"]},
+    {"op": "set", "path": "/inputs/5/design_parameters", "value": {
+      "evaluation_window": {"duration_seconds": 3600, "denominator_scope": "DEVICE"},
+      "normal_current_a": 0.1,
+      "sel_threshold_a": 0.2,
+      "trip_delay_seconds": 1,
+      "off_time_seconds": 10,
+      "restart_time_seconds": 5,
+      "duration_semantic": "TRIP_OFF_RESTART_FIELDS_ONLY",
+      "true_sel_model": {"activation_count": 1, "denominator": {"scope": "DEVICE", "count": 1}, "action_paths": [{"action": "POWER_CYCLE", "fraction": 1}], "verification_evidence_id": "synthetic-sel-true-path-evidence"},
+      "false_trip_model": {"activation_count": 1, "denominator": {"scope": "DEVICE", "count": 1}, "action_paths": [{"action": "POWER_CYCLE", "fraction": 1}], "verification_evidence_id": "synthetic-sel-false-path-evidence"},
+      "prompt_failure_evidence_id": "synthetic-sel-prompt-evidence",
+      "latent_damage_evidence_id": "synthetic-sel-latent-evidence",
+      "post_test_electrical_evidence_id": "synthetic-sel-post-test-evidence"
+    }},
+    {"op": "set", "path": "/inputs/5/effect_model", "value": {"model_id": "synthetic-sel-runtime-model", "model_version": "1.0.0", "equation_id": "SEL_TRUE_FALSE_PATH_V1", "validity_domain": "Synthetic SEL path fixture only", "input_pointers": ["/inputs/5/design_parameters"]}},
+    {"op": "set", "path": "/inputs/5/verification_evidence_ids", "value": ["synthetic-sel-true-path-evidence", "synthetic-sel-false-path-evidence", "synthetic-sel-prompt-evidence", "synthetic-sel-latent-evidence", "synthetic-sel-post-test-evidence"]},
+    {"op": "set", "path": "/inputs/5/runtime_projection", "value": {"method": "SEL_PROTECTION", "true_sel_activation_count": 1, "false_trip_activation_count": 1, "power_cycle_count_total": 2, "downtime_total_seconds": 32}},
+    {"op": "set", "path": "/inputs/5/applicability", "value": {"status": "UNRESOLVED", "conditions": ["Synthetic SEL protection fixture; not assurance evidence"]}}
+  ]
+}

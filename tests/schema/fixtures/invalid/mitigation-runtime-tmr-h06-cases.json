@@ -1,0 +1,46 @@
+{
+  "base": "../valid/synthetic-tmr-runtime-hold.json",
+  "cases": [
+    {
+      "name": "tmr-voter-model-missing-runtime",
+      "operations": [{"op": "delete", "path": "/inputs/5/design_parameters/voter_model"}],
+      "expected": "TMR_VOTER_MODEL_MISSING"
+    },
+    {
+      "name": "tmr-voter-susceptible-limited-formula",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/voter_model/susceptible", "value": true}],
+      "expected": "TMR_VOTER_SUSCEPTIBLE"
+    },
+    {
+      "name": "tmr-common-mode-model-missing-runtime",
+      "operations": [{"op": "delete", "path": "/inputs/5/design_parameters/common_mode_model"}],
+      "expected": "TMR_COMMON_MODE_MODEL_MISSING"
+    },
+    {
+      "name": "tmr-nonzero-common-mode-ignored",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/common_mode_model/probability", "value": 0.001}],
+      "expected": "TMR_COMMON_MODE_NONZERO"
+    },
+    {
+      "name": "tmr-independence-unverified-runtime",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/independence_verified", "value": false}],
+      "expected": "TMR_INDEPENDENCE_UNVERIFIED"
+    },
+    {
+      "name": "tmr-repair-window-condition-mismatch",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/repair_model/repair_within_window", "value": true}],
+      "expected": "TMR_REPAIR_WINDOW_MISMATCH"
+    },
+    {
+      "name": "tmr-failure-probability-relabeled-availability-runtime",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/output_semantic", "value": "availability_probability"}],
+      "expected": "TMR_OUTPUT_SEMANTIC_MISMATCH"
+    },
+    {
+      "name": "tmr-design-parameters-null",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters", "value": null}],
+      "expected": "MALFORMED_MITIGATION_PARAMETERS",
+      "require_schema_error": true
+    }
+  ]
+}

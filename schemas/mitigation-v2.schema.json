@@ -8,6 +8,7 @@
   "properties": {
     "kind": {"const": "MITIGATION"},
     "contract_version": {"const": "2.0.0"},
+    "runtime_contract_version": {"const": "1.0.0"},
     "mitigation_id": {"type": "string", "minLength": 1},
     "component_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
     "architecture_scope": {"type": "string", "enum": ["DEVICE", "BOARD", "SUBSYSTEM", "SYSTEM"]},
@@ -27,6 +28,7 @@
       }
     },
     "verification_evidence_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "runtime_projection": {"$ref": "#/$defs/runtimeProjection"},
     "applicability": {
       "type": "object", "additionalProperties": false,
       "required": ["status", "conditions"],
@@ -40,9 +42,9 @@
   "oneOf": [
     {"properties": {"method": {"const": "ECC"}, "design_parameters": {"$ref": "#/$defs/eccParameters"}}},
     {"properties": {"method": {"const": "SCRUBBING"}, "design_parameters": {"$ref": "#/$defs/scrubbingParameters"}}},
-    {"properties": {"method": {"const": "TMR"}, "design_parameters": {"$ref": "#/$defs/tmrParameters"}}},
-    {"properties": {"method": {"const": "WATCHDOG"}, "design_parameters": {"$ref": "#/$defs/watchdogParameters"}}},
-    {"properties": {"method": {"const": "SEL_PROTECTION"}, "design_parameters": {"$ref": "#/$defs/selParameters"}}},
+    {"properties": {"method": {"const": "TMR"}, "target_failure_modes": {"items": {"enum": ["SEU", "SEFI", "SET", "FUNCTIONAL_INTERRUPT", "SILENT_DATA_CORRUPTION"]}}, "design_parameters": {"$ref": "#/$defs/tmrParameters"}, "runtime_projection": {"$ref": "#/$defs/tmrProjection"}}, "required": ["runtime_contract_version", "effect_model", "verification_evidence_ids", "runtime_projection"]},
+    {"properties": {"method": {"const": "WATCHDOG"}, "target_failure_modes": {"items": {"enum": ["SEFI", "FUNCTIONAL_INTERRUPT"]}}, "design_parameters": {"$ref": "#/$defs/watchdogParameters"}, "runtime_projection": {"$ref": "#/$defs/watchdogProjection"}}, "required": ["runtime_contract_version", "effect_model", "verification_evidence_ids", "runtime_projection"]},
+    {"properties": {"method": {"const": "SEL_PROTECTION"}, "target_failure_modes": {"items": {"const": "SEL"}}, "design_parameters": {"$ref": "#/$defs/selParameters"}, "runtime_projection": {"$ref": "#/$defs/selProjection"}}, "required": ["runtime_contract_version", "effect_model", "verification_evidence_ids", "runtime_projection"]},
     {"properties": {"method": {"const": "CHECKPOINT_RETRY"}, "design_parameters": {"$ref": "#/$defs/checkpointParameters"}}},
     {"properties": {"method": {"const": "SPARE_SWITCHING"}, "design_parameters": {"$ref": "#/$defs/spareParameters"}}},
     {"properties": {"method": {"const": "SHIELDING_CHANGE"}, "design_parameters": {"$ref": "#/$defs/shieldingParameters"}}},
@@ -53,6 +55,22 @@
     "window": {"type": "object", "additionalProperties": false, "required": ["duration_seconds", "denominator_scope"], "properties": {"duration_seconds": {"type": "number", "exclusiveMinimum": 0}, "denominator_scope": {"type": "string", "enum": ["DEVICE", "WATCHDOG", "PROTECTED_UNIT", "SUBSYSTEM", "SYSTEM"]}}},
     "denominator": {"type": "object", "additionalProperties": false, "required": ["scope", "count"], "properties": {"scope": {"type": "string", "enum": ["DEVICE", "WATCHDOG", "PROTECTED_UNIT", "SUBSYSTEM", "SYSTEM"]}, "count": {"type": "integer", "minimum": 1}}},
     "actionPath": {"type": "object", "additionalProperties": false, "required": ["action", "fraction", "duration_seconds"], "properties": {"action": {"type": "string", "enum": ["NO_ACTION", "RESET", "REBOOT", "POWER_CYCLE", "SPARE_SWITCH"]}, "fraction": {"type": "number", "minimum": 0, "maximum": 1}, "duration_seconds": {"type": "number", "minimum": 0}}},
+    "selActionPath": {"type": "object", "additionalProperties": false, "required": ["action", "fraction"], "properties": {"action": {"type": "string", "enum": ["NO_ACTION", "POWER_CYCLE"]}, "fraction": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "eventModel": {
+      "type": "object", "additionalProperties": false,
+      "required": ["denominator", "action_paths", "verification_evidence_id"],
+      "properties": {
+        "event_count": {"type": "number", "minimum": 0},
+        "event_rate_per_second": {"type": "number", "minimum": 0},
+        "denominator": {"$ref": "#/$defs/denominator"},
+        "action_paths": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/actionPath"}},
+        "verification_evidence_id": {"type": "string", "minLength": 1}
+      },
+      "oneOf": [
+        {"required": ["event_count"], "not": {"required": ["event_rate_per_second"]}},
+        {"required": ["event_rate_per_second"], "not": {"required": ["event_count"]}}
+      ]
+    },
     "activationModel": {
       "type": "object", "additionalProperties": false,
       "required": ["denominator", "action_paths", "verification_evidence_id"],
@@ -68,11 +86,30 @@
         {"required": ["activation_rate_per_second"], "not": {"required": ["activation_count"]}}
       ]
     },
+    "selActivationModel": {
+      "type": "object", "additionalProperties": false,
+      "required": ["denominator", "action_paths", "verification_evidence_id"],
+      "properties": {
+        "activation_count": {"type": "number", "minimum": 0},
+        "activation_rate_per_second": {"type": "number", "minimum": 0},
+        "denominator": {"$ref": "#/$defs/denominator"},
+        "action_paths": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/selActionPath"}},
+        "verification_evidence_id": {"type": "string", "minLength": 1}
+      },
+      "oneOf": [
+        {"required": ["activation_count"], "not": {"required": ["activation_rate_per_second"]}},
+        {"required": ["activation_rate_per_second"], "not": {"required": ["activation_count"]}}
+      ]
+    },
     "eccParameters": {"type": "object", "additionalProperties": false, "required": ["codeword_bits", "data_bits", "parity_bits", "correctable_bits", "detectable_bits", "interleave_mapping_ref", "fault_multiplicity_ref", "decoder_behavior", "uncorrectable_behavior"], "properties": {"codeword_bits": {"type": "integer", "minimum": 1}, "data_bits": {"type": "integer", "minimum": 1}, "parity_bits": {"type": "integer", "minimum": 1}, "correctable_bits": {"type": "integer", "minimum": 0}, "detectable_bits": {"type": "integer", "minimum": 0}, "interleave_mapping_ref": {"type": "string", "minLength": 1}, "fault_multiplicity_ref": {"type": "string", "minLength": 1}, "decoder_behavior": {"type": "string", "minLength": 1}, "uncorrectable_behavior": {"type": "string", "minLength": 1}}},
     "scrubbingParameters": {"type": "object", "additionalProperties": false, "required": ["interval_seconds", "protected_bits", "denominator_scope", "coverage", "correction_capability", "accumulation_model_ref"], "properties": {"interval_seconds": {"type": "number", "exclusiveMinimum": 0}, "protected_bits": {"type": "integer", "minimum": 1}, "denominator_scope": {"type": "string", "minLength": 1}, "coverage": {"type": "number", "minimum": 0, "maximum": 1}, "correction_capability": {"type": "integer", "minimum": 0}, "accumulation_model_ref": {"type": "string", "minLength": 1}}},
     "tmrParameters": {"type": "object", "additionalProperties": false, "required": ["replica_count", "replica_failure_probability", "evaluation_window", "independence_verified", "voter_model", "common_mode_model", "repair_model", "output_semantic"], "properties": {"replica_count": {"const": 3}, "replica_failure_probability": {"type": "number", "minimum": 0, "maximum": 1}, "evaluation_window": {"$ref": "#/$defs/window"}, "independence_verified": {"const": true}, "voter_model": {"type": "object", "additionalProperties": false, "required": ["susceptible", "evidence_id"], "properties": {"susceptible": {"type": "boolean"}, "evidence_id": {"type": "string", "minLength": 1}}}, "common_mode_model": {"type": "object", "additionalProperties": false, "required": ["probability", "evidence_id"], "properties": {"probability": {"type": "number", "minimum": 0, "maximum": 1}, "evidence_id": {"type": "string", "minLength": 1}}}, "repair_model": {"type": "object", "additionalProperties": false, "required": ["repair_within_window", "model_ref"], "properties": {"repair_within_window": {"const": false}, "model_ref": {"type": "string", "minLength": 1}}}, "output_semantic": {"const": "system_failure_probability"}}},
-    "watchdogParameters": {"type": "object", "additionalProperties": false, "required": ["evaluation_window", "true_event_model", "false_positive_model", "detection_latency_seconds", "unrecovered_fraction"], "properties": {"evaluation_window": {"$ref": "#/$defs/window"}, "true_event_model": {"$ref": "#/$defs/activationModel"}, "false_positive_model": {"$ref": "#/$defs/activationModel"}, "detection_latency_seconds": {"type": "number", "minimum": 0}, "unrecovered_fraction": {"type": "number", "minimum": 0, "maximum": 1}}},
-    "selParameters": {"type": "object", "additionalProperties": false, "required": ["evaluation_window", "normal_current_a", "sel_threshold_a", "trip_delay_seconds", "off_time_seconds", "restart_time_seconds", "true_sel_model", "false_trip_model", "prompt_failure_evidence_id", "latent_damage_evidence_id", "post_test_electrical_evidence_id"], "properties": {"evaluation_window": {"$ref": "#/$defs/window"}, "normal_current_a": {"type": "number", "minimum": 0}, "sel_threshold_a": {"type": "number", "exclusiveMinimum": 0}, "trip_delay_seconds": {"type": "number", "minimum": 0}, "off_time_seconds": {"type": "number", "minimum": 0}, "restart_time_seconds": {"type": "number", "minimum": 0}, "true_sel_model": {"$ref": "#/$defs/activationModel"}, "false_trip_model": {"$ref": "#/$defs/activationModel"}, "prompt_failure_evidence_id": {"type": "string", "minLength": 1}, "latent_damage_evidence_id": {"type": "string", "minLength": 1}, "post_test_electrical_evidence_id": {"type": "string", "minLength": 1}}},
+    "watchdogParameters": {"type": "object", "additionalProperties": false, "required": ["evaluation_window", "target_event_model", "true_positive_coverage", "false_positive_model", "detection_latency_seconds", "action_duration_semantic", "unrecovered_fraction"], "properties": {"evaluation_window": {"$ref": "#/$defs/window"}, "target_event_model": {"$ref": "#/$defs/eventModel"}, "true_positive_coverage": {"type": "number", "minimum": 0, "maximum": 1}, "false_positive_model": {"$ref": "#/$defs/activationModel"}, "detection_latency_seconds": {"type": "number", "minimum": 0}, "action_duration_semantic": {"const": "POST_DETECTION_ACTION_ONLY"}, "unrecovered_fraction": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "selParameters": {"type": "object", "additionalProperties": false, "required": ["evaluation_window", "normal_current_a", "sel_threshold_a", "trip_delay_seconds", "off_time_seconds", "restart_time_seconds", "duration_semantic", "true_sel_model", "false_trip_model", "prompt_failure_evidence_id", "latent_damage_evidence_id", "post_test_electrical_evidence_id"], "properties": {"evaluation_window": {"$ref": "#/$defs/window"}, "normal_current_a": {"type": "number", "minimum": 0}, "sel_threshold_a": {"type": "number", "exclusiveMinimum": 0}, "trip_delay_seconds": {"type": "number", "minimum": 0}, "off_time_seconds": {"type": "number", "minimum": 0}, "restart_time_seconds": {"type": "number", "minimum": 0}, "duration_semantic": {"const": "TRIP_OFF_RESTART_FIELDS_ONLY"}, "true_sel_model": {"$ref": "#/$defs/selActivationModel"}, "false_trip_model": {"$ref": "#/$defs/selActivationModel"}, "prompt_failure_evidence_id": {"type": "string", "minLength": 1}, "latent_damage_evidence_id": {"type": "string", "minLength": 1}, "post_test_electrical_evidence_id": {"type": "string", "minLength": 1}}},
+    "runtimeProjection": {"oneOf": [{"$ref": "#/$defs/watchdogProjection"}, {"$ref": "#/$defs/tmrProjection"}, {"$ref": "#/$defs/selProjection"}]},
+    "watchdogProjection": {"type": "object", "additionalProperties": false, "required": ["method", "true_target_event_count", "true_positive_activation_count", "false_positive_activation_count", "reboot_count_total", "downtime_total_seconds"], "properties": {"method": {"const": "WATCHDOG"}, "true_target_event_count": {"type": "number", "minimum": 0}, "true_positive_activation_count": {"type": "number", "minimum": 0}, "false_positive_activation_count": {"type": "number", "minimum": 0}, "reboot_count_total": {"type": "number", "minimum": 0}, "downtime_total_seconds": {"type": "number", "minimum": 0}}},
+    "tmrProjection": {"type": "object", "additionalProperties": false, "required": ["method", "system_failure_probability"], "properties": {"method": {"const": "TMR"}, "system_failure_probability": {"type": "number", "minimum": 0, "maximum": 1}}},
+    "selProjection": {"type": "object", "additionalProperties": false, "required": ["method", "true_sel_activation_count", "false_trip_activation_count", "power_cycle_count_total", "downtime_total_seconds"], "properties": {"method": {"const": "SEL_PROTECTION"}, "true_sel_activation_count": {"type": "number", "minimum": 0}, "false_trip_activation_count": {"type": "number", "minimum": 0}, "power_cycle_count_total": {"type": "number", "minimum": 0}, "downtime_total_seconds": {"type": "number", "minimum": 0}}},
     "checkpointParameters": {"type": "object", "additionalProperties": false, "required": ["checkpoint_interval_seconds", "checkpoint_integrity_evidence_id", "rollback_seconds", "retry_seconds", "maximum_retries", "outcome_model_ref"], "properties": {"checkpoint_interval_seconds": {"type": "number", "exclusiveMinimum": 0}, "checkpoint_integrity_evidence_id": {"type": "string", "minLength": 1}, "rollback_seconds": {"type": "number", "minimum": 0}, "retry_seconds": {"type": "number", "minimum": 0}, "maximum_retries": {"type": "integer", "minimum": 0}, "outcome_model_ref": {"type": "string", "minLength": 1}}},
     "spareParameters": {"type": "object", "additionalProperties": false, "required": ["spare_component_ids", "independent_power", "independent_control", "common_mode_evidence_id", "switch_success_model_ref"], "properties": {"spare_component_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}}, "independent_power": {"type": "boolean"}, "independent_control": {"type": "boolean"}, "common_mode_evidence_id": {"type": "string", "minLength": 1}, "switch_success_model_ref": {"type": "string", "minLength": 1}}},
     "shieldingParameters": {"type": "object", "additionalProperties": false, "required": ["environment_run_id", "transport_model", "transport_model_version", "geometry_ref", "material", "component_location"], "properties": {"environment_run_id": {"type": "string", "minLength": 1}, "transport_model": {"type": "string", "minLength": 1}, "transport_model_version": {"type": "string", "minLength": 1}, "geometry_ref": {"type": "string", "minLength": 1}, "material": {"type": "string", "minLength": 1}, "component_location": {"type": "string", "minLength": 1}}},

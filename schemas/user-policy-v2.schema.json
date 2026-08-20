@@ -8,6 +8,7 @@
   "properties": {
     "kind": {"const": "USER_POLICY"},
     "contract_version": {"const": "2.0.0"},
+    "hash_contract_version": {"const": "1.0.0"},
     "policy_id": {"type": "string", "minLength": 1},
     "policy_version": {"type": "string", "minLength": 1},
     "policy_content_hash": {"$ref": "common.schema.json#/$defs/sha256"},
@@ -39,6 +40,7 @@
         "status": {"type": "string", "enum": ["DRAFT", "PENDING_APPROVAL", "APPROVED", "REJECTED", "REVOKED", "SUPERSEDED"]},
         "approval_target_hash": {"$ref": "common.schema.json#/$defs/sha256"},
         "approval_scope_hash": {"$ref": "common.schema.json#/$defs/sha256"},
+        "history_head_hash": {"$ref": "common.schema.json#/$defs/sha256"},
         "approved_by": {"type": "string", "minLength": 1},
         "approved_at": {"type": "string", "format": "date-time"},
         "valid_from": {"type": "string", "format": "date-time"},
@@ -63,5 +65,11 @@
       }
     },
     "metadata": {"$ref": "common.schema.json#/$defs/recordMetadata"}
-  }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"hash_contract_version": {"const": "1.0.0"}}, "required": ["hash_contract_version"]},
+      "then": {"properties": {"approval": {"required": ["history_head_hash"]}}}
+    }
+  ]
 }

@@ -2,7 +2,7 @@
 
 ## Status
 
-`INTEGRATED — H05 v2 계약 패키지 / commit 379f3ad`
+`READY_FOR_REVIEW — H06 mitigation runtime contract; H05 baseline remains INTEGRATED`
 
 ## 구현한 계약
 
@@ -352,7 +352,7 @@ RESULT: READY_FOR_REVIEW candidate
 ### 재제출
 
 - 기존 정상 2개와 실패 47개를 보존하고 위 공격 fixture를 추가한 뒤 단일 명령을 재실행한다.
-- 다음 handoff는 기존 번호 없는 제출을 암묵적 `H01`로 보고 `/Users/taehoon/Downloads/SPECTRA_10_TID_ENVIRONMENT_PROVENANCE_HANDOFF_H02.md`로 작성한다.
+- 다음 handoff는 기존 번호 없는 제출을 암묵적 `H01`로 보고 `docs/workstreams/10-contracts-schema/handoffs/SPECTRA_10_TID_ENVIRONMENT_PROVENANCE_HANDOFF_H02.md`로 작성한다.
 - 다시 `READY_FOR_REVIEW`까지만 요청하며 다른 Workstream 파일, commit·push는 건드리지 않는다.
 
 ## H02 수정 반영 — 2026-08-20
@@ -442,7 +442,7 @@ RESULT: READY_FOR_REVIEW candidate
 - optimistic assurance에 사용된 피연산자 중 하나라도 `SYNTHETIC` 또는 `ASSUMED` 원본이면 지원 판정을 거부한다. policy의 `approval_status: APPROVED`만으로 합성 정책을 증거로 승격하지 않는다.
 - `support-with-synthetic-part-evidence-and-policy` 공격 fixture를 추가한다. 원인 분리를 위해 합성 part evidence와 합성 policy 공격을 별도 fixture로 나누는 것을 권장한다.
 - 누락 operand trace, 비증거성 rule operand, 합성 정책 지원 승격을 구분하는 안정적인 오류 코드를 정의하고 기존 실패 fixture 65개를 모두 유지한다.
-- 다음 handoff는 `/Users/taehoon/Downloads/SPECTRA_10_TID_ENVIRONMENT_PROVENANCE_HANDOFF_H03.md`로 제출하고 다시 `READY_FOR_REVIEW`까지만 요청한다.
+- 다음 handoff는 `docs/workstreams/10-contracts-schema/handoffs/SPECTRA_10_TID_ENVIRONMENT_PROVENANCE_HANDOFF_H03.md`로 제출하고 다시 `READY_FOR_REVIEW`까지만 요청한다.
 
 ## H03 수정 반영 — 2026-08-20
 
@@ -535,7 +535,7 @@ EvidencePacket v1은 각 required input kind에 `minContains: 1`만 요구하고
 - EvidencePacket v1에서 7개 required input kind를 각각 정확히 하나만 허용하는 것을 우선 권고한다. JSON Schema의 각 `contains`에 `maxContains: 1`을 추가하고 의미 gate도 중복 kind를 안정적인 코드(예: `DUPLICATE_REQUIRED_INPUT_KIND`)로 거부한다.
 - 장래에 같은 kind의 복수 입력을 지원하려면 첫 항목을 암묵적으로 선택하지 말고, rule 계산 자체가 operand binding 또는 명시 ID로 선택한 동일 레코드를 소비·재계산하도록 별도 버전 계약을 설계한다.
 - duplicate part evidence와 duplicate user policy shadowing 공격 fixture를 추가하고 기존 실패 fixture 69개를 모두 유지한다.
-- 다음 handoff는 `/Users/taehoon/Downloads/SPECTRA_10_TID_ENVIRONMENT_PROVENANCE_HANDOFF_H04.md`로 제출하고 다시 `READY_FOR_REVIEW`까지만 요청한다.
+- 다음 handoff는 `docs/workstreams/10-contracts-schema/handoffs/SPECTRA_10_TID_ENVIRONMENT_PROVENANCE_HANDOFF_H04.md`로 제출하고 다시 `READY_FOR_REVIEW`까지만 요청한다.
 
 ## H04 수정 반영 — 2026-08-20
 
@@ -700,3 +700,136 @@ RESULT: READY_FOR_REVIEW candidate
 - 형식·보안: `git diff --check` 통과, H05 소유 범위 밖 코드 변경 없음, 비밀정보·1 MB 초과 파일 없음.
 - 상태 경계: v2 정상 fixture는 구조적으로 유효하지만 실제 근거가 아니므로 `processing_status=VALID`, `assurance_decision=HOLD`를 유지한다.
 - Git: 다른 검증·발표 변경과 80 H02 보완이 함께 진행 중이므로 이번 판정에서는 commit·push하지 않았다.
+
+## H06 Mitigation Runtime Contract — 2026-08-20
+
+- 세션: `10-contracts-schema`
+- 패키지: `10-mitigation-runtime-contract-v1`
+- 제출 회차: `H06`
+- 상태: `READY_FOR_REVIEW`
+- 기준선: `main`, HEAD/origin `4920b6e`, 작업 시작 시 clean
+
+H05의 MITIGATION/POLICY v2 기준선은 유지하면서 Workstream 20이 TMR·watchdog·SEL protection calculator를 임의 해석 없이 구현할 수 있도록 runtime 입력 의미와 검증 projection을 추가했다. 계산 엔진 자체는 구현하지 않았다.
+
+### 최종 해석
+
+- TMR/watchdog/SEL protection은 `runtime_contract_version: 1.0.0`, method별 exact equation ID, effect model, verification evidence와 runtime projection을 요구한다. 기존 ECC v2 경로는 하위 호환된다.
+- Watchdog의 `target_event_model.event_count`는 검출 전 target event count다. true activation은 target count에 `true_positive_coverage`를 곱한다. false-positive count/rate는 별도 입력이다.
+- Watchdog action duration은 detection 이후 reset/boot/restore 시간만 포함한다. true downtime에는 detection latency를 한 번 더하고 false downtime에는 더하지 않는다. true/false path 모두 reboot·downtime total에 포함한다.
+- 정상 watchdog synthetic control은 `N_target=0`, `N_false=1`, false reboot duration `60 s`에서 projection이 `1 reboot / 60 s`다.
+- TMR 제한식은 voter not susceptible, common-mode probability 0, verified independence, no repair within one window일 때만 `system_failure_probability=3p²-2p³`을 실행한다. validator는 `p=0/0.1/1 → 0/0.028/1`을 직접 확인한다.
+- SEL action path에는 duration을 두지 않는다. downtime은 phase fields `trip + off + restart`를 power-cycle count에 한 번만 곱하며 true SEL/false trip을 모두 합한다.
+- SEL protection은 SEL만 target으로 허용하고 SEB·SEGR evidence를 대체하지 않는다. prompt/latent/post-test evidence 중 하나라도 없으면 effect를 평가하지 않는다.
+- Policy canonical hash는 `hash_contract_version: 1.0.0`으로 분리했다. scope projection → content projection → approval scope/target → history head → packet scope → validity/revocation → provenance 순서로 검사한다.
+
+### Canonical policy projection
+
+- 직렬화: UTF-8, finite JSON, key sort, whitespace 없음, separators `,`/`:`, `ensure_ascii=false`.
+- scope projection: `component_ids`와 `mission_ids`를 정렬한 뒤 `tenant_id`와 함께 hash.
+- content projection: `contract_version`, `policy_id`, `policy_version`, canonical rules, 계산된 `scope_hash`.
+- hash: SHA-256, `sha256:<64 lowercase hex>`.
+- approval과 metadata, 저장 hash 자체, history reference는 self-reference를 피하기 위해 content projection에서 제외한다.
+- `approval_target_hash`, `approval_scope_hash`, `history_head_hash`는 각각 계산 content, 계산 scope, immutable history head와 직접 일치해야 한다.
+
+### H06 stable code
+
+- Runtime/effect: `MITIGATION_RUNTIME_CONTRACT_MISSING`, `MITIGATION_EFFECT_MODEL_MISSING`, `MITIGATION_EQUATION_ID_MISSING`, `MITIGATION_EQUATION_ID_MISMATCH`, `MITIGATION_EFFECT_EVIDENCE_MISSING`, `MITIGATION_EVIDENCE_LINK_MISMATCH`, `MITIGATION_RUNTIME_PROJECTION_MISSING`
+- Shared recovery: `ACTIVATION_COUNT_RATE_CONFLICT`, `RECOVERY_DENOMINATOR_WINDOW_MISMATCH`, `ACTION_PATH_FRACTION_INVALID`
+- Watchdog: `WATCHDOG_TRUE_POSITIVE_COVERAGE_MISSING`, `WATCHDOG_FALSE_POSITIVE_MODEL_MISSING`, `WATCHDOG_FALSE_POSITIVE_IGNORED`, `WATCHDOG_DETECTION_LATENCY_DOUBLE_COUNTED`, `WATCHDOG_RUNTIME_PROJECTION_MISMATCH`
+- TMR: `TMR_VOTER_MODEL_MISSING`, `TMR_VOTER_SUSCEPTIBLE`, `TMR_COMMON_MODE_MODEL_MISSING`, `TMR_COMMON_MODE_NONZERO`, `TMR_INDEPENDENCE_UNVERIFIED`, `TMR_REPAIR_WINDOW_MISSING`, `TMR_REPAIR_WINDOW_MISMATCH`, `TMR_OUTPUT_SEMANTIC_MISMATCH`, `TMR_RUNTIME_PROJECTION_MISMATCH`
+- SEL: `SEL_FALSE_TRIP_MODEL_MISSING`, `SEL_PROTECTION_NOT_VALIDATED`, `SEL_DURATION_SEMANTIC_CONFLICT`, `SEL_DURATION_DOUBLE_COUNTED`, `SEL_RUNTIME_PROJECTION_MISMATCH`, `MITIGATION_METHOD_MODE_MISMATCH`
+- Policy: `POLICY_HASH_CONTRACT_MISSING`, `POLICY_CONTENT_HASH_MISMATCH`, `POLICY_SCOPE_HASH_MISMATCH`, `POLICY_APPROVAL_TARGET_MISMATCH`, `POLICY_HISTORY_MISMATCH`, `POLICY_SCOPE_REUSE_MISMATCH`, `POLICY_VALIDITY_INVALID`, `POLICY_EXPIRED`, `POLICY_REVOKED`, `POLICY_PACK_NOT_APPROVED`
+
+### Fixture
+
+- 기존 정상 3개와 실패 83개를 유지했다.
+- runtime 정상 control 2개를 추가하고 기존 watchdog 정상 fixture를 H06 runtime 의미로 보완했다.
+  - watchdog: target 0, false activation 1, reboot 1, downtime 60 s
+  - TMR: p=0.1, `system_failure_probability=0.028`
+  - SEL: true 1 + false 1 power cycle, phase 16 s, total 2 cycles/32 s
+- 신규 공격 26개를 추가했다.
+  - watchdog 9개, policy 5개와 H05 승인-string control 보정
+  - TMR 7개
+  - SEL 5개
+- 전체 schema fixture: 114개(정상 5개, 실패 109개). 모든 runtime fixture는 `SYNTHETIC/HOLD`다.
+
+### 검증 결과
+
+Contract gate:
+
+```text
+SCHEMAS: 14 checked
+ENUM CONTRACTS: 4 axes checked
+INPUT CARDINALITY: 7 required kinds exact-one
+VERSION CONTRACTS: EvidencePacket 1.0.0/1.1.0 and v2 contracts checked
+RUNTIME CONTRACTS: mitigation 1.0.0, policy hash 1.0.0, TMR boundaries checked
+VALID FIXTURES: 5 passed
+INVALID FIXTURES: 109 rejected with expected codes
+RESULT: READY_FOR_REVIEW candidate
+```
+
+- `PYTHONDONTWRITEBYTECODE=1 python3 tests/simulation/run_all.py`: 31개 통과, 합성 비교 5개 모두 assurance `HOLD`, exit 0.
+- `PYTHONDONTWRITEBYTECODE=1 python3 tests/environment/run_all.py`: 23개 통과, exit 0.
+- `PYTHONDONTWRITEBYTECODE=1 python3 tests/assurance/run_all.py`: 상위 21개 중 20개 평가, 공격 실행 29개, control 1개, `ASR-D02` 1개 `NOT_EVALUATED`, False PASS 0, failure 0, exit 0.
+- `PYTHONDONTWRITEBYTECODE=1 python3 docs/workstreams/70-platform-gcp/preflight/test_raw_manifest_preflight.py -v`: 2개 통과, exit 0.
+- `git diff --check`: 출력 없음, exit 0.
+
+### Workstream 20 exact 소비 계약
+
+1. packet/schema/runtime version을 먼저 검사하고 method별 equation ID를 dispatch한다.
+2. count/rate exact-one을 확인한 뒤 rate만 denominator count와 window seconds로 정규화한다. 이미 window count인 값에 denominator나 시간을 다시 곱하지 않는다.
+3. watchdog는 target event → coverage → true activation 순서로 계산하고 false activation을 별도로 계산한다. true/false action fraction 합을 각각 확인한 후 totals에 모두 더한다.
+4. watchdog detection latency는 true path에서 정확히 한 번, action duration은 각 path에서 정확히 한 번 사용한다.
+5. TMR limited formula eligibility가 하나라도 실패하면 식을 실행하지 않고 해당 stable code와 `NOT_EVALUATED/HOLD`를 반환한다.
+6. SEL은 action duration을 받지 않고 phase fields만 사용하며 true/false power cycle을 합친다. latent/prompt/post-test evidence가 없으면 계산하지 않는다.
+7. runtime projection을 자체 계산 결과와 대조하고 generic factor 또는 다른 output semantic으로 fallback하지 않는다.
+8. policy는 validator와 동일한 canonical projection/hash 순서를 사용한다. status string만으로 승인하지 않는다.
+
+### 남은 HOLD와 schema 밖 결정
+
+- 실제 watchdog false-positive, SEL false-trip, TMR independence/voter/common-mode/repair evidence는 0건이다.
+- 실제 policy owner/approver 권한과 immutable history store는 지정되지 않았다.
+- Workstream 20 calculator와 Workstream 60의 전체 method 공격 29개 구현은 아직 남아 있다. H06 validator reference projection은 production calculator가 아니다.
+- 실제 Stage 3·4 evidence, 실제 효과율, 실제 정책 승인, radiation assurance 또는 Stage 5 완료를 주장하지 않는다.
+- commit·push와 checklist 완료 처리는 수행하지 않는다.
+
+### Control Tower H06 재검증 요청
+
+- 전체 명령과 H06 26개 attack의 target semantic code를 독립 재현해 달라.
+- watchdog 0/1/60 control, TMR 0/0.1/1 boundary와 SEL phase 합산을 별도로 교차검산해 달라.
+- canonical policy scope/content hash를 독립 구현으로 재계산하고 expiry/revocation/scope reuse를 확인해 달라.
+- H05와 simulation/environment/assurance/raw preflight 회귀가 유지되는지 확인해 달라.
+- `VERIFIED`, `INTEGRATED`, checklist, commit·push는 Control Tower 판단으로 남긴다.
+
+## H06 Malformed Runtime Fail-Closed 보완 — 2026-08-20
+
+- Control Tower 판정: `CHANGES_REQUESTED`. schema-invalid runtime/policy 중첩값을 `semantic_codes()`가 직접 처리할 때 traceback이 발생해 schema 오류와 semantic 오류의 동시 수집이 중단됐다.
+- 보완 상태: `READY_FOR_REVIEW`. H05 기준선과 H06 정상 산술·canonical hash·`SYNTHETIC/HOLD` 의미는 변경하지 않았다.
+- `design_parameters`, policy `scope`/`rules`/`approval`/`immutable_history_ref`를 dict로 확인한 뒤에만 사용한다.
+- action path 배열과 각 item을 검사하고, `mission_ids`, `component_ids`, `required_destructive_modes`를 list로 확인한 뒤에만 정렬하거나 집합으로 변환한다.
+- broad `try/except Exception`은 추가하지 않았다. 잘못된 타입은 컨테이너별 stable code로 반환한다.
+- 추가 stable code: `MALFORMED_MITIGATION_PARAMETERS`, `MALFORMED_ACTION_PATH`, `MALFORMED_POLICY_SCOPE`, `MALFORMED_POLICY_RULES`, `MALFORMED_POLICY_APPROVAL`, `MALFORMED_POLICY_HISTORY`, `MALFORMED_DESTRUCTIVE_MODES`.
+- fixture runner에 `require_schema_error` 조건을 추가했다. 해당 case는 schema error가 실제 존재하면서 expected semantic code도 동시에 포함해야 통과한다.
+- 추가 공격 7개: watchdog `design_parameters=null`, watchdog false-positive path `[null]`, TMR `design_parameters=null`, SEL true path `[null]`, policy `scope.component_ids=null`, `rules=null`, `required_destructive_modes=null`.
+- 전체 schema fixture: 121개(정상 5개, 실패 116개). 기존 정상 5개와 실패 109개를 유지했다.
+
+실제 contract 출력:
+
+```text
+SCHEMAS: 14 checked
+ENUM CONTRACTS: 4 axes checked
+INPUT CARDINALITY: 7 required kinds exact-one
+VERSION CONTRACTS: EvidencePacket 1.0.0/1.1.0 and v2 contracts checked
+RUNTIME CONTRACTS: mitigation 1.0.0, policy hash 1.0.0, TMR boundaries checked
+VALID FIXTURES: 5 passed
+INVALID FIXTURES: 116 rejected with expected codes
+RESULT: READY_FOR_REVIEW candidate
+```
+
+- `PYTHONDONTWRITEBYTECODE=1 python3 tests/schema/validate_contracts.py`: exit `0`.
+- `PYTHONDONTWRITEBYTECODE=1 python3 tests/simulation/run_all.py`: 31개 통과, 합성 비교 5개 모두 assurance `HOLD`, exit `0`.
+- `PYTHONDONTWRITEBYTECODE=1 python3 tests/environment/run_all.py`: 23개 통과, exit `0`.
+- `PYTHONDONTWRITEBYTECODE=1 python3 tests/assurance/run_all.py`: 평가 20, 공격 실행 29, control 1, False PASS 0, failure 0, exit `0`.
+- `PYTHONDONTWRITEBYTECODE=1 python3 docs/workstreams/70-platform-gcp/preflight/test_raw_manifest_preflight.py -v`: 2개 통과, exit `0`.
+- `git diff --check`: 출력 없음, exit `0`.
+- 실제 evidence, 실제 policy 승인, 실제 runtime 성능 또는 외부 실행을 추가하지 않았다. commit·push하지 않았으며 Workstream 80 동시 변경도 수정·정리·stage하지 않았다.

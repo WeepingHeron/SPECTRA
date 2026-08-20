@@ -1,0 +1,35 @@
+{
+  "base": "../valid/synthetic-v2-hold.json",
+  "cases": [
+    {
+      "name": "watchdog-design-parameters-null",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters", "value": null}],
+      "expected": "MALFORMED_MITIGATION_PARAMETERS",
+      "require_schema_error": true
+    },
+    {
+      "name": "watchdog-false-positive-action-path-null",
+      "operations": [{"op": "set", "path": "/inputs/5/design_parameters/false_positive_model/action_paths", "value": [null]}],
+      "expected": "MALFORMED_ACTION_PATH",
+      "require_schema_error": true
+    },
+    {
+      "name": "policy-scope-component-ids-null",
+      "operations": [{"op": "set", "path": "/inputs/6/scope/component_ids", "value": null}],
+      "expected": "MALFORMED_POLICY_SCOPE",
+      "require_schema_error": true
+    },
+    {
+      "name": "policy-rules-null",
+      "operations": [{"op": "set", "path": "/inputs/6/rules", "value": null}],
+      "expected": "MALFORMED_POLICY_RULES",
+      "require_schema_error": true
+    },
+    {
+      "name": "policy-required-destructive-modes-null",
+      "operations": [{"op": "set", "path": "/inputs/6/rules/required_destructive_modes", "value": null}],
+      "expected": "MALFORMED_DESTRUCTIVE_MODES",
+      "require_schema_error": true
+    }
+  ]
+}

@@ -2,15 +2,15 @@
 
 ## 상태
 
-`INTEGRATED — H02 Decision Engine Assurance D01 / commit 379f3ad`
+`VERIFIED — H03 Runtime Mitigation Independent Assurance / Control Tower 2026-08-20`
 
-H01 고정 공격 기준선의 `VERIFIED` 판정은 유지한다. H02 패키지는 Workstream 20 H02 MVP Decision Engine을 독립 공격하고 `ASR-D01`을 실제 평가로 승격한 뒤 commit `379f3ad`로 통합했다. 이는 Stage 6 완료를 뜻하지 않는다.
+H01 고정 공격 기준선의 `VERIFIED`와 H02의 `INTEGRATED / commit 379f3ad` 상태는 유지한다. Control Tower는 H03의 `ASR-D03`이 Workstream 20 H03의 `evaluate_runtime_mitigation()`을 직접 독립 공격하는지 확인하고 전체 회귀를 재현해 `VERIFIED`로 판정했다. 실제 GCP 의존성 `ASR-D02`와 실제 과학·증거 검증은 남아 있으므로 Stage 6 완료나 `INTEGRATED`를 뜻하지 않는다.
 
 ## 범위 경계
 
-- 현재 EvidencePacket v1/v1.1 schema·semantic gate, Stage 2 합성 계산과 MVP Decision Engine v1을 실행 대상으로 삼는다.
-- 실제 부품 증거, 실제 환경 출력, 실제 정책 승인, method별 완화 engine과 실제 GCP object/IAM 상태는 생성하지 않는다.
-- `ASR-D01`은 MVP의 ECC·policy·Change Impact 범위에서 평가한다. watchdog·TMR·SEL protection 전체 method engine을 검증했다는 뜻은 아니다.
+- 현재 EvidencePacket v1/v1.1 schema·semantic gate, Stage 2 합성 계산, MVP Decision Engine v1과 Mitigation Runtime Calculator v1을 실행 대상으로 삼는다.
+- 실제 부품 증거, 실제 환경 출력, 실제 정책 승인과 실제 GCP object/IAM 상태는 생성하지 않는다.
+- `ASR-D01`은 MVP의 ECC·policy·Change Impact 범위, `ASR-D03`은 합성 WATCHDOG·TMR·SEL_PROTECTION runtime 계산과 fail-closed 경계에 한정한다.
 - 실제 GCP 의존성 `ASR-D02`만 `NOT_EVALUATED`로 유지하며 통과나 False PASS 0 분모로 계산하지 않는다.
 
 ## 변경 파일
@@ -20,6 +20,7 @@ H01 고정 공격 기준선의 `VERIFIED` 판정은 유지한다. H02 패키지�
 - `tests/assurance/README.md`
 - `tests/assurance/manifest.json`
 - `tests/assurance/run_all.py`
+- `docs/workstreams/60-assurance-evals/handoffs/SPECTRA_60_RUNTIME_MITIGATION_ASSURANCE_HANDOFF_H03.md`
 
 기존 dirty worktree의 루트 문서, Workstream 00·10·50·70·80, 공용 schema와 기존 schema fixture 변경은 사용자 또는 다른 Workstream 소유로 보존했고 수정하지 않았다.
 
@@ -204,3 +205,100 @@ exit code: 0
 - canonical MVP 요약은 change impact `impact-ec33a03f8d94eca3`, baseline·variant 모두 `NOT_EVALUATED/HOLD`를 유지했다.
 - `ASR-D02` live GCP bytes·generation·IAM은 유일한 `NOT_EVALUATED`다. 실제 환경·부품 증거, watchdog/TMR/SEL 전체 engine 또는 Stage 6 완료로 확대하지 않는다.
 - commit·push와 checklist 완료 처리는 보류한다.
+
+## H03 Runtime Mitigation Independent Assurance — 2026-08-20
+
+### 구현 범위
+
+- manifest를 호환 버전 `1.2.0`으로 올리고 상위 case `ASR-D03`을 추가했다. H01과 D01의 기존 `actual`은 변경하지 않았고 `ASR-D02`는 계속 `NOT_EVALUATED`다.
+- runner에 `RUNTIME_MITIGATION_ATTACK_SET`을 추가해 unittest 결과를 재인용하지 않고 production API `evaluate_runtime_mitigation()`을 직접 호출한다.
+- 정상 control 3개와 공격 18개를 분리해 각각의 실행 수, 실패 수, stable code와 실제 관측값을 machine-readable JSON으로 출력한다.
+- runtime 결과 사후 변조 2건은 원래 production 결과를 만든 뒤 `mitigation-runtime-result.schema.json`이 해당 필드 경로를 실제 거부하는지 검사하고, 거부 결과를 `INVALID_INPUT / NOT_EVALUATED / HOLD`로 정규화한다.
+
+### 정상 control
+
+| ID | method | 계산 결과 | 상태 |
+|---|---|---|---|
+| `ASR-D03-C01` | WATCHDOG | false-positive reboot 1회, downtime 60 s | `VALID / NOT_EVALUATED / HOLD` |
+| `ASR-D03-C02` | TMR | `p=0.1`, `3p²-2p³=0.028` | `VALID / NOT_EVALUATED / HOLD` |
+| `ASR-D03-C03` | SEL_PROTECTION | power cycle 2회, downtime 32 s | `VALID / NOT_EVALUATED / HOLD` |
+
+세 control은 계산의 결정론적 기준점일 뿐 실제 효과나 지원 판정이 아니다. 합성 mitigation과 policy 때문에 모두 `NOT_EVALUATED / HOLD`를 유지한다.
+
+### 공격과 관측 stable code
+
+| ID | 단일 mutation 의도 | 실제 stable code |
+|---|---|---|
+| `ASR-D03-01` | WATCHDOG false-positive model 삭제 | `WATCHDOG_FALSE_POSITIVE_MODEL_MISSING` |
+| `ASR-D03-02` | 선언 false-positive count를 0으로 축소 | `WATCHDOG_FALSE_POSITIVE_IGNORED` |
+| `ASR-D03-03` | detection latency 이중 합산 | `WATCHDOG_DETECTION_LATENCY_DOUBLE_COUNTED` |
+| `ASR-D03-04` | TMR voter susceptible | `TMR_VOTER_SUSCEPTIBLE` |
+| `ASR-D03-05` | TMR common-mode probability 0.01 | `TMR_COMMON_MODE_NONZERO` |
+| `ASR-D03-06` | TMR independence 미확인 | `TMR_INDEPENDENCE_UNVERIFIED` |
+| `ASR-D03-07` | SEL false-trip model 삭제 | `SEL_FALSE_TRIP_MODEL_MISSING` |
+| `ASR-D03-08` | SEL phase downtime 이중 합산 | `SEL_DURATION_DOUBLE_COUNTED` |
+| `ASR-D03-09` | SEL protection을 SEB 대상으로 대체 | `MITIGATION_METHOD_MODE_MISMATCH` |
+| `ASR-D03-10` | runtime contract version 변조 | `MITIGATION_RUNTIME_CONTRACT_MISSING` |
+| `ASR-D03-11` | WATCHDOG equation ID를 TMR 식으로 대체 | `MITIGATION_EQUATION_ID_MISMATCH` |
+| `ASR-D03-12` | false-path evidence link 삭제 | `MITIGATION_EVIDENCE_LINK_MISMATCH` |
+| `ASR-D03-13` | policy scope hash 변조 | `POLICY_SCOPE_HASH_MISMATCH` |
+| `ASR-D03-14` | policy content hash 변조 | `POLICY_CONTENT_HASH_MISMATCH` |
+| `ASR-D03-15` | policy approval target 변조 | `POLICY_APPROVAL_TARGET_MISMATCH` |
+| `ASR-D03-16` | policy history head 변조 | `POLICY_HISTORY_MISMATCH` |
+| `ASR-D03-17` | 결과 assurance를 지원 판정으로 승격 | `RUNTIME_RESULT_ASSURANCE_PROMOTION_REJECTED` |
+| `ASR-D03-18` | 결과 processing enum을 `NOT_EVALUATED`로 이탈 | `RUNTIME_RESULT_PROCESSING_ENUM_INVALID` |
+
+모든 공격은 `INVALID_INPUT / NOT_EVALUATED / HOLD` 또는 schema 거부로 닫혔다. TMR voter/common-mode/independence 위반과 WATCHDOG·SEL 필수 모델 누락, destructive-mode 대체, runtime/equation/evidence link 부적격에서는 `computed_projection=null`을 확인했다. 선언 projection과 정책 무결성 변조는 독립 계산값이 존재할 수 있으나 결과는 `INVALID_INPUT / NOT_EVALUATED / HOLD`이며 선언값이나 정책을 신뢰해 지원 판정으로 승격하지 않는다.
+
+### H03 전체 검증 결과
+
+저장소 루트에서 다음 명령을 직접 실행했다.
+
+```text
+tests/assurance/run_all.py
+manifest: 1.2.0
+top-level cases: 22
+evaluated cases: 21
+evaluated attack executions: 47 (기존 29 + D03 18)
+evaluated controls: 4 (기존 재현성 1 + D03 계산 control 3)
+not evaluated: 1 (ASR-D02)
+false passes: 0
+failures: 0
+result: READY_FOR_REVIEW
+exit code: 0
+
+tests/schema/validate_contracts.py
+schemas: 14
+valid fixtures: 5
+invalid fixtures: 116 expected rejections
+exit code: 0
+
+tests/simulation/run_all.py
+tests: 55
+comparison scenarios: 5
+exit code: 0
+
+tests/environment/run_all.py
+tests: 23
+exit code: 0
+
+docs/workstreams/70-platform-gcp/preflight/test_raw_manifest_preflight.py -v
+tests: 2
+exit code: 0
+
+python3 -m unittest -v tests.product.test_product_data_binding
+tests: 7
+exit code: 0
+
+git diff --check
+output: none
+exit code: 0
+```
+
+### 결함 판정과 한계
+
+- 평가된 D03 고정 공격 18개에서 False PASS는 0건이며 현재 제출에 `CHANGES_REQUESTED` 후보는 없다.
+- False PASS 0은 manifest `1.2.0`의 고정 공격 실행 47개에만 적용한다. control 4개와 `ASR-D02`는 이 공격 분모에서 구분한다.
+- 실제 WATCHDOG/TMR/SEL 효과, 실제 부품 시험, 실제 정책 승인 권한, 실제 환경 출력과 과학적 정확도는 검증하지 않았다.
+- `ASR-D02` 실제 GCP bytes·generation·IAM은 계속 `NOT_EVALUATED`다.
+- H03은 `READY_FOR_REVIEW` 상한이며 `VERIFIED`, `INTEGRATED`, Stage 6 완료, checklist 완료나 Git 반영을 주장하지 않는다.

@@ -8,9 +8,99 @@
 
 ## Status
 
-`INTEGRATED — H02 MVP Decision Engine synthetic baseline / commit 379f3ad`
+`VERIFIED — H03 Mitigation Runtime Calculator / Control Tower 2026-08-20`
 
-현재 작업 패키지: `20-mvp-decision-engine-v1` H02. H01에서 확인된 비유한 숫자 traceback 경로를 입력 경계와 하위 계산 경계에서 보완했다. `NaN`, `Infinity`, `-Infinity`는 direct engine과 CLI 모두 stable code를 가진 machine-readable `INVALID_INPUT / NOT_EVALUATED / HOLD`로 종료한다. Control Tower가 전체 schema·simulation·environment·assurance 회귀와 정상 canonical 결과를 독립 재현해 합성 MVP engine 기준선을 `VERIFIED`로 판정했다. 이전 Stage 2 합성 기준선의 `INTEGRATED` 판정 범위는 그대로 보존한다.
+현재 작업 패키지: `20-mitigation-runtime-calculator-v1` H03 검증 보완. Workstream 10 H06의 WATCHDOG·TMR·SEL_PROTECTION runtime 계약을 production-side에서 독립 계산하는 API, CLI와 결과 schema를 구현했다. 정상 control은 `processing_status=VALID`, `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`다. malformed·계약 위반·계산 eligibility 부족·projection/policy 변조는 `processing_status=INVALID_INPUT`, `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`로 닫힌다. Runtime `processing_status`는 공통 enum을 직접 참조하며 어떤 분기에서도 `NOT_EVALUATED`를 사용하지 않는다. H02 MVP Decision Engine의 `INTEGRATED` 기준선은 그대로 보존한다.
+
+## H03 Handoff — Mitigation Runtime Calculator
+
+### H03 검증 보완 — 공통 processing status 정렬
+
+- 결과 schema의 `processing_status`를 `https://spectra.local/schemas/common.schema.json#/$defs/processingStatus` 직접 `$ref`로 교체했다.
+- Runtime 전용 enum에서 `NOT_EVALUATED`를 제거했다. 이 값은 `engineering_gate`와 policy rule outcome에만 남는다.
+- TMR voter/common-mode/independence/repair/output semantic과 SEL/evidence eligibility 실패는 모두 `processing_status=INVALID_INPUT`으로 종료한다.
+- 정상 합성 control은 구조적 처리가 완료됐으므로 `VALID / NOT_EVALUATED / HOLD`를 유지한다.
+- 신규 회귀가 schema `$ref`, 공통 enum 부분집합과 실제 관찰 상태 `{VALID, INVALID_INPUT}`를 검증한다.
+- 전용 테스트 24개와 전체 Simulation 55개, product 7개, environment 23개, assurance False PASS 0, preflight 2개가 통과했다.
+
+### H06 기준선 확인
+
+작업 시작과 최종 회귀 후 다음 SHA-256이 모두 지침과 일치했다.
+
+```text
+5ac2ad4a2333e7dc0f3b9c00eb5b8f83ac41030465db21abb76cae49febb9dc1  schemas/mitigation-v2.schema.json
+0219e94835912a133577a4fbb018ac3e5e8ca229a6cf4cb8858356fc02148b45  schemas/user-policy-v2.schema.json
+794a3bbe6f20a58bb59b8fa16d5fb227000e614eba3a102af1855548662a6c2f  docs/workstreams/10-contracts-schema/V2_CONTRACT.md
+df2ab2fd02ed907a6d24b3150669d34866066b2e58c638cd8f140bcf8d377cd5  tests/schema/validate_contracts.py
+```
+
+기준 Git HEAD는 `4920b6e`다. Workstream 10·80, demo와 product의 기존 사용자 변경은 수정하지 않았다.
+
+### 구현 결과
+
+- 단일 API `evaluate_runtime_mitigation(packet: dict) -> dict`가 EvidencePacket schema·canonical semantic gate, exact-one mitigation/policy, v2/runtime version, equation, eligibility와 evidence link를 순서대로 확인한다.
+- 테스트 validator의 runtime 산술 결과를 반환하지 않고 Workstream 20 production 모듈에서 WATCHDOG·TMR·SEL_PROTECTION을 독립 계산한다.
+- Watchdog count는 window count 그대로 사용하고 rate만 `rate × denominator.count × window.duration_seconds`로 정규화한다. true activation은 `target × coverage`, true downtime에만 latency를 한 번 포함하며 true/false reboot·downtime을 모두 합산한다.
+- TMR은 replica 3, `0≤p≤1`, independence verified, voter non-susceptible, common mode 0, same-window no-repair, exact output semantic 조건에서만 `3p²-2p³`을 실행한다.
+- SEL protection은 true SEL과 false trip을 독립 정규화하고 power cycle당 `trip + off + restart`를 한 번만 적용한다. prompt·latent·post-test evidence와 exact SEL target을 요구하고 SEB·SEGR 공백을 닫지 않는다.
+- Policy scope/content projection과 UTF-8 canonical SHA-256을 독립 재계산한다. approval target/scope, history head, packet-time validity, expiry, revocation, supersession과 provenance를 분리 평가한다.
+- `maximum_reboots`, `maximum_downtime_seconds`는 존재할 때만 평가하고 없는 threshold를 생성하지 않는다.
+- 모든 결과는 canonical input/output hash, content-derived result ID, 정규화 count, 독립 projection, 선언 projection 비교, policy summary와 정렬된 stable code를 포함한다.
+- CLI는 전체 canonical result와 compact summary를 제공한다.
+
+### H03 변경 파일
+
+- `src/spectra_sim/runtime_mitigation.py`
+- `src/spectra_sim/__init__.py`
+- `simulation/run_mitigation_runtime.py`
+- `simulation/schemas/mitigation-runtime-result.schema.json`
+- `simulation/README.md`
+- `tests/simulation/test_mitigation_runtime.py`
+- `docs/workstreams/20-simulation-core/CURRENT.md`
+
+검토 handoff: `/Users/taehoon/Downloads/SPECTRA_20_MITIGATION_RUNTIME_CALCULATOR_HANDOFF_H03.md` (이번 제출까지의 기존 위치). 다음 제출부터 `docs/workstreams/20-simulation-core/handoffs/`를 사용한다.
+
+### 정상 canonical 결과
+
+```text
+WATCHDOG: target 0, true activation 0, false activation 1, reboot 1, downtime 60 s
+TMR: p=0.1, system_failure_probability 0.028
+SEL_PROTECTION: true 1, false 1, power cycles 2, downtime 32 s
+```
+
+세 결과 모두 `processing_status=VALID`, `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`다. DRAFT·SYNTHETIC policy, unresolved applicability와 blocking evidence gap을 stable code로 유지한다.
+
+### 테스트와 공격
+
+- H03 신규 unittest 24개가 9개 정상/control scenario, 37개 공격 실행과 공통 processing enum drift 회귀를 다룬다.
+- count/rate conflict·누락, denominator mismatch, action fraction, false totals 누락, latency 이중 계산을 차단했다.
+- TMR voter/common-mode/independence/repair/output semantic 위반에서 제한식을 실행하지 않았다.
+- SEL false-trip·required evidence 누락, action duration·phase 이중 계산, SEB 대체를 차단했다.
+- runtime version·equation·evidence link·declared projection 변조를 stable code로 거부했다.
+- policy content/scope/history/expiry/revocation과 APPROVED 문자열-only 합성 정책을 지원 근거로 사용하지 않았다.
+- malformed dict/list, `NaN`, `Infinity`, `-Infinity`, 음수 입력과 CLI 공격은 traceback 없이 schema-valid 안전 결과로 종료했다.
+- 동일 입력 2회 전체 결과와 canonical bytes가 동일하다.
+
+### H03 최종 회귀
+
+```text
+Schema: 14 schemas, 5 valid fixtures, 116 invalid fixtures — PASS
+Simulation: 55 tests — PASS
+Environment: 23 tests — PASS
+Assurance: 29 evaluated attack executions, failures 0, false passes 0 — PASS
+GCP raw manifest preflight: 2 tests — PASS
+Product data binding: 7 tests — PASS
+git diff --check — PASS
+```
+
+기존 MVP summary와 Change Impact ID `impact-ec33a03f8d94eca3`, Product H05 payload와 `demo/index.html`은 변경하지 않았다.
+
+### 남은 HOLD와 역할 경계
+
+- 정상 operand와 policy는 합성 fixture이며 실제 완화 효과율·실제 시험 증거·실제 승인 policy가 아니다.
+- 실제 Stage 3·4 evidence eligibility, 실제 policy authority와 독립 Assurance 승인이 없으므로 지원 판정은 계속 `HOLD`다.
+- GCP resource·실행·IAM evidence를 생성하지 않았다.
+- 이 채팅은 `READY_FOR_REVIEW`까지만 선언한다. `VERIFIED`, `INTEGRATED`, checklist 변경과 commit·push는 Control Tower 소유다.
 
 ## H02 Control Tower 독립 재검증 — 2026-08-20
 

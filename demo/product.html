@@ -20,14 +20,15 @@
     .scenario-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;min-height:0}.input-stack{display:grid;grid-template-rows:1fr 1fr;gap:12px;min-height:0}.mission-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}.fact{background:var(--panel2);padding:12px}.fact span{display:block;color:var(--dim);font-size:12px}.fact strong{display:block;margin-top:6px;font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:20px;font-weight:520}.identity-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.identity-item{padding-left:10px;border-left:1px solid var(--line2)}.identity-item span{display:block;color:var(--dim);font-size:12px}.identity-item code{display:block;margin-top:6px;color:var(--ink);font:500 14px/1.3 "SFMono-Regular",Menlo,monospace;overflow-wrap:anywhere}
     .control-panel{display:grid;grid-template-rows:auto 1fr auto}.control-group{padding:14px 16px;border-bottom:1px solid var(--line)}.control-group:last-child{border-bottom:0}.control-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.control-title b{font-size:14px;font-weight:550}.choices{display:flex;gap:0}.choice{min-width:60px;padding:9px 13px;border:1px solid var(--line2);background:transparent;color:var(--muted);cursor:pointer;font:600 13px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif}.choice+.choice{margin-left:-1px}.choice:hover:not(:disabled){border-color:var(--accent);color:var(--ink);z-index:1}.choice.selected{border-color:var(--accent);background:rgba(121,216,255,.08);color:var(--accent);z-index:1}.choice:disabled{opacity:.36;cursor:not-allowed}.control-note{margin:9px 0 0;color:var(--dim);font-size:12px;line-height:1.4}.zero-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}.zero{padding:10px;background:var(--panel2)}.zero b{display:block;color:var(--accent);font:550 19px/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif}.zero span{display:block;margin-top:5px;color:var(--dim);font-size:12px}
     .view-actions{display:flex;align-items:center;justify-content:space-between}.keyhint{color:var(--dim);font-size:12px}.keyhint kbd{padding:2px 5px;border:1px solid var(--line2);font:500 12px "SFMono-Regular",Menlo,monospace}.primary,.secondary{padding:9px 14px;cursor:pointer;font-size:13px}.primary{border:1px solid var(--accent);background:var(--accent);color:#031016;font-weight:650}.secondary{border:1px solid var(--line2);background:transparent;color:var(--muted)}
-    .analysis-main{display:grid;grid-template-rows:auto auto 1fr auto;gap:9px;min-height:0}.scenario-bar{display:flex;align-items:center;gap:14px;padding:8px 12px;border:1px solid var(--line);background:var(--panel)}.scenario-bar .choices{margin-left:3px}.scenario-bar .choice{padding:7px 10px;min-width:50px}.divider{width:1px;height:25px;background:var(--line)}.scenario-summary{margin-left:auto;color:var(--dim);font-size:12px}.scenario-summary strong{color:var(--ink)}.insight{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:11px 14px;border-left:3px solid var(--accent);background:rgba(121,216,255,.055)}.insight strong{font-size:clamp(15px,1.35vw,18px);font-weight:550;line-height:1.35;word-break:keep-all}.insight span{flex:0 0 auto;color:var(--muted);font-size:12px}
+    .analysis-workspace{display:grid;grid-template-rows:auto 1fr;gap:9px;min-height:0}.analysis-modes{display:flex;align-items:center;gap:0}.analysis-mode{padding:7px 12px;border:1px solid var(--line2);background:transparent;color:var(--muted);cursor:pointer;font-size:13px}.analysis-mode+.analysis-mode{margin-left:-1px}.analysis-mode.selected{border-color:var(--accent);color:var(--accent);background:rgba(121,216,255,.06);z-index:1}.analysis-main{display:grid;grid-template-rows:auto auto 1fr auto;gap:9px;min-height:0}.analysis-main.hidden,.runtime-main.hidden{display:none}.scenario-bar{display:flex;align-items:center;gap:14px;padding:8px 12px;border:1px solid var(--line);background:var(--panel)}.scenario-bar .choices{margin-left:3px}.scenario-bar .choice{padding:7px 10px;min-width:50px}.divider{width:1px;height:25px;background:var(--line)}.scenario-summary{margin-left:auto;color:var(--dim);font-size:12px}.scenario-summary strong{color:var(--ink)}.insight{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:11px 14px;border-left:3px solid var(--accent);background:rgba(121,216,255,.055)}.insight strong{font-size:clamp(15px,1.35vw,18px);font-weight:550;line-height:1.35;word-break:keep-all}.insight span{flex:0 0 auto;color:var(--muted);font-size:12px}.data-alert{display:none;padding:8px 12px;border:1px solid var(--accent);color:var(--accent);font-size:13px}.data-alert.visible{display:block}
     .metrics{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:9px;min-height:0}.metric{display:flex;flex-direction:column;justify-content:space-between;padding:14px;border:1px solid var(--line);background:var(--panel)}.metric-value{margin:10px 0 6px;font:520 clamp(34px,4.1vw,58px)/.95 "SF Pro Display","Helvetica Neue",Arial,sans-serif;letter-spacing:-.04em}.metric-unit{color:var(--dim);font-size:13px;line-height:1.35}.metric-foot{padding-top:9px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;line-height:1.35}.metric .bar{height:2px;margin:9px 0;background:var(--line2);overflow:hidden}.metric .bar i{display:block;height:100%;background:var(--accent)}.metric.scope{background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 9px,#101417 9px,#101417 18px)}
     .gate-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}.gate{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--panel2);font-size:13px}.gate span{color:var(--dim)}.gate b{font:650 13px "SF Pro Text","Helvetica Neue",Arial,sans-serif}.gate .assurance{color:var(--accent)}
+    .runtime-main{display:grid;grid-template-rows:auto auto 1fr auto;gap:9px;min-height:0}.runtime-methods{display:flex;align-items:center;padding:8px 12px;border:1px solid var(--line);background:var(--panel)}.runtime-methods .label{margin-right:12px}.runtime-method{padding:8px 12px;border:1px solid var(--line2);background:transparent;color:var(--muted);cursor:pointer;font-size:13px}.runtime-method+.runtime-method{margin-left:-1px}.runtime-method.selected{border-color:var(--accent);color:var(--accent);background:rgba(121,216,255,.06);z-index:1}.runtime-summary{margin-left:auto;color:var(--dim);font-size:12px}.runtime-summary strong{color:var(--ink)}.runtime-status{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}.runtime-status div{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--panel2);font-size:13px}.runtime-status span{color:var(--dim)}.runtime-status b{font-size:13px}.runtime-status .hold{color:var(--accent)}.runtime-body{display:grid;grid-template-columns:1.35fr .65fr;gap:9px;min-height:0}.runtime-projection{display:grid;grid-template-rows:auto 1fr;gap:9px;min-height:0}.runtime-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;min-height:0}.runtime-metric{display:flex;flex-direction:column;justify-content:space-between;padding:13px;border:1px solid var(--line);background:var(--panel)}.runtime-metric-value{margin:9px 0 5px;font:520 clamp(28px,3vw,46px)/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif;letter-spacing:-.03em}.runtime-evidence{padding:13px;border:1px solid var(--line);background:var(--panel);min-height:0;overflow:hidden}.runtime-evidence h2{margin:0 0 8px;font-size:14px;font-weight:550}.runtime-code-list{display:grid;gap:6px;margin:0;padding:0;list-style:none}.runtime-code-list li{padding-bottom:6px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.35}.runtime-code-list code{display:block;color:var(--muted);font:600 12px/1.3 "SFMono-Regular",Menlo,monospace;overflow-wrap:anywhere}.runtime-code-list span{display:block;margin-top:2px;color:var(--dim)}.runtime-technical{display:flex;gap:14px;overflow:hidden;color:var(--dim);font:500 12px/1.35 "SFMono-Regular",Menlo,monospace}.runtime-technical span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.runtime-technical strong{color:var(--muted);font-weight:500}
     .assurance-stack{display:grid;grid-template-rows:auto 1fr auto;gap:10px;min-height:0}.causal-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}.cause{position:relative;display:grid;align-content:center;min-height:64px;padding:10px 12px;background:var(--panel);border-bottom:1px solid var(--line2);font-size:14px;line-height:1.35}.cause:not(:last-child):after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:18px}.cause strong{display:block;color:var(--dim);font-size:12px;font-weight:500}.cause.result{border-bottom:2px solid var(--accent)}.cause.result b{color:var(--accent)}
-    .gap-action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;min-height:0}.gap-action{display:grid;grid-template-rows:auto 1fr auto;padding:13px;border:1px solid var(--line);background:var(--panel)}.gap-action h2{margin:8px 0 4px;font-size:14px;font-weight:550}.gap-action p{margin:0;color:var(--dim);font-size:12px;line-height:1.4}.gap-status{color:var(--muted);font-size:13px;font-weight:650}.gap-next{margin-top:11px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;line-height:1.35}.gap-next b{display:block;margin-bottom:4px;color:var(--accent);font-size:12px}.technical{border-top:1px solid var(--line);padding-top:8px;color:var(--dim);font-size:12px}.technical summary{cursor:pointer;color:var(--muted);font-size:12px}.technical p{margin:7px 0 0;font:500 12px/1.45 "SFMono-Regular",Menlo,monospace}.technical strong{color:var(--muted);font-weight:500}
+    .gap-action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;min-height:0}.gap-action{display:grid;grid-template-rows:auto 1fr auto;padding:13px;border:1px solid var(--line);background:var(--panel)}.gap-action h2{margin:8px 0 4px;font-size:14px;font-weight:550}.gap-action p{margin:0;color:var(--dim);font-size:12px;line-height:1.4}.gap-status{color:var(--muted);font-size:13px;font-weight:650}.gap-next{margin-top:11px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;line-height:1.35}.gap-next b{display:block;margin-bottom:4px;color:var(--accent);font-size:12px}.technical{border-top:1px solid var(--line);padding-top:8px;color:var(--dim);font-size:12px}.technical summary{cursor:pointer;color:var(--muted);font-size:12px}.technical p{margin:7px 0 0;font:500 12px/1.45 "SFMono-Regular",Menlo,monospace;overflow-wrap:anywhere}.technical strong{color:var(--muted);font-weight:500}.impact-list{margin:7px 0 0;padding-left:18px;font:500 12px/1.45 "SFMono-Regular",Menlo,monospace}
     .app-footer{height:var(--footer);display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);border-top:1px solid var(--line);color:var(--dim);font-size:10px}.app-footer strong{color:var(--muted);font-weight:500}.safe-fallback{display:none;min-height:100vh;padding:40px;background:var(--bg)}.no-js .app-header,.no-js .safety-rail,.no-js .workspace,.no-js .app-footer{display:none}.no-js .safe-fallback{display:grid;align-content:center;gap:20px}.safe-fallback h1{margin:0;font-size:56px;font-weight:520}.safe-fallback p{max-width:720px;color:var(--muted);font-size:18px;line-height:1.6}.safe-fallback .fallback-states{display:flex;gap:0}.safe-fallback span{padding:10px;border:1px solid var(--line2);font:650 13px "SF Pro Text","Helvetica Neue",Arial,sans-serif}.safe-fallback span:last-child{border-color:var(--accent);color:var(--accent)}
     @media(max-width:1050px){.app-header{grid-template-columns:auto 1fr auto}.steps{justify-self:center}.step{padding:10px 11px}.step small{display:none}.scenario-grid{grid-template-columns:1fr 1fr}.gap-action p{display:none}}
-    @media(max-height:760px){:root{--header:58px;--footer:32px}.brand-sub{display:none}.safety-rail{height:32px}.workspace{height:calc(100vh - var(--header) - var(--footer) - 32px)}.view{padding:11px var(--pad);gap:8px}.view h1{font-size:27px}.answer{margin-top:4px;font-size:16px}.answer .contract-note{display:none}.panel-head{padding:8px 12px}.panel-body{padding:10px}.scenario-grid,.input-stack{gap:8px}.fact{padding:9px}.fact strong{font-size:17px}.identity-grid{gap:7px}.control-group{padding:10px 12px}.control-note{margin-top:6px}.zero{padding:8px}.analysis-main{gap:6px}.scenario-bar{padding:6px 10px}.insight{padding:8px 11px}.metric{padding:10px}.metric-value{margin:7px 0 4px;font-size:38px}.metric-foot{padding-top:6px}.gate{padding:7px 9px}.causal-flow{gap:20px}.cause{min-height:54px;padding:8px 10px;font-size:13px}.gap-action{padding:10px}.gap-action h2{margin:5px 0 3px}.gap-action p{display:none}.gap-next{margin-top:7px;padding-top:7px}.technical{padding-top:5px}.technical p{display:none}.primary,.secondary{padding:7px 12px}.keyhint{display:none}}
+    @media(max-height:760px){:root{--header:58px;--footer:32px}.brand-sub{display:none}.safety-rail{height:32px}.workspace{height:calc(100vh - var(--header) - var(--footer) - 32px)}.view{padding:11px var(--pad);gap:8px}.view h1{font-size:27px}.answer{margin-top:4px;font-size:16px}.answer .contract-note{display:none}.panel-head{padding:8px 12px}.panel-body{padding:10px}.scenario-grid,.input-stack{gap:8px}.fact{padding:9px}.fact strong{font-size:17px}.identity-grid{gap:7px}.control-group{padding:10px 12px}.control-note{margin-top:6px}.zero{padding:8px}.analysis-workspace,.analysis-main,.runtime-main,.runtime-projection{gap:6px}.analysis-mode,.runtime-method{padding:6px 10px}.scenario-bar,.runtime-methods{padding:6px 10px}.insight{padding:8px 11px}.metric,.runtime-metric{padding:10px}.metric-value{margin:7px 0 4px;font-size:38px}.runtime-metric-value{margin:6px 0 3px;font-size:32px}.metric-foot{padding-top:6px}.gate,.runtime-status div{padding:7px 9px}.runtime-evidence{padding:9px}.runtime-code-list{gap:3px}.runtime-code-list li{padding-bottom:3px}.runtime-code-list span{display:none}.runtime-technical{display:none}.causal-flow{gap:20px}.cause{min-height:54px;padding:8px 10px;font-size:13px}.gap-action{padding:10px}.gap-action h2{margin:5px 0 3px}.gap-action p{display:none}.gap-next{margin-top:7px;padding-top:7px}.technical{padding-top:5px}.technical p{display:none}.primary,.secondary{padding:7px 12px}.keyhint{display:none}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
 </head>
@@ -70,59 +71,518 @@
     </section>
 
     <section class="view" data-view="1" aria-labelledby="analysis-title">
-      <div class="view-head"><p class="eyebrow">02 · 수치 변화 <span lang="en">Analysis</span></p><h1 id="analysis-title">차폐와 ECC가 어떤 값을 바꾸나요?</h1><p class="answer">차폐는 누적선량(TID), ECC는 단일사건 오류(SEU)의 잔여량을 낮춥니다.<span class="contract-note">검증된 합성 결과만 표시</span></p></div>
-      <div class="analysis-main">
-        <div class="scenario-bar"><span class="label">차폐</span><div class="choices" data-shield-group><button class="choice" type="button" data-shield="1">1</button><button class="choice selected" type="button" data-shield="2">2</button><button class="choice" type="button" data-shield="4">4</button><button class="choice" type="button" data-shield="5">5 mm</button></div><span class="divider"></span><span class="label">ECC 오류정정</span><div class="choices" data-ecc-group><button class="choice" type="button" data-ecc="off">미적용</button><button class="choice selected" type="button" data-ecc="on">적용</button></div><span class="scenario-summary"><strong data-scenario-name>2 mm · ECC 적용</strong> · 고정 결과</span></div>
-        <div class="insight"><strong data-insight>차폐가 두꺼워지며 합성 TID가 8 → 6 → 3.5 krad로 감소했습니다.</strong><span>실제 물리 성능 주장이 아님</span></div>
+      <div class="view-head"><p class="eyebrow">02 · 수치 변화 <span lang="en">Analysis</span></p><h1 id="analysis-title" data-analysis-title>차폐와 ECC가 어떤 값을 바꾸나요?</h1><p class="answer" data-analysis-answer>차폐는 누적선량(TID), ECC는 단일사건 오류(SEU)의 잔여량을 낮춥니다.<span class="contract-note">검증된 합성 결과만 표시</span></p></div>
+      <div class="analysis-workspace">
+        <div class="analysis-modes" aria-label="분석 결과 종류"><button class="analysis-mode selected" type="button" data-analysis-mode="radiation">방사선 수치</button><button class="analysis-mode" type="button" data-analysis-mode="runtime">Runtime 완화</button></div>
+      <div class="analysis-main" data-analysis-panel="radiation">
+        <div class="scenario-bar"><span class="label">차폐</span><div class="choices" data-shield-group><button class="choice" type="button" data-shield="1">1</button><button class="choice selected" type="button" data-shield="2">2</button><button class="choice" type="button" data-shield="4">4</button><button class="choice" type="button" data-shield="5">5 mm</button></div><span class="divider"></span><span class="label">ECC 오류정정</span><div class="choices" data-ecc-group><button class="choice" type="button" data-ecc="off">미적용</button><button class="choice selected" type="button" data-ecc="on">적용</button></div><span class="scenario-summary"><strong data-scenario-name>데이터 확인 중</strong> · <span data-case-mode>—</span></span></div>
+        <div class="data-alert" data-alert role="status">결과 데이터가 없거나 손상되어 수치를 표시하지 않습니다. 최종 판단은 HOLD입니다.</div>
+        <div class="insight"><strong data-insight>결정 엔진 결과를 확인하고 있습니다.</strong><span>실제 물리 성능 주장이 아님</span></div>
         <div class="metrics">
-          <article class="metric" id="tid-metric"><div><div class="label">차폐 후 누적선량 (TID)</div><div class="metric-value" data-tid>6.0</div><div class="metric-unit" data-tid-unit>krad(Si) · 반도체 누적선량 단위</div></div><div class="metric-foot" data-tid-foot>요구 누적선량 12.0 krad(Si) · 설계계수 2</div></article>
-          <article class="metric"><div><div class="label">완화 전 오류 (SEU)</div><div class="metric-value" data-raw>0.063072</div><div class="metric-unit">events / mission · 단일사건 오류 · 합성</div><div class="bar"><i style="width:100%"></i></div></div><div class="metric-foot">오류 발생량이며 ECC 후 잔여 오류와 구분합니다.</div></article>
-          <article class="metric"><div><div class="label">완화 후 잔여 오류 (Residual SEU)</div><div class="metric-value" data-residual>0.0063072</div><div class="metric-unit">events / mission · 합성 데모 데이터</div><div class="bar"><i data-residual-bar style="width:10%"></i></div></div><div class="metric-foot" data-ecc-foot>ECC 합성 계수 0.1 · 실제 완화 성능 아님</div></article>
+          <article class="metric scope" id="tid-metric"><div><div class="label">차폐 후 누적선량 (TID)</div><div class="metric-value" data-tid>—</div><div class="metric-unit" data-tid-unit></div></div><div class="metric-foot" data-tid-foot>결과 데이터 확인 전에는 표시하지 않습니다.</div></article>
+          <article class="metric"><div><div class="label">완화 전 오류 (SEU)</div><div class="metric-value" data-raw>—</div><div class="metric-unit">events / mission · 단일사건 오류 · 합성</div></div><div class="metric-foot">오류 발생량이며 ECC 후 잔여 오류와 구분합니다.</div></article>
+          <article class="metric"><div><div class="label">완화 후 잔여 오류 (Residual SEU)</div><div class="metric-value" data-residual>—</div><div class="metric-unit">events / mission · 합성 데모 데이터</div></div><div class="metric-foot" data-ecc-foot>결과 데이터 확인 전에는 표시하지 않습니다.</div></article>
         </div>
-        <div class="gate-strip"><div class="gate"><span>처리 상태</span><b data-processing>정상 처리 (VALID)</b></div><div class="gate"><span>수치 조건</span><b data-engineering>통과 (PASS) · 보증 아님</b></div><div class="gate"><span>최종 보증 판단</span><b class="assurance">근거 부족으로 판단 보류 (HOLD)</b></div></div>
+        <div class="gate-strip"><div class="gate"><span>처리 상태</span><b data-processing>DATA_UNAVAILABLE</b></div><div class="gate"><span>수치 조건</span><b data-engineering>평가하지 않음 (NOT_EVALUATED)</b></div><div class="gate"><span>최종 보증 판단</span><b class="assurance" data-assurance>근거 부족으로 판단 보류 (HOLD)</b></div></div>
+      </div>
+      <div class="runtime-main hidden" data-analysis-panel="runtime">
+        <div class="runtime-methods"><span class="label">완화 method</span><button class="runtime-method selected" type="button" data-runtime-method="WATCHDOG">WATCHDOG</button><button class="runtime-method" type="button" data-runtime-method="TMR">TMR</button><button class="runtime-method" type="button" data-runtime-method="SEL_PROTECTION">SEL 보호</button><span class="runtime-summary"><strong data-runtime-name>결과 확인 전</strong> · production API 결과</span></div>
+        <div class="data-alert visible" data-runtime-alert role="status">Runtime 결과가 없거나 손상되어 수치와 ID를 표시하지 않습니다. 최종 판단은 HOLD입니다.</div>
+        <div class="runtime-status" aria-label="Runtime 결과 상태"><div><span>처리 상태</span><b data-runtime-processing>DATA_UNAVAILABLE</b></div><div><span>데이터 분류</span><b data-runtime-class>UNKNOWN</b></div><div><span>수치 조건</span><b data-runtime-engineering>NOT_EVALUATED</b></div><div><span>최종 보증 판단</span><b class="hold" data-runtime-assurance>HOLD</b></div></div>
+        <div class="runtime-body">
+          <div class="runtime-projection">
+            <div class="insight"><strong data-runtime-insight>정규 runtime 결과를 확인하고 있습니다.</strong><span>실제 assurance support 아님</span></div>
+            <div class="runtime-metrics" data-runtime-metrics><article class="runtime-metric"><div class="label">결과 데이터</div><div class="runtime-metric-value">—</div><div class="metric-unit">DATA_UNAVAILABLE</div></article></div>
+          </div>
+          <aside class="runtime-evidence"><h2>Stable code → 다음 행동</h2><ul class="runtime-code-list" data-runtime-codes><li><code>DATA_UNAVAILABLE</code><span>정규 payload를 복구하고 다시 검증</span></li></ul></aside>
+        </div>
+        <div class="runtime-technical"><span>equation <strong data-runtime-equation>—</strong></span><span>result <strong data-runtime-result-id>—</strong></span><span>packet <strong data-runtime-packet-id>—</strong></span><span>policy <strong data-runtime-policy>—</strong></span><span>input <strong data-runtime-input-hash>—</strong></span><span>output <strong data-runtime-output-hash>—</strong></span></div>
+      </div>
       </div>
       <div class="view-actions"><button class="secondary" type="button" data-prev>← 검토 조건</button><button class="primary" type="button" data-next>왜 판단을 보류하나요? →</button></div>
     </section>
 
     <section class="view" data-view="2" aria-labelledby="assurance-title">
-      <div class="view-head"><p class="eyebrow">03 · 보증 판단 <span lang="en">Assurance</span></p><h1 id="assurance-title">수치 조건을 통과해도 왜 HOLD인가요?</h1><p class="answer">합성 수치는 통과했지만 실제 환경·BOM·시험 근거가 없어 판단을 보류합니다.<span class="contract-note">HOLD · 근거 부족으로 판단 보류</span></p></div>
+      <div class="view-head"><p class="eyebrow">03 · 보증 판단 <span lang="en">Assurance</span></p><h1 id="assurance-title">일부 수치 규칙이 통과해도 왜 HOLD인가요?</h1><p class="answer">결정 엔진이 실제 환경·부품 근거 공백을 차단 사유로 반환해 판단을 보류합니다.<span class="contract-note">HOLD · 근거 부족으로 판단 보류</span></p></div>
       <div class="assurance-stack">
-        <div class="causal-flow" aria-label="판정 인과관계"><div class="cause"><strong>01</strong><b>합성 수치 조건 통과</b></div><div class="cause"><strong>02</strong><b>실제 환경·BOM·시험 근거 부족</b></div><div class="cause result"><strong>03</strong><b>근거 부족으로 판단 보류 (HOLD)</b></div><div class="cause"><strong>04</strong><b>필요한 증거 4가지 확보</b></div></div>
-        <div class="gap-action-grid" aria-label="근거 공백과 다음 행동">
-          <article class="gap-action"><div><span class="gap-status">MISSING · 0건</span><h2>실제 환경 모델 출력</h2><p>출처와 실행 계보가 완전한 환경 결과가 없습니다.</p></div><div></div><div class="gap-next"><b>다음 행동 01</b>model version·입력·output hash가 있는 환경 artifact 확보</div></article>
-          <article class="gap-action"><div><span class="gap-status">합성 데이터만 있음</span><h2>승인 BOM·정확한 부품 식별</h2><p>EX-100 / P1 / LOT-A는 실제 승인 부품이 아닙니다.</p></div><div></div><div class="gap-next"><b>다음 행동 02</b>part·process·die·lot을 승인 BOM과 대조</div></article>
-          <article class="gap-action"><div><span class="gap-status">MISSING · 0건</span><h2>권리 확인 시험 원문</h2><p>TID 누적선량·SEE 단일사건 영향 시험 PDF가 없습니다.</p></div><div></div><div class="gap-next"><b>다음 행동 03</b>시험 조건·원문 위치·권리·artifact hash 연결</div></article>
-          <article class="gap-action"><div><span class="gap-status">MISSING · 0건</span><h2>파괴성 SEE 증거</h2><p>SEL·SEB·SEGR은 소자 손상 가능 사건이며 SEU로 대신할 수 없습니다.</p></div><div></div><div class="gap-next"><b>다음 행동 04</b>사건별 근거 또는 추가 시험 계획 후 독립 재검토</div></article>
-        </div>
-        <details class="technical"><summary>기술 세부정보 보기</summary><p>run <strong data-run>sim-3cc00f2c824db56d</strong> · data class <strong>SYNTHETIC</strong> · model <strong>v1.0.0 NOT_PHYSICAL</strong> · policy approval <strong>SYNTHETIC_ONLY</strong> · reason <strong data-reason>SYNTHETIC_ONLY</strong></p></details>
+        <div class="causal-flow" aria-label="판정 인과관계"><div class="cause"><strong>01</strong><b>결정 엔진의 합성 규칙 결과</b></div><div class="cause"><strong>02</strong><b>차단 근거 공백 반환</b></div><div class="cause result"><strong>03</strong><b>근거 부족으로 판단 보류 (HOLD)</b></div><div class="cause"><strong>04</strong><b>공백별 필요한 증거 확보</b></div></div>
+        <div class="gap-action-grid" data-gap-actions aria-label="근거 공백과 다음 행동"><article class="gap-action"><div><span class="gap-status">DATA_UNAVAILABLE</span><h2>결과 데이터 확인 필요</h2><p>정규 결과를 읽기 전에는 근거 상태를 표시하지 않습니다.</p></div><div></div><div class="gap-next"><b>안전 상태</b>수치와 낙관 판정을 숨기고 HOLD 유지</div></article></div>
+        <details class="technical"><summary>기술 세부정보 보기</summary><p>case <strong data-case-id>—</strong> · mode <strong data-mode>—</strong> · run <strong data-run>—</strong> · result <strong data-result-id>—</strong> · EvidencePacket <strong data-packet-id>—</strong> · data class <strong data-data-class>UNKNOWN</strong> · policy <strong data-policy>—</strong></p><p>Change Impact <strong data-impact-id>—</strong></p><ul class="impact-list" data-invalidations><li>정규 결과 확인 전에는 invalidation을 표시하지 않습니다.</li></ul></details>
       </div>
       <div class="view-actions"><button class="secondary" type="button" data-prev>← 수치 변화</button><button class="primary" type="button" id="reset-end">데모 처음부터</button></div>
     </section>
   </main>
 
-  <footer class="app-footer"><span>프로토타입 · backend/network 없음 · 실제 물리 보증 아님</span><strong data-footer-state>2 mm · ECC 적용 · 최종 HOLD</strong></footer>
+  <footer class="app-footer"><span>프로토타입 · backend/network 없음 · 실제 물리 보증 아님</span><strong data-footer-state>결과 확인 전 · 최종 HOLD</strong></footer>
 
+  <script src="data/mvp-product-result.js"></script>
   <script>
-    // Immutable build-time snapshots from spectra_sim. The browser performs no physics, interpolation, or decision logic.
-    const runs=Object.freeze({
-      '1-on':{shield:'1',ecc:'on',tid:'8.0',required:'16.0',raw:'0.063072',residual:'0.0063072',processing:'VALID',engineering:'PASS · numeric only',run:'sim-d5a72077d684f459',reason:'SYNTHETIC_ONLY'},
-      '2-on':{shield:'2',ecc:'on',tid:'6.0',required:'12.0',raw:'0.063072',residual:'0.0063072',processing:'VALID',engineering:'PASS · numeric only',run:'sim-3cc00f2c824db56d',reason:'SYNTHETIC_ONLY'},
-      '4-on':{shield:'4',ecc:'on',tid:'3.5',required:'7.0',raw:'0.063072',residual:'0.0063072',processing:'VALID',engineering:'PASS · numeric only',run:'sim-ddf29f8ab807196d',reason:'SYNTHETIC_ONLY'},
-      '2-off':{shield:'2',ecc:'off',tid:'6.0',required:'12.0',raw:'0.063072',residual:'0.063072',processing:'VALID',engineering:'PASS · numeric only',run:'sim-b74d7317282b2a82',reason:'SYNTHETIC_ONLY'},
-      '5-on':{shield:'5',ecc:'on',tid:null,required:null,raw:null,residual:null,processing:'OUT_OF_MODEL_SCOPE',engineering:'NOT_EVALUATED',run:'sim-27e031f2388ab6fc',reason:'OUT_OF_MODEL_SCOPE'}
-    });
-    const state={step:0,shield:'2',ecc:'on',lastChange:'shield'};
-    const all=s=>[...document.querySelectorAll(s)], one=s=>document.querySelector(s);
-    function current(){return runs[`${state.shield}-${state.ecc}`]||runs['5-on']}
-    function setStep(value){state.step=Math.max(0,Math.min(2,value));all('[data-view]').forEach((v,i)=>v.classList.toggle('active',i===state.step));all('[data-step]').forEach((b,i)=>{b.classList.toggle('active',i===state.step);b.classList.toggle('done',i<state.step);b.setAttribute('aria-current',i===state.step?'step':'false')})}
-    function render(){const r=current(),scope=r.tid===null;all('[data-shield]').forEach(b=>b.classList.toggle('selected',b.dataset.shield===state.shield));all('[data-ecc]').forEach(b=>{b.classList.toggle('selected',b.dataset.ecc===state.ecc);b.disabled=state.shield!=='2'&&b.dataset.ecc==='off'});all('[data-ecc-note]').forEach(n=>n.textContent=state.shield==='2'?'ECC 적용/미적용 비교는 검증된 2 mm 고정 결과입니다.':'이 두께에서는 검증된 ECC 적용 결과만 제공합니다.');all('[data-scenario-name]').forEach(n=>n.textContent=`${state.shield} mm · ECC ${state.ecc==='on'?'적용':'미적용'}`);all('[data-tid]').forEach(n=>n.textContent=r.tid??'계산 안 함');all('[data-tid-unit]').forEach(n=>n.textContent=scope?'':'krad(Si) · 반도체 누적선량 단위');all('[data-tid-foot]').forEach(n=>n.textContent=scope?'지원 범위 밖 · 보간/외삽 없이 값 생성 금지':`요구 누적선량 ${r.required} krad(Si) · 설계계수 2`);all('[data-raw]').forEach(n=>n.textContent=r.raw??'—');all('[data-residual]').forEach(n=>n.textContent=r.residual??'—');all('[data-residual-bar]').forEach(n=>n.style.width=scope?'0%':state.ecc==='on'?'10%':'100%');all('[data-ecc-foot]').forEach(n=>n.textContent=scope?'평가하지 않음 (NOT_EVALUATED) · 값 생성 안 함':state.ecc==='on'?'ECC 합성 계수 0.1 · 실제 완화 성능 아님':'ECC 미적용 · 완화 전과 잔여 오류가 같음');all('[data-processing]').forEach(n=>n.textContent=scope?'지원 범위 밖 (OUT_OF_MODEL_SCOPE)':'정상 처리 (VALID)');all('[data-engineering]').forEach(n=>n.textContent=scope?'평가하지 않음 (NOT_EVALUATED)':'통과 (PASS) · 보증 아님');const insight=scope?'지원 범위를 벗어나 값을 추정하지 않았습니다.':state.lastChange==='ecc'?(state.ecc==='on'?'ECC 적용 후 합성 잔여 SEU가 0.063072 → 0.0063072로 감소했습니다.':'ECC 미적용 시 합성 잔여 SEU는 0.063072로 완화 전과 같습니다.'):'차폐가 두꺼워지며 합성 TID가 8 → 6 → 3.5 krad로 감소했습니다.';all('[data-insight]').forEach(n=>n.textContent=insight);all('[data-run]').forEach(n=>n.textContent=r.run);all('[data-reason]').forEach(n=>n.textContent=r.reason);all('[data-footer-state]').forEach(n=>n.textContent=`${state.shield} mm · ECC ${state.ecc==='on'?'적용':'미적용'} · 최종 HOLD`);one('#tid-metric').classList.toggle('scope',scope)}
-    function setShield(value){state.shield=value;state.ecc=value==='2'?state.ecc:'on';state.lastChange='shield';render()}
-    function setEcc(value){if(state.shield!=='2'&&value==='off')return;state.ecc=value;state.lastChange='ecc';render()}
-    function reset(){state.step=0;state.shield='2';state.ecc='on';state.lastChange='shield';setStep(0);render()}
-    all('[data-step]').forEach(b=>b.addEventListener('click',()=>setStep(Number(b.dataset.step))));all('[data-next]').forEach(b=>b.addEventListener('click',()=>setStep(state.step+1)));all('[data-prev]').forEach(b=>b.addEventListener('click',()=>setStep(state.step-1)));all('[data-shield]').forEach(b=>b.addEventListener('click',()=>setShield(b.dataset.shield)));all('[data-ecc]').forEach(b=>b.addEventListener('click',()=>setEcc(b.dataset.ecc)));one('#reset').addEventListener('click',reset);one('#reset-end').addEventListener('click',reset);
-    document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(e.target.tagName))return;if(['1','2','3'].includes(e.key)){setStep(Number(e.key)-1)}else if(e.key.toLowerCase()==='r'){reset()}else if(e.altKey&&e.key==='ArrowRight'){setStep(state.step+1)}else if(e.altKey&&e.key==='ArrowLeft'){setStep(state.step-1)}});
-    window.addEventListener('error',()=>{all('[data-footer-state]').forEach(n=>n.textContent='안전 fallback · 최종 판단 HOLD')});
-    reset();
+    // Display binding only: all metrics, statuses, gaps and IDs originate in the generated payload.
+    (() => {
+      'use strict';
+
+      const fallbackModel = reason => ({
+        ready: false,
+        reason: reason || 'DATA_UNAVAILABLE',
+        dataClass: 'UNKNOWN',
+        caseId: '—',
+        runId: '—',
+        assurance: 'HOLD',
+        engineering: 'NOT_EVALUATED',
+        selections: {},
+        gaps: [],
+        impact: {id: '—', invalidations: []},
+        runtime: runtimeFallbackCollection(reason)
+      });
+
+      const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+      const metricValue = quantity => isObject(quantity) && typeof quantity.value === 'number' ? quantity.value : null;
+      const runtimeMethods = Object.freeze(['WATCHDOG', 'TMR', 'SEL_PROTECTION']);
+      const hashPattern = /^sha256:[0-9a-f]{64}$/;
+      const resultIdPattern = /^runtime-[0-9a-f]{16}$/;
+
+      function sha256Hex(text) {
+        const bytes = new TextEncoder().encode(text);
+        const paddedLength = Math.ceil((bytes.length + 9) / 64) * 64;
+        const message = new Uint8Array(paddedLength);
+        message.set(bytes); message[bytes.length] = 0x80;
+        let bitLength = BigInt(bytes.length) * 8n;
+        for (let index = 0; index < 8; index += 1) {
+          message[paddedLength - 1 - index] = Number(bitLength & 0xffn);
+          bitLength >>= 8n;
+        }
+        const constants = [
+          0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+          0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+          0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+          0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+          0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+          0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+          0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+          0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+        ];
+        const state = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+        const words = new Uint32Array(64);
+        const rotateRight = (value, amount) => (value >>> amount) | (value << (32 - amount));
+        for (let offset = 0; offset < message.length; offset += 64) {
+          const view = new DataView(message.buffer, offset, 64);
+          for (let index = 0; index < 16; index += 1) words[index] = view.getUint32(index * 4, false);
+          for (let index = 16; index < 64; index += 1) {
+            const s0 = rotateRight(words[index - 15], 7) ^ rotateRight(words[index - 15], 18) ^ (words[index - 15] >>> 3);
+            const s1 = rotateRight(words[index - 2], 17) ^ rotateRight(words[index - 2], 19) ^ (words[index - 2] >>> 10);
+            words[index] = (words[index - 16] + s0 + words[index - 7] + s1) >>> 0;
+          }
+          let [a,b,c,d,e,f,g,h] = state;
+          for (let index = 0; index < 64; index += 1) {
+            const sum1 = rotateRight(e, 6) ^ rotateRight(e, 11) ^ rotateRight(e, 25);
+            const choose = (e & f) ^ (~e & g);
+            const temp1 = (h + sum1 + choose + constants[index] + words[index]) >>> 0;
+            const sum0 = rotateRight(a, 2) ^ rotateRight(a, 13) ^ rotateRight(a, 22);
+            const majority = (a & b) ^ (a & c) ^ (b & c);
+            const temp2 = (sum0 + majority) >>> 0;
+            h=g; g=f; f=e; e=(d+temp1)>>>0; d=c; c=b; b=a; a=(temp1+temp2)>>>0;
+          }
+          [a,b,c,d,e,f,g,h].forEach((value, index) => { state[index] = (state[index] + value) >>> 0; });
+        }
+        return state.map(value => value.toString(16).padStart(8, '0')).join('');
+      }
+
+      function jsonDeepExact(left, right) {
+        if (typeof left !== typeof right) return false;
+        if (typeof left === 'number') return Object.is(left, right);
+        if (left === null || right === null || typeof left !== 'object') return left === right;
+        if (Array.isArray(left) || Array.isArray(right)) {
+          return Array.isArray(left) && Array.isArray(right) && left.length === right.length && left.every((item, index) => jsonDeepExact(item, right[index]));
+        }
+        const leftKeys = Object.keys(left).sort();
+        const rightKeys = Object.keys(right).sort();
+        return leftKeys.length === rightKeys.length && leftKeys.every((key, index) => key === rightKeys[index] && jsonDeepExact(left[key], right[key]));
+      }
+
+      function runtimePreimageHash(preimage) {
+        if (typeof preimage !== 'string') throw new Error('RUNTIME_PREIMAGE_MISSING');
+        return `sha256:${sha256Hex(preimage)}`;
+      }
+
+      function verifyRuntimePreimage(result, preimage) {
+        if (typeof preimage !== 'string' || preimage.length === 0) throw new Error('RUNTIME_PREIMAGE_MISSING');
+        const body = Object.fromEntries(Object.entries(result).filter(([key]) => key !== 'output_hash'));
+        let parsed;
+        try { parsed = JSON.parse(preimage); }
+        catch (error) { throw new Error('RUNTIME_PREIMAGE_JSON_INVALID'); }
+        if (!jsonDeepExact(parsed, body)) throw new Error('RUNTIME_PREIMAGE_VALUE_MISMATCH');
+        if (runtimePreimageHash(preimage) !== result.output_hash) throw new Error('RUNTIME_PREIMAGE_HASH_MISMATCH');
+      }
+
+      function runtimeFallbackRecord(method, reason) {
+        return {ready:false, reason:reason || 'DATA_UNAVAILABLE', method, equationId:'—', resultId:'—', packetId:'—', processing:'DATA_UNAVAILABLE', engineering:'NOT_EVALUATED', assurance:'HOLD', dataClass:'UNKNOWN', projection:null, controlInputs:{}, policy:null, codes:[], inputHash:'—', outputHash:'—'};
+      }
+
+      function runtimeFallbackCollection(reason) {
+        return {ready:false, reason:reason || 'RUNTIME_COLLECTION_UNAVAILABLE', records:Object.fromEntries(runtimeMethods.map(method => [method, runtimeFallbackRecord(method, reason)]))};
+      }
+
+      function resolveRuntimeRecord(entry, expectedMethod) {
+        try {
+          if (!isObject(entry) || !isObject(entry.control_inputs) || !isObject(entry.integrity) || !isObject(entry.result)) throw new Error('RUNTIME_RECORD_MISSING');
+          const result = entry.result;
+          if (result.schema_version !== '1.0.0' || result.runtime_contract_version !== '1.0.0') throw new Error('RUNTIME_SCHEMA_VERSION_INVALID');
+          if (!isObject(result.engine) || result.engine.name !== 'SPECTRA_RUNTIME_MITIGATION_CALCULATOR' || result.engine.version !== '1.0.0') throw new Error('RUNTIME_ENGINE_INVALID');
+          if (result.method !== expectedMethod || !runtimeMethods.includes(result.method)) throw new Error('RUNTIME_METHOD_INVALID');
+          if (typeof result.equation_id !== 'string' || !result.equation_id || !resultIdPattern.test(result.result_id)) throw new Error('RUNTIME_ID_INVALID');
+          if (result.processing_status !== 'VALID' || result.engineering_gate !== 'NOT_EVALUATED' || result.assurance_decision !== 'HOLD' || result.data_class !== 'SYNTHETIC') throw new Error('RUNTIME_STATE_INVALID');
+          if (!isObject(result.computed_projection) || result.computed_projection.method !== expectedMethod) throw new Error('RUNTIME_PROJECTION_INVALID');
+          if (!isObject(result.declared_projection_comparison) || result.declared_projection_comparison.matches !== true || !Array.isArray(result.declared_projection_comparison.mismatched_fields) || result.declared_projection_comparison.mismatched_fields.length !== 0) throw new Error('RUNTIME_PROJECTION_COMPARISON_INVALID');
+          if (!Array.isArray(result.stable_error_codes) || result.stable_error_codes.some(code => typeof code !== 'string' || !code)) throw new Error('RUNTIME_CODES_INVALID');
+          if (!hashPattern.test(result.input_hash) || !hashPattern.test(result.output_hash)) throw new Error('RUNTIME_HASH_INVALID');
+          if (entry.integrity.result_id !== result.result_id || entry.integrity.input_hash !== result.input_hash || entry.integrity.output_hash !== result.output_hash) throw new Error('RUNTIME_BINDING_INTEGRITY_INVALID');
+          verifyRuntimePreimage(result, entry.integrity.output_hash_preimage);
+          if (!isObject(result.identifiers) || !isObject(result.policy_evaluation) || !Array.isArray(result.policy_evaluation.rule_results)) throw new Error('RUNTIME_POLICY_INVALID');
+          const numericValues = Object.values(result.computed_projection).filter(value => typeof value === 'number');
+          if (numericValues.some(value => !Number.isFinite(value))) throw new Error('RUNTIME_NUMERIC_INVALID');
+          if (expectedMethod === 'TMR' && !Number.isFinite(entry.control_inputs.replica_failure_probability)) throw new Error('RUNTIME_CONTROL_INPUT_INVALID');
+          return {
+            ready:true,
+            reason:'',
+            method:result.method,
+            equationId:result.equation_id,
+            resultId:result.result_id,
+            packetId:result.identifiers.packet_id,
+            processing:result.processing_status,
+            engineering:result.engineering_gate,
+            assurance:result.assurance_decision,
+            dataClass:result.data_class,
+            projection:result.computed_projection,
+            controlInputs:entry.control_inputs,
+            policy:result.policy_evaluation,
+            codes:result.stable_error_codes,
+            inputHash:result.input_hash,
+            outputHash:result.output_hash
+          };
+        } catch (error) {
+          return runtimeFallbackRecord(expectedMethod, error instanceof Error ? error.message : 'RUNTIME_RECORD_INVALID');
+        }
+      }
+
+      function resolveRuntimeCollection(payload) {
+        const collection = isObject(payload) ? payload.runtime_mitigation_results : null;
+        if (!isObject(collection) || Object.keys(collection).sort().join('|') !== [...runtimeMethods].sort().join('|')) return runtimeFallbackCollection('RUNTIME_COLLECTION_INVALID');
+        return {ready:true, reason:'', records:Object.fromEntries(runtimeMethods.map(method => [method, resolveRuntimeRecord(collection[method], method)]))};
+      }
+
+      function getRuntimeRecord(productModel, method) {
+        return productModel && productModel.runtime && productModel.runtime.records[method] || runtimeFallbackRecord(method, 'RUNTIME_SELECTION_UNAVAILABLE');
+      }
+
+      function runtimeDisplayMetrics(record) {
+        if (!record.ready || !isObject(record.projection)) return [];
+        if (record.method === 'WATCHDOG') return [
+          ['False activation', record.projection.false_positive_activation_count, '회 / evaluation window'],
+          ['Reboot', record.projection.reboot_count_total, '회 / evaluation window'],
+          ['Downtime', record.projection.downtime_total_seconds, 'seconds']
+        ];
+        if (record.method === 'TMR') return [
+          ['Replica failure p', record.controlInputs.replica_failure_probability, '합성 입력'],
+          ['System failure probability', record.projection.system_failure_probability, '정규 계산 projection']
+        ];
+        if (record.method === 'SEL_PROTECTION') return [
+          ['True + false activation', `${record.projection.true_sel_activation_count} + ${record.projection.false_trip_activation_count}`, '회 / evaluation window'],
+          ['Power cycles', record.projection.power_cycle_count_total, '회 / evaluation window'],
+          ['Downtime', record.projection.downtime_total_seconds, 'seconds']
+        ];
+        return [];
+      }
+
+      function mvpRecord(scenario, mode, top) {
+        const packet = scenario.evidence_packet;
+        return {
+          mode,
+          scenarioId: scenario.scenario_id,
+          resultId: scenario.result_id,
+          runId: scenario.result_id,
+          packetId: packet.packet_id,
+          dataClass: top.data_class,
+          policy: scenario.policy_approval_status,
+          processing: packet.decision.processing_status,
+          engineering: scenario.engineering_gate,
+          assurance: scenario.assurance_decision,
+          tid: metricValue(scenario.metrics.shielded_tid),
+          requiredTid: metricValue(scenario.metrics.required_tid),
+          rawSeu: metricValue(scenario.metrics.raw_seu),
+          residualSeu: metricValue(scenario.metrics.residual_logical_errors),
+          gaps: scenario.evidence_gaps
+        };
+      }
+
+      function scopeRecord(entry) {
+        const result = entry.result;
+        return {
+          mode: 'SCOPE SNAPSHOT',
+          scenarioId: entry.scenario_id,
+          resultId: result.run_id,
+          runId: result.run_id,
+          packetId: result.evidence_packet && result.evidence_packet.packet_id || '—',
+          dataClass: result.data_class,
+          policy: 'SYNTHETIC_ONLY',
+          processing: result.processing_status,
+          engineering: result.engineering_gate,
+          assurance: result.assurance_decision,
+          tid: metricValue(result.metrics.shielded_tid),
+          requiredTid: metricValue(result.metrics.required_tid),
+          rawSeu: metricValue(result.metrics.raw_seu),
+          residualSeu: metricValue(result.metrics.residual_seu),
+          gaps: result.evidence_gaps
+        };
+      }
+
+      function resolveProductData(payload) {
+        try {
+          if (!isObject(payload) || payload.schema_version !== '1.0.0' || payload.data_class !== 'SYNTHETIC') throw new Error('PRODUCT_PAYLOAD_INVALID');
+          const top = payload.mvp_decision;
+          const scope = payload.scope_results;
+          if (!isObject(top) || !isObject(scope) || top.data_class !== 'SYNTHETIC' || top.processing_status !== 'VALID' || top.assurance_decision !== 'HOLD') throw new Error('MVP_RESULT_INVALID');
+          if (!isObject(top.baseline) || !isObject(top.variant) || top.baseline.assurance_decision !== 'HOLD' || top.variant.assurance_decision !== 'HOLD') throw new Error('MVP_SCENARIOS_INVALID');
+          for (const key of ['1-on', '4-on', '5-on']) {
+            if (!isObject(scope[key]) || !isObject(scope[key].result) || scope[key].result.assurance_decision !== 'HOLD') throw new Error('SCOPE_RESULT_INVALID');
+          }
+          const selections = {
+            '1-on': scopeRecord(scope['1-on']),
+            '2-off': mvpRecord(top.baseline, 'BASELINE', top),
+            '2-on': mvpRecord(top.variant, 'VARIANT', top),
+            '4-on': scopeRecord(scope['4-on']),
+            '5-on': scopeRecord(scope['5-on'])
+          };
+          const outside = selections['5-on'];
+          if (outside.processing !== 'OUT_OF_MODEL_SCOPE' || outside.engineering !== 'NOT_EVALUATED' || [outside.tid, outside.requiredTid, outside.rawSeu, outside.residualSeu].some(value => value !== null)) throw new Error('FAIL_CLOSED_SCOPE_INVALID');
+          if (Object.values(selections).some(item => item.assurance !== 'HOLD')) throw new Error('ASSURANCE_INVARIANT_INVALID');
+          const impact = top.change_impact;
+          if (!isObject(impact) || !Array.isArray(impact.invalidated_evidence)) throw new Error('CHANGE_IMPACT_INVALID');
+          return {
+            ready: true,
+            reason: '',
+            dataClass: top.data_class,
+            caseId: top.case_id,
+            runId: top.run_id,
+            assurance: top.assurance_decision,
+            engineering: top.engineering_gate,
+            selections,
+            gaps: top.variant.evidence_gaps.filter(gap => gap.blocking === true),
+            impact: {id: impact.impact_id, invalidations: impact.invalidated_evidence},
+            runtime: resolveRuntimeCollection(payload)
+          };
+        } catch (error) {
+          return fallbackModel(error instanceof Error ? error.message : 'DATA_UNAVAILABLE');
+        }
+      }
+
+      globalThis.SPECTRA_PRODUCT_BINDING = Object.freeze({resolveProductData, resolveRuntimeCollection, getRuntimeRecord, runtimeDisplayMetrics, jsonDeepExact, runtimePreimageHash, verifyRuntimePreimage, fallbackModel});
+      if (typeof document === 'undefined') return;
+
+      let model = resolveProductData(globalThis.SPECTRA_MVP_PRODUCT_RESULT);
+      const state = {step: 0, shield: '2', ecc: 'on', lastChange: 'shield', analysisMode: 'radiation', runtimeMethod: 'WATCHDOG'};
+      const all = selector => [...document.querySelectorAll(selector)];
+      const one = selector => document.querySelector(selector);
+      const formatTid = value => value === null ? '—' : (Number.isInteger(value) ? value.toFixed(1) : String(value));
+      const formatMetric = value => value === null ? '—' : String(value);
+      const current = () => model.selections[`${state.shield}-${state.ecc}`] || null;
+
+      const gapActions = Object.freeze({
+        STAGE3_INPUT_UNAVAILABLE: ['실제 환경 입력 없음', 'provenance-complete 환경 출력 확보'],
+        STAGE4_INPUT_UNAVAILABLE: ['정확한 부품 근거 없음', '승인 BOM과 part/process/die/lot 및 시험 원문 연결'],
+        SYNTHETIC_ONLY: ['합성 데이터만 있음', '권리와 hash가 확인된 실제 evidence로 교체'],
+        INDEPENDENT_ASSURANCE_PENDING: ['독립 보증 검토 대기', '필요 근거를 채운 뒤 독립 assurance 재검토']
+      });
+      const runtimeActions = Object.freeze({
+        BLOCKING_EVIDENCE_GAP: '차단 evidence gap의 소유자와 해소 조건 확인',
+        MITIGATION_APPLICABILITY_UNRESOLVED: '임무·부품에 대한 완화 applicability 근거 연결',
+        NON_EVIDENTIARY_MITIGATION: '권리·출처가 확인된 실제 mitigation 검증자료 확보',
+        NON_EVIDENTIARY_POLICY: '합성 policy를 승인 가능한 실제 policy pack으로 교체',
+        POLICY_NOT_APPROVED: '정확한 scope와 content hash에 대한 정책 승인 확보'
+      });
+
+      function setText(selector, value) { all(selector).forEach(node => { node.textContent = value; }); }
+      function setStep(value) {
+        state.step = Math.max(0, Math.min(2, value));
+        all('[data-view]').forEach((view, index) => view.classList.toggle('active', index === state.step));
+        all('[data-step]').forEach((button, index) => {
+          button.classList.toggle('active', index === state.step);
+          button.classList.toggle('done', index < state.step);
+          button.setAttribute('aria-current', index === state.step ? 'step' : 'false');
+        });
+      }
+
+      function renderGaps() {
+        const container = one('[data-gap-actions]');
+        container.replaceChildren();
+        if (!model.ready || model.gaps.length === 0) {
+          const article = document.createElement('article');
+          article.className = 'gap-action';
+          const status = document.createElement('span'); status.className = 'gap-status'; status.textContent = 'DATA_UNAVAILABLE';
+          const title = document.createElement('h2'); title.textContent = '결과 데이터 확인 필요';
+          const next = document.createElement('div'); next.className = 'gap-next'; next.textContent = '수치와 낙관 판정을 숨기고 HOLD 유지';
+          article.append(status, title, next); container.append(article); return;
+        }
+        model.gaps.forEach((gap, index) => {
+          const action = gapActions[gap.gap_code] || ['차단 근거 공백', '근거 소유자와 해소 조건 확인'];
+          const article = document.createElement('article'); article.className = 'gap-action';
+          const top = document.createElement('div');
+          const status = document.createElement('span'); status.className = 'gap-status'; status.textContent = gap.gap_code;
+          const title = document.createElement('h2'); title.textContent = action[0];
+          const description = document.createElement('p'); description.textContent = gap.description;
+          top.append(status, title, description);
+          const spacer = document.createElement('div');
+          const next = document.createElement('div'); next.className = 'gap-next';
+          const label = document.createElement('b'); label.textContent = `다음 행동 ${String(index + 1).padStart(2, '0')}`;
+          next.append(label, document.createTextNode(action[1])); article.append(top, spacer, next); container.append(article);
+        });
+      }
+
+      function renderInvalidations() {
+        const list = one('[data-invalidations]');
+        list.replaceChildren();
+        const entries = model.ready ? model.impact.invalidations : [];
+        if (entries.length === 0) {
+          const item = document.createElement('li'); item.textContent = '정규 결과 확인 전에는 invalidation을 표시하지 않습니다.'; list.append(item); return;
+        }
+        entries.forEach(entry => {
+          const item = document.createElement('li');
+          item.textContent = `${entry.evidence_id} · ${entry.reason_code} · ${entry.invalidated_for.join(', ')}`;
+          list.append(item);
+        });
+      }
+
+      function renderRuntimeMetrics(record) {
+        const container = one('[data-runtime-metrics]');
+        container.replaceChildren();
+        const metrics = runtimeDisplayMetrics(record);
+        if (metrics.length === 0) {
+          const article = document.createElement('article'); article.className = 'runtime-metric';
+          const label = document.createElement('div'); label.className = 'label'; label.textContent = '결과 데이터';
+          const value = document.createElement('div'); value.className = 'runtime-metric-value'; value.textContent = '—';
+          const unit = document.createElement('div'); unit.className = 'metric-unit'; unit.textContent = 'DATA_UNAVAILABLE';
+          article.append(label, value, unit); container.append(article); return;
+        }
+        metrics.forEach(([metricLabel, metricValue, metricUnit]) => {
+          const article = document.createElement('article'); article.className = 'runtime-metric';
+          const label = document.createElement('div'); label.className = 'label'; label.textContent = metricLabel;
+          const value = document.createElement('div'); value.className = 'runtime-metric-value'; value.textContent = String(metricValue);
+          const unit = document.createElement('div'); unit.className = 'metric-unit'; unit.textContent = metricUnit;
+          article.append(label, value, unit); container.append(article);
+        });
+      }
+
+      function renderRuntimeCodes(record) {
+        const list = one('[data-runtime-codes]');
+        list.replaceChildren();
+        const codes = record.ready ? record.codes : ['DATA_UNAVAILABLE'];
+        codes.forEach(code => {
+          const item = document.createElement('li');
+          const name = document.createElement('code'); name.textContent = code;
+          const action = document.createElement('span'); action.textContent = runtimeActions[code] || (code === 'DATA_UNAVAILABLE' ? '정규 payload를 복구하고 다시 검증' : 'stable code의 소유 계약에서 해소 조건 확인');
+          item.append(name, action); list.append(item);
+        });
+      }
+
+      function renderRuntime() {
+        const record = getRuntimeRecord(model, state.runtimeMethod);
+        const safe = !record.ready;
+        all('[data-runtime-alert]').forEach(node => node.classList.toggle('visible', safe));
+        all('[data-runtime-method]').forEach(button => { button.classList.toggle('selected', button.dataset.runtimeMethod === state.runtimeMethod); button.disabled = !model.runtime; });
+        setText('[data-runtime-name]', safe ? '결과 사용 불가' : record.method);
+        setText('[data-runtime-processing]', safe ? 'DATA_UNAVAILABLE' : record.processing);
+        setText('[data-runtime-class]', safe ? 'UNKNOWN' : `${record.dataClass} · 실제 증거 아님`);
+        setText('[data-runtime-engineering]', safe ? 'NOT_EVALUATED' : `${record.engineering} · 보증 아님`);
+        setText('[data-runtime-assurance]', 'HOLD · 근거 부족');
+        setText('[data-runtime-insight]', safe ? 'Runtime 결과가 없거나 손상되어 값을 표시하지 않습니다.' : `${record.method} 계산은 ${record.processing}이지만 합성 입력과 증거 공백 때문에 assurance는 ${record.assurance}입니다.`);
+        setText('[data-runtime-equation]', safe ? '—' : record.equationId);
+        setText('[data-runtime-result-id]', safe ? '—' : record.resultId);
+        setText('[data-runtime-packet-id]', safe ? '—' : record.packetId);
+        setText('[data-runtime-policy]', safe || !record.policy ? '—' : `${record.policy.status} · approval ${record.policy.approval_eligible} · evidence ${record.policy.evidence_eligible}`);
+        setText('[data-runtime-input-hash]', safe ? '—' : record.inputHash);
+        setText('[data-runtime-output-hash]', safe ? '—' : record.outputHash);
+        renderRuntimeMetrics(record); renderRuntimeCodes(record);
+      }
+
+      function renderAnalysisMode() {
+        const runtimeMode = state.analysisMode === 'runtime';
+        all('[data-analysis-mode]').forEach(button => button.classList.toggle('selected', button.dataset.analysisMode === state.analysisMode));
+        all('[data-analysis-panel]').forEach(panel => panel.classList.toggle('hidden', panel.dataset.analysisPanel !== state.analysisMode));
+        setText('[data-analysis-title]', runtimeMode ? '세 가지 완화는 어떤 운영 결과를 만들까요?' : '차폐와 ECC가 어떤 값을 바꾸나요?');
+        const answer = one('[data-analysis-answer]');
+        answer.firstChild.textContent = runtimeMode ? 'Production API의 WATCHDOG·TMR·SEL 보호 합성 결과를 그대로 표시합니다.' : '차폐는 누적선량(TID), ECC는 단일사건 오류(SEU)의 잔여량을 낮춥니다.';
+        if (runtimeMode) {
+          const record = getRuntimeRecord(model, state.runtimeMethod);
+          setText('[data-footer-state]', record.ready ? `${record.method} · ${record.engineering} · 최종 ${record.assurance}` : 'Runtime 안전 fallback · 최종 HOLD');
+        }
+      }
+
+      function render() {
+        const result = current();
+        const safe = !model.ready || !result;
+        const outside = safe || result.tid === null;
+        all('[data-alert]').forEach(node => node.classList.toggle('visible', safe));
+        all('[data-shield]').forEach(button => { button.classList.toggle('selected', !safe && button.dataset.shield === state.shield); button.disabled = safe; });
+        all('[data-ecc]').forEach(button => { button.classList.toggle('selected', !safe && button.dataset.ecc === state.ecc); button.disabled = safe || (state.shield !== '2' && button.dataset.ecc === 'off'); });
+        setText('[data-ecc-note]', state.shield === '2' ? 'ECC 적용/미적용 비교는 결정 엔진 baseline/variant 결과입니다.' : '이 두께에서는 생성된 ECC 적용 scope 결과만 제공합니다.');
+        setText('[data-scenario-name]', safe ? '결과 데이터 없음' : `${state.shield} mm · ECC ${state.ecc === 'on' ? '적용' : '미적용'}`);
+        setText('[data-case-mode]', safe ? 'SAFE FALLBACK' : `${model.caseId} · ${result.mode}`);
+        setText('[data-tid]', safe ? '—' : formatTid(result.tid));
+        setText('[data-tid-unit]', outside ? '' : 'krad(Si) · 반도체 누적선량 단위');
+        setText('[data-tid-foot]', outside ? '지원 범위 밖 또는 데이터 없음 · 값을 생성하지 않음' : `요구 누적선량 ${formatTid(result.requiredTid)} krad(Si) · 엔진 결과`);
+        setText('[data-raw]', safe ? '—' : formatMetric(result.rawSeu));
+        setText('[data-residual]', safe ? '—' : formatMetric(result.residualSeu));
+        setText('[data-ecc-foot]', outside ? '평가하지 않음 (NOT_EVALUATED) · 값 생성 안 함' : `${result.mode} 결정 엔진 결과 · 실제 완화 성능 아님`);
+        setText('[data-processing]', safe ? 'DATA_UNAVAILABLE' : result.processing);
+        setText('[data-engineering]', safe ? '평가하지 않음 (NOT_EVALUATED)' : `${result.engineering} · 보증 아님`);
+        setText('[data-assurance]', '근거 부족으로 판단 보류 (HOLD)');
+        let insight = '결과 데이터가 없거나 손상되어 값을 표시하지 않습니다.';
+        if (!safe && outside) insight = '지원 범위를 벗어나 값을 추정하지 않았습니다.';
+        else if (!safe && state.lastChange === 'ecc') {
+          const before = model.selections['2-off'].residualSeu;
+          const after = model.selections['2-on'].residualSeu;
+          insight = state.ecc === 'on' ? `결정 엔진의 합성 잔여 SEU 비교: ${formatMetric(before)} → ${formatMetric(after)}.` : `ECC 미적용 baseline의 합성 잔여 SEU: ${formatMetric(before)}.`;
+        } else if (!safe) {
+          insight = `합성 TID 비교: 1 mm ${formatTid(model.selections['1-on'].tid)} → 2 mm ${formatTid(model.selections['2-on'].tid)} → 4 mm ${formatTid(model.selections['4-on'].tid)} krad(Si).`;
+        }
+        setText('[data-insight]', insight);
+        setText('[data-case-id]', safe ? '—' : model.caseId);
+        setText('[data-mode]', safe ? 'SAFE FALLBACK' : result.mode);
+        setText('[data-run]', safe ? '—' : model.runId);
+        setText('[data-result-id]', safe ? '—' : result.resultId);
+        setText('[data-packet-id]', safe ? '—' : result.packetId);
+        setText('[data-data-class]', safe ? 'UNKNOWN' : result.dataClass);
+        setText('[data-policy]', safe ? '—' : result.policy);
+        setText('[data-impact-id]', safe ? '—' : model.impact.id);
+        setText('[data-footer-state]', safe ? '안전 fallback · 최종 HOLD' : `${state.shield} mm · ECC ${state.ecc === 'on' ? '적용' : '미적용'} · 최종 ${result.assurance}`);
+        one('#tid-metric').classList.toggle('scope', outside);
+        renderGaps(); renderInvalidations(); renderRuntime(); renderAnalysisMode();
+      }
+
+      function setShield(value) { if (!model.ready) return; state.shield = value; state.ecc = value === '2' ? state.ecc : 'on'; state.lastChange = 'shield'; render(); }
+      function setEcc(value) { if (!model.ready || (state.shield !== '2' && value === 'off')) return; state.ecc = value; state.lastChange = 'ecc'; render(); }
+      function setAnalysisMode(value) { if (!['radiation', 'runtime'].includes(value)) return; state.analysisMode = value; render(); }
+      function setRuntimeMethod(value) { if (!runtimeMethods.includes(value)) return; state.runtimeMethod = value; render(); }
+      function reset() { state.step = 0; state.shield = '2'; state.ecc = 'on'; state.lastChange = 'shield'; state.analysisMode = 'radiation'; state.runtimeMethod = 'WATCHDOG'; setStep(0); render(); }
+      function activateFallback(reason) { model = fallbackModel(reason); render(); }
+
+      all('[data-step]').forEach(button => button.addEventListener('click', () => setStep(Number(button.dataset.step))));
+      all('[data-next]').forEach(button => button.addEventListener('click', () => setStep(state.step + 1)));
+      all('[data-prev]').forEach(button => button.addEventListener('click', () => setStep(state.step - 1)));
+      all('[data-shield]').forEach(button => button.addEventListener('click', () => setShield(button.dataset.shield)));
+      all('[data-ecc]').forEach(button => button.addEventListener('click', () => setEcc(button.dataset.ecc)));
+      all('[data-analysis-mode]').forEach(button => button.addEventListener('click', () => setAnalysisMode(button.dataset.analysisMode)));
+      all('[data-runtime-method]').forEach(button => button.addEventListener('click', () => setRuntimeMethod(button.dataset.runtimeMethod)));
+      one('#reset').addEventListener('click', reset); one('#reset-end').addEventListener('click', reset);
+      document.addEventListener('keydown', event => {
+        if (['INPUT', 'TEXTAREA'].includes(event.target.tagName)) return;
+        if (['1', '2', '3'].includes(event.key)) setStep(Number(event.key) - 1);
+        else if (event.key.toLowerCase() === 'r') reset();
+        else if (event.altKey && event.key === 'ArrowRight') setStep(state.step + 1);
+        else if (event.altKey && event.key === 'ArrowLeft') setStep(state.step - 1);
+      });
+      window.addEventListener('error', () => activateFallback('RUNTIME_ERROR'));
+      reset();
+    })();
   </script>
 </body>
 </html>

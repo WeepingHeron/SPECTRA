@@ -4,26 +4,30 @@
     {"op": "set", "path": "/schema_version", "value": "1.1.0"},
     {"op": "set", "path": "/packet_id", "value": "fixture-packet-v2-hold-001"},
     {"op": "set", "path": "/inputs/5", "value": {
-      "kind": "MITIGATION", "contract_version": "2.0.0", "mitigation_id": "synthetic-watchdog-v2-001",
+      "kind": "MITIGATION", "contract_version": "2.0.0", "runtime_contract_version": "1.0.0", "mitigation_id": "synthetic-watchdog-v2-001",
       "component_ids": ["component-001"], "architecture_scope": "SUBSYSTEM", "method": "WATCHDOG",
       "target_failure_modes": ["SEFI", "FUNCTIONAL_INTERRUPT"], "excluded_failure_modes": ["SEL", "SEB", "SEGR"],
       "design_parameters": {
         "evaluation_window": {"duration_seconds": 3600, "denominator_scope": "SUBSYSTEM"},
-        "true_event_model": {"activation_count": 1, "denominator": {"scope": "PROTECTED_UNIT", "count": 1}, "action_paths": [{"action": "REBOOT", "fraction": 1, "duration_seconds": 30}], "verification_evidence_id": "synthetic-watchdog-true-path-only"},
-        "false_positive_model": {"activation_count": 0, "denominator": {"scope": "WATCHDOG", "count": 1}, "action_paths": [{"action": "NO_ACTION", "fraction": 1, "duration_seconds": 0}], "verification_evidence_id": "synthetic-watchdog-false-path-only"},
-        "detection_latency_seconds": 1, "unrecovered_fraction": 0
+        "target_event_model": {"event_count": 0, "denominator": {"scope": "SUBSYSTEM", "count": 1}, "action_paths": [{"action": "REBOOT", "fraction": 1, "duration_seconds": 30}], "verification_evidence_id": "synthetic-watchdog-target-path-only"},
+        "true_positive_coverage": 1,
+        "false_positive_model": {"activation_count": 1, "denominator": {"scope": "SUBSYSTEM", "count": 1}, "action_paths": [{"action": "REBOOT", "fraction": 1, "duration_seconds": 60}], "verification_evidence_id": "synthetic-watchdog-false-path-only"},
+        "detection_latency_seconds": 1, "action_duration_semantic": "POST_DETECTION_ACTION_ONLY", "unrecovered_fraction": 0
       },
+      "effect_model": {"model_id": "synthetic-watchdog-runtime-v1", "model_version": "1.0.0", "equation_id": "WATCHDOG_TRUE_FALSE_PATH_V1", "validity_domain": "Synthetic fixture comparison only", "input_pointers": ["/inputs/5/design_parameters"]},
+      "verification_evidence_ids": ["synthetic-watchdog-target-path-only", "synthetic-watchdog-false-path-only"],
+      "runtime_projection": {"method": "WATCHDOG", "true_target_event_count": 0, "true_positive_activation_count": 0, "false_positive_activation_count": 1, "reboot_count_total": 1, "downtime_total_seconds": 60},
       "applicability": {"status": "UNRESOLVED", "conditions": ["Synthetic fixture only; no verified watchdog evidence"]},
       "metadata": {"data_class": "SYNTHETIC", "version": "2.0.0", "created_at": "2026-08-20T00:00:00Z", "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "review_status": "READY_FOR_REVIEW", "calculation_run": {"run_id": "fixture-gen-v2-001", "engine": "synthetic-fixture-generator", "engine_version": "2", "input_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "output_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "executed_at": "2026-08-20T00:00:00Z"}}
     }},
     {"op": "set", "path": "/inputs/6", "value": {
-      "kind": "USER_POLICY", "contract_version": "2.0.0", "policy_id": "synthetic-policy-v2-001", "policy_version": "2.0.0",
-      "policy_content_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
-      "scope": {"tenant_id": "synthetic-tenant", "mission_ids": ["mission-001"], "component_ids": ["component-001"], "scope_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"},
+      "kind": "USER_POLICY", "contract_version": "2.0.0", "hash_contract_version": "1.0.0", "policy_id": "synthetic-policy-v2-001", "policy_version": "2.0.0",
+      "policy_content_hash": "sha256:163e1ee3a194f61c82a25aa876a20397389b85d37146b53a7461cc9dbad8c2a7",
+      "scope": {"tenant_id": "synthetic-tenant", "mission_ids": ["mission-001"], "component_ids": ["component-001"], "scope_hash": "sha256:0bc1496c198ebe356b78a2b4e77eebb39f42e20e119feda77a4ded813b767dd6"},
       "rules": {"tid_design_factor": 2, "maximum_residual_seu": {"value": 1, "quantity_kind": "RATE", "unit": "events/mission", "metadata": {"data_class": "SYNTHETIC", "version": "2.0.0", "created_at": "2026-08-20T00:00:00Z", "content_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "review_status": "READY_FOR_REVIEW", "calculation_run": {"run_id": "fixture-gen-v2-001", "engine": "synthetic-fixture-generator", "engine_version": "2", "input_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "output_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "executed_at": "2026-08-20T00:00:00Z"}}}, "required_destructive_modes": ["SEL"]},
-      "approval": {"status": "DRAFT", "approval_target_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "approval_scope_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "valid_from": "2026-08-20T00:00:00Z"},
+      "approval": {"status": "DRAFT", "approval_target_hash": "sha256:163e1ee3a194f61c82a25aa876a20397389b85d37146b53a7461cc9dbad8c2a7", "approval_scope_hash": "sha256:0bc1496c198ebe356b78a2b4e77eebb39f42e20e119feda77a4ded813b767dd6", "history_head_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "valid_from": "2026-08-20T00:00:00Z"},
       "immutable_history_ref": {"anchor_id": "synthetic-policy-history-v2", "head_hash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "store_ref": "fixture://synthetic-policy-history-v2"},
-      "metadata": {"data_class": "SYNTHETIC", "version": "2.0.0", "created_at": "2026-08-20T00:00:00Z", "content_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "review_status": "READY_FOR_REVIEW", "calculation_run": {"run_id": "fixture-gen-v2-001", "engine": "synthetic-fixture-generator", "engine_version": "2", "input_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "output_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "executed_at": "2026-08-20T00:00:00Z"}}
+      "metadata": {"data_class": "SYNTHETIC", "version": "2.0.0", "created_at": "2026-08-20T00:00:00Z", "content_hash": "sha256:163e1ee3a194f61c82a25aa876a20397389b85d37146b53a7461cc9dbad8c2a7", "review_status": "READY_FOR_REVIEW", "calculation_run": {"run_id": "fixture-gen-v2-001", "engine": "synthetic-fixture-generator", "engine_version": "2", "input_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "output_hash": "sha256:163e1ee3a194f61c82a25aa876a20397389b85d37146b53a7461cc9dbad8c2a7", "executed_at": "2026-08-20T00:00:00Z"}}
     }},
     {"op": "set", "path": "/inputs/2/raw_artifact_manifest", "value": {
       "contract_version": "2.0.0", "manifest_id": "synthetic-manifest-v2-001", "run_id": "synthetic-external-run-001", "tenant_id": "synthetic-tenant", "zone": "Z5_SYNTHETIC",

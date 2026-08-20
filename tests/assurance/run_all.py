@@ -16,7 +16,13 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "tests/schema"))
 
 import validate_contracts as contracts  # noqa: E402
-from spectra_sim import MvpDecisionError, SimulationOptions, run_mvp_decision, run_simulation  # noqa: E402
+from spectra_sim import (  # noqa: E402
+    MvpDecisionError,
+    SimulationOptions,
+    evaluate_runtime_mitigation,
+    run_mvp_decision,
+    run_simulation,
+)
 
 MANIFEST_PATH = ROOT / "tests/assurance/manifest.json"
 MODEL_PATH = ROOT / "simulation/config/synthetic-model.json"
@@ -179,6 +185,155 @@ def evaluate_mvp_attack_set(case: dict):
     }
 
 
+def _runtime_result_validator():
+    schema_docs = [load(path) for path in sorted((ROOT / "schemas").glob("*.schema.json"))]
+    simulation_docs = [
+        load(path) for path in sorted((ROOT / "simulation/schemas").glob("*.schema.json"))
+    ]
+    registry = Registry().with_resources([
+        (schema["$id"], Resource.from_contents(schema))
+        for schema in schema_docs + simulation_docs
+    ])
+    result_schema = load(ROOT / "simulation/schemas/mitigation-runtime-result.schema.json")
+    return Draft202012Validator(
+        result_schema, registry=registry, format_checker=FormatChecker()
+    )
+
+
+def _runtime_control(control: dict, result_validator) -> dict:
+    packet = contracts.load_fixture((ROOT / control["fixture"]).resolve())
+    result = evaluate_runtime_mitigation(packet)
+    schema_valid = not list(result_validator.iter_errors(result))
+    return {
+        "outcome": "CONTROL_PASS" if (
+            schema_valid
+            and result.get("processing_status") == "VALID"
+            and result.get("engineering_gate") == "NOT_EVALUATED"
+            and result.get("assurance_decision") == "HOLD"
+        ) else "CONTROL_FAIL",
+        "processing_status": result.get("processing_status"),
+        "engineering_gate": result.get("engineering_gate"),
+        "assurance_decision": result.get("assurance_decision"),
+        "computed_projection": result.get("computed_projection"),
+    }
+
+
+def _runtime_attack(attack: dict, result_validator) -> dict:
+    packet = contracts.load_fixture((ROOT / attack["fixture"]).resolve())
+    attacked = contracts.apply_operations(packet, attack.get("operations", []))
+    result = evaluate_runtime_mitigation(attacked)
+    target = attack["expected_code"]
+
+    if attack["attack_kind"] == "ENGINE_INPUT":
+        codes = result.get("stable_error_codes", [])
+        schema_valid = not list(result_validator.iter_errors(result))
+        return {
+            "outcome": "SAFE_FAILURE" if (
+                schema_valid
+                and result.get("processing_status") == "INVALID_INPUT"
+                and result.get("engineering_gate") == "NOT_EVALUATED"
+                and result.get("assurance_decision") == "HOLD"
+                and target in codes
+            ) else "FALSE_PASS",
+            "detected_code": target if target in codes else None,
+            "processing_status": result.get("processing_status"),
+            "engineering_gate": result.get("engineering_gate"),
+            "assurance_decision": result.get("assurance_decision"),
+            "computed_projection": result.get("computed_projection"),
+        }
+
+    if attack["attack_kind"] == "RESULT_TAMPER":
+        base_errors = list(result_validator.iter_errors(result))
+        tampered = contracts.apply_operations(result, attack["result_operations"])
+        target_path = attack["schema_error_path"]
+        errors = list(result_validator.iter_errors(tampered))
+        matched = not base_errors and any(
+            list(error.absolute_path) == target_path for error in errors
+        )
+        return {
+            "outcome": "REJECTED" if matched else "FALSE_PASS",
+            "detected_code": target if matched else None,
+            "processing_status": "INVALID_INPUT" if matched else tampered.get("processing_status"),
+            "engineering_gate": "NOT_EVALUATED" if matched else tampered.get("engineering_gate"),
+            "assurance_decision": "HOLD" if matched else tampered.get("assurance_decision"),
+            "computed_projection": tampered.get("computed_projection"),
+        }
+    raise ValueError(f"unknown runtime attack kind: {attack['attack_kind']}")
+
+
+def evaluate_runtime_attack_set(case: dict) -> dict:
+    result_validator = _runtime_result_validator()
+    control_results = []
+    control_failures = 0
+    for control in case["controls"]:
+        try:
+            observed = _runtime_control(control, result_validator)
+        except Exception as exc:
+            observed = {
+                "outcome": "UNEXPLAINED_EXCEPTION",
+                "processing_status": None,
+                "engineering_gate": None,
+                "assurance_decision": None,
+                "computed_projection": None,
+                "exception_type": type(exc).__name__,
+            }
+        expected = control["expected"]
+        recorded = control["actual"]
+        passed = (
+            projection(observed, expected) == expected
+            and projection(observed, recorded) == recorded
+        )
+        if not passed:
+            control_failures += 1
+        control_results.append({
+            "control_id": control["control_id"],
+            "status": "PASS" if passed else "FAIL",
+            "observed": observed,
+        })
+
+    attack_results = []
+    false_passes = 0
+    for attack in case["attacks"]:
+        try:
+            observed = _runtime_attack(attack, result_validator)
+        except Exception as exc:
+            observed = {
+                "outcome": "UNEXPLAINED_EXCEPTION",
+                "detected_code": type(exc).__name__,
+                "processing_status": None,
+                "engineering_gate": None,
+                "assurance_decision": None,
+                "computed_projection": None,
+            }
+        expected = attack["expected"]
+        recorded = attack["actual"]
+        passed = (
+            projection(observed, expected) == expected
+            and projection(observed, recorded) == recorded
+        )
+        if not passed:
+            false_passes += 1
+        attack_results.append({
+            "attack_id": attack["attack_id"],
+            "status": "PASS" if passed else "FAIL",
+            "observed": observed,
+        })
+
+    clean = control_failures == 0 and false_passes == 0
+    return {
+        "outcome": "SAFE_FAILURE_SET" if clean else "FALSE_PASS",
+        "evaluated_attacks": len(attack_results),
+        "evaluated_controls": len(control_results),
+        "not_evaluated": 0,
+        "false_passes": false_passes,
+        "control_failures": control_failures,
+        "safe_decision": "HOLD",
+        "engineering_gate": "NOT_EVALUATED",
+        "control_results": control_results,
+        "attack_results": attack_results,
+    }
+
+
 def projection(value: dict, keys) -> dict:
     return {key: value.get(key) for key in keys}
 
@@ -202,6 +357,8 @@ def main() -> int:
             observed = evaluate_reproducibility(case)
         elif kind == "MVP_DECISION_ATTACK_SET":
             observed = evaluate_mvp_attack_set(case)
+        elif kind == "RUNTIME_MITIGATION_ATTACK_SET":
+            observed = evaluate_runtime_attack_set(case)
         elif kind == "DEPENDENCY_WAIT":
             observed = case["actual"]
         else:
@@ -238,8 +395,9 @@ def main() -> int:
             continue
         if case["execution"] == "REPRODUCIBILITY_CONTROL":
             evaluated_controls += 1
-        elif case["execution"] == "MVP_DECISION_ATTACK_SET":
+        elif case["execution"] in {"MVP_DECISION_ATTACK_SET", "RUNTIME_MITIGATION_ATTACK_SET"}:
             evaluated_attack_executions += result["observed"]["evaluated_attacks"]
+            evaluated_controls += result["observed"].get("evaluated_controls", 0)
         else:
             evaluated_attack_executions += 1
     output = {

@@ -39,6 +39,24 @@ python3 simulation/run_mvp_decision.py --summary
 
 현재 Stage 3 실제 환경과 Stage 4 exact-part 증거가 없으므로 수치 비교가 재현되더라도 두 시나리오의 `engineering_gate`는 `NOT_EVALUATED`, `assurance_decision`은 `HOLD`다. 승인 문자열, ECC 결과 또는 합성값으로 이 상태를 승격하지 않는다. 결과의 `change_impact`는 입력·출력·규칙 변화와 무효화된 mitigation/policy 근거를 machine-readable 형식으로 보존한다.
 
+## Mitigation Runtime Calculator
+
+H06 `WATCHDOG`, `TMR`, `SEL_PROTECTION` runtime 계약은 다음 production-side CLI로 독립 재계산한다.
+
+```bash
+python3 simulation/run_mitigation_runtime.py --summary
+python3 simulation/run_mitigation_runtime.py tests/schema/fixtures/valid/synthetic-tmr-runtime-hold.json --summary
+python3 simulation/run_mitigation_runtime.py tests/schema/fixtures/valid/synthetic-sel-runtime-hold.json --summary
+```
+
+API 진입점은 `evaluate_runtime_mitigation(packet: dict) -> dict`다. 전체 EvidencePacket의 JSON Schema와 canonical semantic gate를 먼저 실행한 뒤 exact-one mitigation·policy, runtime version, equation ID, eligibility와 evidence link를 확인한다. 계산 가능한 입력만 method별 산술을 독립 실행하고 선언된 `runtime_projection`과 비교한다.
+
+- Watchdog count는 window count 그대로 사용하고 rate만 `rate × denominator count × window seconds`로 정규화한다. true path에만 detection latency를 한 번 포함한다.
+- TMR은 독립 3-replica, 비취약 voter, common mode 0, window 내 repair 없음일 때만 `3p²-2p³`의 `system_failure_probability`를 계산한다.
+- SEL protection은 true SEL과 false trip을 독립 정규화하고 power cycle당 `trip + off + restart`를 한 번만 적용한다. SEL 근거로 SEB·SEGR 공백을 닫지 않는다.
+
+결과는 `simulation/schemas/mitigation-runtime-result.schema.json`을 따르며 canonical input/output hash, 계산 projection, 선언값 비교, policy hash·승인 요약과 정렬된 stable code를 포함한다. `processing_status`는 공통 `schemas/common.schema.json#/$defs/processingStatus`를 직접 참조하며 `NOT_EVALUATED`를 사용하지 않는다. 입력·계약·계산 eligibility가 유효하지 않으면 `processing_status=INVALID_INPUT`, 공학 판정과 보증은 `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`로 닫힌다. 구조적으로 유효한 정상 합성 fixture는 `processing_status=VALID`이지만 policy·실제 evidence eligibility가 없으므로 역시 `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`다.
+
 두 명령 모두 프로젝트 파일을 생성하거나 수정하지 않는다.
 
 ## 결정론적 합성 계산
@@ -77,7 +95,9 @@ residual SEU = raw SEU × mitigation factor
 - `src/spectra_sim/policy.py`: 결정론적 정책 rule
 - `src/spectra_sim/contracts.py`: 실행 전·후 EvidencePacket JSON Schema와 Stage 1 semantic gate 검증
 - `src/spectra_sim/engine.py`: 입력 override, 계산, 결과와 EvidencePacket 구성
+- `src/spectra_sim/runtime_mitigation.py`: H06 runtime 완화 산술, policy canonical hash와 fail-closed 결과
 - `simulation/schemas/simulation-result.schema.json`: Stage 2 출력 계약
+- `simulation/schemas/mitigation-runtime-result.schema.json`: Runtime calculator 출력 계약
 
 ## 현재 한계
 
