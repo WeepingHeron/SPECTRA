@@ -1,0 +1,85 @@
+{
+  "base": "../valid/synthetic-v2-hold.json",
+  "cases": [
+    {
+      "name": "v2-mitigation-required-field-missing",
+      "operations": [{"op": "delete", "path": "/inputs/5/component_ids"}],
+      "expected": "V2_REQUIRED_FIELD_MISSING"
+    },
+    {
+      "name": "evidence-packet-v1-with-v2-inputs",
+      "operations": [{"op": "set", "path": "/schema_version", "value": "1.0.0"}],
+      "expected": "CONTRACT_VERSION_MIXED"
+    },
+    {
+      "name": "broad-rights-status-without-action-grant",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights_snapshot/status", "value": "REDISTRIBUTION_ALLOWED"},
+        {"op": "set", "path": "/raw_manifest_refs/0/required_actions", "value": ["REDISTRIBUTE"]}
+      ],
+      "expected": "RIGHTS_ACTION_GRANT_MISSING"
+    },
+    {
+      "name": "raw-overwrite-precondition-missing",
+      "operations": [{"op": "delete", "path": "/inputs/2/raw_artifact_manifest/create_precondition"}],
+      "expected": "RAW_OVERWRITE_PRECONDITION_MISSING"
+    },
+    {
+      "name": "raw-storage-generation-missing",
+      "operations": [{"op": "delete", "path": "/inputs/2/raw_artifact_manifest/artifacts/0/storage_ref/generation"}],
+      "expected": "RAW_GENERATION_MISSING"
+    },
+    {
+      "name": "evidence-reference-tenant-mismatch",
+      "operations": [{"op": "set", "path": "/raw_manifest_refs/0/tenant_id", "value": "other-tenant"}],
+      "expected": "RAW_MANIFEST_TENANT_MISMATCH"
+    },
+    {
+      "name": "evidence-reference-hash-mismatch",
+      "operations": [{"op": "set", "path": "/raw_manifest_refs/0/artifact_sha256", "value": "sha256:1515151515151515151515151515151515151515151515151515151515151515"}],
+      "expected": "RAW_ARTIFACT_HASH_MISMATCH"
+    },
+    {
+      "name": "evidence-reference-generation-mismatch",
+      "operations": [{"op": "set", "path": "/raw_manifest_refs/0/storage_generation", "value": "2"}],
+      "expected": "RAW_GENERATION_MISMATCH"
+    },
+    {
+      "name": "evidence-reference-rights-snapshot-mismatch",
+      "operations": [{"op": "set", "path": "/raw_manifest_refs/0/rights_snapshot_id", "value": "other-rights-snapshot"}],
+      "expected": "RAW_RIGHTS_SNAPSHOT_MISMATCH"
+    },
+    {
+      "name": "tmr-output-semantic-mismatch",
+      "operations": [
+        {"op": "set", "path": "/inputs/5/method", "value": "TMR"},
+        {"op": "set", "path": "/inputs/5/design_parameters", "value": {
+          "replica_count": 3,
+          "replica_failure_probability": 0.01,
+          "evaluation_window": {"duration_seconds": 3600, "denominator_scope": "SYSTEM"},
+          "independence_verified": true,
+          "voter_model": {"susceptible": true, "evidence_id": "synthetic-voter-evidence"},
+          "common_mode_model": {"probability": 0.001, "evidence_id": "synthetic-common-mode-evidence"},
+          "repair_model": {"repair_within_window": false, "model_ref": "synthetic-no-repair-window"},
+          "output_semantic": "availability_probability"
+        }}
+      ],
+      "expected": "TMR_OUTPUT_SEMANTIC_MISMATCH"
+    },
+    {
+      "name": "watchdog-false-positive-model-missing",
+      "operations": [{"op": "delete", "path": "/inputs/5/design_parameters/false_positive_model"}],
+      "expected": "WATCHDOG_FALSE_POSITIVE_MODEL_MISSING"
+    },
+    {
+      "name": "synthetic-policy-approved-string-support",
+      "operations": [
+        {"op": "set", "path": "/inputs/6/approval", "value": {"status": "APPROVED", "approval_target_hash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc", "approval_scope_hash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "approved_by": "synthetic-fixture-reviewer", "approved_at": "2026-08-20T00:00:00Z", "valid_from": "2026-08-20T00:00:00Z", "valid_until": "2027-08-20T00:00:00Z"}},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "SYNTHETIC_POLICY_WITH_SUPPORT"
+    }
+  ]
+}

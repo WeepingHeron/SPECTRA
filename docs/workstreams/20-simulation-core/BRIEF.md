@@ -13,6 +13,8 @@ Simulation Core Workstream은 SPECTRA의 결정론적 TID·SEE 계산, 완화 �
 - 결과 JSON Schema와 EvidencePacket 출력
 - 동일 입력 재현성, 범위 밖 입력과 False PASS 테스트
 - 한 명령 검증과 비교 CLI
+- Workstream 50의 v2 ECC·정책 계약을 사용하는 baseline/variant MVP Decision Engine
+- 입력·출력·판정 차이, 무효화 근거와 blocking gap을 보존하는 machine-readable Change Impact
 
 ## 소유 파일
 

@@ -24,7 +24,14 @@ def main() -> int:
     if not result.wasSuccessful():
         return 1
     demo = subprocess.run([sys.executable, str(ROOT / "simulation/run_demo.py")], cwd=ROOT, check=False)
-    return demo.returncode
+    if demo.returncode:
+        return demo.returncode
+    mvp_demo = subprocess.run(
+        [sys.executable, str(ROOT / "simulation/run_mvp_decision.py"), "--summary"],
+        cwd=ROOT,
+        check=False,
+    )
+    return mvp_demo.returncode
 
 
 if __name__ == "__main__":

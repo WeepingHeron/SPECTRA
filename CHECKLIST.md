@@ -8,6 +8,21 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - 코드가 존재하는 것과 검증이 완료된 것을 구분한다.
 - 합성 결과는 실제 모델·시험 검증 완료로 계산하지 않는다.
 - 각 단계의 **Exit Gate**가 모두 충족되기 전 다음 단계를 완료로 표시하지 않는다.
+
+## MVP 통합 Gate
+
+상세 범위는 [`docs/MVP.md`](docs/MVP.md)를 따른다. 이 목록은 Stage 전체 완료와 별개로, 데모 가능한 한 개 실제 Evidence-to-Decision 제품 경로를 판정한다.
+
+- [x] EvidencePacket·입력·출력 계약 기준선
+- [x] 결정론적 합성 TID·SEE 기준선과 재현 테스트
+- [x] 고정 공격 세트의 평가 가능 항목에서 False PASS 0
+- [x] 합성 Product UI와 안전한 offline fallback
+- [ ] 권리·provenance가 확인된 실제 환경 산출물 1개
+- [ ] exact-part 시험 증거 묶음 1개와 원문 locator
+- [x] 결정론적 완화·사용자 정책 engine 합성 기준선
+- [x] 변경 전·후 결과와 무효화 근거 생성
+- [ ] UI가 검증된 결과 JSON·EvidencePacket을 소비
+- [ ] 5분 사용자 실행과 설명 가능성 검증
 - 근거가 부족한 작업은 `HOLD` 또는 `INSUFFICIENT_EVIDENCE`로 기록한다.
 
 ## Stage 1 — 프로젝트 계약과 기준선
@@ -57,8 +72,9 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ### 통합
 
-- [ ] 기존 합성 시뮬레이터를 프로젝트로 이관
-- [ ] 합성 CSV·결과·대시보드를 프로젝트로 이관
+- [x] 합성 시뮬레이터를 프로젝트 내부 재현 가능 기준선으로 구현
+
+> 외부 합성 데모·CSV는 원본 위치가 제공되지 않아 이관 대상에서 제외했다. 결과 대시보드와 완화 선택 UI는 Stage 8 Product & Dashboard에서 구현한다.
 - [x] TID, SEE, 정책 판정 모듈 분리
 - [x] 입력·출력 JSON Schema 적용
 - [x] 로컬 실행과 테스트 명령 README 작성
@@ -70,7 +86,6 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [x] ECC 유무에 따른 잔여 SEU 비교
 - [x] 사용자 SEE 허용 한도 커스텀 입력
 - [x] TID 설계 계수 커스텀 입력
-- [ ] 완화 방법 선택 UI 초안
 - [x] 파괴성 SEE 증거 누락 시 HOLD
 - [x] 지원 범위 밖 입력 시 `OUT_OF_MODEL_SCOPE`
 
@@ -93,6 +108,8 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [x] 합성 검증 세트 False PASS 0건
 
 ## Stage 3 — 실제 환경·TID 모델
+
+> 2026-08-20 Control Tower 확인: Git 밖 실제 SPENVIS 원본 9개, checksum, 실제-format parser와 intake fail-closed H02는 검증했다. 아래 완료 표시는 commit·통합 요건과 provider reference·권리·승인 raw manifest·과학 교차검산이 남아 있어 이번 회차에 변경하지 않는다. 제품 contract는 계속 `HOLD`다.
 
 ### 조사와 계약
 
@@ -212,22 +229,22 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ### 공격·오류 테스트
 
-- [ ] 유사 부품번호 오탐
+- [x] 유사 부품번호 오탐
 - [ ] 제조사·로트 불일치
-- [ ] 단위 변환 오류
+- [x] 단위 변환 오류
 - [ ] 시험 표 잘못 추출
 - [ ] 출처 링크 손상
 - [ ] 파일 해시 불일치
 - [ ] 오래된 모델 출력
 - [ ] SEE 증거 누락
-- [ ] 파괴성 SEE 증거 누락
-- [ ] 범위 밖 외삽
-- [ ] 미승인 정책 우회
-- [ ] 계산·증거·정책 모듈 상충
+- [x] 파괴성 SEE 증거 누락
+- [x] 범위 밖 외삽
+- [x] 미승인 정책 우회
+- [x] 계산·증거·정책 모듈 상충
 
 ### 지표
 
-- [ ] False PASS 0건
+- [x] False PASS 0건
 - [ ] 계산 재현율 100%
 - [ ] 근거 링크·페이지 정확도 측정
 - [ ] 부품 식별 정확도 측정
@@ -279,25 +296,25 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 ### 사용자 흐름
 
 - [ ] 임무·BOM·차폐·완화·정책 입력 흐름
-- [ ] TID·SEE 결과와 완화 전후 비교
-- [ ] Evidence Coverage Matrix
+- [x] TID·SEE 결과와 완화 전후 비교
+- [x] Evidence Coverage Matrix
 - [ ] Evidence Packet 원문·계산 실행 추적
 - [ ] 변경 전후 영향 보고서
-- [ ] `HOLD`·증거 공백·미지원 범위 표시
-- [ ] 합성·실제 데이터 분류 표시
+- [x] `HOLD`·증거 공백·미지원 범위 표시
+- [x] 합성·실제 데이터 분류 표시
 
 ### 제품 신뢰성
 
-- [ ] 실패 상태가 성공 화면으로 렌더링되지 않음
-- [ ] 고정 결과 fallback
-- [ ] 네트워크 장애 대응
-- [ ] 알려진 한계 화면 노출
+- [x] 실패 상태가 성공 화면으로 렌더링되지 않음
+- [x] 고정 결과 fallback
+- [x] 네트워크 장애 대응
+- [x] 알려진 한계 화면 노출
 
 ### Exit Gate
 
-- [ ] 핵심 흐름을 한 화면씩 이해 가능
-- [ ] 모든 주요 수치에서 출처 또는 데이터 분류로 이동 가능
-- [ ] 대표 시나리오를 반복 재현
+- [x] 핵심 흐름을 한 화면씩 이해 가능
+- [x] 모든 주요 수치에서 출처 또는 데이터 분류로 이동 가능
+- [x] 대표 시나리오를 반복 재현
 
 ## Stage 9 — 비즈니스·발표·최종 시연
 
@@ -313,16 +330,16 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ### 발표·시연
 
-- [ ] 문제와 물리적 위험 설명
-- [ ] 기존 도구 사이의 업무 공백 설명
-- [ ] 임무·BOM 입력 시연
-- [ ] TID·SEE 계산 시연
+- [x] 문제와 물리적 위험 설명
+- [x] 기존 도구 사이의 업무 공백 설명
+- [x] 임무·BOM 입력 시연
+- [x] TID·SEE 계산 시연
 - [ ] 완화·정책 변경 시연
 - [ ] Evidence Packet과 원문 추적 시연
-- [ ] 증거 누락 시 HOLD 시연
+- [x] 증거 누락 시 HOLD 시연
 - [ ] GCP·Multi-Agent 협업 시연
-- [ ] 한계와 책임 경계 설명
-- [ ] 예상 질문과 근거 답변 준비
+- [x] 한계와 책임 경계 설명
+- [x] 예상 질문과 근거 답변 준비
 
 ### 평가 기준 최종 점검
 

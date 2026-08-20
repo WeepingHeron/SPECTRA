@@ -213,7 +213,7 @@ SPECTRA의 승인 검토용 첫 경로로 **SPENVIS 수동 실행 + 원본 출�
 6. 승인된 사람 계정과 권리 확인 후 대표 원형 LEO 하나를 실행하고, 생성 파일 목록·report version·단위·column signature를 검증한다.
 7. 첫 raw bundle은 원문 위치만 기록하고 저장소에는 복사하지 않는다. 보관 권리와 승인된 object storage 경로가 확정된 뒤 checksum manifest만 Git에 둘지 결정한다.
 
-현재 실제 모델 실행·출력·수치·과학적 교차검산은 **0건**이다. 따라서 Stage 3 구현 완료나 실제 TID 보증을 주장하지 않는다.
+이 문장의 최초 조사 시점에는 실제 모델 실행·출력이 0건이었다. `2026-08-20` 후속 회차에서 사람 주도 SPENVIS 실행 1건과 원본 9개를 확보했으며, 아래 13절이 현재 상태를 우선한다. 실제 TID 보증이나 계약 발행 완료는 여전히 주장하지 않는다.
 
 ## 11. 공식 출처 기록
 
@@ -244,3 +244,24 @@ SPECTRA의 승인 검토용 첫 경로로 **SPENVIS 수동 실행 + 원본 출�
 4. 각 tool guide에서 `API`, `automation`, `commercial`, `redistribution`, `retention`을 검색한다. 없다는 사실은 허가가 아니라 `UNCONFIRMED`로 기록한다.
 5. 공개 문서와 로그인 후 UI가 다르면 로그인 후 확인 결과를 새 source record로 추가하되 기존 기록을 덮어쓰지 않는다.
 6. 실제 output이 확보되기 전에는 숫자 예시, sample hash 또는 가짜 run ID를 만들지 않는다.
+
+## 13. 실제 SPENVIS evidence run 확인 — 2026-08-20
+
+사람이 Chrome 로그인 세션에서 고정 LEO profile을 실행하고 SPENVIS가 제공한 report/ASCII 원본 9개를 다운로드했다. 원본은 Git worktree 외부 로컬 경로 `/Users/taehoon/Documents/Codex/SPECTRA/private-evidence/environment/spenvis/SPECTRA-SPENVIS-MVP-001/raw/`에만 보존한다.
+
+| 확인 항목 | 실제 원본에서 확인한 값 | 판정 |
+|---|---|---|
+| platform | SPENVIS `4.6.14.3582` | 확인 |
+| project | `SPECTRA_MVP_LEO_001` | 확인 |
+| mission | 2027-01-01 ~ 2028-01-01, 365 days | 확인 |
+| orbit | circular 550 km, inclination 97.6 deg, one segment | input/report 교차 확인 |
+| trapped source | AE9/AP9 averaged proton/electron flux files | 파일과 report 확인; UI 선택의 `v1.50`은 download report에서 독립 재확인 불완전 |
+| solar source | SAPPHIRE total fluence, 95%, magnetic shielding | report 확인 |
+| dose | SHIELDOSE-2 `2.10`, centre of Al spheres, Si | report/output 확인 |
+| shielding | 1/2/3/4 mm Al discrete rows | output signature 확인 |
+| output units | Al thickness `mm`, dose in Si `rad` | output header 확인 |
+| provider job reference | 다운로드 파일에 노출되지 않음 | `HOLD` |
+
+실제 dose 값 자체는 출력에 존재하지만, output 재배포·내부 표시 권리와 승인 저장소가 확정되지 않아 이 Git 문서에 옮기지 않았다. artifact-set SHA-256은 `aa299946677dc082fa48cfea4efa2501a10478a92fde04643c429ab77bbfc163`이다.
+
+실제 파일로 SHIELDOSE-2 parser의 delimiter, column count, unit, geometry, target과 shielding point signature를 검증했다. 하지만 parser 성공은 권리·provenance 승인이 아니므로 raw manifest v2와 권리 approver가 없으면 `CONTRACT_EMISSION_NOT_APPROVED + HOLD`로 종료한다.

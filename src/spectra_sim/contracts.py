@@ -39,19 +39,19 @@ def packet_schema_errors(packet: dict) -> list[str]:
 
 
 @lru_cache(maxsize=1)
-def _stage1_semantic_codes():
-    """Load the integrated Stage 1 semantic gate without duplicating its rules."""
+def _stage1_contract_module():
+    """Load the integrated Stage 1 contract implementation without duplicating it."""
     spec = importlib.util.spec_from_file_location("spectra_stage1_contract", STAGE1_VALIDATOR)
     if spec is None or spec.loader is None:
         raise RuntimeError("Stage 1 semantic validator is unavailable")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.semantic_codes
+    return module
 
 
 def packet_semantic_errors(packet: dict) -> list[str]:
     try:
-        return sorted(_stage1_semantic_codes()(packet))
+        return sorted(_stage1_contract_module().semantic_codes(packet))
     except Exception as exc:  # fail closed if the canonical semantic gate cannot run
         return [f"SEMANTIC_VALIDATOR_FAILURE: {exc}"]
 
@@ -61,3 +61,8 @@ def packet_contract_errors(packet: dict) -> list[str]:
     if schema_errors:
         return schema_errors
     return [f"SEMANTIC: {code}" for code in packet_semantic_errors(packet)]
+
+
+def load_contract_fixture(path: Path) -> dict:
+    """Resolve a Stage 1 fixture and its declared base/operations chain."""
+    return _stage1_contract_module().load_fixture(path.resolve())

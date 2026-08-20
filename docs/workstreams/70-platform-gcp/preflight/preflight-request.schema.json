@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/workstreams/70/raw-manifest-preflight-request.schema.json",
+  "title": "Raw Manifest Preflight Request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["candidate_id", "source_kind", "required_actions", "request_context", "candidate_manifest"],
+  "properties": {
+    "candidate_id": {"type": "string", "minLength": 1},
+    "source_kind": {"type": "string", "minLength": 1},
+    "required_actions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "request_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tenant_id": {"type": "string", "minLength": 1},
+        "zone": {"type": "string", "enum": ["Z1_PUBLIC_RAW", "Z2_RESTRICTED_RAW", "Z3_CUSTOMER_RAW", "Z5_SYNTHETIC"]}
+      }
+    },
+    "candidate_manifest": {"type": ["object", "null"]},
+    "declared_preflight_gaps": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+    },
+    "object_creation_receipts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "artifact_id", "artifact_revision_id", "tenant_id", "zone",
+          "project_id", "bucket_id", "object_name", "precondition", "outcome",
+          "generation", "sha256", "byte_size", "detected_mime"
+        ],
+        "properties": {
+          "artifact_id": {"type": "string", "minLength": 1},
+          "artifact_revision_id": {"type": "string", "minLength": 1},
+          "tenant_id": {"type": "string", "minLength": 1},
+          "zone": {"type": "string", "enum": ["Z1_PUBLIC_RAW", "Z2_RESTRICTED_RAW", "Z3_CUSTOMER_RAW", "Z5_SYNTHETIC"]},
+          "project_id": {"type": "string", "minLength": 1},
+          "bucket_id": {"type": "string", "minLength": 1},
+          "object_name": {"type": "string", "minLength": 1},
+          "precondition": {"const": "IF_GENERATION_MATCH_0"},
+          "outcome": {"type": "string", "enum": ["CREATED", "PRECONDITION_FAILED_EXISTING_OBJECT", "FAILED"]},
+          "generation": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+          "sha256": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"},
+          "byte_size": {"type": "integer", "exclusiveMinimum": 0},
+          "detected_mime": {"type": "string", "pattern": "^[^/\\s]+/[^/\\s]+$"}
+        }
+      }
+    }
+  }
+}

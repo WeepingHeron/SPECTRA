@@ -8,6 +8,8 @@ SPECTRA는 위성 임무 조건, BOM, 방사선 환경 모델과 부품 시험 �
 
 Stage 2의 결정론적 **합성** Vertical Slice가 통합돼 있다.
 
+제품 MVP의 정확한 입력·기능·완료 조건은 [`docs/MVP.md`](docs/MVP.md)에 정의한다. 현재 합성 Vertical Slice와 Product UI는 검증된 프로토타입이며, 실제 환경 산출물과 exact-part 시험 증거가 연결되기 전에는 MVP 완료로 부르지 않는다.
+
 - TID·SEE·정책 계산 모듈과 입력·출력 Schema
 - 차폐 두께, 임무 기간, ECC, 사용자 정책 비교
 - 범위 밖 입력은 `OUT_OF_MODEL_SCOPE`, 누락·오염 입력은 `HOLD`

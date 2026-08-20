@@ -1,0 +1,236 @@
+{
+  "manifest_version": "1.1.0",
+  "suite_id": "spectra-assurance-fixed-baseline-2026-08-20",
+  "scope_statement": "False PASS 0 applies only to the evaluated fixed attacks in this manifest.",
+  "cases": [
+    {
+      "attack_id": "ASR-001",
+      "target_contract": "EvidencePacket 1.1.0 version boundary",
+      "mutation": "Downgrade a v2 packet envelope to 1.0.0 while retaining v2 inputs and raw references.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+      "operations": [{"op": "set", "path": "/schema_version", "value": "1.0.0"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "CONTRACT_VERSION_MIXED"},
+      "actual": {"outcome": "REJECTED", "detected_code": "CONTRACT_VERSION_MIXED"}
+    },
+    {
+      "attack_id": "ASR-002",
+      "target_contract": "EvidencePacket 1.1.0 plus MITIGATION v2",
+      "mutation": "Label the v2 mitigation record as contract 1.0.0 inside a v1.1 packet.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/5/contract_version", "value": "1.0.0"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "CONTRACT_VERSION_MIXED"},
+      "actual": {"outcome": "REJECTED", "detected_code": "CONTRACT_VERSION_MIXED"}
+    },
+    {
+      "attack_id": "ASR-003",
+      "target_contract": "Synthetic provenance and assurance decision",
+      "mutation": "Promote the synthetic HOLD packet to SUPPORTED_WITH_MITIGATION without changing its evidence.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [{"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "NON_EVIDENTIARY_DECISION_INPUT"},
+      "actual": {"outcome": "REJECTED", "detected_code": "NON_EVIDENTIARY_DECISION_INPUT"}
+    },
+    {
+      "attack_id": "ASR-004",
+      "target_contract": "BOM to part evidence exact identity",
+      "mutation": "Replace only the tested exact part number with EX-100A.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/3/tested_identity/part_number", "value": "EX-100A"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "PART_IDENTITY_MISMATCH"},
+      "actual": {"outcome": "REJECTED", "detected_code": "PART_IDENTITY_MISMATCH"}
+    },
+    {
+      "attack_id": "ASR-005",
+      "target_contract": "BOM to part evidence exact identity",
+      "mutation": "Replace only the tested process ID with P2.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/3/tested_identity/process_id", "value": "P2"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "PART_IDENTITY_MISMATCH"},
+      "actual": {"outcome": "REJECTED", "detected_code": "PART_IDENTITY_MISMATCH"}
+    },
+    {
+      "attack_id": "ASR-006",
+      "target_contract": "BOM to part evidence exact identity",
+      "mutation": "Add a tested die revision absent from the BOM identity.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/3/tested_identity/die_revision", "value": "D2"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "PART_IDENTITY_MISMATCH"},
+      "actual": {"outcome": "REJECTED", "detected_code": "PART_IDENTITY_MISMATCH"}
+    },
+    {
+      "attack_id": "ASR-007",
+      "target_contract": "BOM to part evidence exact identity",
+      "mutation": "Replace only the tested lot ID with LOT-B.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/3/tested_identity/lot_id", "value": "LOT-B"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "PART_IDENTITY_MISMATCH"},
+      "actual": {"outcome": "REJECTED", "detected_code": "PART_IDENTITY_MISMATCH"}
+    },
+    {
+      "attack_id": "ASR-008",
+      "target_contract": "Destructive SEE evidence gate",
+      "mutation": "Remove SEL so only TID and SEU evidence remain while policy requires destructive SEE evidence.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/3/evidence_types", "value": ["TID", "SEU"]}],
+      "expected": {"outcome": "REJECTED", "detected_code": "DESTRUCTIVE_SEE_EVIDENCE_MISSING"},
+      "actual": {"outcome": "REJECTED", "detected_code": "DESTRUCTIVE_SEE_EVIDENCE_MISSING"}
+    },
+    {
+      "attack_id": "ASR-009",
+      "target_contract": "TID unit contract",
+      "mutation": "Replace krad(Si) with the unsupported ambiguous unit krad.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/2/tid/unit", "value": "krad"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "INCOMPATIBLE_UNIT"},
+      "actual": {"outcome": "REJECTED", "detected_code": "INCOMPATIBLE_UNIT"}
+    },
+    {
+      "attack_id": "ASR-010",
+      "target_contract": "Stage 2 discrete shielding model scope",
+      "mutation": "Request 5 mm shielding outside the fixed 1 to 4 mm lookup instead of interpolating or extrapolating.",
+      "execution": "SYNTHETIC_SIMULATION",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [],
+      "simulation_options": {"shielding_mm": 5},
+      "expected": {"outcome": "SAFE_FAILURE", "processing_status": "OUT_OF_MODEL_SCOPE", "assurance_decision": "HOLD", "engineering_gate": "NOT_EVALUATED"},
+      "actual": {"outcome": "SAFE_FAILURE", "processing_status": "OUT_OF_MODEL_SCOPE", "assurance_decision": "HOLD", "engineering_gate": "NOT_EVALUATED"}
+    },
+    {
+      "attack_id": "ASR-011",
+      "target_contract": "RAW_ARTIFACT_MANIFEST v2 action grants",
+      "mutation": "Require REDISTRIBUTE while only PRIVATE_STORE is granted.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+      "operations": [{"op": "set", "path": "/raw_manifest_refs/0/required_actions", "value": ["REDISTRIBUTE"]}],
+      "expected": {"outcome": "REJECTED", "detected_code": "RIGHTS_ACTION_GRANT_MISSING"},
+      "actual": {"outcome": "REJECTED", "detected_code": "RIGHTS_ACTION_GRANT_MISSING"}
+    },
+    {
+      "attack_id": "ASR-012",
+      "target_contract": "Raw artifact generation lineage",
+      "mutation": "Change the packet reference generation from 1 to 2 without changing the artifact revision.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+      "operations": [{"op": "set", "path": "/raw_manifest_refs/0/storage_generation", "value": "2"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "RAW_GENERATION_MISMATCH"},
+      "actual": {"outcome": "REJECTED", "detected_code": "RAW_GENERATION_MISMATCH"}
+    },
+    {
+      "attack_id": "ASR-013",
+      "target_contract": "Raw artifact SHA-256 lineage",
+      "mutation": "Change the packet reference SHA-256 without changing the nested artifact integrity record.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+      "operations": [{"op": "set", "path": "/raw_manifest_refs/0/artifact_sha256", "value": "sha256:1515151515151515151515151515151515151515151515151515151515151515"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "RAW_ARTIFACT_HASH_MISMATCH"},
+      "actual": {"outcome": "REJECTED", "detected_code": "RAW_ARTIFACT_HASH_MISMATCH"}
+    },
+    {
+      "attack_id": "ASR-014",
+      "target_contract": "USER_POLICY v1 approval gate",
+      "mutation": "Mark the policy PENDING and simultaneously claim supported assurance.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [
+        {"op": "set", "path": "/inputs/6/approval_status", "value": "PENDING"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"}
+      ],
+      "expected": {"outcome": "REJECTED", "detected_code": "UNAPPROVED_POLICY_SUPPORT"},
+      "actual": {"outcome": "REJECTED", "detected_code": "UNAPPROVED_POLICY_SUPPORT"}
+    },
+    {
+      "attack_id": "ASR-015",
+      "target_contract": "MITIGATION v2 failure-mode scope",
+      "mutation": "Put SEFI in both target_failure_modes and excluded_failure_modes.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/5/excluded_failure_modes", "value": ["SEFI", "SEL", "SEB", "SEGR"]}],
+      "expected": {"outcome": "REJECTED", "detected_code": "MITIGATION_MODE_OVERLAP"},
+      "actual": {"outcome": "REJECTED", "detected_code": "MITIGATION_MODE_OVERLAP"}
+    },
+    {
+      "attack_id": "ASR-016",
+      "target_contract": "USER_POLICY v2 destructive mode coverage",
+      "mutation": "Require SEL and SEB while the part evidence contains SEL but no SEB.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/6/rules/required_destructive_modes", "value": ["SEL", "SEB"]}],
+      "expected": {"outcome": "REJECTED", "detected_code": "DESTRUCTIVE_SEE_MODE_MISSING"},
+      "actual": {"outcome": "REJECTED", "detected_code": "DESTRUCTIVE_SEE_MODE_MISSING"}
+    },
+    {
+      "attack_id": "ASR-017",
+      "target_contract": "TID calculation, evidence limit, policy factor and decision consistency",
+      "mutation": "Raise mission TID to 20 krad(Si), report the TID rule PASS, clear gaps and claim support although 20 times factor 2 exceeds the 25 krad(Si) test limit.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/tid/value", "value": 20},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"}
+      ],
+      "expected": {"outcome": "REJECTED", "detected_code": "TEST_RANGE_EXCEEDED"},
+      "actual": {"outcome": "REJECTED", "detected_code": "TEST_RANGE_EXCEEDED"}
+    },
+    {
+      "attack_id": "ASR-018",
+      "target_contract": "USER_POLICY v2 approval target and scope",
+      "mutation": "Change only approval_scope_hash so approval no longer covers the declared policy scope.",
+      "execution": "SCHEMA_SEMANTIC_GATE",
+      "fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+      "operations": [{"op": "set", "path": "/inputs/6/approval/approval_scope_hash", "value": "sha256:abababababababababababababababababababababababababababababababab"}],
+      "expected": {"outcome": "REJECTED", "detected_code": "POLICY_APPROVAL_TARGET_MISMATCH"},
+      "actual": {"outcome": "REJECTED", "detected_code": "POLICY_APPROVAL_TARGET_MISMATCH"}
+    },
+    {
+      "attack_id": "ASR-C01",
+      "target_contract": "Stage 2 deterministic synthetic baseline",
+      "mutation": "No mutation; execute the identical input twice and compare complete result objects.",
+      "execution": "REPRODUCIBILITY_CONTROL",
+      "fixture": "tests/schema/fixtures/valid/synthetic-hold.json",
+      "expected": {"outcome": "REPRODUCIBLE", "processing_status": "VALID", "assurance_decision": "HOLD", "engineering_gate": "PASS"},
+      "actual": {"outcome": "REPRODUCIBLE", "processing_status": "VALID", "assurance_decision": "HOLD", "engineering_gate": "PASS"}
+    },
+    {
+      "attack_id": "ASR-D01",
+      "target_contract": "Workstream 20 H02 MVP Decision Engine v1",
+      "mutation": "Execute the fixed Decision Engine attack set against input gates, policy and evidence gates, and result postconditions.",
+      "execution": "MVP_DECISION_ATTACK_SET",
+      "fixture": "simulation/fixtures/mvp-ecc-policy-v2.json",
+      "attacks": [
+        {"attack_id": "ASR-D01-01", "attack_kind": "ENGINE_INPUT", "mutation": "Set particle flux to NaN.", "non_finite_value": "NaN", "expected_code": "NON_FINITE_NUMERIC_INPUT", "expected": {"outcome": "SAFE_FAILURE", "detected_code": "NON_FINITE_NUMERIC_INPUT", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "SAFE_FAILURE", "detected_code": "NON_FINITE_NUMERIC_INPUT", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-02", "attack_kind": "ENGINE_INPUT", "mutation": "Set particle flux to positive Infinity.", "non_finite_value": "Infinity", "expected_code": "NON_FINITE_NUMERIC_INPUT", "expected": {"outcome": "SAFE_FAILURE", "detected_code": "NON_FINITE_NUMERIC_INPUT", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "SAFE_FAILURE", "detected_code": "NON_FINITE_NUMERIC_INPUT", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-03", "attack_kind": "ENGINE_INPUT", "mutation": "Set particle flux to negative Infinity.", "non_finite_value": "-Infinity", "expected_code": "NON_FINITE_NUMERIC_INPUT", "expected": {"outcome": "SAFE_FAILURE", "detected_code": "NON_FINITE_NUMERIC_INPUT", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "SAFE_FAILURE", "detected_code": "NON_FINITE_NUMERIC_INPUT", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-04", "attack_kind": "ENGINE_INPUT", "mutation": "Insert generic effectiveness_factor into the variant ECC mitigation.", "operations": [{"op": "set", "path": "/variant/mitigation/effectiveness_factor", "value": 0.1}], "expected_code": "MVP_INPUT_SCHEMA_INVALID", "expected": {"outcome": "SAFE_FAILURE", "detected_code": "MVP_INPUT_SCHEMA_INVALID", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "SAFE_FAILURE", "detected_code": "MVP_INPUT_SCHEMA_INVALID", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-05", "attack_kind": "ENGINE_INPUT", "mutation": "Reduce one ECC pattern count so the distribution total differs from raw SEU.", "operations": [{"op": "set", "path": "/ecc_fault_distribution/patterns/0/incident_events", "value": 0.04}], "expected_code": "ECC_FAULT_DISTRIBUTION_MISMATCH", "expected": {"outcome": "SAFE_FAILURE", "detected_code": "ECC_FAULT_DISTRIBUTION_MISMATCH", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "SAFE_FAILURE", "detected_code": "ECC_FAULT_DISTRIBUTION_MISMATCH", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-06", "attack_kind": "ENGINE_INPUT", "mutation": "Retarget ECC to SEL, SEB and SEGR and remove those destructive modes from exclusions.", "operations": [{"op": "set", "path": "/variant/mitigation/target_failure_modes", "value": ["SEL", "SEB", "SEGR"]}, {"op": "set", "path": "/variant/mitigation/excluded_failure_modes", "value": ["TID", "SEU"]}], "expected_code": "MITIGATION_METHOD_MODE_MISMATCH", "expected": {"outcome": "SAFE_FAILURE", "detected_code": "MITIGATION_METHOD_MODE_MISMATCH", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "SAFE_FAILURE", "detected_code": "MITIGATION_METHOD_MODE_MISMATCH", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-07", "attack_kind": "EVIDENCE_PACKET_TAMPER", "scenario": "baseline", "mutation": "Promote the DRAFT-policy baseline EvidencePacket to supported assurance.", "result_operations": [{"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"}], "expected_code": "POLICY_PACK_NOT_APPROVED", "expected": {"outcome": "REJECTED", "detected_code": "POLICY_PACK_NOT_APPROVED", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "REJECTED", "detected_code": "POLICY_PACK_NOT_APPROVED", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-08", "attack_kind": "ENGINE_INPUT", "mutation": "Change the approved variant policy scope hash without changing the approval scope hash.", "operations": [{"op": "set", "path": "/variant/policy/approval/approval_scope_hash", "value": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}], "expected_code": "SCENARIO_PACKET_CONTRACT_INVALID", "expected": {"outcome": "SAFE_FAILURE", "detected_code": "SCENARIO_PACKET_CONTRACT_INVALID", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "SAFE_FAILURE", "detected_code": "SCENARIO_PACKET_CONTRACT_INVALID", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-09", "attack_kind": "EVIDENCE_PACKET_TAMPER", "scenario": "variant", "mutation": "Promote the synthetic variant EvidencePacket to supported assurance.", "result_operations": [{"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"}], "expected_code": "NON_EVIDENTIARY_DECISION_INPUT", "expected": {"outcome": "REJECTED", "detected_code": "NON_EVIDENTIARY_DECISION_INPUT", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "REJECTED", "detected_code": "NON_EVIDENTIARY_DECISION_INPUT", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-10", "attack_kind": "CHANGE_IMPACT_TAMPER", "mutation": "Delete the complete invalidated_evidence collection from Change Impact.", "result_operations": [{"op": "delete", "path": "/change_impact/invalidated_evidence"}], "schema_error_marker": "'invalidated_evidence' is a required property", "expected_code": "CHANGE_IMPACT_INVALIDATED_EVIDENCE_MISSING", "expected": {"outcome": "REJECTED", "detected_code": "CHANGE_IMPACT_INVALIDATED_EVIDENCE_MISSING", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "REJECTED", "detected_code": "CHANGE_IMPACT_INVALIDATED_EVIDENCE_MISSING", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}},
+        {"attack_id": "ASR-D01-11", "attack_kind": "CHANGE_IMPACT_TAMPER", "mutation": "Delete every blocking gap from Change Impact.", "result_operations": [{"op": "set", "path": "/change_impact/evidence_gaps", "value": []}], "schema_error_marker": "should be non-empty", "expected_code": "CHANGE_IMPACT_BLOCKING_GAP_MISSING", "expected": {"outcome": "REJECTED", "detected_code": "CHANGE_IMPACT_BLOCKING_GAP_MISSING", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}, "actual": {"outcome": "REJECTED", "detected_code": "CHANGE_IMPACT_BLOCKING_GAP_MISSING", "engineering_gate": "NOT_EVALUATED", "assurance_decision": "HOLD"}}
+      ],
+      "expected": {"outcome": "SAFE_FAILURE_SET", "evaluated_attacks": 11, "false_passes": 0, "safe_decision": "HOLD", "engineering_gate": "NOT_EVALUATED"},
+      "actual": {"outcome": "SAFE_FAILURE_SET", "evaluated_attacks": 11, "false_passes": 0, "safe_decision": "HOLD", "engineering_gate": "NOT_EVALUATED"}
+    },
+    {
+      "attack_id": "ASR-D02",
+      "target_contract": "Live GCP artifact bytes, object generation and IAM",
+      "mutation": "Rehash retrieved bytes, verify live object generation and attempt cross-tenant access against deployed resources.",
+      "execution": "DEPENDENCY_WAIT",
+      "dependency": "No real GCP object, deployed resource or IAM execution evidence exists.",
+      "expected": {"outcome": "NOT_EVALUATED", "safe_decision": "HOLD"},
+      "actual": {"outcome": "NOT_EVALUATED", "safe_decision": "HOLD"}
+    }
+  ]
+}

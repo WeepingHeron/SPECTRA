@@ -1,0 +1,141 @@
+{
+  "evaluation_time": "2026-08-20T12:00:00Z",
+  "base": {
+    "candidate_id": "synthetic-raw-preflight-001",
+    "source_kind": "SYNTHETIC",
+    "required_actions": ["FETCH", "PRIVATE_STORE"],
+    "request_context": {"tenant_id": "synthetic-tenant-a", "zone": "Z5_SYNTHETIC"},
+    "candidate_manifest": {
+      "contract_version": "2.0.0",
+      "manifest_id": "synthetic-manifest-preflight-001",
+      "run_id": "synthetic-run-preflight-001",
+      "tenant_id": "synthetic-tenant-a",
+      "zone": "Z5_SYNTHETIC",
+      "bundle_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "create_precondition": "IF_GENERATION_MATCH_0",
+      "provider": {
+        "platform_name": "SYNTHETIC_PREFLIGHT_PROVIDER",
+        "platform_version": "fixture-v1",
+        "platform_build": "fixture-build-v1",
+        "provider_job_reference": "synthetic-provider-job-001"
+      },
+      "timestamps": {
+        "submitted_at": "2026-08-20T10:00:00Z",
+        "completed_at": "2026-08-20T10:01:00Z",
+        "downloaded_at": "2026-08-20T10:02:00Z"
+      },
+      "rights_snapshot": {
+        "rights_snapshot_id": "synthetic-rights-preflight-001",
+        "snapshot_version": "fixture-v1",
+        "status": "PRIVATE_COPY_ALLOWED",
+        "tenant_id": "synthetic-tenant-a",
+        "approval_target_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "valid_from": "2026-08-20T00:00:00Z",
+        "valid_until": "2026-08-21T00:00:00Z",
+        "action_grants": [
+          {"action": "FETCH", "grant_status": "ALLOWED", "scope_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333", "valid_until": "2026-08-21T00:00:00Z"},
+          {"action": "PRIVATE_STORE", "grant_status": "ALLOWED", "scope_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444", "valid_until": "2026-08-21T00:00:00Z"}
+        ],
+        "history_anchor_ref": "fixture://synthetic-rights/preflight-001"
+      },
+      "artifacts": [
+        {
+          "artifact_id": "synthetic-artifact-001",
+          "artifact_revision_id": "synthetic-revision-001",
+          "tenant_id": "synthetic-tenant-a",
+          "zone": "Z5_SYNTHETIC",
+          "storage_ref": {
+            "project_id": "synthetic-project-a",
+            "bucket_id": "synthetic-bucket-a",
+            "object_name": "fixtures/synthetic-artifact-001.txt",
+            "generation": "1001"
+          },
+          "integrity": {
+            "sha256": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+            "byte_size": 128,
+            "declared_mime": "text/plain",
+            "detected_mime": "text/plain"
+          },
+          "source": {"locator": "fixture://synthetic-source/preflight-001", "retrieved_at": "2026-08-20T10:02:00Z"},
+          "rights_snapshot_id": "synthetic-rights-preflight-001",
+          "validation": {
+            "quarantine_status": "VALIDATED",
+            "malware_scan": {"status": "PASS", "engine": "synthetic-scanner", "engine_version": "fixture-v1", "scanned_at": "2026-08-20T10:03:00Z"},
+            "mime_check": "MATCH",
+            "hash_check": "MATCH",
+            "reviewer": "synthetic-reviewer",
+            "reviewed_at": "2026-08-20T10:04:00Z"
+          },
+          "lineage": {"derived_record_ids": [], "deletion_state": "ACTIVE"}
+        }
+      ],
+      "parser": {
+        "name": "synthetic-preflight-parser",
+        "version": "fixture-v1",
+        "commit": "synthetic-not-a-real-commit",
+        "input_bundle_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "output_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666"
+      },
+      "metadata": {
+        "data_class": "SYNTHETIC",
+        "version": "2.0.0",
+        "created_at": "2026-08-20T10:05:00Z",
+        "content_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+        "review_status": "READY_FOR_REVIEW",
+        "calculation_run": {
+          "run_id": "synthetic-run-preflight-001",
+          "engine": "synthetic-preflight-fixture",
+          "engine_version": "1",
+          "input_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "output_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+          "executed_at": "2026-08-20T10:05:00Z"
+        }
+      }
+    },
+    "object_creation_receipts": [
+      {
+        "artifact_id": "synthetic-artifact-001",
+        "artifact_revision_id": "synthetic-revision-001",
+        "tenant_id": "synthetic-tenant-a",
+        "zone": "Z5_SYNTHETIC",
+        "project_id": "synthetic-project-a",
+        "bucket_id": "synthetic-bucket-a",
+        "object_name": "fixtures/synthetic-artifact-001.txt",
+        "precondition": "IF_GENERATION_MATCH_0",
+        "outcome": "CREATED",
+        "generation": "1001",
+        "sha256": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+        "byte_size": 128,
+        "detected_mime": "text/plain"
+      }
+    ]
+  },
+  "cases": [
+    {"name": "valid-synthetic-issuable", "operations": [], "decision": "ISSUE_ALLOWED", "expected_codes": []},
+    {"name": "overwrite-attempt", "operations": [{"op": "set", "path": "/object_creation_receipts/0/outcome", "value": "PRECONDITION_FAILED_EXISTING_OBJECT"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_OVERWRITE_ATTEMPT"]},
+    {"name": "storage-project-mismatch", "operations": [{"op": "set", "path": "/candidate_manifest/artifacts/0/storage_ref/project_id", "value": "other-synthetic-project"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_STORAGE_REF_MISMATCH"]},
+    {"name": "storage-bucket-mismatch", "operations": [{"op": "set", "path": "/candidate_manifest/artifacts/0/storage_ref/bucket_id", "value": "other-synthetic-bucket"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_STORAGE_REF_MISMATCH"]},
+    {"name": "storage-object-name-mismatch", "operations": [{"op": "set", "path": "/candidate_manifest/artifacts/0/storage_ref/object_name", "value": "fixtures/other-synthetic-artifact.txt"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_STORAGE_REF_MISMATCH"]},
+    {"name": "storage-generation-mismatch", "operations": [{"op": "set", "path": "/candidate_manifest/artifacts/0/storage_ref/generation", "value": "1002"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_STORAGE_REF_MISMATCH", "RAW_GENERATION_MISMATCH"]},
+    {"name": "rights-missing", "operations": [{"op": "delete", "path": "/candidate_manifest/rights_snapshot"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RIGHTS_SNAPSHOT_MISSING", "RAW_MANIFEST_SCHEMA_INVALID"]},
+    {"name": "rights-stale", "operations": [{"op": "set", "path": "/candidate_manifest/rights_snapshot/valid_until", "value": "2026-08-19T00:00:00Z"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RIGHTS_SNAPSHOT_NOT_ACTIVE"]},
+    {"name": "rights-action-missing", "operations": [{"op": "set", "path": "/candidate_manifest/rights_snapshot/action_grants/1/grant_status", "value": "UNCONFIRMED"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RIGHTS_ACTION_GRANT_MISSING"]},
+    {"name": "cross-tenant", "operations": [{"op": "set", "path": "/request_context/tenant_id", "value": "synthetic-tenant-b"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["CROSS_TENANT_ACCESS_DENIED"]},
+    {"name": "hash-mismatch", "operations": [{"op": "set", "path": "/object_creation_receipts/0/sha256", "value": "sha256:9999999999999999999999999999999999999999999999999999999999999999"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["ARTIFACT_HASH_MISMATCH"]},
+    {"name": "mime-mismatch", "operations": [{"op": "set", "path": "/object_creation_receipts/0/detected_mime", "value": "application/pdf"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["MIME_CONTENT_MISMATCH"]},
+    {"name": "scan-not-passed", "operations": [{"op": "set", "path": "/candidate_manifest/artifacts/0/validation/malware_scan/status", "value": "INCONCLUSIVE"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["MALWARE_SCAN_NOT_PASSED"]},
+    {"name": "review-missing", "operations": [{"op": "delete", "path": "/candidate_manifest/artifacts/0/validation/reviewer"}, {"op": "delete", "path": "/candidate_manifest/artifacts/0/validation/reviewed_at"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_ARTIFACT_REVIEW_MISSING"]},
+    {"name": "malformed-rights-action-list", "operations": [{"op": "set", "path": "/candidate_manifest/rights_snapshot/action_grants/0/action", "value": ["FETCH"]}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_MANIFEST_SCHEMA_INVALID"]},
+    {"name": "malformed-artifact-id-list", "operations": [{"op": "set", "path": "/candidate_manifest/artifacts/0/artifact_id", "value": ["synthetic-artifact-001"]}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_MANIFEST_SCHEMA_INVALID"]},
+    {"name": "malformed-malware-scan-string", "operations": [{"op": "set", "path": "/candidate_manifest/artifacts/0/validation/malware_scan", "value": "PASS"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_MANIFEST_SCHEMA_INVALID"]},
+    {"name": "malformed-receipt-artifact-id-list", "operations": [{"op": "set", "path": "/object_creation_receipts/0/artifact_id", "value": ["synthetic-artifact-001"]}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["PREFLIGHT_INPUT_INVALID"]},
+    {"name": "malformed-rights-validity-time", "operations": [{"op": "set", "path": "/candidate_manifest/rights_snapshot/action_grants/0/valid_until", "value": "not-a-time"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["RAW_MANIFEST_SCHEMA_INVALID"]},
+    {"name": "malformed-receipt-revision-id-number", "operations": [{"op": "set", "path": "/object_creation_receipts/0/artifact_revision_id", "value": 1001}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["PREFLIGHT_INPUT_INVALID"]},
+    {"name": "malformed-request-context-list", "operations": [{"op": "set", "path": "/request_context", "value": ["synthetic-tenant-a", "Z5_SYNTHETIC"]}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["PREFLIGHT_INPUT_INVALID"]},
+    {"name": "malformed-receipt-collection-string", "operations": [{"op": "set", "path": "/object_creation_receipts", "value": "not-a-receipt-list"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["PREFLIGHT_INPUT_INVALID"]},
+    {"name": "receipt-storage-field-missing", "operations": [{"op": "delete", "path": "/object_creation_receipts/0/project_id"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["PREFLIGHT_INPUT_INVALID"]},
+    {"name": "receipt-missing", "operations": [{"op": "delete", "path": "/object_creation_receipts/0"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["OBJECT_CREATION_RECEIPT_MISSING"]},
+    {"name": "receipt-duplicate-key", "operations": [{"op": "copy_append", "from": "/object_creation_receipts/0", "path": "/object_creation_receipts"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["DUPLICATE_OBJECT_CREATION_RECEIPT"]},
+    {"name": "receipt-extra-unknown-object", "operations": [{"op": "copy_append", "from": "/object_creation_receipts/0", "path": "/object_creation_receipts"}, {"op": "set", "path": "/object_creation_receipts/1/artifact_id", "value": "synthetic-extra-artifact"}, {"op": "set", "path": "/object_creation_receipts/1/artifact_revision_id", "value": "synthetic-extra-revision"}, {"op": "set", "path": "/object_creation_receipts/1/object_name", "value": "fixtures/synthetic-extra-artifact.txt"}], "decision": "HOLD_NOT_ISSUED", "expected_codes": ["UNEXPECTED_OBJECT_CREATION_RECEIPT"]}
+  ]
+}

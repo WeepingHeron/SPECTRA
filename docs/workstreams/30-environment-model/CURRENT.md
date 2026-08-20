@@ -1,10 +1,52 @@
 # 30 Environment Model Handoff
 
+> **Current package notice (2026-08-20):** 아래 `INTEGRATED` 기록은 이전 조사 회차의 역사적 상태다. 채팅 31 H02의 invalid-path fail-closed 보완은 Control Tower 독립 재검증을 통과해 구현 패키지 `VERIFIED`다. provider reference·권리·승인 raw manifest가 없으므로 계약 발행과 Stage 3 완료는 계속 `HOLD`다.
+
+## 채팅 31 H01 — Environment Intake Gate 보완
+
+- 7개 필수 source role을 exact-one cardinality로 검사한다.
+- manifest artifact ID 중복을 lookup dictionary 생성 전에 거부한다.
+- 필수 role 사이 artifact ID 재사용과 resolved path 재사용을 각각 stable provenance code로 거부한다.
+- `..` 경로 alias와 symlink가 같은 파일로 resolve되면 동일 경로로 판정한다.
+- 누락·중복·재사용·잘못된 index·hash 불일치·bundle root 이탈 공격은 crash 없이 `PROVENANCE_FAILURE/HOLD`로 종료한다.
+- 환경 20개, schema 14개·valid fixture 3개·invalid fixture 83개, simulation 31개, assurance 20 evaluated·1 `NOT_EVALUATED` 회귀가 통과했다.
+- 실제 bundle 9/9 checksum과 parser 구조를 값 비노출 방식으로 재검증했다. 후보 4개는 모두 `HOLD_PENDING_PROVENANCE_AND_RIGHTS`다.
+- provider job reference, AE9/AP9 exact version 독립 확인, action-specific rights, 승인된 raw artifact manifest v2가 없으므로 contract emission은 승인하지 않는다.
+- 이 문단은 H01 제출 당시의 `READY_FOR_REVIEW` 기록이며, 후속 H02의 현재 판정은 아래 Control Tower H02 기록과 Status를 따른다.
+
+### Control Tower H02 독립 재검증 — 2026-08-20
+
+- 판정: `VERIFIED — chat 31 H02 invalid-path fail-closed`; Git 통합 또는 Stage 3 완료 판정은 아니다.
+- embedded NUL 앞·중간·끝은 모두 traceback 없이 `ARTIFACT_PATH_INVALID/PROVENANCE_FAILURE/HOLD`, `normalized_environment: null`을 반환했다.
+- 환경 23개, schema 14개·fixture 3/83, simulation 31개, assurance 20 evaluated·1 `NOT_EVALUATED`와 별도 70 preflight 공격 회귀가 통과했고 False PASS는 0이다.
+- 실제 bundle `SHA256SUMS` 9/9와 set hash를 재현했고, 값 비노출 parser 검사는 후보 4개·1/2/3/4 mm·전부 `HOLD_PENDING_PROVENANCE_AND_RIGHTS`를 유지했다.
+- 실제 dose 값은 출력·fixture·문서·Git에 복제하지 않았다. provider reference·rights·승인 raw manifest 부족으로 contract emission은 계속 차단한다.
+
+### Control Tower 독립 재검증 — 2026-08-20
+
+- 판정: `CHANGES_REQUESTED — chat 31 H01`; 이전 조사 패키지의 `INTEGRATED` 판정은 유지한다.
+- 제출 회귀: environment 20, schema 14·fixture 3/83, simulation 31, assurance 20 evaluated·1 `NOT_EVALUATED`가 모두 통과했고 False PASS는 0이었다.
+- 실제 bundle: `SHA256SUMS` 9/9와 set hash `aa299946677dc082fa48cfea4efa2501a10478a92fde04643c429ab77bbfc163`를 재현했다. 값 비노출 parser 구조 검사는 후보 4개·1/2/3/4 mm·전부 `HOLD_PENDING_PROVENANCE_AND_RIGHTS`를 재현했다.
+- 기존 source-role 누락·중복, artifact ID/path 재사용, manifest duplicate ID, alias·symlink 공격은 stable provenance HOLD로 차단됐다.
+- 남은 결함: `artifact_files[].path`에 NUL 문자를 넣으면 `Path.resolve()`에서 `ValueError: embedded null byte`가 발생한다. `ARTIFACT_INDEX_INVALID` 또는 동등한 stable code의 `PROVENANCE_FAILURE/HOLD`로 종료하지 못하므로 오염 입력 Exit Gate를 충족하지 못한다.
+- 다음 제출: `/Users/taehoon/Downloads/SPECTRA_31_ENVIRONMENT_INTAKE_GATE_HANDOFF_H02.md`; 실제 원문·dose 값·rights·provider reference·raw manifest HOLD는 그대로 유지한다.
+
+## 채팅 31 H02 — Invalid Path Fail-Closed 보완
+
+- `artifact_files[].path`의 embedded NUL을 `Path.resolve()` 전에 탐지해 `ARTIFACT_PATH_INVALID`로 거부한다.
+- NUL의 앞·중간·끝 위치를 각각 공격 입력으로 검증하고 모두 `PROVENANCE_FAILURE/HOLD`, `normalized_environment: null`을 확인했다.
+- resolve와 containment는 `OSError`, `RuntimeError`, `ValueError`만 제한적으로 처리하며 정상 `..` alias와 symlink 동일성 검사는 유지한다.
+- 후속 `stat/open`의 예상 가능한 OS 오류는 `RAW_ARTIFACT_UNREADABLE`로 구조화하고 다른 프로그래밍 오류를 포괄적으로 숨기지 않는다.
+- missing file, root escape, hash mismatch, 정상 합성 parser-to-HOLD 경로를 포함한 environment 23개가 통과했다.
+- schema 14개·fixture 3/83, simulation 31개, assurance 20 evaluated·1 `NOT_EVALUATED`가 통과했고 False PASS는 0이다.
+- 실제 bundle 9/9 checksum과 값 비노출 parser 구조를 재검증했으며 contract emission HOLD는 유지된다.
+- 이 문단은 작업 채팅의 H02 제출 기록이다. 현재는 위 Control Tower H02 독립 재검증으로 구현 패키지 `VERIFIED`가 됐으며 Git 통합은 아직 수행하지 않았다.
+
 ## Status
 
-`INTEGRATED`
+`VERIFIED — chat 31 H02 / contract emission HOLD`
 
-이번 상태는 **Stage 3 조사·계약 준비 산출물의 검증·Git 통합**이다. 실제 모델 실행, 출력 확보, parser 구현, schema 변경 또는 Stage 3 완료를 뜻하지 않는다. 상업 이용·자동화·재배포는 별도 `HOLD`다.
+현재 `VERIFIED`는 채팅 31 H02의 intake gate와 실제-format parser 안전 경계에 한정한다. 실제 SPENVIS 원본은 Git 밖에서 확보했지만 승인된 공용 contract 발행, 권리 확인, 과학적 교차검산, Git 통합 또는 Stage 3 완료를 뜻하지 않는다. 상업 이용·자동화·재배포는 별도 `HOLD`다.
 
 ## 조사 범위와 소유 파일
 

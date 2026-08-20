@@ -8,7 +8,195 @@
 
 ## Status
 
-`INTEGRATED`
+`VERIFIED — H02 MVP Decision Engine synthetic baseline`
+
+현재 작업 패키지: `20-mvp-decision-engine-v1` H02. H01에서 확인된 비유한 숫자 traceback 경로를 입력 경계와 하위 계산 경계에서 보완했다. `NaN`, `Infinity`, `-Infinity`는 direct engine과 CLI 모두 stable code를 가진 machine-readable `INVALID_INPUT / NOT_EVALUATED / HOLD`로 종료한다. Control Tower가 전체 schema·simulation·environment·assurance 회귀와 정상 canonical 결과를 독립 재현해 합성 MVP engine 기준선을 `VERIFIED`로 판정했다. 이전 Stage 2 합성 기준선의 `INTEGRATED` 판정 범위는 그대로 보존한다.
+
+## H02 Control Tower 독립 재검증 — 2026-08-20
+
+- schema 14개, 정상 fixture 3개, 실패 fixture 83개 통과
+- simulation 31개와 기존 비교 scenario 5개 통과
+- `NaN`, `Infinity`, `-Infinity` direct engine·CLI 공격이 `NON_FINITE_NUMERIC_INPUT`, exit 2, traceback 없음, `INVALID_INPUT / NOT_EVALUATED / HOLD`로 종료
+- 하위 TID·SEE `ValueError`가 stable `MvpDecisionError`로 변환됨
+- 정상 canonical summary와 Change Impact ID `impact-ec33a03f8d94eca3` 유지
+- environment 8개, assurance 21개 중 19 evaluated·2 `NOT_EVALUATED`, failure 0·False PASS 0 유지
+- 판정 범위는 합성 Decision Engine이다. 실제 Stage 3·4 evidence 연결과 실제 지원 판정은 포함하지 않는다.
+
+## H02 Handoff — 비유한 숫자 Fail-Closed 보완
+
+### 수정 내용
+
+- `validate_mvp_input()`이 schema gate보다 먼저 전체 정규화 입력을 결정론적 JSON pointer 순서로 순회한다.
+- 모든 float 입력에서 `NaN`, 양의 `Infinity`, 음의 `Infinity`를 `NON_FINITE_NUMERIC_INPUT`으로 거부한다.
+- TID·SEE 계산과 TID 시험 한계 변환에서 발생하는 예상 `ValueError`를 각각 `TID_CALCULATION_INPUT_INVALID`, `SEE_CALCULATION_INPUT_INVALID`의 `MvpDecisionError`로 변환한다.
+- CLI 오류 JSON에 별도 `error_code` 필드를 추가했다. JSON 파싱 오류와 파일 오류도 각각 `INVALID_JSON_INPUT`, `INPUT_FILE_ERROR`로 구분한다.
+- direct engine, CLI, 하위 TID·SEE 오류 변환 회귀를 추가해 Simulation 테스트를 28개에서 31개로 확장했다.
+
+### H02 변경 파일
+
+- `src/spectra_sim/mvp_engine.py`
+- `simulation/run_mvp_decision.py`
+- `tests/simulation/test_mvp_decision_engine.py`
+- `docs/workstreams/20-simulation-core/CURRENT.md`
+
+별도 handoff: `/Users/taehoon/Downloads/SPECTRA_20_MVP_DECISION_ENGINE_HANDOFF_H02.md`
+
+Workstream 30 진행 파일, Workstream 40 문서, 루트 checklist, 공통 schema·계약은 수정하지 않았다. commit·push도 수행하지 않았다.
+
+### H02 공격 실제 출력
+
+세 입력 모두 CLI exit code `2`, stdout 없음, traceback 없음으로 동일하게 종료했다.
+
+```text
+NaN 2 {"assurance_decision": "HOLD", "engineering_gate": "NOT_EVALUATED", "error": "numeric input at /particle_flux/value must be finite", "error_code": "NON_FINITE_NUMERIC_INPUT", "processing_status": "INVALID_INPUT"}
+Infinity 2 {"assurance_decision": "HOLD", "engineering_gate": "NOT_EVALUATED", "error": "numeric input at /particle_flux/value must be finite", "error_code": "NON_FINITE_NUMERIC_INPUT", "processing_status": "INVALID_INPUT"}
+-Infinity 2 {"assurance_decision": "HOLD", "engineering_gate": "NOT_EVALUATED", "error": "numeric input at /particle_flux/value must be finite", "error_code": "NON_FINITE_NUMERIC_INPUT", "processing_status": "INVALID_INPUT"}
+```
+
+### H02 최종 검증
+
+실행 명령:
+
+```bash
+python3 tests/schema/validate_contracts.py
+python3 tests/simulation/run_all.py
+python3 tests/assurance/run_all.py
+python3 simulation/run_mvp_decision.py --summary
+```
+
+실제 출력 요약:
+
+```text
+SCHEMAS: 14 checked
+VALID FIXTURES: 3 passed
+INVALID FIXTURES: 83 rejected with expected codes
+RESULT: READY_FOR_REVIEW candidate
+
+Ran 31 tests in 2.468s
+OK
+
+Assurance: cases 21, evaluated 19, NOT_EVALUATED 2, failures 0, false_passes 0
+```
+
+정상 canonical summary는 H01과 동일하다.
+
+```json
+{"baseline":{"assurance":"HOLD","ecc_enabled":false,"engineering":"NOT_EVALUATED","policy":"DRAFT","residual":0.063072},"case_id":"mvp-synthetic-ecc-policy-001","change_impact_id":"impact-ec33a03f8d94eca3","variant":{"assurance":"HOLD","ecc_enabled":true,"engineering":"NOT_EVALUATED","policy":"APPROVED","residual":0.013072}}
+```
+
+### H02 검토 경계
+
+- 비유한 숫자 방어는 실제 환경·시험값을 추가하지 않으며 기존 합성 계산과 판정 규칙을 변경하지 않는다.
+- 정상 baseline/variant의 hash 기반 ID와 canonical 결과는 유지된다.
+- 합성 입력, 미승인 정책, 파괴성 SEE 공백은 계속 지원 판정으로 승격되지 않는다.
+- 이 채팅은 `READY_FOR_REVIEW`까지만 선언한다. `VERIFIED`, `INTEGRATED`, checklist 변경과 commit·push는 Control Tower 소유다.
+
+## H01 Control Tower 독립 검증 — 2026-08-20
+
+- schema 14개, 정상 fixture 3개, 실패 fixture 83개를 다시 실행해 통과했다.
+- simulation 28개, 합성 비교 5개와 CLI summary를 다시 실행해 통과했다.
+- assurance 21개 중 19개 평가, 2개 `NOT_EVALUATED`, failure 0, False PASS 0을 유지했다.
+- baseline·variant EvidencePacket export, canonical 재현성, ECC OFF/ON `0.063072 → 0.013072`, DRAFT/APPROVED 정책 비교와 최종 `NOT_EVALUATED/HOLD`를 재현했다.
+- negative incident, approval scope tamper와 ECC→SEL 대체 공격은 안정된 `MvpDecisionError` 코드로 거부됐다.
+- `particle_flux.value=NaN` 또는 `Infinity`는 `calculate_see()`의 일반 `ValueError("SEE inputs must be finite")`로 종료됐다. `run_mvp_decision.py`는 이 예외를 잡지 않아 구조화된 안전 실패 JSON 대신 traceback과 exit 1을 낸다.
+- 지원 판정으로 승격되는 False PASS는 아니지만, MVP Exit Gate의 “모든 오염 입력이 설명 가능한 `HOLD/NOT_EVALUATED`로 종료”를 충족하지 못한다.
+
+### H02 수정 요구
+
+1. 입력 경계에서 모든 계산 숫자의 `NaN`·`Infinity`를 결정론적으로 거부하고 stable error code를 반환한다.
+2. 하위 TID·SEE 계산의 예상 입력 오류를 `MvpDecisionError`로 변환해 CLI가 항상 machine-readable `INVALID_INPUT / NOT_EVALUATED / HOLD`로 종료하게 한다.
+3. direct engine과 CLI 양쪽에 `NaN`, `Infinity`, `-Infinity` 회귀 테스트를 추가한다.
+4. 정상 28개와 schema·assurance 전체 회귀를 유지하고 H02 handoff를 제출한다.
+
+## H01 Handoff — MVP 결정론적 Decision Engine
+
+### 구현 결과
+
+- 한 개 정규화 입력 `simulation/fixtures/mvp-ecc-policy-v2.json`을 자체 schema로 검증하고, 참조한 EvidencePacket v1.1과 MITIGATION/USER_POLICY v2를 Stage 1 schema·semantic gate로 먼저 검증한다.
+- 같은 엔진에서 baseline `ECC OFF + DRAFT policy`와 variant `ECC ON + APPROVED 형식 policy`를 실행한다.
+- ECC는 범용 `effectiveness_factor`를 사용하지 않고, 명시된 합성 multiplicity별 incident count와 outcome transition의 합으로만 계산한다.
+- baseline raw/residual은 `0.063072 events/mission`, variant는 corrected `0.05`, detected-uncorrectable `0.01`, silent-uncorrected `0.003072`, residual `0.013072 events/mission`을 재현한다.
+- threshold rule은 baseline `FAIL`, variant `PASS`; policy approval state는 baseline `FAIL`, variant `PASS`로 비교된다.
+- 실제 Stage 3 환경과 Stage 4 exact-part 증거는 0건이므로 양쪽 모두 `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`이며 `STAGE3_INPUT_UNAVAILABLE`, `STAGE4_INPUT_UNAVAILABLE`, `SYNTHETIC_ONLY`를 차단 gap으로 남긴다.
+- ECC가 `SEL/SEB/SEGR` 증거를 대체하지 못하도록 excluded mode와 required destructive mode를 분리하고, 누락 공격을 `DESTRUCTIVE_SEE_MODE_MISSING`으로 차단한다.
+- Change Impact는 ECC·mitigation·policy 입력 변화, residual·corrected 출력 변화, threshold·approval 판정 변화, 무효화된 baseline mitigation/policy ID와 blocking gap을 machine-readable JSON으로 기록한다.
+- CLI는 전체 canonical result, baseline/variant EvidencePacket 단독 export와 compact summary를 지원한다.
+
+### H01 변경 파일
+
+- `src/spectra_sim/__init__.py`
+- `src/spectra_sim/contracts.py`
+- `src/spectra_sim/mvp_engine.py`
+- `simulation/fixtures/mvp-ecc-policy-v2.json`
+- `simulation/run_mvp_decision.py`
+- `simulation/schemas/mvp-decision-input.schema.json`
+- `simulation/schemas/mvp-decision-result.schema.json`
+- `simulation/schemas/change-impact.schema.json`
+- `simulation/README.md`
+- `tests/simulation/test_mvp_decision_engine.py`
+- `tests/simulation/run_all.py`
+- `docs/workstreams/20-simulation-core/BRIEF.md`
+- `docs/workstreams/20-simulation-core/CURRENT.md`
+
+### 수정 전 기준선
+
+```text
+SCHEMAS: 14 checked
+VALID FIXTURES: 3 passed
+INVALID FIXTURES: 83 rejected with expected codes
+Ran 19 tests in 0.813s
+OK
+```
+
+### H01 최종 검증
+
+실행 명령:
+
+```bash
+python3 tests/schema/validate_contracts.py
+python3 tests/simulation/run_all.py
+```
+
+실제 출력 요약:
+
+```text
+SCHEMAS: 14 checked
+ENUM CONTRACTS: 4 axes checked
+INPUT CARDINALITY: 7 required kinds exact-one
+VERSION CONTRACTS: EvidencePacket 1.0.0/1.1.0 and v2 contracts checked
+VALID FIXTURES: 3 passed
+INVALID FIXTURES: 83 rejected with expected codes
+RESULT: READY_FOR_REVIEW candidate
+
+Ran 28 tests in 2.073s
+OK
+```
+
+CLI 실제 출력:
+
+```json
+{"baseline":{"assurance":"HOLD","ecc_enabled":false,"engineering":"NOT_EVALUATED","policy":"DRAFT","residual":0.063072},"case_id":"mvp-synthetic-ecc-policy-001","change_impact_id":"impact-ec33a03f8d94eca3","variant":{"assurance":"HOLD","ecc_enabled":true,"engineering":"NOT_EVALUATED","policy":"APPROVED","residual":0.013072}}
+```
+
+### H01 공격·계약 검증
+
+- 동일 입력 2회 실행의 전체 객체, canonical JSON, input/output hash가 동일하다.
+- 생성된 baseline·variant EvidencePacket은 각각 JSON Schema와 semantic gate를 통과한다.
+- Change Impact와 전체 MVP 결과는 전용 JSON Schema를 통과한다.
+- 범용 `effectiveness_factor` 삽입은 입력 schema가 거부한다.
+- ECC distribution 총량이 raw SEU와 다르면 `ECC_FAULT_DISTRIBUTION_MISMATCH`로 종료한다.
+- required `SEB` 증거를 제거한 공격은 ECC 결과와 무관하게 `DESTRUCTIVE_SEE_MODE_MISSING`으로 종료한다.
+- APPROVED 형식 policy도 `SYNTHETIC`이므로 지원 판정으로 승격되지 않는다.
+
+### 알려진 한계와 검토 요청
+
+- 합성 particle flux·cross section·ECC transition은 회귀 계산 fixture이며 실제 Stage 3·4 근거의 placeholder로 사용하지 않는다.
+- MVP v1은 한 임무·한 부품·ECC 한 방법·baseline/variant 한 쌍만 지원한다.
+- ECC transition distribution은 Simulation 입력 schema에서 명시적으로 고정하지만 공통 Workstream 10 schema에는 아직 참조 ID만 존재한다.
+- 실제 policy 승인 권한, immutable history anchor와 실제 원문 권리는 검증하지 않았다.
+- 독립 Assurance 승인 전에는 실제 입력이 들어와도 이 H01 경로가 `SUPPORTED_WITH_MITIGATION`을 만들지 않는다.
+- Control Tower는 전체 명령, canonical 재현성, packet/change-impact 독립 검증과 공격 경계를 다시 확인해야 한다.
+- `VERIFIED`, `INTEGRATED`, 체크리스트, commit·push는 Control Tower 소유다.
 
 채팅 20은 2026-08-19에 미추적 후보 파일 전부를 직접 읽고 수정 전 검증을 재실행한 뒤 소유권을 인수했다. 초기 구현의 구조를 보존하면서 발견한 계약·False PASS 위험을 수정하고 전체 검증을 완료했다.
 

@@ -20,16 +20,29 @@
 | Stage | 검증 결과 | 주관 Workstream | 첫 채팅 | 주요 협업 Workstream | 선행 조건 | 현재 상태 |
 |---:|---|---|---:|---|---|---|
 | 1 | 프로젝트 계약과 기준선 | 10 Contracts & Schema | `10` | 00 Control Tower | 없음 | **IN_PROGRESS** — 계약·스키마는 통합, 팀 범위 검토 등 잔여 |
-| 2 | 재현 가능한 합성 Vertical Slice | 20 Simulation Core | `20` | 10 Contracts, 00 Control Tower | 검증된 Stage 1 데이터 계약 | **IN_PROGRESS** — 결정론적 합성 기준선은 통합; 원본 데모/CSV/대시보드 이관과 UI는 미완료 |
-| 3 | 실제 환경·TID 모델 경로 | 30 Environment Model | `30` | 10 Contracts, 20 Simulation, 60 Assurance | 안정된 합성 입출력 경로 | **IN_PROGRESS** — 공식 도구·권리 조사 통합; 실제 run·출력·parser는 미착수 |
-| 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | **IN_PROGRESS** — 출처·권리·identity·적용성 조사 통합; 승인 BOM·실제 원문·수치는 0건 |
-| 5 | 완화·사용자 정책 엔진 | 50 Mitigation & Policy | `50` | 20 Simulation, 40 Parts, 60 Assurance | 환경·부품 증거 인터페이스 | **IN_PROGRESS** — 계약 설계 H01 검토 후 watchdog/TMR 수정 요청; schema·engine·fixture는 미구현 |
-| 6 | 독립 보증·평가 기준선 | 60 Assurance & Evals | `60` | 20~50 구현 Workstream | 결정론적 계산·증거·정책 경로 | `NOT_STARTED` |
-| 7 | Multi-Agent·GCP 실행 경로 | 70 Platform & GCP | `70` | 30~60 전문 Workstream | Stage 3~6 서비스·감사 계약 | `NOT_STARTED` |
-| 8 | 제품·대시보드 통합 | 80 Product & Dashboard | `80` | 60 Assurance, 70 Platform | 검증된 통합 API와 EvidencePacket | `NOT_STARTED` |
-| 9 | 비즈니스·발표·최종 시연 | 90 Business & Presentation | `90` | 60 Assurance, 80 Product | Stage 8 제품 기준선 | `NOT_STARTED` |
+| 2 | 재현 가능한 합성 Vertical Slice | 20 Simulation Core | `20` | 10 Contracts, 00 Control Tower | 검증된 Stage 1 데이터 계약 | **COMPLETE** — 결정론적 합성 기준선과 Exit Gate 통합; 제품 UI는 Stage 8 범위 |
+| 3 | 실제 환경·TID 모델 경로 | 30 Environment Model | `30` | 10 Contracts, 20 Simulation, 60 Assurance | 안정된 합성 입출력 경로 | **IN_PROGRESS** — 실제 SPENVIS 원본 9개·parser와 intake fail-closed H02 검증; provider job ref·rights·raw manifest·과학 교차검산 미완료 |
+| 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | **IN_PROGRESS** — TI exact-part/TID discovery H03 검증; BOM·rights manifest·v2 fixture·임무 적용성·SEE coverage 미완료 |
+| 5 | 완화·사용자 정책 엔진 | 50 Mitigation & Policy | `50` | 20 Simulation, 40 Parts, 60 Assurance | 환경·부품 증거 인터페이스 | **IN_PROGRESS** — H02 계약·v2 schema와 합성 Decision Engine H02 검증; 실제 효과·실제 evidence 연결 미구현 |
+| 6 | 독립 보증·평가 기준선 | 60 Assurance & Evals | `60` | 20~50 구현 Workstream | 결정론적 계산·증거·정책 경로 | **IN_PROGRESS** — 고정 공격 18개·재현성 control 1개 검증, False PASS 0; 완화 engine·실제 GCP 공격 2개는 `NOT_EVALUATED` |
+| 7 | Multi-Agent·GCP 실행 경로 | 70 Platform & GCP | `70` | 30~60 전문 Workstream | Stage 3~6 서비스·감사 계약 | **IN_PROGRESS** — 저장·권리 gate와 local raw-manifest preflight H03 검증; 실제 resource·rights·manifest·실행·비용 증거는 0 |
+| 8 | 제품·대시보드 통합 | 80 Product & Dashboard | `80` | 60 Assurance, 70 Platform | 검증된 통합 API와 EvidencePacket | `IN_PROGRESS` — 발표 HTML과 합성 Product UI H04 프로토타입 검증; 실제 API·원문·변경 영향 통합 UI는 미구현 |
+| 9 | 비즈니스·발표·최종 시연 | 90 Business & Presentation | `90` | 60 Assurance, 80 Product | Stage 8 제품 기준선 | `IN_PROGRESS` — 7분 발표·4분 Product UI·3분 Q&A 원고 검증; 사람 리허설과 사용자·비즈니스 검증은 미완료 |
 
 `주관 Workstream`은 해당 Stage의 완료 증거를 만드는 책임 영역이다. `주요 협업 Workstream`은 입력이나 독립 검증을 제공하지만 그 Stage의 소유 채팅을 대신하지 않는다.
+
+## MVP와 Stage의 관계
+
+제품 MVP 계약은 [`docs/MVP.md`](docs/MVP.md)에 둔다. MVP는 모든 Stage 완료의 축약어가 아니라, Stage 3·4·5·6·8에서 **한 개 실제 Evidence-to-Decision 경로**에 필요한 최소 결과만 통합한 제품 기준선이다.
+
+- Stage 1·2의 계약과 합성 Vertical Slice는 이미 확보된 기반이다.
+- Stage 3·4는 실제 환경 산출물 1개와 exact-part 증거 묶음 1개만 먼저 연결한다.
+- Stage 5는 그 사례에 필요한 완화·정책만 결정론적으로 구현한다.
+- Stage 6은 새 경로의 False PASS와 재현성을 검증한다.
+- Stage 8은 결과 JSON, EvidencePacket과 Change Impact를 제품 UI에서 보여 준다.
+- Stage 7의 프로덕션 GCP·Multi-Agent와 Stage 9의 비즈니스 검증은 중요하지만 Core MVP 완료의 필수 조건은 아니다.
+
+현재 상태는 `MVP IN_PROGRESS`다. 합성 계산·공격 기준선·Product UI 프로토타입은 존재하지만 실제 환경·부품 근거 경로와 결정론적 완화·정책 engine, 동적 UI 연결이 남아 있다.
 
 ### 병렬 진행 해석
 
@@ -329,7 +342,7 @@ Stage 9  비즈니스·발표·최종 시연
 - 가장 가치 있는 산출물과 구매 단위 검증
 - 기존 도구·컨설팅 대비 차별점 재검증
 - 임무 변경 전·후 시연 시나리오 확정
-- 10분 설명과 질의응답 근거 준비
+- 7분 설명과 3분 질의응답 근거 준비
 - 보안·책임 한계·운영비 정리
 
 ### 최종 시연 흐름

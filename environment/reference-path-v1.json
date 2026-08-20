@@ -1,0 +1,61 @@
+{
+  "profile_version": "1.0.0",
+  "profile_status": "ASSUMED_PRODUCT_BASELINE",
+  "mission": {
+    "mission_id": "spectra-mvp-leo-001",
+    "body": "EARTH",
+    "orbit_class": "CIRCULAR_LEO",
+    "segment_count": 1,
+    "altitude": {"value": 550, "unit": "km"},
+    "inclination": {"value": 97.6, "unit": "deg"},
+    "start_at": "2027-01-01T00:00:00Z",
+    "end_at": "2028-01-01T00:00:00Z",
+    "duration": {"value": 365, "unit": "day"}
+  },
+  "shielding_points": [
+    {"point_id": "sphere-al-1mm", "geometry": "SPHERE", "material": "ALUMINUM", "thickness": {"value": 1, "unit": "mm_Al_equivalent"}},
+    {"point_id": "sphere-al-2mm", "geometry": "SPHERE", "material": "ALUMINUM", "thickness": {"value": 2, "unit": "mm_Al_equivalent"}},
+    {"point_id": "sphere-al-3mm", "geometry": "SPHERE", "material": "ALUMINUM", "thickness": {"value": 3, "unit": "mm_Al_equivalent"}},
+    {"point_id": "sphere-al-4mm", "geometry": "SPHERE", "material": "ALUMINUM", "thickness": {"value": 4, "unit": "mm_Al_equivalent"}}
+  ],
+  "target_material": "SILICON",
+  "provider": {
+    "platform_name": "SPENVIS",
+    "platform_version": "4.6.14.3582",
+    "execution_mode": "MANUAL"
+  },
+  "model_configuration": {
+    "trapped": {
+      "model_name": "AE9/AP9",
+      "model_version": "1.50",
+      "run_mode": "MEAN",
+      "energy_grid": "DEFAULT_AE9_AP9"
+    },
+    "solar": {
+      "model_name": "SAPPHIRE",
+      "model_mode": "TOTAL_FLUENCE",
+      "confidence_percent": 95,
+      "magnetic_shielding": "STORMY"
+    },
+    "dose": {
+      "model_name": "SHIELDOSE-2",
+      "geometry": "SPHERE",
+      "target_material": "SILICON"
+    }
+  },
+  "required_artifact_roles": [
+    "ORBIT_INPUT_REPORT",
+    "TRAPPED_INPUT_REPORT",
+    "TRAPPED_SPECTRUM",
+    "SOLAR_INPUT_REPORT",
+    "SOLAR_SPECTRUM",
+    "DOSE_INPUT_REPORT",
+    "DOSE_OUTPUT"
+  ],
+  "required_right_actions": ["FETCH", "PRIVATE_STORE"],
+  "notes": [
+    "Mission and solar confidence are SPECTRA product assumptions, not model validity claims.",
+    "Every model build and provider job reference must be read from the actual run; placeholders are forbidden.",
+    "No model output or measured radiation value is contained in this profile."
+  ]
+}

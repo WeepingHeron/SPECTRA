@@ -2,7 +2,7 @@
 
 ## Status
 
-`INTEGRATED`
+`VERIFIED — H05 v2 계약 패키지`
 
 ## 구현한 계약
 
@@ -610,3 +610,93 @@ RESULT: READY_FOR_REVIEW candidate
 - 원격: 비공개 `origin/main` push 완료
 - 포함 범위: Workstream 10 H01~H04 누적 provenance/operand/exact-one 계약과 Workstream 40의 검증된 PART_TEST_EVIDENCE v2 문서 명세
 - 제외 범위: Workstream 50의 미검증 계약 설계, 실제 Stage 3·4 데이터·원문·모델 실행
+
+## H05 Mitigation/Policy & Raw Artifact v2 계약 — 2026-08-20
+
+대상 패키지는 Workstream 50 H02와 Workstream 70 H01의 검증된 설계를 공통 schema/validator에 반영한 versioned 계약이다. 이전 Stage 1 및 H01~H04 통합 기준선은 유지하며, H05 변경분만 `READY_FOR_REVIEW`로 제출한다.
+
+### 구현한 version boundary
+
+- EvidencePacket `1.0.0`은 기존 MITIGATION/USER_POLICY/raw manifest v1을 그대로 유지하며 `raw_manifest_refs`를 금지한다.
+- EvidencePacket `1.1.0`은 MITIGATION `2.0.0`, USER_POLICY `2.0.0`, RAW_ARTIFACT_MANIFEST `2.0.0`과 `raw_manifest_refs`를 함께 요구한다.
+- v1/v2 혼합, 같은 required input kind 중복, v1 fallback에 의한 shadowing은 `CONTRACT_VERSION_MIXED` 또는 기존 exact-one gate로 거부한다.
+- 자동 migration은 없다. 소비자는 packet version을 먼저 분기하고 동일 version의 typed fields만 사용해야 한다.
+
+### MITIGATION/POLICY v2
+
+- mitigation method를 discriminated union으로 만들고 ECC, scrubbing, TMR, watchdog, SEL protection, checkpoint/retry, spare switching, shielding change, part replacement의 parameter를 typed object로 제한했다.
+- watchdog와 SEL은 true/false activation model, denominator, action path와 evaluation window를 분리했다. false-positive/false-trip 누락은 각각 전용 code로 거부한다.
+- TMR 출력 의미를 `system_failure_probability`로 고정하고 voter, common-mode, independence, no-repair window를 필수 gate로 뒀다.
+- `SEL`, `SEB`, `SEGR`을 개별 destructive evidence mode로 유지하며 v2 policy가 요구한 모든 mode가 part evidence에 존재하는지 검사한다.
+- policy는 content hash, tenant/mission/component scope hash, approval target/scope, 유효 기간·철회 상태와 immutable history reference를 분리한다. 승인 문자열만으로 synthetic policy가 지원 근거가 되지 않는다.
+
+### RAW_ARTIFACT_MANIFEST v2와 EvidencePacket reference
+
+- manifest와 artifact revision에 tenant, zone, create-only precondition, exact storage generation, bytes SHA-256, declared/detected MIME, source, quarantine/malware/hash 검증, lineage와 deletion state를 추가했다.
+- rights snapshot의 넓은 상태와 독립 action grant를 분리했다. packet이 요구한 action이 개별적으로 `ALLOWED`가 아니면 `RIGHTS_ACTION_GRANT_MISSING`이다.
+- EvidencePacket은 manifest/artifact revision, tenant, zone, generation, hash, rights snapshot과 source locator를 복제해 고정한다. 의미 gate가 nested manifest와 각 값을 직접 대조한다.
+- 권리 snapshot의 중복 action, 미확인·금지·synthetic 상태, 철회·만료 상태는 낙관 판정에서 fail-closed다.
+
+### H05 신규 오류 코드와 fixture
+
+- 버전/필수: `CONTRACT_VERSION_MIXED`, `V2_REQUIRED_FIELD_MISSING`
+- TMR/watchdog: `TMR_OUTPUT_SEMANTIC_MISMATCH`, `TMR_VOTER_MODEL_MISSING`, `TMR_COMMON_MODE_MODEL_MISSING`, `TMR_REPAIR_WINDOW_MISSING`, `TMR_INDEPENDENCE_UNVERIFIED`, `WATCHDOG_FALSE_POSITIVE_MODEL_MISSING`, `SEL_FALSE_TRIP_MODEL_MISSING`
+- raw 무결성: `RAW_OVERWRITE_PRECONDITION_MISSING`, `RAW_GENERATION_MISSING`, `RAW_GENERATION_MISMATCH`, `RAW_ARTIFACT_HASH_MISMATCH`, `RAW_MANIFEST_TENANT_MISMATCH`, `RAW_MANIFEST_ZONE_MISMATCH`, `RAW_RIGHTS_SNAPSHOT_MISMATCH`, `RAW_SOURCE_LOCATOR_MISMATCH`, `RAW_MANIFEST_REFERENCE_MISSING`
+- rights/lifecycle: `RIGHTS_ACTION_GRANT_MISSING`, `RIGHTS_SNAPSHOT_NOT_ACTIVE`, `DUPLICATE_RIGHTS_ACTION_GRANT`, `RAW_ARTIFACT_NOT_VALIDATED`, `RAW_ARTIFACT_DELETION_STATE_INVALID`
+- provenance/policy: `POLICY_APPROVAL_TARGET_MISMATCH`, `POLICY_PACK_NOT_APPROVED`, `NON_EVIDENTIARY_MITIGATION_OPERAND`, `DESTRUCTIVE_SEE_MODE_MISSING`
+- 정상 fixture `synthetic-v2-hold.json`은 모든 값과 locator가 명백한 synthetic fixture이며 assurance `HOLD`를 유지한다.
+- 신규 실패 fixture 12개는 required field, v1/v2 혼합, broad rights 상태의 action grant 우회, overwrite/generation 누락, tenant/generation/hash/rights mismatch, TMR 의미 변경, watchdog false-positive 누락, synthetic policy의 승인 문자열 승격을 각각 target code로 거부한다.
+
+### H05 검증 결과
+
+- 기존 v1 정상 fixture 2개와 실패 fixture 71개를 모두 유지했다.
+- v2 정상 fixture 1개와 실패 fixture 12개를 추가했다.
+- 전체 fixture: 86개(정상 3개, 실패 83개).
+- 실행 명령: `python3 tests/schema/validate_contracts.py`
+- 실제 출력:
+
+```text
+SCHEMAS: 14 checked
+ENUM CONTRACTS: 4 axes checked
+INPUT CARDINALITY: 7 required kinds exact-one
+VERSION CONTRACTS: EvidencePacket 1.0.0/1.1.0 and v2 contracts checked
+VALID FIXTURES: 3 passed
+INVALID FIXTURES: 83 rejected with expected codes
+RESULT: READY_FOR_REVIEW candidate
+```
+
+- schema gate exit code: `0`
+- simulation 회귀: `python3 tests/simulation/run_all.py`, 19개 통과, exit code `0`; 합성 scenario의 assurance는 모두 `HOLD`였다.
+- 형식 검사: `git diff --check`, 출력 없음, exit code `0`.
+
+### Migration과 소비 Workstream 요청
+
+- 상세 계약과 migration은 `docs/workstreams/10-contracts-schema/V2_CONTRACT.md`에 기록했다.
+- Workstream 20은 기존 v1 계산을 유지할 수 있다. v1.1 채택 시 배열 순서나 v1 자유형 factor를 fallback하지 말고 typed parameter와 exact raw reference를 소비해야 한다.
+- Workstream 60은 Workstream 50의 계산/공격 fixture 29개와 Workstream 70 IAM 공격을 구현한다. H05는 이 전체 공격 세트를 중복 구현하지 않는다.
+- Workstream 70은 실제 object generation/hash, scanner 결과, 권리 승인과 tenant isolation을 외부 상태에서 검증해야 한다.
+
+### 알려진 한계
+
+- 계산 엔진, 실제 GCP resource/IAM, 실제 object, 실제 정책 승인과 실제 권리 허가는 구현하거나 주장하지 않았다.
+- schema/validator는 참조와 복제 필드의 내부 일관성을 검사한다. cloud object 존재, bytes 재해시, malware scanner 신뢰성, 승인자 권한과 immutable history store의 실제 불변성은 검증하지 않는다.
+- v2 정상 fixture의 수치, hash, locator, 권리 snapshot은 형식 검증용 `SYNTHETIC` 값이며 최종 support로 승격되지 않는다.
+- required input kind는 v1.1에서도 각각 정확히 하나다. 복수 evidence/policy 집계는 별도 version에서 명시 record selection과 계산 소비 identity를 함께 설계해야 한다.
+
+### Control Tower H05 재검증 요청
+
+- schema 14개, 정상 fixture 3개, 실패 fixture 83개와 simulation 19개를 독립 재실행해 달라.
+- v1 packet 2개가 그대로 통과하고 v1.1의 v2 정상 packet이 `HOLD`로 통과하는지 확인해 달라.
+- v1/v2 혼합, broad-rights/action-grant 우회, overwrite/generation 누락, tenant/generation/hash/rights mismatch, TMR 의미 변경과 watchdog false-positive 누락이 각각 지정 code로 거부되는지 확인해 달라.
+- `VERIFIED`, `INTEGRATED`, checklist, commit과 push는 Control Tower 판단으로 남긴다.
+
+## Control Tower H05 독립 검증 — 2026-08-20
+
+- 판정: `VERIFIED` — MITIGATION/POLICY/RAW_ARTIFACT_MANIFEST v2 공통 계약과 validator 패키지에 한정한다. 계산 엔진, 실제 정책 승인, 실제 GCP object/IAM 또는 Stage 5·7 완료를 뜻하지 않는다.
+- 계약 gate: schema 14개, enum 4축, required input 7종 exact-one, EvidencePacket 1.0.0/1.1.0 version boundary, 정상 fixture 3개와 실패 fixture 83개를 재실행해 통과했다.
+- simulation 회귀: 19개 테스트와 5개 합성 비교 시나리오가 통과했고 모든 assurance는 `HOLD`였다.
+- 독립 변조: v1 packet에 v2 입력을 섞으면 `CONTRACT_VERSION_MIXED`, 요구 action grant가 없으면 `RIGHTS_ACTION_GRANT_MISSING`, generation 복제값이 다르면 `RAW_GENERATION_MISMATCH`로 거부됐다.
+- 합성 지원 승격: v2 synthetic packet을 `SUPPORTED_WITH_MITIGATION`으로 바꾸면 blocking gap, 비증거성 환경·manifest·mitigation·policy, 미검증 artifact와 rights 상태를 포함한 복수 오류가 발생해 False PASS가 차단됐다.
+- 형식·보안: `git diff --check` 통과, H05 소유 범위 밖 코드 변경 없음, 비밀정보·1 MB 초과 파일 없음.
+- 상태 경계: v2 정상 fixture는 구조적으로 유효하지만 실제 근거가 아니므로 `processing_status=VALID`, `assurance_decision=HOLD`를 유지한다.
+- Git: 다른 검증·발표 변경과 80 H02 보완이 함께 진행 중이므로 이번 판정에서는 commit·push하지 않았다.

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/user-policy-v2.schema.json",
+  "title": "User Policy Input v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "contract_version", "policy_id", "policy_version", "policy_content_hash", "scope", "rules", "approval", "immutable_history_ref", "metadata"],
+  "properties": {
+    "kind": {"const": "USER_POLICY"},
+    "contract_version": {"const": "2.0.0"},
+    "policy_id": {"type": "string", "minLength": 1},
+    "policy_version": {"type": "string", "minLength": 1},
+    "policy_content_hash": {"$ref": "common.schema.json#/$defs/sha256"},
+    "scope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tenant_id", "mission_ids", "component_ids", "scope_hash"],
+      "properties": {
+        "tenant_id": {"type": "string", "minLength": 1},
+        "mission_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "component_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "scope_hash": {"$ref": "common.schema.json#/$defs/sha256"}
+      }
+    },
+    "rules": {
+      "type": "object", "additionalProperties": false,
+      "required": ["tid_design_factor", "maximum_residual_seu", "required_destructive_modes"],
+      "properties": {
+        "tid_design_factor": {"type": "number", "minimum": 1},
+        "maximum_residual_seu": {"$ref": "common.schema.json#/$defs/quantity"},
+        "maximum_reboots": {"type": "number", "minimum": 0},
+        "maximum_downtime_seconds": {"type": "number", "minimum": 0},
+        "required_destructive_modes": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["SEL", "SEB", "SEGR"]}}
+      }
+    },
+    "approval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "approval_target_hash", "approval_scope_hash", "valid_from"],
+      "properties": {
+        "status": {"type": "string", "enum": ["DRAFT", "PENDING_APPROVAL", "APPROVED", "REJECTED", "REVOKED", "SUPERSEDED"]},
+        "approval_target_hash": {"$ref": "common.schema.json#/$defs/sha256"},
+        "approval_scope_hash": {"$ref": "common.schema.json#/$defs/sha256"},
+        "approved_by": {"type": "string", "minLength": 1},
+        "approved_at": {"type": "string", "format": "date-time"},
+        "valid_from": {"type": "string", "format": "date-time"},
+        "valid_until": {"type": "string", "format": "date-time"},
+        "revoked_at": {"type": "string", "format": "date-time"},
+        "revocation_reason": {"type": "string", "minLength": 1},
+        "superseded_by": {"type": "string", "minLength": 1}
+      },
+      "allOf": [
+        {"if": {"properties": {"status": {"const": "APPROVED"}}, "required": ["status"]}, "then": {"required": ["approved_by", "approved_at", "valid_until"]}},
+        {"if": {"properties": {"status": {"const": "REVOKED"}}, "required": ["status"]}, "then": {"required": ["revoked_at", "revocation_reason"]}},
+        {"if": {"properties": {"status": {"const": "SUPERSEDED"}}, "required": ["status"]}, "then": {"required": ["superseded_by"]}}
+      ]
+    },
+    "immutable_history_ref": {
+      "type": "object", "additionalProperties": false,
+      "required": ["anchor_id", "head_hash", "store_ref"],
+      "properties": {
+        "anchor_id": {"type": "string", "minLength": 1},
+        "head_hash": {"$ref": "common.schema.json#/$defs/sha256"},
+        "store_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "metadata": {"$ref": "common.schema.json#/$defs/recordMetadata"}
+  }
+}

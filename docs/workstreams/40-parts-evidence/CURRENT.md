@@ -2,11 +2,91 @@
 
 ## Status
 
-`INTEGRATED`
+`VERIFIED — H03 discovery candidate / HOLD`
 
-`40-parts-evidence-contract-and-adversarial-fixture-spec-v1` 문서 계약 패키지는 Control Tower 독립 검증을 통과했다. 실제 v2 schema·fixture 구현이나 Stage 4 완료를 뜻하지 않으며, 직전 출처·권리 조사 패키지의 `INTEGRATED` 판정은 유지한다. 실제 BOM과 권리 확인 원문이 없으므로 evidence ingest와 assurance decision은 계속 `HOLD`다.
+`40-parts-evidence-first-exact-part-evidence-path-v1`에서 exact orderable part 1개와 공식 TID report의 첫 추적 경로를 정리했다. source-side exact identity와 원문 locator는 확인했지만 승인 BOM, action별 권리 snapshot, 승인 storage, v2 validator, 임무 적용성과 독립 review가 없고 보고서 내부 표기가 충돌하므로 decision 상태는 `PARTIAL_UNRESOLVED / HOLD`다. 이전 조사·계약 명세 패키지의 `INTEGRATED` 판정은 유지한다.
 
-## 조사 범위와 소유 파일
+## H03 Control Tower 독립 검증 — 2026-08-20
+
+- TI exact-part 페이지에서 `5962L1420901VXC`, `SN55HVD233-SP`, Space/QML-V/RHA, CFP `HKX` 8 pin을 재확인했다.
+- 공식 `SLLK019` PDF에서 exact PN, `LBC3S`, die lot `1634103DFB`, A/T lot/date code `7005041MTT/1736A`, HDR/LDR facility와 시험 조건을 재확인했다.
+- 임시로 다시 받은 공식 PDF는 `3,568,651` bytes, PDF 1.4, SHA-256 `623b9d19e3b7aba3e55151c7f73f34f47a48f9b36fde46049d6c8d2c79884fa2`로 handoff와 일치했다. 검증 후 임시 파일을 삭제했다.
+- Table 1·2의 HDR `65 rad(Si)/s`, 최대 `50 krad(Si)`, LDR unbiased 표기와 §3.1의 HDR `100 rad(Si)/s`, `75/100 krad(Si)`, LDR biased/unbiased 열거가 실제로 충돌함을 재현했다.
+- TI 약관은 조건부 plain-text link를 허용하지만 자동 수집을 금지하고 비상업·개인 사용 외 복제·표시·배포를 일반 허용하지 않는다. 따라서 locator 외 action을 `UNCONFIRMED`로 둔 권리 판정은 안전하다.
+- 이 패키지는 **실제 source discovery와 locator 검증**에 한해 `VERIFIED`다. 승인 BOM 비교, rights snapshot, raw manifest, schema-valid v2 fixture, 임무 적용성, SEE coverage가 없으므로 MVP의 exact-part evidence Exit Gate와 Stage 4는 미완료다.
+
+## 현재 패키지 조사 범위와 소유 파일
+
+- 세션 ID: `40-parts-evidence`
+- 현재 패키지: `40-parts-evidence-first-exact-part-evidence-path-v1`
+- 기준선: Workstream 40 계약 명세 통합 commit `4bd1362`와 Control Tower 기록 commit `cf4200d`
+- 변경: `docs/workstreams/40-parts-evidence/BRIEF.md`, `RESEARCH.md`, `CURRENT.md`
+- 공통 schema·계약·루트 문서·다른 Workstream 파일은 수정하지 않음
+- 실제 PDF는 공식 URL에서 임시 검토했지만 Git·Downloads·프로젝트 storage에 넣지 않음
+- 현재 혼합 작업트리의 사용자·다른 Workstream 변경은 보존했으며 stage·commit·push하지 않음
+
+## 현재 패키지 공식 출처와 권리 상태
+
+- 선택 후보: Texas Instruments exact PN `5962L1420901VXC` (`SN55HVD233-SP`), Space/QML-V/RHA, CFP `HKX` 8 pin.
+- 원문: TI `SLLK019`, February 2018 TID report. exact PN, process `LBC3S`, die lot `1634103DFB`, A/T lot/date code `7005041MTT/1736A`와 TID 조건을 page/table locator로 확인했다.
+- 공식 URL, 접근일, 문서 ID, 페이지·절·표 locator와 action별 권리 상태는 `RESEARCH.md` §23에 기록했다.
+- TI 약관의 조건부 plain-text linking을 근거로 `LOCATOR`만 조건부 허용으로 제안했다. fetch·private storage·AI processing·내외부 표시·재배포·상업 이용은 권리 책임자 승인 전 `UNCONFIRMED`다.
+- 실제 관찰 artifact는 HTTP `application/pdf`, 3,568,651 bytes, SHA-256 `623b9d19e3b7aba3e55151c7f73f34f47a48f9b36fde46049d6c8d2c79884fa2`다. 승인 manifest/hash로 승격하지 않는다.
+
+## 현재 패키지 부품 식별·적용성 규칙
+
+- exact PN은 TI exact-part 페이지와 SLLK019 p.1/p.2 Table 1에서 교차 확인됐다. 이는 `VERIFIED_SOURCE_CLAIM`이지 BOM `EXACT_MATCH`가 아니다.
+- 승인 component가 없으므로 decision identity는 `PARTIAL_UNRESOLVED / BOM_MISSING`이다. die revision과 실제 test date도 `NOT_REPORTED`다.
+- 보고서 p.2/p.5와 p.6 사이의 HDR dose rate, 최대 조사량, LDR bias coverage 충돌을 `CONFLICTING alternatives[]`와 locator로 보존했다.
+- 임무의 TID material/dose/dose rate/bias/anneal/temperature/lifetime/shielding 입력이 없어 applicability는 `NOT_EVALUATED`다.
+
+## 현재 패키지 증거 정규화 초안과 영향
+
+- 선택 bundle은 `TID` 하나다. report identity, exact part/lot/date code, facility, source, dose rate, bias, temperature, sample 수, within-spec dose와 locator를 field-level v2 discovery fixture로 제안했다.
+- SLLK019의 50 krad(Si) within-spec 문구는 기록하되 지원 등급이나 75/100 krad 보증으로 승격하지 않는다.
+- SEU·SEL·SEB·SEGR은 각각 `NOT_REPORTED_IN_SELECTED_BUNDLE`이다. 제품 페이지의 SEL 요약이나 별도 SEE report 존재를 이 TID bundle의 증거로 사용하지 않았다.
+- 현재 v1 schema는 실제 test date, 숫자 온도와 단일 facility를 필수로 요구하며 claim locator·rights·subrun·conflict를 표현하지 못한다. 값을 발명하지 않기 위해 JSON fixture를 만들지 않고 v2 구현용 작은 field map만 제안했다.
+- raw manifest v2도 승인 storage generation, rights snapshot, malware/review/parser 이력이 없어 만들지 않았다. 실제 artifact 관찰값은 향후 ingest 시 재검증 입력일 뿐이다.
+
+## 현재 패키지 검증 결과
+
+- 공식 PDF 첫 7 physical page의 text와 p.1/p.2/p.5/p.6 render를 대조해 title, exact PN, Table 1–3, §2 시험 조건과 §3.1 충돌을 확인했다.
+- HTTP header, byte size, detected PDF format와 SHA-256을 실제 bytes에서 대조했다.
+- 깨끗한 통합 기준선 `cf4200d` archive: `PYTHONDONTWRITEBYTECODE=1 python3 tests/schema/validate_contracts.py` — schema 11개, 정상 fixture 2개, 실패 fixture 71개 통과; exit 0.
+- 같은 깨끗한 기준선: `PYTHONDONTWRITEBYTECODE=1 python3 tests/simulation/run_all.py` — schema 회귀 재통과 및 simulation test 19개 통과; exit 0.
+- 현재 혼합 작업트리: schema 14개, 정상 fixture 3개, 실패 fixture 83개와 simulation test 28개 통과; 두 명령 모두 exit 0. 다른 Workstream의 미통합 변경을 포함하므로 이 수치는 기준선 승인 근거로 사용하지 않는다.
+- `git diff --check` — 통과.
+- 이번 field map은 v2 schema가 아직 구현되지 않아 실행 가능한 fixture PASS로 표현하지 않는다.
+
+## 현재 패키지 실제 데이터 사용 여부
+
+- 실제 exact part 후보 1개와 TID 보고서의 locator 확인값을 사용했다. BOM 채택·support 판단은 하지 않았다.
+- 실제 PDF는 공식 URL에서 임시 검토했지만 프로젝트·handoff에 포함하지 않았다.
+- 실제 artifact hash를 계산했지만 승인 manifest/evidence content hash로 승격하지 않았다.
+- 가짜 hash·locator·수치, 임의 confidence·통계 경계·보증 등급, 고객 자료는 만들거나 사용하지 않았다.
+
+## 현재 패키지 HOLD와 알려진 한계
+
+- `BOM_MISSING`: 승인 component와 exact identity 비교 불가
+- `DOCUMENT_INTERNAL_CONFLICT`: HDR dose rate, 최대 조사량, LDR bias coverage 표기가 충돌
+- `RIGHTS_SNAPSHOT_NOT_ACTIVE`: 공개 locator 외 action의 프로젝트 이용 권한 미승인
+- `RAW_MANIFEST_REFERENCE_MISSING` / `APPROVED_STORAGE_UNAVAILABLE`: exact generation·scan·review·retention 이력 없음
+- `V2_REQUIRED_FIELD_MISSING`: 제안한 discovery fixture용 공통 schema/validator 미구현
+- `REVIEW_APPROVAL_MISSING`: source·identity·conflict resolution 독립 검토 없음
+- `MISSION_ENVIRONMENT_UNAVAILABLE`: TID 시험–임무 적용성 비교 미수행
+- `DESTRUCTIVE_SEE_EVIDENCE_MISSING`: SEL·SEB·SEGR 독립 증거 없음; SEU도 선택 bundle에서 미보고
+- 이 결과는 법률 자문, 부품 추천, 인증 또는 비행 적합성 결론이 아니다.
+
+## 현재 패키지 Control Tower 확인 요청
+
+- 후보 `5962L1420901VXC`의 MVP reference path 적합성과 SLLK019 내부 충돌을 독립 재현해 달라.
+- Workstream 10에 `NOT_REPORTED` 시험일/숫자 온도, 다중 facility/subrun, locator와 conflict alternatives를 보존하는 v2 schema 구현을 요청해 달라.
+- Workstream 70과 권리 책임자에게 action별 rights snapshot, 승인 storage generation, malware/hash/MIME 검증과 retention을 요청해 달라.
+- BOM owner에게 exact manufacturer/PN/package/grade와 required process/die/lot/date-code policy를 요청해 달라.
+- Stage 3·5가 임무 적용성과 필요한 destructive SEE mode를 지정한 뒤에만 별도 SEE report ingest를 시작해 달라.
+- 독립 검토 전 `VERIFIED`, `INTEGRATED`, Stage 4 완료 또는 루트 체크리스트 `[x]`로 변경하지 말아 달라.
+
+## 이전 계약 패키지 — 조사 범위와 소유 파일
 
 - 세션 ID: `40-parts-evidence`
 - 현재 패키지: `40-parts-evidence-contract-and-adversarial-fixture-spec-v1`
@@ -19,7 +99,7 @@
 - 현재 작업트리의 Control Tower 문서, 공통 schema 3건, schema validator·fixture와 `.obsidian/` 변경은 사용자/다른 Workstream 소유로 보존했으며 이번 패키지에서 수정하거나 근거로 채택하지 않음
 - 이번 패키지는 commit·push하지 않음
 
-## 공식 출처와 권리 상태
+## 이전 계약 패키지 — 공식 출처와 권리 상태
 
 - NASA GSFC Radiation Data Base: GSFC 부품 시험 보고서의 직접 discovery 경로. 현재 NEPP 임시 호스팅이며 문서별 copyright/third-party 표시를 확인해야 한다.
 - NASA NEPP/NTRS: 시험·보증 방법과 NASA 문서 식별 경로. NTRS OpenAPI·bulk metadata 경로와 NASA STI 이용 조건을 확인했다.
@@ -29,7 +109,7 @@
 - 고객 자료: 권한·격리·목적·보존·삭제·LLM 처리 승인이 없으므로 수집하지 않았다.
 - 권리 상태는 문서별 `access_status`, `rights_status`, `allowed_actions`, terms URL과 원문 위치로 다시 확인하도록 설계했다.
 
-## 부품 식별·적용성 규칙
+## 이전 계약 패키지 — 부품 식별·적용성 규칙
 
 - 실제 후보는 승인된 BOM의 `manufacturer + exact orderable part number`에서만 시작한다.
 - package/grade/process/die/lot/date code의 누락은 `PARTIAL_UNRESOLVED`, 확인된 모순은 `CONTRADICTED`, generic/family 일치는 `FAMILY_ONLY`다.
@@ -38,7 +118,7 @@
 - 한 항목이라도 차단형이면 전체 trace를 `APPLICABLE`로 만들지 않는다.
 - BOM 부재는 `BOM_MISSING`; 실제 부품 선정과 ingest는 `HOLD`다.
 
-## 증거 정규화 초안과 영향
+## 이전 계약 패키지 — 증거 정규화 초안과 영향
 
 - `PART_TEST_EVIDENCE v2`의 최상위, identity, source/rights/locator, review, event별 필드를 `required / optional / conditional / forbidden`으로 구체화했다.
 - H02에서 `record_sha256`/`approved_record_sha256`를 v2 금지 필드로 바꾸고, evidence content·approval target·review history entry hash를 서로 다른 projection으로 분리했다. JCS canonicalization, set/sequence 배열 규칙, 검증 순서와 content/review 수정별 supersedes 관계를 명시했다.
@@ -58,7 +138,7 @@
 - H02로 self-reference 없는 정상 hash chain, content/history 변조, family/unresolved/exact conflict paired case, `CONFLICTING` 대안 정상·누락·중복·decision 공격 fixture를 추가했다.
 - Workstream 10·30·50·60·70이 구현할 입력, 출력, 오류 코드와 Exit Gate를 각각 명시했다. 현재 패키지는 변경 요청이며 공통 schema나 타 Workstream 구현을 직접 변경하지 않았다.
 
-## 검증 결과
+## 이전 계약 패키지 — 검증 결과
 
 - H02 깨끗한 `375763c` snapshot에서 `PYTHONDONTWRITEBYTECODE=1 python3 tests/schema/validate_contracts.py` — schema 9개, enum 축 4개, 정상 fixture 1개, 실패 fixture 27개 통과; exit 0
 - 같은 snapshot에서 `PYTHONDONTWRITEBYTECODE=1 python3 tests/simulation/run_all.py` — 위 schema 검증 재통과 및 simulation test 19개 통과; exit 0
@@ -67,7 +147,7 @@
 - 위 검증은 기존 v1 계약·합성 simulation 회귀 결과다. 이번 문서에서 명세한 v2 schema와 공격 fixture는 아직 Workstream 10·60이 구현하지 않았으므로 실행 검증 완료로 표시하지 않는다.
 - 검증 시 작업트리에 다른 Workstream의 미통합 공통 schema 변경이 존재했다. 테스트 통과 사실은 기록하되, 그 변경을 이번 패키지의 기준선이나 승인 근거로 사용하지 않는다.
 
-## 실제 데이터 사용 여부
+## 이전 계약 패키지 — 실제 데이터 사용 여부
 
 - 실제 시험 수치: 사용하지 않음
 - 실제 부품 후보 5~10종: 선정하지 않음
@@ -78,7 +158,7 @@
 - `PUBLISHED`, `CUSTOMER_VERIFIED`, 실제 `CALCULATED` EvidencePacket: 생성하지 않음
 - 조사에는 공식 웹페이지와 문서의 존재·필드·이용 조건만 사용했다.
 
-## HOLD와 알려진 한계
+## 이전 계약 패키지 — HOLD와 알려진 한계
 
 - `BOM_MISSING`: 실제 부품 후보 선정 불가
 - `RIGHTS_UNRESOLVED`: GSFC/NEPP·ESA·제조사 개별 원문의 저장·추출·재배포 권리를 문서별로 아직 확인하지 않음
@@ -92,7 +172,7 @@
 - ESARAD 기여 안내의 public/internal 문구가 반대로 보이는 모순은 ESA 확인 전 운영 규칙으로 사용하지 않음
 - 이 조사 결과는 법률 자문, 부품 인증, 비행 적합성 결론이 아니다.
 
-## Control Tower 확인 요청
+## 이전 계약 패키지 — Control Tower 확인 요청
 
 - 현재 패키지의 `PART_TEST_EVIDENCE v2` 선택과 additive 확장 배제 근거를 검토해 달라.
 - H02의 세 수정 사항—hash projection 경계, exact PN claim 상태 전이, `CONFLICTING alternatives[]`—가 자기참조·도달 불가 상태·값 보존 모순을 해소했는지 재검토해 달라.

@@ -742,3 +742,175 @@ Workstream 60은 각 공격의 반대편 정상 fixture도 가져야 한다. 예
 | 승인 storage·외부 계정 | Workstream 70/Control Tower 결정 필요 | IAM/KMS/tenant/retention과 ESA·제조사 계정 권한 승인 |
 
 이 명세는 실제 부품 증거가 아니며 `PUBLISHED`, `CUSTOMER_VERIFIED`, 실제 `CALCULATED` 값을 추가하지 않는다. v2가 구현돼도 실제 BOM·원문·환경·정책·독립 검증이 모두 연결되기 전에는 Stage 4 지원 판정을 만들 수 없다.
+
+## 23. 작업 패키지 3 — 첫 exact-part Evidence Path
+
+### 23.1 선택 결과와 안전한 종료 상태
+
+MVP 기준 사례의 첫 공개 후보로 Texas Instruments의 exact orderable part `5962L1420901VXC`를 선택했다. 이 선택은 부품 지원·비행 적합성·BOM 채택이 아니라 **원문 추적 경로 검증용 후보 선정**이다.
+
+| 구분 | 관찰값 | 근거 | 상태 |
+|---|---|---|---|
+| 제조사 | Texas Instruments | exact-part 페이지, TID 보고서 | `VERIFIED_SOURCE_CLAIM` |
+| exact orderable PN | `5962L1420901VXC` | exact-part 페이지; SLLK019 p.1, p.2 Table 1 | `VERIFIED_SOURCE_CLAIM` |
+| 제품명 | `SN55HVD233-SP` / 보고서 표기 `SN55HVD233-RHA` | TI 제품 페이지; SLLK019 p.1, p.2 Table 1 | alias 관계는 제조사 원문 안에서만 관찰; exact PN이 우선 |
+| package | CFP, TI package code `HKX`, 8 pin | exact-part 페이지; SLLK019 p.2 Table 1 | `VERIFIED_SOURCE_CLAIM` |
+| grade | Space, QML-V, RHA | exact-part 페이지; SLLK019 p.1 | `VERIFIED_SOURCE_CLAIM` |
+| technology/process | `LBC3S` | SLLK019 p.2 Table 1 | `VERIFIED_SOURCE_CLAIM` |
+| die lot | `1634103DFB` | SLLK019 p.2 Table 1 | `VERIFIED_SOURCE_CLAIM` |
+| assembly/test lot | `7005041MTT` | SLLK019 p.2 Table 1 | `VERIFIED_SOURCE_CLAIM` |
+| date code | `1736A` | SLLK019 p.2 Table 1 | `VERIFIED_SOURCE_CLAIM` |
+| die revision | 원문에서 확인하지 못함 | SLLK019 검토 범위 | `NOT_REPORTED` |
+| 승인 BOM component | 제공되지 않음 | 프로젝트 입력 부재 | `BOM_MISSING` |
+
+따라서 source-side exact identity는 재현되지만 BOM-side 비교 대상이 없다. decision candidate identity는 `EXACT_MATCH`로 승격하지 않고 `PARTIAL_UNRESOLVED`와 `BOM_MISSING`으로 종료한다. 제조사 페이지의 package/grade와 보고서의 exact PN이 일치해도 승인 BOM을 대신하지 않는다.
+
+### 23.2 공식 원문과 locator
+
+| 자료 | URL | 접근일 | 문서 식별자·revision | 이 패키지에서 확인한 위치 |
+|---|---|---|---|---|
+| TI exact-part 페이지 | <https://www.ti.com/product/SN55HVD233-SP/part-details/5962L1420901VXC> | 2026-08-20 | 웹 페이지, revision 미적용 | exact PN, Space/QML-V/RHA, CFP(HKX), 8 pin |
+| TI 제품 페이지 | <https://www.ti.com/product/SN55HVD233-SP> | 2026-08-20 | 웹 페이지, revision 미적용 | QMLV RHA, SMD PN, HKX와 공식 radiation report 링크 |
+| TI TID report | <https://www.ti.com/lit/rr/sllk019/sllk019.pdf> | 2026-08-20 | `SLLK019`, February 2018; 별도 revision marker는 확인되지 않아 `NOT_REPORTED` | p.1 title/abstract; p.2 §1.2 Table 1; p.3 §2.1–2.2; p.4 §2.2–2.3/Figure 2; p.5 §2.4 Tables 2–3; p.6 §3.1 |
+| TI 이용 약관 | <https://www.ti.com/legal/terms-conditions/terms-of-use.html> | 2026-08-20 | Terms of Use 웹 페이지 | §1 Use of Site Content; §4 Linking; §5 Disclaimer |
+
+PDF page는 파일의 1-based physical page를 뜻한다. locator는 페이지 하나만 쓰지 않고 `page + section/table/figure + claim field`를 함께 사용한다. 보고서의 시험 실행일은 확인하지 못했다. `February 2018`은 문서 발행월이지 시험일로 복사하지 않는다.
+
+### 23.3 artifact 무결성 관찰과 manifest 생성 차단
+
+공식 URL에서 검토 목적으로 임시 취득한 bytes에 대해 다음 값을 실제 계산·대조했다. 원문은 Git, Downloads handoff 또는 프로젝트 storage에 넣지 않았다.
+
+| 필드 | 실제 관찰값 |
+|---|---|
+| header verification timestamp | `2026-08-20T04:33:36Z` — HTTP `Date`; artifact download time으로 사용 금지 |
+| source locator | `https://www.ti.com/lit/rr/sllk019/sllk019.pdf` |
+| HTTP status | `200` |
+| declared MIME | `application/pdf` |
+| detected format | PDF 1.4 |
+| byte size | `3568651` |
+| SHA-256 | `623b9d19e3b7aba3e55151c7f73f34f47a48f9b36fde46049d6c8d2c79884fa2` |
+| HTTP Last-Modified | `Mon, 05 Feb 2018 21:32:33 GMT` |
+| HTTP ETag | `\"36740b-5647dcccedf1e\"` |
+
+이 hash는 검토 시점에 취득한 실제 artifact bytes의 관찰값일 뿐 승인 raw artifact manifest나 승인 evidence content hash가 아니다. 다음 필드가 없으므로 `RAW_ARTIFACT_MANIFEST v2` 인스턴스를 만들지 않는다.
+
+- 승인 `tenant_id`, `run_id`, `zone`과 immutable `project_id/bucket_id/object_name/generation`
+- 실제 quarantine·malware scan·MIME/hash check workflow와 reviewer
+- 권리 책임자가 승인한 `rights_snapshot_id`, approval target/scope hash, history anchor
+- 승인 parser name/version/commit과 실제 input/output hash
+- 파생 record ID와 retention/deletion 정책
+
+manifest 제안의 종료는 `RAW_MANIFEST_REFERENCE_MISSING`, `RIGHTS_SNAPSHOT_NOT_ACTIVE`, `APPROVED_STORAGE_UNAVAILABLE`이다. schema의 `source.retrieved_at`에는 향후 승인 ingest가 실제로 시작·완료된 시각을 기록하며 위 header 확인 시각을 대입하지 않는다. 실제 storage가 생기면 위 관찰 hash를 업로드된 exact generation bytes에서 다시 계산하고 일치시켜야 하며, 현재 값을 신뢰해 복사만 해서는 안 된다.
+
+### 23.4 권리 action matrix
+
+TI 약관은 비상업적 또는 개인적 목적의 다운로드·복제·표시·배포를 일정 조건 아래 허용하지만, 상업 이용 허가를 일반적으로 부여하지 않는다. 또한 조건부 plain-text link는 허용하고 자동 data mining/scraping은 제한한다. 이 문서는 법률 자문이 아니며, SPECTRA의 데모·상업 범위에 맞는 승인 snapshot은 권리 책임자가 별도로 만들어야 한다.
+
+| action | 관찰 근거 | 운영 상태 | 이유 |
+|---|---|---|---|
+| `LOCATOR` | TI Terms §4의 조건부 plain-text linking | `ALLOWED_CONDITIONALLY` | TI 소유임을 오인시키지 않고 방해·프레이밍하지 않는 직접 링크만 제안 |
+| `FETCH` | TI Terms §1의 비상업/개인 목적 조건 | `UNCONFIRMED` | 프로젝트 사용 목적과 승인 주체가 확정되지 않음 |
+| `PRIVATE_STORE` | 같은 조건부 이용 문구 | `UNCONFIRMED` | 승인 storage·retention·권리 snapshot 없음 |
+| `PROCESS_DOCUMENT_AI` | 명시 허가 확인 못함 | `UNCONFIRMED` | 원문 외부 processor 제공 권한 미확인 |
+| `PROCESS_VERTEX_AI` | 명시 허가 확인 못함 | `UNCONFIRMED` | cloud processor·region·retention 승인 없음 |
+| `DISPLAY_INTERNAL` | 비상업/개인 목적 조건과 프로젝트 범위 불일치 가능 | `UNCONFIRMED` | audience와 목적 승인 필요 |
+| `DISPLAY_EXTERNAL` | 상업/공개 데모 범위 미확인 | `UNCONFIRMED` | 공개 열람 가능성과 재표시 권리는 다름 |
+| `REDISTRIBUTE` | 조건부 비상업 이용 외 일반 허가 확인 못함 | `UNCONFIRMED` | PDF를 Git·handoff에 포함하지 않음 |
+| commercial use | 일반 허가 확인 못함 | `UNCONFIRMED` | TI 또는 권리 책임자 확인 필요 |
+
+검토를 위해 임시 취득한 PDF는 이 action matrix의 운영 승인으로 승격하지 않는다. 저장소에는 locator, locator에서 확인한 작은 사실, 실제 관찰 hash와 `HOLD` 사유만 남긴다.
+
+### 23.5 TID claim 정규화 후보
+
+선택한 bundle은 `TID` 하나만 포함한다. 아래는 구현 전 field-level fixture proposal이며 현재 v1 JSON fixture가 아니다. `component_id`, 시험일과 단일 facility를 발명하지 않았고 review approval/hash chain도 만들지 않았다.
+
+| 경로 | 값 또는 상태 | 원문 locator | decision 사용 |
+|---|---|---|---|
+| `record_purpose` | `DISCOVERY` | 프로젝트 분류 | 금지 |
+| `component_ref` | `NOT_REPORTED` | 승인 BOM 없음 | 차단 |
+| `identity.manufacturer` | Texas Instruments | exact-part 페이지; SLLK019 p.1 | source claim만 허용 |
+| `identity.orderable_part_number` | `5962L1420901VXC` | exact-part 페이지; SLLK019 p.1, p.2 Table 1 | source claim만 허용 |
+| `identity.package` | CFP / `HKX` / 8 pin | exact-part 페이지; SLLK019 p.2 Table 1 | source claim만 허용 |
+| `identity.grade` | Space / QML-V / RHA | exact-part 페이지; SLLK019 p.1 | source claim만 허용 |
+| `identity.process` | `LBC3S` | SLLK019 p.2 Table 1 | source claim만 허용 |
+| `identity.die_lot` | `1634103DFB` | SLLK019 p.2 Table 1 | source claim만 허용 |
+| `identity.assembly_test_lot` | `7005041MTT` | SLLK019 p.2 Table 1 | source claim만 허용 |
+| `identity.date_code` | `1736A` | SLLK019 p.2 Table 1 | source claim만 허용 |
+| `identity.die_revision` | `NOT_REPORTED` | 확인 범위 전체 | 차단 가능 gap |
+| `report.document_id` | `SLLK019` | p.1 header | provenance만 허용 |
+| `report.publication` | February 2018 | p.1 header | 시험일로 사용 금지 |
+| `report.revision` | `NOT_REPORTED` | p.1 header | 최신성 검토 gap |
+| `report.test_date` | `NOT_REPORTED` | 확인 범위 전체 | 차단 |
+| `event_type` | `TID` | report title/abstract | 다른 SEE event로 복사 금지 |
+| `method` | MIL-STD-883 TM 1019.9, Conditions A/D | p.3 §2.1 | source claim만 허용 |
+| `radiation_source` | Co-60 gamma | p.2 Table 1; p.3–4 §2.2 | source claim만 허용 |
+| `temperature` | ambient room temperature; numeric value `NOT_REPORTED` | p.2 Table 1 | 숫자 생성 금지 |
+| `sample_quantity` | 57 including 1 control | p.2 Table 1 | bundle context만 허용 |
+| `within_spec_through` | 50 krad(Si) | p.2 Table 1; p.6 §3.1 opening sentence | 제한된 source claim; support 판정 금지 |
+| `hdr.facility` | TI SVA, Santa Clara, CA | p.2 Table 1; p.4 §2.2 | source claim만 허용 |
+| `hdr.dose_rate` | `CONFLICTING` | alternatives 아래 참조 | 금지 |
+| `hdr.bias` | biased and unbiased groups | p.4 §2.2–2.3; p.5 Table 2 | source claim만 허용 |
+| `ldr.facility` | RAD/Aeroflex, Colorado Springs, CO | p.2 Table 1; p.3 §2.2 | source claim만 허용 |
+| `ldr.dose_rate` | 0.01 rad(Si)/s = 10 mrad(Si)/s | p.2 Table 1; p.5 Table 3 | source claim만 허용 |
+| `ldr.bias_coverage` | `CONFLICTING` | p.5 Table 3 vs p.6 §3.1 bullets | 금지 |
+| `maximum_irradiated_dose` | `CONFLICTING` | p.2/p.5 vs p.6 §3.1 bullets | 금지 |
+| `applicability` | `NOT_EVALUATED` | 임무 환경·정책 없음 | 차단 |
+| `used_for_decision` | `false` | 모든 blocking gap 집계 | 필수 |
+| `termination` | `HOLD` | `BOM_MISSING`, rights/storage/review/applicability gaps, document conflict | 필수 |
+
+`CONFLICTING` 대안은 값을 버리거나 하나를 임의 선택하지 않고 다음처럼 보존한다.
+
+| claim | alternative value | source claim identity | locator |
+|---|---|---|---|
+| HDR dose rate | 65 rad(Si)/s | `SLLK019-table1-hdr-rate` | p.2 §1.2 Table 1, “Dose Rate” |
+| HDR dose rate | 65 rad(Si)/s | `SLLK019-table2-hdr-rate` | p.5 §2.4 Table 2 title |
+| HDR dose rate | 100 rad(Si)/s | `SLLK019-section3-hdr-rate` | p.6 §3.1, HDR bullet |
+| maximum irradiated dose | 50 krad(Si) | `SLLK019-table1-dose-levels` | p.2 §1.2 Table 1, dose levels/passed levels |
+| maximum irradiated dose | 50 krad(Si) | `SLLK019-tables2-3-dose-levels` | p.5 §2.4 Tables 2–3 |
+| maximum irradiated dose | HDR 75 / LDR 100 krad(Si)까지 열거 | `SLLK019-section3-post-dose-list` | p.6 §3.1, HDR/LDR bullets |
+| LDR bias coverage | only unbiased groups | `SLLK019-table3-ldr-groups` | p.5 §2.4 Table 3 |
+| LDR bias coverage | biased/unbiased post-dose groups가 열거됨 | `SLLK019-section3-ldr-groups` | p.6 §3.1, LDR bullets |
+
+같은 canonical value인 첫 두 HDR 대안은 하나의 65 rad(Si)/s 대안으로 병합하고 locator 배열 두 개를 보존한 뒤, 100 rad(Si)/s 대안과 비교해야 한다. `CONFLICTING`의 최소 두 **서로 다른 값** 규칙을 위반하지 않는다. 이 conflict가 해결되기 전에는 report-wide dose rate, 최대 조사량, LDR bias coverage를 decision operand로 사용할 수 없다. 50 krad(Si) “within specification” 문구는 75/100까지의 보증 등급으로 외삽하지 않는다.
+
+### 23.6 독립 사건 유형 coverage
+
+| 사건 유형 | 선택 bundle 상태 | 허용되는 결론 |
+|---|---|---|
+| TID | 원문 locator가 있는 claim 후보이나 conflict·rights·BOM·applicability 때문에 `HOLD` | 원문이 TID를 시험했다는 사실과 제한된 관찰값만 표시 |
+| SEU | `NOT_REPORTED_IN_SELECTED_BUNDLE` | 미시험·면역·0 event라고 말할 수 없음 |
+| SEL | `NOT_REPORTED_IN_SELECTED_BUNDLE` | 제품 페이지의 요약 문구나 별도 SEE report를 이 TID bundle로 대체할 수 없음 |
+| SEB | `NOT_REPORTED_IN_SELECTED_BUNDLE` | 해당 없음이라고 추론할 수 없음 |
+| SEGR | `NOT_REPORTED_IN_SELECTED_BUNDLE` | 해당 없음이라고 추론할 수 없음 |
+
+TI 제품 페이지에는 별도의 SEE report 링크와 SEL 관련 마케팅 요약이 존재하지만 이번 bundle에서는 그 원문 시험 조건·locator를 정규화하지 않았다. 따라서 SEL·SEU·SEB·SEGR 상태를 변경하지 않는다.
+
+### 23.7 현재 v1 schema와 작은 fixture 제안
+
+현재 `schemas/part-test-evidence.schema.json`은 `component_id`, 단일 `facility`, 정확한 `test_date`, 자유형 bias와 숫자 `temperature_c`를 필수로 요구하고, event별 locator·rights·claim 상태·HDR/LDR subrun·충돌 대안을 표현하지 못한다. 원문은 시험일과 숫자 온도를 보고하지 않고 HDR/LDR facility가 다르므로 schema-valid v1 fixture를 만들려면 값을 발명하거나 정보를 손실해야 한다.
+
+따라서 이번 패키지는 JSON fixture 파일을 만들지 않고 위 표를 **작은 `PART_TEST_EVIDENCE v2` discovery fixture 제안**으로 남긴다. 구현 시 Exit Gate는 다음과 같다.
+
+1. Workstream 10이 통합된 v2 명세를 schema/validator로 구현한다.
+2. 승인 BOM component가 없으면 `component_ref=NOT_REPORTED`, identity `PARTIAL_UNRESOLVED`, `used_for_decision=false`가 schema-valid해야 한다.
+3. claim locator는 raw manifest의 exact artifact revision/generation/hash와 일치해야 한다.
+4. 서로 다른 HDR rate와 최대 조사량·LDR bias 대안은 `CONFLICTING alternatives[]`로 보존돼야 한다.
+5. `test_date`, numeric temperature, die revision, revision marker를 임의 기본값으로 채우지 않는다.
+6. TID 이외 네 사건 유형은 독립 coverage gap으로 남고 support decision이 `HOLD`여야 한다.
+
+### 23.8 적용성 및 최종 HOLD
+
+이 보고서는 특정 lot/date code와 시험 조건의 관찰 결과다. 임무의 TID material conversion, 누적 dose, dose rate, bias duty cycle, anneal, 온도, 수명, shielding과 manufacturing change를 비교하지 않았다. `QML-V`, `RHA`, report의 pass 문구나 50 krad(Si) 관찰을 임무 보증 또는 비행 적합성으로 바꾸지 않는다.
+
+| blocking code | 사유 | 재개 조건 |
+|---|---|---|
+| `BOM_MISSING` | 승인 component와 exact identity 비교 불가 | BOM owner가 exact manufacturer/PN/package/grade와 필요 lot/process policy 제공 |
+| `DOCUMENT_INTERNAL_CONFLICT` | dose rate, 최대 조사량, LDR bias coverage 표기가 충돌 | TI 정정본·시험 raw log 또는 승인 reviewer의 source resolution |
+| `RIGHTS_SNAPSHOT_NOT_ACTIVE` | action별 승인 snapshot 없음 | 권리 책임자의 목적·audience·processor별 승인 |
+| `RAW_MANIFEST_REFERENCE_MISSING` | 승인 storage generation과 검증 이력 없음 | Workstream 70 ingest 후 exact reference 생성 |
+| `V2_REQUIRED_FIELD_MISSING` | v2 schema/validator 미구현 | Workstream 10 구현 및 fixture 검증 |
+| `REVIEW_APPROVAL_MISSING` | 독립 source/identity review 없음 | 승인 reviewer가 exact projection에 서명 |
+| `MISSION_ENVIRONMENT_UNAVAILABLE` | 시험–임무 적용성 비교 입력 없음 | Stage 3 환경과 Stage 5 policy 연결 |
+| `DESTRUCTIVE_SEE_EVIDENCE_MISSING` | SEL·SEB·SEGR 원문 증거 없음 | 필요 mode별 독립 보고서 ingest; SEU로 대체 금지 |
+
+최종 상태는 `PARTIAL_UNRESOLVED / HOLD`다. 첫 exact-part 원문 경로와 실제 artifact 관찰값은 확보했지만, 이 결과는 지원 판정·부품 추천·비행 적합성 결론이 아니다.

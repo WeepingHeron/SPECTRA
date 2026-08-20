@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/simulation/mvp-decision-input.schema.json",
+  "title": "SPECTRA MVP Decision Engine Input v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "case_id", "created_at", "base_packet_fixture", "particle_flux", "ecc_fault_distribution", "baseline", "variant"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "case_id": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "base_packet_fixture": {"const": "tests/schema/fixtures/valid/synthetic-v2-hold.json"},
+    "particle_flux": {"allOf": [{"$ref": "https://spectra.local/schemas/common.schema.json#/$defs/quantity"}, {"properties": {"value": {"minimum": 0}, "quantity_kind": {"const": "PARTICLE_FLUX"}, "unit": {"const": "particles/cm2/s"}}}]},
+    "ecc_fault_distribution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["distribution_id", "patterns", "metadata"],
+      "properties": {
+        "distribution_id": {"type": "string", "minLength": 1},
+        "patterns": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["multiplicity_bits", "incident_events", "transition"],
+            "properties": {
+              "multiplicity_bits": {"type": "integer", "minimum": 1},
+              "incident_events": {"type": "number", "minimum": 0},
+              "transition": {
+                "type": "object", "additionalProperties": false,
+                "required": ["corrected", "detected_uncorrectable", "silent_uncorrected"],
+                "properties": {
+                  "corrected": {"type": "number", "minimum": 0, "maximum": 1},
+                  "detected_uncorrectable": {"type": "number", "minimum": 0, "maximum": 1},
+                  "silent_uncorrected": {"type": "number", "minimum": 0, "maximum": 1}
+                }
+              }
+            }
+          }
+        },
+        "metadata": {"$ref": "https://spectra.local/schemas/common.schema.json#/$defs/recordMetadata"}
+      }
+    },
+    "baseline": {"$ref": "#/$defs/baselineScenario"},
+    "variant": {"$ref": "#/$defs/variantScenario"}
+  },
+  "$defs": {
+    "scenario": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scenario_id", "ecc_enabled", "mitigation", "policy"],
+      "properties": {
+        "scenario_id": {"type": "string", "minLength": 1},
+        "ecc_enabled": {"type": "boolean"},
+        "mitigation": {"$ref": "https://spectra.local/schemas/mitigation-v2.schema.json"},
+        "policy": {"$ref": "https://spectra.local/schemas/user-policy-v2.schema.json"}
+      }
+    },
+    "baselineScenario": {"allOf": [{"$ref": "#/$defs/scenario"}, {"properties": {"ecc_enabled": {"const": false}}}]},
+    "variantScenario": {"allOf": [{"$ref": "#/$defs/scenario"}, {"properties": {"ecc_enabled": {"const": true}}}]}
+  }
+}

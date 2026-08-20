@@ -15,6 +15,9 @@ Contracts & Schema Workstream은 SPECTRA의 입력·출력·EvidencePacket·상�
 - dummy flux가 필요 없는 `TID_ONLY` 환경 variant와 기존 flux payload 하위 호환성
 - 외부 환경 계산의 역할·버전·설정·dependency `model_chain`
 - 외부 실행의 raw artifact, parser hash, 권리 상태 manifest
+- method-discriminated `MITIGATION v2`, 승인 target/scope/history가 고정된 `USER_POLICY v2`
+- tenant·zone·exact generation·SHA-256·독립 action grant를 고정하는 `RAW_ARTIFACT_MANIFEST v2`
+- EvidencePacket v1.0/v1.1 version boundary와 raw manifest reference 무결성
 
 ## 소유 파일
 
@@ -32,6 +35,7 @@ Contracts & Schema Workstream은 SPECTRA의 입력·출력·EvidencePacket·상�
 - Workstream 40 Parts Evidence는 정확한 부품 식별자와 원문 위치를 제공한다.
 - Workstream 50 Mitigation & Policy는 승인 정책과 결정론적 규칙을 구체화한다.
 - Workstream 60 Assurance & Evals는 의미 규칙과 False PASS fixture를 독립 검증한다.
+- Workstream 70 Platform & GCP는 v2 manifest에 들어갈 immutable object identity와 rights snapshot을 생성하며, 이 Workstream은 GCP IAM/resource를 구현하지 않는다.
 
 ## 검증 명령
 

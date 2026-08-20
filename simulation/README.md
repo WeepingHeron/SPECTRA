@@ -20,6 +20,25 @@ python3 tests/simulation/run_all.py
 python3 simulation/run_demo.py
 ```
 
+## MVP Decision Engine
+
+Workstream 50의 v2 ECC·정책 계약을 소비하는 고정 MVP 비교는 다음 명령으로 실행한다.
+
+```bash
+python3 simulation/run_mvp_decision.py simulation/fixtures/mvp-ecc-policy-v2.json
+```
+
+결과 전체는 canonical JSON으로 stdout에 출력된다. 선택한 EvidencePacket만 내보내거나 발표용 요약을 보려면 다음 옵션을 사용한다.
+
+```bash
+python3 simulation/run_mvp_decision.py --evidence-packet variant
+python3 simulation/run_mvp_decision.py --summary
+```
+
+정규화 입력은 Stage 1 EvidencePacket v1.1과 `MITIGATION/USER_POLICY 2.0.0`을 먼저 검증한다. baseline은 ECC OFF·DRAFT policy, variant는 ECC ON·APPROVED 형식 policy다. ECC 효과는 범용 계수가 아니라 입력에 명시된 합성 multiplicity별 transition count로만 계산한다.
+
+현재 Stage 3 실제 환경과 Stage 4 exact-part 증거가 없으므로 수치 비교가 재현되더라도 두 시나리오의 `engineering_gate`는 `NOT_EVALUATED`, `assurance_decision`은 `HOLD`다. 승인 문자열, ECC 결과 또는 합성값으로 이 상태를 승격하지 않는다. 결과의 `change_impact`는 입력·출력·규칙 변화와 무효화된 mitigation/policy 근거를 machine-readable 형식으로 보존한다.
+
 두 명령 모두 프로젝트 파일을 생성하거나 수정하지 않는다.
 
 ## 결정론적 합성 계산

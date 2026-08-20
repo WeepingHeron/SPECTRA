@@ -29,7 +29,7 @@
       }
     },
     "model_chain": {"$ref": "external-model-run.schema.json"},
-    "raw_artifact_manifest": {"$ref": "raw-artifact-manifest.schema.json"},
+    "raw_artifact_manifest": {"oneOf": [{"$ref": "raw-artifact-manifest.schema.json"}, {"$ref": "raw-artifact-manifest-v2.schema.json"}]},
     "valid_for": {
       "type": "object", "additionalProperties": false,
       "required": ["start_at", "end_at"],

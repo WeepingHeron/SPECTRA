@@ -1,0 +1,41 @@
+{
+  "evaluation_time": "2026-08-20T12:00:00Z",
+  "cases": [
+    {
+      "name": "declared-gap-reference-only-spenvis-not-issued",
+      "request": {
+        "candidate_id": "spenvis-mvp-bundle-reference-only",
+        "source_kind": "REAL_SPENVIS_CANDIDATE",
+        "required_actions": ["FETCH", "PRIVATE_STORE"],
+        "request_context": {},
+        "candidate_manifest": null,
+        "declared_preflight_gaps": [
+          "PROVIDER_JOB_REFERENCE_MISSING",
+          "RIGHTS_APPROVAL_MISSING",
+          "TENANT_CONTEXT_MISSING",
+          "RAW_GENERATION_MISSING"
+        ]
+      },
+      "decision": "HOLD_NOT_ISSUED"
+    },
+    {
+      "name": "declared-gap-reference-only-ti-not-issued",
+      "request": {
+        "candidate_id": "ti-sllk019-locator-reference-only",
+        "source_kind": "REAL_TI_LOCATOR_CANDIDATE",
+        "required_actions": ["FETCH", "PRIVATE_STORE"],
+        "request_context": {},
+        "candidate_manifest": null,
+        "declared_preflight_gaps": [
+          "PROVIDER_JOB_REFERENCE_MISSING",
+          "RIGHTS_ACTION_GRANT_MISSING",
+          "RIGHTS_APPROVAL_MISSING",
+          "TENANT_CONTEXT_MISSING",
+          "RAW_GENERATION_MISSING",
+          "RAW_ARTIFACT_REVIEW_MISSING"
+        ]
+      },
+      "decision": "HOLD_NOT_ISSUED"
+    }
+  ]
+}

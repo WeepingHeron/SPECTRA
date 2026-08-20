@@ -1,18 +1,20 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://spectra.local/schemas/evidence-packet.schema.json",
-  "title": "SPECTRA EvidencePacket v1",
+  "title": "SPECTRA EvidencePacket v1.0/v1.1",
   "type": "object", "additionalProperties": false,
   "required": ["schema_version", "packet_id", "created_at", "inputs", "trace", "decision", "review_status"],
   "properties": {
-    "schema_version": {"const": "1.0.0"},
+    "schema_version": {"type": "string", "enum": ["1.0.0", "1.1.0"]},
     "packet_id": {"type": "string", "minLength": 1},
     "created_at": {"type": "string", "format": "date-time"},
     "inputs": {
       "type": "array", "minItems": 7,
       "items": {"oneOf": [
         {"$ref": "mission.schema.json"}, {"$ref": "bom.schema.json"}, {"$ref": "radiation-environment.schema.json"},
-        {"$ref": "part-test-evidence.schema.json"}, {"$ref": "shielding.schema.json"}, {"$ref": "mitigation.schema.json"}, {"$ref": "user-policy.schema.json"}
+        {"$ref": "part-test-evidence.schema.json"}, {"$ref": "shielding.schema.json"},
+        {"$ref": "mitigation.schema.json"}, {"$ref": "mitigation-v2.schema.json"},
+        {"$ref": "user-policy.schema.json"}, {"$ref": "user-policy-v2.schema.json"}
       ]},
       "allOf": [
         {"contains": {"properties": {"kind": {"const": "MISSION"}}, "required": ["kind"]}, "minContains": 1, "maxContains": 1},
@@ -88,6 +90,27 @@
         }
       }
     },
+    "raw_manifest_refs": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["manifest_id", "manifest_contract_version", "artifact_id", "artifact_revision_id", "tenant_id", "zone", "storage_generation", "artifact_sha256", "rights_snapshot_id", "required_actions", "source_locator", "claim_locator_ids"],
+        "properties": {
+          "manifest_id": {"type": "string", "minLength": 1},
+          "manifest_contract_version": {"const": "2.0.0"},
+          "artifact_id": {"type": "string", "minLength": 1},
+          "artifact_revision_id": {"type": "string", "minLength": 1},
+          "tenant_id": {"type": "string", "minLength": 1},
+          "zone": {"type": "string", "enum": ["Z1_PUBLIC_RAW", "Z2_RESTRICTED_RAW", "Z3_CUSTOMER_RAW", "Z5_SYNTHETIC"]},
+          "storage_generation": {"type": "string", "pattern": "^[1-9][0-9]*$"},
+          "artifact_sha256": {"$ref": "common.schema.json#/$defs/sha256"},
+          "rights_snapshot_id": {"type": "string", "minLength": 1},
+          "required_actions": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "enum": ["LOCATOR", "FETCH", "PRIVATE_STORE", "PROCESS_DOCUMENT_AI", "PROCESS_VERTEX_AI", "DISPLAY_INTERNAL", "DISPLAY_EXTERNAL", "REDISTRIBUTE"]}},
+          "source_locator": {"type": "string", "minLength": 1},
+          "claim_locator_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    },
     "review_status": {"$ref": "common.schema.json#/$defs/reviewStatus"}
   },
   "allOf": [
@@ -98,6 +121,24 @@
     {
       "if": {"properties": {"decision": {"properties": {"assurance_decision": {"const": "SUPPORTED_WITH_MITIGATION"}}}}},
       "then": {"properties": {"decision": {"properties": {"processing_status": {"const": "VALID"}}}}}
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "1.1.0"}}, "required": ["schema_version"]},
+      "then": {
+        "required": ["raw_manifest_refs"],
+        "properties": {
+          "inputs": {
+            "allOf": [
+              {"contains": {"properties": {"kind": {"const": "MITIGATION"}, "contract_version": {"const": "2.0.0"}}, "required": ["kind", "contract_version"]}, "minContains": 1, "maxContains": 1},
+              {"contains": {"properties": {"kind": {"const": "USER_POLICY"}, "contract_version": {"const": "2.0.0"}}, "required": ["kind", "contract_version"]}, "minContains": 1, "maxContains": 1}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"schema_version": {"const": "1.0.0"}}, "required": ["schema_version"]},
+      "then": {"not": {"required": ["raw_manifest_refs"]}}
     }
   ]
 }

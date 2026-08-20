@@ -115,6 +115,77 @@ def semantic_codes(packet: dict) -> set[str]:
     decision = packet.get("decision", {})
     processing = decision.get("processing_status")
     assurance = decision.get("assurance_decision")
+    packet_version = packet.get("schema_version")
+
+    def parse_timestamp(value):
+        if not isinstance(value, str):
+            return None
+        try:
+            return datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+
+    mitigations = by_kind.get("MITIGATION", [])
+    policies = by_kind.get("USER_POLICY", [])
+    has_v2_inputs = any(item.get("contract_version") == "2.0.0" for item in mitigations + policies)
+    if packet_version == "1.0.0" and (has_v2_inputs or "raw_manifest_refs" in packet):
+        codes.add("CONTRACT_VERSION_MIXED")
+    if packet_version == "1.1.0" and (
+        not mitigations or not policies
+        or any(item.get("contract_version") != "2.0.0" for item in mitigations + policies)
+    ):
+        codes.add("CONTRACT_VERSION_MIXED")
+
+    for mitigation in mitigations:
+        if mitigation.get("contract_version") != "2.0.0":
+            continue
+        required_v2 = {"component_ids", "architecture_scope", "target_failure_modes", "excluded_failure_modes", "design_parameters", "applicability"}
+        if not required_v2.issubset(mitigation):
+            codes.add("V2_REQUIRED_FIELD_MISSING")
+        targets = set(mitigation.get("target_failure_modes", []))
+        excluded = set(mitigation.get("excluded_failure_modes", []))
+        if targets.intersection(excluded):
+            codes.add("MITIGATION_MODE_OVERLAP")
+        parameters = mitigation.get("design_parameters", {})
+        method = mitigation.get("method")
+        if method == "TMR":
+            if not parameters.get("voter_model"):
+                codes.add("TMR_VOTER_MODEL_MISSING")
+            if not parameters.get("common_mode_model"):
+                codes.add("TMR_COMMON_MODE_MODEL_MISSING")
+            if not parameters.get("evaluation_window") or not parameters.get("repair_model"):
+                codes.add("TMR_REPAIR_WINDOW_MISSING")
+            if parameters.get("independence_verified") is not True:
+                codes.add("TMR_INDEPENDENCE_UNVERIFIED")
+            if parameters.get("output_semantic") != "system_failure_probability":
+                codes.add("TMR_OUTPUT_SEMANTIC_MISMATCH")
+        if method == "WATCHDOG" and not parameters.get("false_positive_model"):
+            codes.add("WATCHDOG_FALSE_POSITIVE_MODEL_MISSING")
+        if method == "SEL_PROTECTION" and not parameters.get("false_trip_model"):
+            codes.add("SEL_FALSE_TRIP_MODEL_MISSING")
+        if assurance in OPTIMISTIC and mitigation.get("metadata", {}).get("data_class") in {"SYNTHETIC", "ASSUMED"}:
+            codes.add("NON_EVIDENTIARY_MITIGATION_OPERAND")
+
+    for policy in policies:
+        if policy.get("contract_version") != "2.0.0":
+            continue
+        required_v2 = {"policy_version", "policy_content_hash", "scope", "rules", "approval", "immutable_history_ref"}
+        if not required_v2.issubset(policy):
+            codes.add("V2_REQUIRED_FIELD_MISSING")
+        approval = policy.get("approval", {})
+        scope = policy.get("scope", {})
+        if approval.get("approval_target_hash") != policy.get("policy_content_hash") or approval.get("approval_scope_hash") != scope.get("scope_hash"):
+            codes.add("POLICY_APPROVAL_TARGET_MISMATCH")
+        created_at = parse_timestamp(packet.get("created_at"))
+        valid_from = parse_timestamp(approval.get("valid_from"))
+        valid_until = parse_timestamp(approval.get("valid_until"))
+        if assurance in OPTIMISTIC:
+            if approval.get("status") != "APPROVED" or approval.get("revoked_at"):
+                codes.add("POLICY_PACK_NOT_APPROVED")
+            if created_at and ((valid_from and created_at < valid_from) or (valid_until and created_at > valid_until)):
+                codes.add("POLICY_PACK_NOT_APPROVED")
+            if policy.get("metadata", {}).get("data_class") in {"SYNTHETIC", "ASSUMED"}:
+                codes.add("SYNTHETIC_POLICY_WITH_SUPPORT")
 
     if processing and processing != "VALID" and assurance not in SAFE_FAILURE_DECISIONS:
         codes.add("PROCESSING_DECISION_CONFLICT")
@@ -280,9 +351,9 @@ def semantic_codes(packet: dict) -> set[str]:
                 if operand_role in {"TID_DESIGN_FACTOR", "POLICY_APPROVAL"} and "SYNTHETIC" in operand_classes:
                     codes.add("SYNTHETIC_POLICY_WITH_SUPPORT")
 
-    policies = by_kind.get("USER_POLICY", [])
     if assurance in OPTIMISTIC and (not policies or any(p.get("approval_status") != "APPROVED" for p in policies)):
-        codes.add("UNAPPROVED_POLICY_SUPPORT")
+        if any(p.get("contract_version") != "2.0.0" for p in policies):
+            codes.add("UNAPPROVED_POLICY_SUPPORT")
 
     if assurance in OPTIMISTIC:
         decision_traces = [trace for trace in traces if trace.get("used_for_decision")]
@@ -322,17 +393,19 @@ def semantic_codes(packet: dict) -> set[str]:
         for evidence in by_kind.get("PART_TEST_EVIDENCE", []):
             if not destructive.intersection(evidence.get("evidence_types", [])):
                 codes.add("DESTRUCTIVE_SEE_EVIDENCE_MISSING")
+    required_destructive_modes = set().union(*(
+        set(policy.get("rules", {}).get("required_destructive_modes", []))
+        for policy in policies if policy.get("contract_version") == "2.0.0"
+    )) if policies else set()
+    if required_destructive_modes:
+        available_modes = set().union(*(
+            set(evidence.get("evidence_types", [])) for evidence in by_kind.get("PART_TEST_EVIDENCE", [])
+        )) if by_kind.get("PART_TEST_EVIDENCE") else set()
+        if not required_destructive_modes.issubset(available_modes):
+            codes.add("DESTRUCTIVE_SEE_MODE_MISSING")
 
     environments = by_kind.get("RADIATION_ENVIRONMENT", [])
     required_chain_roles = {"ORBIT", "TRAPPED_ENVIRONMENT", "SOLAR_ENVIRONMENT", "TRANSPORT_DOSE"}
-
-    def parse_timestamp(value):
-        if not isinstance(value, str):
-            return None
-        try:
-            return datetime.fromisoformat(value.replace("Z", "+00:00"))
-        except ValueError:
-            return None
 
     for environment in environments:
         variant = environment.get("environment_variant")
@@ -444,6 +517,11 @@ def semantic_codes(packet: dict) -> set[str]:
             codes.add("INCOMPLETE_ENVIRONMENT_WITH_SUPPORT")
 
         if isinstance(manifest, dict):
+            manifest_version = manifest.get("contract_version")
+            if (packet_version == "1.0.0" and manifest_version == "2.0.0") or (
+                packet_version == "1.1.0" and manifest_version != "2.0.0"
+            ):
+                codes.add("CONTRACT_VERSION_MIXED")
             if environment.get("run_id") != manifest.get("run_id"):
                 codes.add("ENVIRONMENT_MANIFEST_RUN_MISMATCH")
             calculation_run = environment.get("metadata", {}).get("calculation_run", {})
@@ -476,32 +554,78 @@ def semantic_codes(packet: dict) -> set[str]:
             if submitted_at and completed_at and downloaded_at and not (submitted_at <= completed_at <= downloaded_at):
                 codes.add("INVALID_PROVIDER_TIMESTAMP_ORDER")
             artifacts = manifest.get("artifacts", [])
-            artifact_ids = [artifact.get("artifact_id") for artifact in artifacts]
-            if len(artifact_ids) != len(set(artifact_ids)):
-                codes.add("DUPLICATE_ARTIFACT_ID")
-            for artifact in artifacts:
-                content_hash = artifact.get("content_hash")
-                if not content_hash:
-                    codes.add("ARTIFACT_HASH_MISSING")
-                elif not isinstance(content_hash, str) or re.fullmatch(r"sha256:[a-f0-9]{64}", content_hash) is None:
-                    codes.add("ARTIFACT_HASH_INVALID")
-            provider_outputs = [artifact for artifact in artifacts if artifact.get("role") == "PROVIDER_OUTPUT"]
-            if not provider_outputs:
-                codes.add("PROVIDER_OUTPUT_ARTIFACT_MISSING")
-            elif any(
-                not isinstance(artifact.get("byte_size"), int)
-                or isinstance(artifact.get("byte_size"), bool)
-                or artifact.get("byte_size") <= 0
-                or re.fullmatch(r"sha256:[a-f0-9]{64}", artifact.get("content_hash", "")) is None
-                or not artifact.get("source_location")
-                for artifact in provider_outputs
-            ):
-                codes.add("PROVIDER_OUTPUT_ARTIFACT_INVALID")
-            rights = manifest.get("rights", {})
-            claims = manifest.get("usage_claims", {})
-            for use in ("research", "commercial", "automation", "redistribution"):
-                if claims.get(use) is True and rights.get(use) != "ALLOWED":
-                    codes.add("UNCONFIRMED_RIGHTS_CLAIM")
+            if manifest_version == "2.0.0":
+                if manifest.get("create_precondition") != "IF_GENERATION_MATCH_0":
+                    codes.add("RAW_OVERWRITE_PRECONDITION_MISSING")
+                rights_snapshot = manifest.get("rights_snapshot", {})
+                if rights_snapshot.get("tenant_id") != manifest.get("tenant_id"):
+                    codes.add("RAW_MANIFEST_TENANT_MISMATCH")
+                action_grants = rights_snapshot.get("action_grants", [])
+                action_names = [grant.get("action") for grant in action_grants]
+                if len(action_names) != len(set(action_names)):
+                    codes.add("DUPLICATE_RIGHTS_ACTION_GRANT")
+                rights_valid_from = parse_timestamp(rights_snapshot.get("valid_from"))
+                rights_valid_until = parse_timestamp(rights_snapshot.get("valid_until"))
+                packet_created_at = parse_timestamp(packet.get("created_at"))
+                if assurance in OPTIMISTIC and (
+                    rights_snapshot.get("status") in {"RIGHTS_UNCONFIRMED", "FORBIDDEN", "SYNTHETIC_TEST_ONLY"}
+                    or rights_snapshot.get("revoked_at")
+                    or (packet_created_at and rights_valid_from and packet_created_at < rights_valid_from)
+                    or (packet_created_at and rights_valid_until and packet_created_at > rights_valid_until)
+                ):
+                    codes.add("RIGHTS_SNAPSHOT_NOT_ACTIVE")
+                artifact_keys = [(artifact.get("artifact_id"), artifact.get("artifact_revision_id")) for artifact in artifacts]
+                if len(artifact_keys) != len(set(artifact_keys)):
+                    codes.add("DUPLICATE_ARTIFACT_ID")
+                for artifact in artifacts:
+                    if not artifact.get("storage_ref", {}).get("generation"):
+                        codes.add("RAW_GENERATION_MISSING")
+                    if artifact.get("tenant_id") != manifest.get("tenant_id") or artifact.get("zone") != manifest.get("zone"):
+                        codes.add("RAW_MANIFEST_TENANT_MISMATCH")
+                    if artifact.get("rights_snapshot_id") != rights_snapshot.get("rights_snapshot_id"):
+                        codes.add("RAW_RIGHTS_SNAPSHOT_MISMATCH")
+                    content_hash = artifact.get("integrity", {}).get("sha256")
+                    if not content_hash:
+                        codes.add("ARTIFACT_HASH_MISSING")
+                    elif re.fullmatch(r"sha256:[a-f0-9]{64}", content_hash) is None:
+                        codes.add("ARTIFACT_HASH_INVALID")
+                    validation = artifact.get("validation", {})
+                    if assurance in OPTIMISTIC and (
+                        validation.get("quarantine_status") != "VALIDATED"
+                        or validation.get("malware_scan", {}).get("status") != "PASS"
+                        or validation.get("mime_check") != "MATCH"
+                        or validation.get("hash_check") != "MATCH"
+                    ):
+                        codes.add("RAW_ARTIFACT_NOT_VALIDATED")
+                    if assurance in OPTIMISTIC and artifact.get("lineage", {}).get("deletion_state") != "ACTIVE":
+                        codes.add("RAW_ARTIFACT_DELETION_STATE_INVALID")
+            else:
+                artifact_ids = [artifact.get("artifact_id") for artifact in artifacts]
+                if len(artifact_ids) != len(set(artifact_ids)):
+                    codes.add("DUPLICATE_ARTIFACT_ID")
+                for artifact in artifacts:
+                    content_hash = artifact.get("content_hash")
+                    if not content_hash:
+                        codes.add("ARTIFACT_HASH_MISSING")
+                    elif not isinstance(content_hash, str) or re.fullmatch(r"sha256:[a-f0-9]{64}", content_hash) is None:
+                        codes.add("ARTIFACT_HASH_INVALID")
+                provider_outputs = [artifact for artifact in artifacts if artifact.get("role") == "PROVIDER_OUTPUT"]
+                if not provider_outputs:
+                    codes.add("PROVIDER_OUTPUT_ARTIFACT_MISSING")
+                elif any(
+                    not isinstance(artifact.get("byte_size"), int)
+                    or isinstance(artifact.get("byte_size"), bool)
+                    or artifact.get("byte_size") <= 0
+                    or re.fullmatch(r"sha256:[a-f0-9]{64}", artifact.get("content_hash", "")) is None
+                    or not artifact.get("source_location")
+                    for artifact in provider_outputs
+                ):
+                    codes.add("PROVIDER_OUTPUT_ARTIFACT_INVALID")
+                rights = manifest.get("rights", {})
+                claims = manifest.get("usage_claims", {})
+                for use in ("research", "commercial", "automation", "redistribution"):
+                    if claims.get(use) is True and rights.get(use) != "ALLOWED":
+                        codes.add("UNCONFIRMED_RIGHTS_CLAIM")
 
             if assurance in OPTIMISTIC and variant == "TID_ONLY":
                 if environment_class not in EVIDENTIARY_CLASSES:
@@ -512,22 +636,66 @@ def semantic_codes(packet: dict) -> set[str]:
                 if manifest_class not in EVIDENTIARY_CLASSES:
                     codes.add("NON_EVIDENTIARY_MANIFEST_WITH_SUPPORT")
 
-                required_rights = {"research"}
-                if manifest.get("execution_mode") == "AUTOMATED":
-                    required_rights.add("automation")
-                distribution_scope = manifest.get("distribution_scope")
-                if distribution_scope in {"EXTERNAL_RESEARCH", "COMMERCIAL_PRODUCT"}:
-                    required_rights.add("redistribution")
-                if distribution_scope == "COMMERCIAL_PRODUCT":
-                    required_rights.add("commercial")
-                if any(rights.get(required) != "ALLOWED" for required in required_rights):
-                    codes.add("REQUIRED_RIGHT_NOT_ALLOWED")
+                if manifest_version != "2.0.0":
+                    required_rights = {"research"}
+                    if manifest.get("execution_mode") == "AUTOMATED":
+                        required_rights.add("automation")
+                    distribution_scope = manifest.get("distribution_scope")
+                    if distribution_scope in {"EXTERNAL_RESEARCH", "COMMERCIAL_PRODUCT"}:
+                        required_rights.add("redistribution")
+                    if distribution_scope == "COMMERCIAL_PRODUCT":
+                        required_rights.add("commercial")
+                    if any(rights.get(required) != "ALLOWED" for required in required_rights):
+                        codes.add("REQUIRED_RIGHT_NOT_ALLOWED")
+
+    v2_manifests = {
+        manifest.get("manifest_id"): manifest
+        for environment in environments
+        for manifest in [environment.get("raw_artifact_manifest")]
+        if isinstance(manifest, dict) and manifest.get("contract_version") == "2.0.0"
+    }
+    for reference in packet.get("raw_manifest_refs", []):
+        manifest = v2_manifests.get(reference.get("manifest_id"))
+        if manifest is None:
+            codes.add("RAW_MANIFEST_REFERENCE_MISSING")
+            continue
+        artifacts = [
+            artifact for artifact in manifest.get("artifacts", [])
+            if artifact.get("artifact_id") == reference.get("artifact_id")
+            and artifact.get("artifact_revision_id") == reference.get("artifact_revision_id")
+        ]
+        if len(artifacts) != 1:
+            codes.add("RAW_MANIFEST_REFERENCE_MISSING")
+            continue
+        artifact = artifacts[0]
+        rights_snapshot = manifest.get("rights_snapshot", {})
+        if reference.get("tenant_id") != manifest.get("tenant_id") or reference.get("tenant_id") != artifact.get("tenant_id"):
+            codes.add("RAW_MANIFEST_TENANT_MISMATCH")
+        if reference.get("zone") != manifest.get("zone") or reference.get("zone") != artifact.get("zone"):
+            codes.add("RAW_MANIFEST_ZONE_MISMATCH")
+        if reference.get("storage_generation") != artifact.get("storage_ref", {}).get("generation"):
+            codes.add("RAW_GENERATION_MISMATCH")
+        if reference.get("artifact_sha256") != artifact.get("integrity", {}).get("sha256"):
+            codes.add("RAW_ARTIFACT_HASH_MISMATCH")
+        if (
+            reference.get("rights_snapshot_id") != rights_snapshot.get("rights_snapshot_id")
+            or reference.get("rights_snapshot_id") != artifact.get("rights_snapshot_id")
+        ):
+            codes.add("RAW_RIGHTS_SNAPSHOT_MISMATCH")
+        if reference.get("source_locator") != artifact.get("source", {}).get("locator"):
+            codes.add("RAW_SOURCE_LOCATOR_MISMATCH")
+        grants = {
+            grant.get("action"): grant.get("grant_status")
+            for grant in rights_snapshot.get("action_grants", [])
+        }
+        if any(grants.get(action) != "ALLOWED" for action in reference.get("required_actions", [])):
+            codes.add("RIGHTS_ACTION_GRANT_MISSING")
 
     evidences = by_kind.get("PART_TEST_EVIDENCE", [])
     if environments and evidences and policies:
         tid = environments[0].get("tid", environments[0].get("mission_dose", {}))
         limit = evidences[0].get("tid_test_limit", {})
-        factor = policies[0].get("tid_design_factor")
+        factor = policies[0].get("tid_design_factor", policies[0].get("rules", {}).get("tid_design_factor"))
         if tid.get("unit") == limit.get("unit") and isinstance(factor, (int, float)):
             if tid.get("value", 0) * factor > limit.get("value", float("-inf")):
                 codes.add("TEST_RANGE_EXCEEDED")
@@ -618,6 +786,15 @@ def main() -> int:
             f"input cardinality: expected exact-one {sorted(REQUIRED_INPUT_KINDS)}, got {sorted(exact_one_kinds)}"
         )
     print("INPUT CARDINALITY: 7 required kinds exact-one")
+
+    packet_versions = set(packet_schema["properties"]["schema_version"]["enum"])
+    if packet_versions != {"1.0.0", "1.1.0"}:
+        failures.append(f"packet versions: expected ['1.0.0', '1.1.0'], got {sorted(packet_versions)}")
+    for schema_name in ("mitigation-v2.schema.json", "user-policy-v2.schema.json", "raw-artifact-manifest-v2.schema.json"):
+        version = load(SCHEMA_DIR / schema_name)["properties"]["contract_version"].get("const")
+        if version != "2.0.0":
+            failures.append(f"{schema_name}: expected contract_version 2.0.0, got {version}")
+    print("VERSION CONTRACTS: EvidencePacket 1.0.0/1.1.0 and v2 contracts checked")
     registry = build_registry(loaded_schemas)
     valid_files = sorted(VALID_DIR.glob("*.json"))
     for path in valid_files:
