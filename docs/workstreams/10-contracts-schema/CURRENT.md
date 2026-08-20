@@ -2,7 +2,7 @@
 
 ## Status
 
-`VERIFIED`
+`INTEGRATED`
 
 ## 구현한 계약
 
@@ -601,3 +601,12 @@ RESULT: READY_FOR_REVIEW candidate
 - 독립 확장 공격: 7개 required input kind를 각각 복제하고 배열 선두로 이동한 모든 경우가 schema와 의미 gate 양쪽에서 거부됐다.
 - 데이터 경계: 실제 환경 모델 실행·실제 원문·실제 권리 승인·실제 assurance 수치는 추가되지 않았다. 신규 fixture는 모두 `SYNTHETIC`이다.
 - 잔여 한계: EvidencePacket v1은 복수 same-kind input aggregation을 지원하지 않는다. 장래 복수 입력은 명시 record ID와 계산 소비 ID를 갖는 별도 version 계약이 필요하다.
+
+
+## Git 통합 — 2026-08-20
+
+- 브랜치: `main`
+- commit: `4bd1362` — `feat(contracts): integrate verified provenance and evidence contracts`
+- 원격: 비공개 `origin/main` push 완료
+- 포함 범위: Workstream 10 H01~H04 누적 provenance/operand/exact-one 계약과 Workstream 40의 검증된 PART_TEST_EVIDENCE v2 문서 명세
+- 제외 범위: Workstream 50의 미검증 계약 설계, 실제 Stage 3·4 데이터·원문·모델 실행

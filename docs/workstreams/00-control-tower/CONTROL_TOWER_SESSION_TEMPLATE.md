@@ -121,6 +121,8 @@ Checkpoint 이름은 다음과 같이 부여한다.
 
 ## 세션 종료 시 반드시 남길 인수인계
 
+handoff 파일은 기본 Downloads 폴더에 `SPECTRA_00_CONTROL_TOWER_HANDOFF_HNN.md` 형식으로 저장한다. `HNN`은 이 채팅의 handoff 제출 회차이며 새 Session 번호가 아니다. 같은 채팅에서 수정·재제출하면 `H01`, `H02` 순으로 증가시킨다.
+
 ```markdown
 # 00 Control Tower Handoff
 

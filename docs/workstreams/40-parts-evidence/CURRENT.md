@@ -2,7 +2,7 @@
 
 ## Status
 
-`VERIFIED`
+`INTEGRATED`
 
 `40-parts-evidence-contract-and-adversarial-fixture-spec-v1` 문서 계약 패키지는 Control Tower 독립 검증을 통과했다. 실제 v2 schema·fixture 구현이나 Stage 4 완료를 뜻하지 않으며, 직전 출처·권리 조사 패키지의 `INTEGRATED` 판정은 유지한다. 실제 BOM과 권리 확인 원문이 없으므로 evidence ingest와 assurance decision은 계속 `HOLD`다.
 
@@ -172,3 +172,12 @@
 - 구조 점검: `parts-v2-*` fixture ID 32개가 모두 고유했다. H02 hash 4개, identity paired 6개, conflicting 5개 명세가 포함됐다.
 - 데이터 경계: 실제 BOM·부품 후보·시험 PDF·시험 수치·artifact hash·EvidencePacket은 여전히 0건이다. 따라서 evidence ingest와 assurance decision은 `HOLD`, Stage 4는 `IN_PROGRESS`를 유지한다.
 - Git: 검증된 문서 패키지는 아직 커밋·푸시하지 않았다. 다른 Workstream의 미통합 변경과 분리해 의미 있는 통합 묶음에서 반영한다.
+
+
+## Git 통합 — 2026-08-20
+
+- 브랜치: `main`
+- commit: `4bd1362` — `feat(contracts): integrate verified provenance and evidence contracts`
+- 원격: 비공개 `origin/main` push 완료
+- 포함 범위: Workstream 10 H01~H04 누적 provenance/operand/exact-one 계약과 Workstream 40의 검증된 PART_TEST_EVIDENCE v2 문서 명세
+- 제외 범위: Workstream 50의 미검증 계약 설계, 실제 Stage 3·4 데이터·원문·모델 실행
