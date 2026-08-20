@@ -2,9 +2,9 @@
 
 ## 상태
 
-`VERIFIED — H03 local raw manifest preflight`
+`INTEGRATED — H03 local raw manifest preflight / commit 379f3ad`
 
-이 상태는 `70-rights-raw-manifest-preflight-v1` H03의 로컬 fail-closed 구현이 Control Tower 독립 재검증을 통과했다는 뜻이다. 이전 `70-gcp-evidence-storage-rights-gate-v1` H01 문서 설계의 `VERIFIED` 판정도 유지한다. 실제 GCP 구현, 실제 권리 승인, raw manifest 발행, 비용 기준선 또는 Stage 7 완료를 뜻하지 않는다.
+이 상태는 `70-rights-raw-manifest-preflight-v1` H03의 로컬 fail-closed 구현이 Control Tower 독립 재검증 후 Git에 통합됐다는 뜻이다. 이전 `70-gcp-evidence-storage-rights-gate-v1` H01 문서 설계의 `VERIFIED` 판정도 유지한다. 실제 GCP 구현, 실제 권리 승인, raw manifest 발행, 비용 기준선 또는 Stage 7 완료를 뜻하지 않는다.
 
 ## 이번 패키지
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-`VERIFIED — H05 v2 계약 패키지`
+`INTEGRATED — H05 v2 계약 패키지 / commit 379f3ad`
 
 ## 구현한 계약
 

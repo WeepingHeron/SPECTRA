@@ -2,7 +2,7 @@
 
 ## 상태
 
-`VERIFIED — H04 Product UI prototype baseline`
+`INTEGRATED — H04 Product UI prototype baseline / commit 379f3ad`
 
 H03 기능·snapshot·fail-closed 계약을 유지하면서 도메인 초심자용 정보 위계를 H04로 보완했다. Control Tower가 정적 계약과 전체 회귀를 독립 재실행했고 사용자가 실제 UI를 직접 조작해 현재 프로토타입의 시각 기준을 수용했다. 정확한 1280×720·1440×900 overflow와 console 증거는 독립 재현하지 못했으므로 이 판정은 발표용 합성 Product UI 프로토타입에 한정되며 Stage 8 완료가 아니다.
 

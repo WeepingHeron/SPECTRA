@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-20
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 상태: 로컬 `main`과 비공개 `origin/main`은 commit `cf4200d`에서 일치한다. Workstream 10 H05, 50 H02, 60 H01, 70 H01, 80 H02~H04, 90 H02와 Control Tower 동기화 변경은 검증됐지만 아직 하나의 누적 working tree로 남아 있으며 commit·push하지 않았다.
+- Git 상태: 로컬 `main`과 비공개 `origin/main`은 통합 commit `379f3ad`에서 일치한다. Workstream 10 H05, 20 H02, 30/31 H02, 40 H03, 50 H02, 60 H02, 70 H03, 80 H04, 90 H02와 Control Tower 상태 동기화를 포함하며 working tree는 clean이다.
 
 ## 현재 확인된 산출물
 
@@ -61,6 +61,7 @@
 - Workstream 70 H02 raw manifest preflight는 제출 fixture와 전체 회귀를 통과했지만 malformed schema 입력 4종이 예외를 발생시키고, creation receipt가 exact project/bucket/object identity에 결합되지 않아 storage ref 변조가 `ISSUE_ALLOWED`로 통과했다. H01 문서 설계는 `VERIFIED`를 유지하되 H02 구현은 `CHANGES_REQUESTED`다.
 - 채팅 31 H02는 embedded NUL 앞·중간·끝과 예상 가능한 path/file 오류를 stable provenance HOLD로 보완했다. environment 23개와 전체 회귀, 실제 bundle 9/9·값 비노출 parser 구조를 독립 재현해 구현 패키지를 `VERIFIED`로 판정했다. 실제 contract emission과 Stage 3은 계속 `HOLD/IN_PROGRESS`다.
 - Workstream 70 H03은 malformed 입력을 semantic traversal 전에 차단하고 synthetic creation receipt를 exact project/bucket/object/generation에 결합했다. 별도 11개 공격과 전체 회귀를 통과해 local preflight 구현을 `VERIFIED`로 판정했다. 실제 GCP resource·rights·manifest·비용은 0이고 `ASR-D02`는 계속 `NOT_EVALUATED`다.
+- 위 누적 검증 범위 76개 파일은 commit `379f3ad`로 `main`과 `origin/main`에 통합했다. 이는 각 패키지의 Git 통합만 뜻하며 Stage 3~9 완료, 실제 environment contract, 실제 parts evidence, 실제 GCP 또는 radiation assurance 완료를 뜻하지 않는다.
 
 ## 알려진 한계
 

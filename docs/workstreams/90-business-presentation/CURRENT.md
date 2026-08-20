@@ -2,7 +2,7 @@
 
 ## 상태
 
-`VERIFIED — H02 7분 발표 서사 패키지`
+`INTEGRATED — H02 7분 발표 서사 패키지 / commit 379f3ad`
 
 ## 검증된 범위
 

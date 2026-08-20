@@ -1,6 +1,6 @@
 # 30 Environment Model Handoff
 
-> **Current package notice (2026-08-20):** 아래 `INTEGRATED` 기록은 이전 조사 회차의 역사적 상태다. 채팅 31 H02의 invalid-path fail-closed 보완은 Control Tower 독립 재검증을 통과해 구현 패키지 `VERIFIED`다. provider reference·권리·승인 raw manifest가 없으므로 계약 발행과 Stage 3 완료는 계속 `HOLD`다.
+> **Current package notice (2026-08-20):** 채팅 31 H02의 invalid-path fail-closed 보완은 Control Tower 독립 재검증 후 commit `379f3ad`로 통합됐다. provider reference·권리·승인 raw manifest가 없으므로 계약 발행과 Stage 3 완료는 계속 `HOLD`다.
 
 ## 채팅 31 H01 — Environment Intake Gate 보완
 
@@ -44,9 +44,9 @@
 
 ## Status
 
-`VERIFIED — chat 31 H02 / contract emission HOLD`
+`INTEGRATED — chat 31 H02 / contract emission HOLD / commit 379f3ad`
 
-현재 `VERIFIED`는 채팅 31 H02의 intake gate와 실제-format parser 안전 경계에 한정한다. 실제 SPENVIS 원본은 Git 밖에서 확보했지만 승인된 공용 contract 발행, 권리 확인, 과학적 교차검산, Git 통합 또는 Stage 3 완료를 뜻하지 않는다. 상업 이용·자동화·재배포는 별도 `HOLD`다.
+현재 `INTEGRATED`는 채팅 31 H02의 intake gate와 실제-format parser 안전 경계를 Git에 반영했다는 뜻이다. 실제 SPENVIS 원본은 Git 밖에서 확보했지만 승인된 공용 contract 발행, 권리 확인, 과학적 교차검산 또는 Stage 3 완료를 뜻하지 않는다. 상업 이용·자동화·재배포는 별도 `HOLD`다.
 
 ## 조사 범위와 소유 파일
 

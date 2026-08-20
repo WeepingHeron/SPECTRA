@@ -2,7 +2,7 @@
 
 ## Status
 
-`VERIFIED — H03 discovery candidate / HOLD`
+`INTEGRATED — H03 discovery candidate / HOLD / commit 379f3ad`
 
 `40-parts-evidence-first-exact-part-evidence-path-v1`에서 exact orderable part 1개와 공식 TID report의 첫 추적 경로를 정리했다. source-side exact identity와 원문 locator는 확인했지만 승인 BOM, action별 권리 snapshot, 승인 storage, v2 validator, 임무 적용성과 독립 review가 없고 보고서 내부 표기가 충돌하므로 decision 상태는 `PARTIAL_UNRESOLVED / HOLD`다. 이전 조사·계약 명세 패키지의 `INTEGRATED` 판정은 유지한다.
 

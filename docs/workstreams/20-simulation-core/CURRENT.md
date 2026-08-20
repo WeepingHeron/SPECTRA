@@ -8,7 +8,7 @@
 
 ## Status
 
-`VERIFIED — H02 MVP Decision Engine synthetic baseline`
+`INTEGRATED — H02 MVP Decision Engine synthetic baseline / commit 379f3ad`
 
 현재 작업 패키지: `20-mvp-decision-engine-v1` H02. H01에서 확인된 비유한 숫자 traceback 경로를 입력 경계와 하위 계산 경계에서 보완했다. `NaN`, `Infinity`, `-Infinity`는 direct engine과 CLI 모두 stable code를 가진 machine-readable `INVALID_INPUT / NOT_EVALUATED / HOLD`로 종료한다. Control Tower가 전체 schema·simulation·environment·assurance 회귀와 정상 canonical 결과를 독립 재현해 합성 MVP engine 기준선을 `VERIFIED`로 판정했다. 이전 Stage 2 합성 기준선의 `INTEGRATED` 판정 범위는 그대로 보존한다.
 

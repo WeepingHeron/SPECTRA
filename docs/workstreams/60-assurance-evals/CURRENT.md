@@ -2,9 +2,9 @@
 
 ## 상태
 
-`VERIFIED — H02 Decision Engine Assurance D01`
+`INTEGRATED — H02 Decision Engine Assurance D01 / commit 379f3ad`
 
-H01 고정 공격 기준선의 `VERIFIED` 판정은 유지한다. 이번 H02 패키지는 Control Tower가 검증한 Workstream 20 H02 MVP Decision Engine을 독립 공격하고 `ASR-D01`을 실제 평가로 승격한 재검토 요청이다. `INTEGRATED` 또는 Stage 6 완료가 아니다.
+H01 고정 공격 기준선의 `VERIFIED` 판정은 유지한다. H02 패키지는 Workstream 20 H02 MVP Decision Engine을 독립 공격하고 `ASR-D01`을 실제 평가로 승격한 뒤 commit `379f3ad`로 통합했다. 이는 Stage 6 완료를 뜻하지 않는다.
 
 ## 범위 경계
 

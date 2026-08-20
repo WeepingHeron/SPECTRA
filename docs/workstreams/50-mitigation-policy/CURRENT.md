@@ -2,9 +2,9 @@
 
 ## 상태
 
-`VERIFIED`
+`INTEGRATED — H02 contract design / commit 379f3ad`
 
-이 상태는 완화·정책 엔진의 **계약 조사와 결정론적 설계 패키지 H02**가 Control Tower 독립 검증을 통과했다는 뜻이다. Stage 5 구현, 실제 효과 계산, 실제 policy 승인 또는 Git 통합 완료를 뜻하지 않는다.
+이 상태는 완화·정책 엔진의 **계약 조사와 결정론적 설계 패키지 H02**가 Control Tower 독립 검증 후 Git에 통합됐다는 뜻이다. Stage 5 전체 구현, 실제 효과 계산 또는 실제 policy 승인을 뜻하지 않는다.
 
 ## 이번 패키지
 
