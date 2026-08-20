@@ -2,9 +2,28 @@
 
 ## Status
 
-`INTEGRATED — H03 discovery candidate / HOLD / commit 379f3ad`
+`READY_FOR_REVIEW — H04 destructive SEE gap research / HOLD`
 
-`40-parts-evidence-first-exact-part-evidence-path-v1`에서 exact orderable part 1개와 공식 TID report의 첫 추적 경로를 정리했다. source-side exact identity와 원문 locator는 확인했지만 승인 BOM, action별 권리 snapshot, 승인 storage, v2 validator, 임무 적용성과 독립 review가 없고 보고서 내부 표기가 충돌하므로 decision 상태는 `PARTIAL_UNRESOLVED / HOLD`다. 이전 조사·계약 명세 패키지의 `INTEGRATED` 판정은 유지한다.
+`40-exact-part-destructive-see-gap-research-v1`에서 TI `SLLA381`의 SEL·SEB·SEGR coverage와 exact test-article identity를 조사했다. 제한된 SEL zero-event 결과는 확인했지만 exact suffix와 lot/date-code traceability가 없어 `PARTIAL_IDENTITY`이며, SEB·SEGR은 독립 공백이다. 최종 decision은 `HOLD`다. H03까지의 기존 `INTEGRATED` 판정은 유지한다.
+
+## H04 destructive SEE gap research — 2026-08-20
+
+- 기준 HEAD: `4920b6e`
+- 신규 문서: `docs/workstreams/40-parts-evidence/DESTRUCTIVE_SEE_GAP_RESEARCH.md`
+- 최소 색인: `docs/workstreams/40-parts-evidence/RESEARCH.md` §24
+- 공식 source 범위: TI product/technical/radiation documents, NASA NEPP·GSFC Radiation Data Base·NTRS·JPL, ESA ESARAD·ESCIES/ESCC, DLA SMD.
+- TI `SLLA381–March 2018`은 HVD233-SP, SMD base `5962L1420901VX`, LBC3S, 8-pin CFP를 기록하지만 exact `5962L1420901VXC`, grade, die/wafer lot, A/T lot와 date code는 기록하지 않는다. exact identity는 `PARTIAL_IDENTITY`다.
+- SEL: `REPORTED_IDENTITY_UNRESOLVED`; nested result `ZERO_EVENTS_WITH_TEST_LIMITS`. 보고서는 Device #1의 7 runs, `59Pr`, 45°, `LETEFF 92.01 MeV-cm²/mg`, 125°C, VCC 3.6 V, combined fluence `7.0 × 10^7`, zero observed SEL과 95% upper bound를 p.7–10/Appendix B에 기록한다.
+- 명시적 SEL detection threshold와 post-test electrical/latent-damage 결과는 확인하지 못해 condition completeness는 `PARTIAL`이다. zero events를 immunity·mission suitability로 승격하지 않는다.
+- exact TI product page/datasheet의 86 MeV-cm²/mg headline과 `SLLA381`의 `LETEFF 92.01`은 basis가 명시적으로 연결되지 않아 `BASIS_UNRESOLVED`다.
+- SEB: `NOT_REPORTED_IN_SELECTED_BUNDLE`. §2 mechanism mention은 test result가 아니다.
+- SEGR: `NOT_REPORTED_IN_SELECTED_BUNDLE`. report results/summary와 text search에서 event result를 확인하지 못했다.
+- SET는 보고되지만 SEU·SEFI를 닫지 않는다. SEL도 SEB·SEGR을 닫지 않는다.
+- 공식 공개 검색 범위 결론: `NO_EXACT_DESTRUCTIVE_SEE_SOURCE_FOUND_WITHIN_SEARCH_SCOPE`. 전 세계 자료 부재를 뜻하지 않는다.
+- rights: TI public view와 조건부 locator만 확인했다. fetch/storage/AI processing/display/redistribution/commercial use는 `RIGHTS_UNRESOLVED`; 실제 SEE PDF를 Git·Downloads·project storage에 저장하지 않았다.
+- remaining gates: `BOM_MISSING`, `EXACT_TEST_ARTICLE_IDENTITY_UNRESOLVED`, `SEL_TEST_COMPLETENESS_PARTIAL`, `SEB_EVIDENCE_MISSING`, `SEGR_EVIDENCE_MISSING`, `RIGHTS_UNRESOLVED`, `MISSION_APPLICABILITY_UNAVAILABLE`, `REVIEW_APPROVAL_MISSING`.
+- 자체 검증: H04 source register에 공식 URL·문서 revision/date 또는 `NOT_DISPLAYED`·접근일·locator를 기록했고, `git diff --check`를 통과했다. 문서-only 변경이므로 schema·simulation runtime 회귀 테스트는 실행하지 않았다.
+- 공통 schema, fixture, 계산·assurance 코드, 다른 Workstream, demo와 루트 문서를 수정하지 않았다. commit·push·merge하지 않는다.
 
 ## H03 Control Tower 독립 검증 — 2026-08-20
 
@@ -225,7 +244,7 @@
 - self-reference 없는 canonical hash 예시와 변조 공격을 명세한다.
 - exact PN 미확인 family 후보, exact PN 누락 unresolved 후보, verified PN conflict의 paired fixture 상태를 구분한다.
 - `CONFLICTING` 값 두 개와 각각의 유효 locator를 보존하는 정상 예시와 누락 공격을 추가한다.
-- 다음 handoff는 기존 번호 없는 제출을 암묵적 `H01`로 보고 `/Users/taehoon/Downloads/SPECTRA_40_PARTS_EVIDENCE_HANDOFF_H02.md`로 작성한다.
+- 다음 handoff는 기존 번호 없는 제출을 암묵적 `H01`로 보고 `docs/workstreams/40-parts-evidence/handoffs/SPECTRA_40_PARTS_EVIDENCE_HANDOFF_H02.md`로 작성한다.
 - Workstream 40은 다시 `READY_FOR_REVIEW`까지만 요청하며 공통 schema, 다른 Workstream 변경, commit·push를 수행하지 않는다.
 
 ## H02 변경 요청 반영 — 2026-08-20

@@ -914,3 +914,11 @@ TI 제품 페이지에는 별도의 SEE report 링크와 SEL 관련 마케팅 �
 | `DESTRUCTIVE_SEE_EVIDENCE_MISSING` | SEL·SEB·SEGR 원문 증거 없음 | 필요 mode별 독립 보고서 ingest; SEU로 대체 금지 |
 
 최종 상태는 `PARTIAL_UNRESOLVED / HOLD`다. 첫 exact-part 원문 경로와 실제 artifact 관찰값은 확보했지만, 이 결과는 지원 판정·부품 추천·비행 적합성 결론이 아니다.
+
+## 24. H04 destructive SEE gap research index
+
+- 상세 문서: [`DESTRUCTIVE_SEE_GAP_RESEARCH.md`](DESTRUCTIVE_SEE_GAP_RESEARCH.md)
+- 결론: TI `SLLA381–March 2018`에서 제한된 SEL zero-event 결과를 확인했지만 보고서가 exact suffix `5962L1420901VXC`와 lot/date-code traceability를 직접 기록하지 않아 `PARTIAL_IDENTITY`다.
+- exact-part SEL 상태는 `REPORTED_IDENTITY_UNRESOLVED`, nested observation은 `ZERO_EVENTS_WITH_TEST_LIMITS`다. SEB·SEGR은 각각 `NOT_REPORTED_IN_SELECTED_BUNDLE`이며 SEL로 대체하지 않는다.
+- 공식 TI·NASA NEPP/GSFC/NTRS/JPL·ESA ESARAD/ESCIES·DLA 공개 검색 범위의 결론은 `NO_EXACT_DESTRUCTIVE_SEE_SOURCE_FOUND_WITHIN_SEARCH_SCOPE`다. 전 세계 자료 부재의 증명이 아니다.
+- 승인 BOM, rights snapshot, raw manifest와 mission applicability가 없으므로 최종 decision은 `HOLD`다.
