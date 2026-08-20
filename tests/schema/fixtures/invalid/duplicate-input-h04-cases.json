@@ -1,0 +1,33 @@
+{
+  "base": "../base/h04-shadow-support-base.json",
+  "cases": [
+    {
+      "name": "duplicate-part-evidence-shadow-binding",
+      "operations": [
+        {"op": "set", "path": "/inputs/3/metadata/data_class", "value": "SYNTHETIC"},
+        {"op": "set", "path": "/inputs/3/tid_test_limit/metadata/data_class", "value": "SYNTHETIC"},
+        {"op": "copy", "from": "/inputs/3", "path": "/inputs/-"},
+        {"op": "set", "path": "/inputs/7/evidence_id", "value": "evidence-shadow-002"},
+        {"op": "set", "path": "/inputs/7/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/7/tid_test_limit/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings/1/input_pointer", "value": "/inputs/7/tid_test_limit"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings/1/origin_pointer", "value": "/inputs/7/tid_test_limit/metadata/calculation_run"}
+      ],
+      "expected": "DUPLICATE_REQUIRED_INPUT_KIND"
+    },
+    {
+      "name": "duplicate-user-policy-shadow-binding",
+      "operations": [
+        {"op": "set", "path": "/inputs/6/metadata/data_class", "value": "SYNTHETIC"},
+        {"op": "copy", "from": "/inputs/6", "path": "/inputs/-"},
+        {"op": "set", "path": "/inputs/7/policy_id", "value": "policy-shadow-002"},
+        {"op": "set", "path": "/inputs/7/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings/2/input_pointer", "value": "/inputs/7/tid_design_factor"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings/2/origin_pointer", "value": "/inputs/7/metadata/calculation_run"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings/3/input_pointer", "value": "/inputs/7/approval_status"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings/3/origin_pointer", "value": "/inputs/7/metadata/calculation_run"}
+      ],
+      "expected": "DUPLICATE_REQUIRED_INPUT_KIND"
+    }
+  ]
+}

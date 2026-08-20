@@ -1,18 +1,59 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://spectra.local/schemas/radiation-environment.schema.json",
-  "title": "Radiation Environment Input v1",
+  "title": "Radiation Environment Input v1.1",
   "type": "object", "additionalProperties": false,
-  "required": ["kind", "environment_id", "model_name", "model_version", "mission_id", "tid", "particle_flux", "valid_for", "metadata"],
+  "required": ["kind", "environment_id", "model_name", "model_version", "mission_id", "valid_for", "metadata"],
   "properties": {
     "kind": {"const": "RADIATION_ENVIRONMENT"},
+    "environment_variant": {"type": "string", "enum": ["FLUX_AND_TID", "TID_ONLY"]},
     "environment_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
     "model_name": {"type": "string", "minLength": 1},
     "model_version": {"type": "string", "minLength": 1},
     "mission_id": {"type": "string", "minLength": 1},
-    "tid": {"$ref": "common.schema.json#/$defs/quantity"},
-    "particle_flux": {"$ref": "common.schema.json#/$defs/quantity"},
-    "valid_for": {"type": "object", "additionalProperties": false, "required": ["start_at", "end_at"], "properties": {"start_at": {"type": "string", "format": "date-time"}, "end_at": {"type": "string", "format": "date-time"}}},
+    "tid": {"allOf": [{"$ref": "common.schema.json#/$defs/quantity"}, {"properties": {"value": {"minimum": 0}, "quantity_kind": {"const": "TID"}}}]},
+    "mission_dose": {"allOf": [{"$ref": "common.schema.json#/$defs/quantity"}, {"properties": {"value": {"minimum": 0}, "quantity_kind": {"const": "TID"}, "metadata": {"properties": {"data_class": {"enum": ["CALCULATED", "SYNTHETIC"]}}}}}]},
+    "particle_flux": {"allOf": [{"$ref": "common.schema.json#/$defs/quantity"}, {"properties": {"value": {"minimum": 0}, "quantity_kind": {"const": "PARTICLE_FLUX"}}}]},
+    "dose_scope": {"type": "string", "enum": ["MISSION", "TRAPPED_COMPONENT", "PARTIAL"]},
+    "target_material": {"type": "string", "enum": ["SILICON"]},
+    "source_completeness": {"type": "string", "enum": ["COMPLETE_MISSION", "TRAPPED_ONLY", "MISSING_SOLAR", "PARTIAL", "UNKNOWN"]},
+    "shielding_point": {
+      "type": "object", "additionalProperties": false,
+      "required": ["point_id", "geometry", "material", "thickness"],
+      "properties": {
+        "point_id": {"type": "string", "minLength": 1},
+        "geometry": {"type": "string", "enum": ["SLAB", "SPHERE", "CUSTOM"]},
+        "material": {"type": "string", "minLength": 1},
+        "thickness": {"allOf": [{"$ref": "common.schema.json#/$defs/quantity"}, {"properties": {"value": {"exclusiveMinimum": 0}, "quantity_kind": {"const": "SHIELDING"}}}]}
+      }
+    },
+    "model_chain": {"$ref": "external-model-run.schema.json"},
+    "raw_artifact_manifest": {"$ref": "raw-artifact-manifest.schema.json"},
+    "valid_for": {
+      "type": "object", "additionalProperties": false,
+      "required": ["start_at", "end_at"],
+      "properties": {
+        "start_at": {"type": "string", "format": "date-time"},
+        "end_at": {"type": "string", "format": "date-time"}
+      }
+    },
     "metadata": {"$ref": "common.schema.json#/$defs/recordMetadata"}
-  }
+  },
+  "oneOf": [
+    {
+      "title": "Backward-compatible flux and TID payload",
+      "required": ["tid", "particle_flux"],
+      "not": {"properties": {"environment_variant": {"const": "TID_ONLY"}}, "required": ["environment_variant"]}
+    },
+    {
+      "title": "TID-only external calculation payload",
+      "required": ["environment_variant", "run_id", "mission_dose", "dose_scope", "target_material", "source_completeness", "shielding_point", "model_chain", "raw_artifact_manifest"],
+      "properties": {
+        "environment_variant": {"const": "TID_ONLY"},
+        "metadata": {"properties": {"data_class": {"enum": ["CALCULATED", "SYNTHETIC"]}}}
+      },
+      "not": {"anyOf": [{"required": ["particle_flux"]}, {"required": ["tid"]}]}
+    }
+  ]
 }

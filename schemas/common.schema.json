@@ -84,10 +84,10 @@
         "metadata": {"$ref": "#/$defs/recordMetadata"}
       },
       "allOf": [
-        {"if": {"properties": {"quantity_kind": {"const": "TID"}}}, "then": {"properties": {"unit": {"enum": ["rad(Si)", "krad(Si)", "Gy(Si)"]}}}},
-        {"if": {"properties": {"quantity_kind": {"const": "SHIELDING"}}}, "then": {"properties": {"unit": {"enum": ["mm_Al_equivalent", "g/cm2"]}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "TID"}}}, "then": {"properties": {"value": {"minimum": 0}, "unit": {"enum": ["rad(Si)", "krad(Si)", "Gy(Si)"]}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "SHIELDING"}}}, "then": {"properties": {"value": {"exclusiveMinimum": 0}, "unit": {"enum": ["mm_Al_equivalent", "g/cm2"]}}}},
         {"if": {"properties": {"quantity_kind": {"const": "DURATION"}}}, "then": {"properties": {"unit": {"enum": ["s", "day", "year"]}}}},
-        {"if": {"properties": {"quantity_kind": {"const": "PARTICLE_FLUX"}}}, "then": {"properties": {"unit": {"const": "particles/cm2/s"}}}},
+        {"if": {"properties": {"quantity_kind": {"const": "PARTICLE_FLUX"}}}, "then": {"properties": {"value": {"minimum": 0}, "unit": {"const": "particles/cm2/s"}}}},
         {"if": {"properties": {"quantity_kind": {"const": "CROSS_SECTION"}}}, "then": {"properties": {"unit": {"enum": ["cm2/device", "cm2/bit"]}}}},
         {"if": {"properties": {"quantity_kind": {"const": "ALTITUDE"}}}, "then": {"properties": {"unit": {"enum": ["km", "m"]}}}},
         {"if": {"properties": {"quantity_kind": {"const": "ANGLE"}}}, "then": {"properties": {"unit": {"const": "deg"}}}},

@@ -1,0 +1,124 @@
+{
+  "base": "../valid/synthetic-tid-only-hold.json",
+  "cases": [
+    {
+      "name": "support-with-synthetic-manifest-and-unconfirmed-rights",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "NON_EVIDENTIARY_MANIFEST_WITH_SUPPORT"
+    },
+    {
+      "name": "support-bypasses-required-rights-with-false-usage-claims",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "REQUIRED_RIGHT_NOT_ALLOWED"
+    },
+    {
+      "name": "support-with-synthetic-environment",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "NON_EVIDENTIARY_ENVIRONMENT_WITH_SUPPORT"
+    },
+    {
+      "name": "support-with-synthetic-mission-dose",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "NON_EVIDENTIARY_DOSE_WITH_SUPPORT"
+    },
+    {
+      "name": "support-with-synthetic-decision-trace",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "NON_EVIDENTIARY_DECISION_INPUT"
+    },
+    {"name": "negative-mission-dose", "operations": [{"op": "set", "path": "/inputs/2/mission_dose/value", "value": -1}], "expected": "NEGATIVE_TID"},
+    {"name": "zero-shielding-thickness", "operations": [{"op": "set", "path": "/inputs/2/shielding_point/thickness/value", "value": 0}], "expected": "NON_POSITIVE_SHIELDING_THICKNESS"},
+    {"name": "reversed-mission-validity", "operations": [{"op": "set", "path": "/inputs/2/valid_for/start_at", "value": "2028-01-01T00:00:00Z"}, {"op": "set", "path": "/inputs/2/valid_for/end_at", "value": "2027-01-01T00:00:00Z"}], "expected": "INVALID_VALIDITY_INTERVAL"},
+    {"name": "reversed-provider-timestamps", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/timestamps/submitted_at", "value": "2026-08-20T00:03:00Z"}, {"op": "set", "path": "/inputs/2/raw_artifact_manifest/timestamps/completed_at", "value": "2026-08-20T00:02:00Z"}, {"op": "set", "path": "/inputs/2/raw_artifact_manifest/timestamps/downloaded_at", "value": "2026-08-20T00:01:00Z"}], "expected": "INVALID_PROVIDER_TIMESTAMP_ORDER"},
+    {"name": "top-level-model-chain-mismatch", "operations": [{"op": "set", "path": "/inputs/2/model_name", "value": "unrelated-model"}], "expected": "TOP_LEVEL_MODEL_STAGE_MISMATCH"},
+    {"name": "missing-representative-model-stage", "operations": [{"op": "set", "path": "/inputs/2/model_chain/representative_stage_id", "value": "missing-stage"}], "expected": "REPRESENTATIVE_MODEL_STAGE_MISSING"},
+    {
+      "name": "mission-dose-run-mismatch-with-adjusted-trace-origin",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/calculation_run/run_id", "value": "unrelated-dose-run"},
+        {"op": "set", "path": "/trace/0/origin_pointer", "value": "/inputs/2/mission_dose/metadata/calculation_run"}
+      ],
+      "expected": "MISSION_DOSE_RUN_MISMATCH"
+    },
+    {
+      "name": "mission-dose-output-hash-mismatch-with-adjusted-trace-origin",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/calculation_run/output_hash", "value": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"},
+        {"op": "set", "path": "/trace/0/origin_pointer", "value": "/inputs/2/mission_dose/metadata/calculation_run"}
+      ],
+      "expected": "MISSION_DOSE_OUTPUT_HASH_MISMATCH"
+    },
+    {"name": "manifest-metadata-run-mismatch", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/calculation_run/run_id", "value": "unrelated-manifest-run"}], "expected": "MANIFEST_METADATA_RUN_MISMATCH"},
+    {"name": "normalized-output-only-manifest", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/artifacts/0/role", "value": "NORMALIZED_OUTPUT"}], "expected": "PROVIDER_OUTPUT_ARTIFACT_MISSING"},
+    {"name": "zero-byte-provider-output", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/artifacts/0/byte_size", "value": 0}], "expected": "PROVIDER_OUTPUT_ARTIFACT_INVALID"},
+    {
+      "name": "automated-execution-requires-automation-right",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/execution_mode", "value": "AUTOMATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "REQUIRED_RIGHT_NOT_ALLOWED"
+    },
+    {
+      "name": "external-distribution-requires-redistribution-right",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/distribution_scope", "value": "EXTERNAL_RESEARCH"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "REQUIRED_RIGHT_NOT_ALLOWED"
+    }
+  ]
+}

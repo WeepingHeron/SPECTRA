@@ -1,0 +1,79 @@
+{
+  "base": "synthetic-hold.json",
+  "operations": [
+    {
+      "op": "set",
+      "path": "/inputs/2",
+      "value": {
+        "kind": "RADIATION_ENVIRONMENT",
+        "environment_variant": "TID_ONLY",
+        "environment_id": "environment-tid-only-001",
+        "run_id": "synthetic-external-run-001",
+        "model_name": "synthetic-dose",
+        "model_version": "fixture-v1",
+        "mission_id": "mission-001",
+        "mission_dose": {
+          "value": 10,
+          "quantity_kind": "TID",
+          "unit": "krad(Si)",
+          "metadata": {
+            "data_class": "SYNTHETIC", "version": "1", "created_at": "2026-08-20T00:00:00Z",
+            "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "review_status": "READY_FOR_REVIEW",
+            "calculation_run": {"run_id": "synthetic-external-run-001", "engine": "synthetic-fixture-generator", "engine_version": "1", "input_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "output_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "executed_at": "2026-08-20T00:00:00Z"}
+          }
+        },
+        "dose_scope": "MISSION",
+        "target_material": "SILICON",
+        "source_completeness": "COMPLETE_MISSION",
+        "shielding_point": {
+          "point_id": "fixture-point-001", "geometry": "SLAB", "material": "ALUMINUM_EQUIVALENT",
+          "thickness": {
+            "value": 2, "quantity_kind": "SHIELDING", "unit": "mm_Al_equivalent",
+            "metadata": {
+              "data_class": "SYNTHETIC", "version": "1", "created_at": "2026-08-20T00:00:00Z",
+              "content_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333", "review_status": "READY_FOR_REVIEW",
+              "calculation_run": {"run_id": "synthetic-external-run-001", "engine": "synthetic-fixture-generator", "engine_version": "1", "input_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "output_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333", "executed_at": "2026-08-20T00:00:00Z"}
+            }
+          }
+        },
+        "model_chain": {
+          "chain_id": "synthetic-chain-001", "approved_scope": "MISSION_TID_COMPLETE", "representative_stage_id": "dose",
+          "stages": [
+            {"stage_id": "orbit", "role": "ORBIT", "model_name": "synthetic-orbit", "model_version": "fixture-v1", "model_build": "fixture-build", "configuration_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444", "depends_on": []},
+            {"stage_id": "trapped", "role": "TRAPPED_ENVIRONMENT", "model_name": "synthetic-trapped", "model_version": "fixture-v1", "model_build": "fixture-build", "configuration_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555", "depends_on": ["orbit"]},
+            {"stage_id": "solar", "role": "SOLAR_ENVIRONMENT", "model_name": "synthetic-solar", "model_version": "fixture-v1", "model_build": "fixture-build", "configuration_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666", "depends_on": ["orbit"]},
+            {"stage_id": "dose", "role": "TRANSPORT_DOSE", "model_name": "synthetic-dose", "model_version": "fixture-v1", "model_build": "fixture-build", "configuration_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777", "depends_on": ["trapped", "solar"]}
+          ]
+        },
+        "raw_artifact_manifest": {
+          "manifest_id": "synthetic-manifest-001", "run_id": "synthetic-external-run-001", "execution_mode": "MANUAL", "distribution_scope": "INTERNAL_RESEARCH",
+          "bundle_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+          "provider": {"platform_name": "SYNTHETIC_FIXTURE_PLATFORM", "platform_version": "fixture-v1", "platform_build": "fixture-build", "provider_job_reference": "fixture-only-job"},
+          "timestamps": {"submitted_at": "2026-08-20T00:00:00Z", "completed_at": "2026-08-20T00:01:00Z", "downloaded_at": "2026-08-20T00:02:00Z"},
+          "artifacts": [
+            {"artifact_id": "synthetic-raw-001", "filename": "synthetic-output.txt", "media_type": "text/plain", "byte_size": 123, "content_hash": "sha256:9999999999999999999999999999999999999999999999999999999999999999", "role": "PROVIDER_OUTPUT", "source_location": "fixture://no-real-artifact/synthetic-output.txt"}
+          ],
+          "parser": {"name": "synthetic-fixture-parser", "version": "fixture-v1", "commit": "fixture-not-a-real-commit", "input_bundle_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888", "output_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"},
+          "rights": {"research": "UNCONFIRMED", "commercial": "UNCONFIRMED", "automation": "UNCONFIRMED", "redistribution": "UNCONFIRMED"},
+          "usage_claims": {"research": false, "commercial": false, "automation": false, "redistribution": false},
+          "metadata": {
+            "data_class": "SYNTHETIC", "version": "1", "created_at": "2026-08-20T00:00:00Z",
+            "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "review_status": "READY_FOR_REVIEW",
+            "calculation_run": {"run_id": "synthetic-external-run-001", "engine": "synthetic-fixture-generator", "engine_version": "1", "input_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "output_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "executed_at": "2026-08-20T00:00:00Z"}
+          }
+        },
+        "valid_for": {"start_at": "2027-01-01T00:00:00Z", "end_at": "2028-01-01T00:00:00Z"},
+        "metadata": {
+          "data_class": "SYNTHETIC", "version": "1", "created_at": "2026-08-20T00:00:00Z",
+          "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "review_status": "READY_FOR_REVIEW",
+          "calculation_run": {"run_id": "synthetic-external-run-001", "engine": "synthetic-fixture-generator", "engine_version": "1", "input_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "output_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "executed_at": "2026-08-20T00:00:00Z"}
+        }
+      }
+    },
+    {"op": "set", "path": "/packet_id", "value": "fixture-packet-tid-only-001"},
+    {"op": "set", "path": "/created_at", "value": "2026-08-20T00:00:00Z"},
+    {"op": "set", "path": "/trace/0/input_pointer", "value": "/inputs/2/mission_dose"},
+    {"op": "set", "path": "/trace/0/origin_pointer", "value": "/inputs/2/metadata/calculation_run"},
+    {"op": "set", "path": "/trace/0/normalized_value", "value": {"value": 10, "quantity_kind": "TID", "unit": "krad(Si)", "metadata": {"data_class": "SYNTHETIC", "version": "1", "created_at": "2026-08-20T00:00:00Z", "content_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "review_status": "READY_FOR_REVIEW", "calculation_run": {"run_id": "synthetic-external-run-001", "engine": "synthetic-fixture-generator", "engine_version": "1", "input_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222", "output_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111", "executed_at": "2026-08-20T00:00:00Z"}}}}
+  ]
+}

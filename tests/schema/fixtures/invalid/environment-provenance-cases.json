@@ -1,0 +1,29 @@
+{
+  "base": "../valid/synthetic-tid-only-hold.json",
+  "cases": [
+    {
+      "name": "tid-only-placeholder-particle-flux",
+      "operations": [{"op": "set", "path": "/inputs/2/particle_flux", "value": {"value": 0, "quantity_kind": "PARTICLE_FLUX", "unit": "particles/cm2/s", "metadata": {"data_class": "SYNTHETIC", "version": "1", "created_at": "2026-08-20T00:00:00Z", "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "review_status": "READY_FOR_REVIEW", "calculation_run": {"run_id": "synthetic-external-run-001", "engine": "synthetic-fixture-generator", "engine_version": "1", "input_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "output_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "executed_at": "2026-08-20T00:00:00Z"}}}}],
+      "expected": "TID_ONLY_PLACEHOLDER_FLUX"
+    },
+    {"name": "mission-tid-with-trapped-only-source", "operations": [{"op": "set", "path": "/inputs/2/source_completeness", "value": "TRAPPED_ONLY"}], "expected": "INCOMPLETE_MISSION_TID_SOURCE"},
+    {"name": "trapped-only-result-promoted-to-support", "operations": [{"op": "set", "path": "/inputs/2/dose_scope", "value": "TRAPPED_COMPONENT"}, {"op": "set", "path": "/inputs/2/source_completeness", "value": "TRAPPED_ONLY"}, {"op": "set", "path": "/inputs/2/model_chain/approved_scope", "value": "TRAPPED_ONLY_RESEARCH"}, {"op": "delete", "path": "/inputs/2/model_chain/stages/3"}, {"op": "delete", "path": "/inputs/2/model_chain/stages/2"}, {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"}], "expected": "INCOMPLETE_ENVIRONMENT_WITH_SUPPORT"},
+    {"name": "model-stage-version-missing", "operations": [{"op": "delete", "path": "/inputs/2/model_chain/stages/1/model_version"}], "expected": "MODEL_STAGE_VERSION_MISSING"},
+    {"name": "model-stage-config-missing", "operations": [{"op": "delete", "path": "/inputs/2/model_chain/stages/1/configuration_hash"}], "expected": "MODEL_STAGE_CONFIG_MISSING"},
+    {"name": "duplicate-model-stage-id", "operations": [{"op": "copy", "from": "/inputs/2/model_chain/stages/1", "path": "/inputs/2/model_chain/stages/-"}], "expected": "DUPLICATE_MODEL_STAGE_ID"},
+    {"name": "model-stage-missing-dependency", "operations": [{"op": "set", "path": "/inputs/2/model_chain/stages/3/depends_on", "value": ["trapped", "missing-solar"]}], "expected": "BROKEN_MODEL_STAGE_LINK"},
+    {"name": "raw-artifact-hash-missing", "operations": [{"op": "delete", "path": "/inputs/2/raw_artifact_manifest/artifacts/0/content_hash"}], "expected": "ARTIFACT_HASH_MISSING"},
+    {"name": "raw-artifact-hash-invalid", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/artifacts/0/content_hash", "value": "sha256:not-a-valid-hash"}], "expected": "ARTIFACT_HASH_INVALID"},
+    {"name": "duplicate-raw-artifact-id", "operations": [{"op": "copy", "from": "/inputs/2/raw_artifact_manifest/artifacts/0", "path": "/inputs/2/raw_artifact_manifest/artifacts/-"}], "expected": "DUPLICATE_ARTIFACT_ID"},
+    {"name": "environment-manifest-run-mismatch", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/run_id", "value": "unrelated-run"}], "expected": "ENVIRONMENT_MANIFEST_RUN_MISMATCH"},
+    {"name": "environment-calculation-run-mismatch", "operations": [{"op": "set", "path": "/inputs/2/metadata/calculation_run/run_id", "value": "unrelated-run"}], "expected": "ENVIRONMENT_CALCULATION_RUN_MISMATCH"},
+    {"name": "parser-input-bundle-mismatch", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/parser/input_bundle_hash", "value": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}], "expected": "PARSER_BUNDLE_HASH_MISMATCH"},
+    {"name": "parser-output-normalized-hash-mismatch", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/parser/output_hash", "value": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}], "expected": "PARSER_OUTPUT_HASH_MISMATCH"},
+    {"name": "unconfirmed-automation-right-claimed", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/usage_claims/automation", "value": true}], "expected": "UNCONFIRMED_RIGHTS_CLAIM"},
+    {"name": "unconfirmed-redistribution-right-claimed", "operations": [{"op": "set", "path": "/inputs/2/raw_artifact_manifest/usage_claims/redistribution", "value": true}], "expected": "UNCONFIRMED_RIGHTS_CLAIM"},
+    {"name": "calculated-environment-without-model-chain", "operations": [{"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"}, {"op": "delete", "path": "/inputs/2/model_chain"}], "expected": "CALCULATED_ENVIRONMENT_PROVENANCE_MISSING"},
+    {"name": "support-without-raw-artifact-manifest", "operations": [{"op": "delete", "path": "/inputs/2/raw_artifact_manifest"}, {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"}], "expected": "SUPPORT_WITHOUT_ENVIRONMENT_PROVENANCE"},
+    {"name": "tid-chain-outside-mission-approved-scope", "operations": [{"op": "set", "path": "/inputs/2/model_chain/approved_scope", "value": "TRAPPED_ONLY_RESEARCH"}], "expected": "MODEL_CHAIN_OUT_OF_APPROVED_SCOPE"},
+    {"name": "solar-stage-not-linked-to-orbit", "operations": [{"op": "set", "path": "/inputs/2/model_chain/stages/2/depends_on", "value": []}], "expected": "BROKEN_MODEL_STAGE_LINK"}
+  ]
+}

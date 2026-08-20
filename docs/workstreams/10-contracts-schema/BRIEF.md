@@ -12,6 +12,9 @@ Contracts & Schema Workstream은 SPECTRA의 입력·출력·EvidencePacket·상�
 - EvidencePacket의 입력·origin·정규화·적용성·규칙·판정·공백 추적
 - 단위 호환성과 fail-closed 의미 규칙
 - 정상·누락·오염·충돌 fixture와 단일 검증 명령
+- dummy flux가 필요 없는 `TID_ONLY` 환경 variant와 기존 flux payload 하위 호환성
+- 외부 환경 계산의 역할·버전·설정·dependency `model_chain`
+- 외부 실행의 raw artifact, parser hash, 권리 상태 manifest
 
 ## 소유 파일
 

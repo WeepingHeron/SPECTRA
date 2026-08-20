@@ -1,0 +1,100 @@
+{
+  "base": "../valid/synthetic-tid-only-hold.json",
+  "cases": [
+    {
+      "name": "support-with-environment-trace-only",
+      "operations": [
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "RULE_OPERAND_TRACE_MISSING"
+    },
+    {
+      "name": "support-with-synthetic-part-evidence-and-policy",
+      "operations": [
+        {"op": "set", "path": "/inputs/0/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/0/duration/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/inputs/4/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/4/equivalent_thickness/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings", "value": [
+          {"operand_role": "MISSION_DOSE", "input_pointer": "/inputs/2/mission_dose", "origin_pointer": "/inputs/2/mission_dose/metadata/calculation_run"},
+          {"operand_role": "PART_TID_LIMIT", "input_pointer": "/inputs/3/tid_test_limit", "origin_pointer": "/inputs/3/tid_test_limit/metadata/calculation_run"},
+          {"operand_role": "TID_DESIGN_FACTOR", "input_pointer": "/inputs/6/tid_design_factor", "origin_pointer": "/inputs/6/metadata/calculation_run"},
+          {"operand_role": "POLICY_APPROVAL", "input_pointer": "/inputs/6/approval_status", "origin_pointer": "/inputs/6/metadata/calculation_run"},
+          {"operand_role": "SHIELDING_THICKNESS", "input_pointer": "/inputs/4/equivalent_thickness", "origin_pointer": "/inputs/4/equivalent_thickness/metadata/calculation_run"},
+          {"operand_role": "MISSION_DURATION", "input_pointer": "/inputs/0/duration", "origin_pointer": "/inputs/0/duration/metadata/calculation_run"}
+        ]},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "NON_EVIDENTIARY_RULE_OPERAND"
+    },
+    {
+      "name": "support-with-synthetic-part-evidence",
+      "operations": [
+        {"op": "set", "path": "/inputs/0/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/0/duration/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/inputs/4/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/4/equivalent_thickness/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/6/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings", "value": [
+          {"operand_role": "MISSION_DOSE", "input_pointer": "/inputs/2/mission_dose", "origin_pointer": "/inputs/2/mission_dose/metadata/calculation_run"},
+          {"operand_role": "PART_TID_LIMIT", "input_pointer": "/inputs/3/tid_test_limit", "origin_pointer": "/inputs/3/tid_test_limit/metadata/calculation_run"},
+          {"operand_role": "TID_DESIGN_FACTOR", "input_pointer": "/inputs/6/tid_design_factor", "origin_pointer": "/inputs/6/metadata/calculation_run"},
+          {"operand_role": "POLICY_APPROVAL", "input_pointer": "/inputs/6/approval_status", "origin_pointer": "/inputs/6/metadata/calculation_run"},
+          {"operand_role": "SHIELDING_THICKNESS", "input_pointer": "/inputs/4/equivalent_thickness", "origin_pointer": "/inputs/4/equivalent_thickness/metadata/calculation_run"},
+          {"operand_role": "MISSION_DURATION", "input_pointer": "/inputs/0/duration", "origin_pointer": "/inputs/0/duration/metadata/calculation_run"}
+        ]},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "NON_EVIDENTIARY_RULE_OPERAND"
+    },
+    {
+      "name": "support-with-synthetic-user-policy",
+      "operations": [
+        {"op": "set", "path": "/inputs/0/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/0/duration/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/mission_dose/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/2/raw_artifact_manifest/rights/research", "value": "ALLOWED"},
+        {"op": "set", "path": "/inputs/3/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/3/tid_test_limit/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/4/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/inputs/4/equivalent_thickness/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/trace/0/normalized_value/metadata/data_class", "value": "CALCULATED"},
+        {"op": "set", "path": "/decision/assurance_decision", "value": "SUPPORTED_WITH_MITIGATION"},
+        {"op": "set", "path": "/decision/rule_results/0/outcome", "value": "PASS"},
+        {"op": "set", "path": "/decision/rule_results/0/operand_bindings", "value": [
+          {"operand_role": "MISSION_DOSE", "input_pointer": "/inputs/2/mission_dose", "origin_pointer": "/inputs/2/mission_dose/metadata/calculation_run"},
+          {"operand_role": "PART_TID_LIMIT", "input_pointer": "/inputs/3/tid_test_limit", "origin_pointer": "/inputs/3/tid_test_limit/metadata/calculation_run"},
+          {"operand_role": "TID_DESIGN_FACTOR", "input_pointer": "/inputs/6/tid_design_factor", "origin_pointer": "/inputs/6/metadata/calculation_run"},
+          {"operand_role": "POLICY_APPROVAL", "input_pointer": "/inputs/6/approval_status", "origin_pointer": "/inputs/6/metadata/calculation_run"},
+          {"operand_role": "SHIELDING_THICKNESS", "input_pointer": "/inputs/4/equivalent_thickness", "origin_pointer": "/inputs/4/equivalent_thickness/metadata/calculation_run"},
+          {"operand_role": "MISSION_DURATION", "input_pointer": "/inputs/0/duration", "origin_pointer": "/inputs/0/duration/metadata/calculation_run"}
+        ]},
+        {"op": "set", "path": "/decision/evidence_gaps", "value": []}
+      ],
+      "expected": "SYNTHETIC_POLICY_WITH_SUPPORT"
+    }
+  ]
+}
