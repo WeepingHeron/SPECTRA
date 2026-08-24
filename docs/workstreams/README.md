@@ -2,6 +2,8 @@
 
 Stage별 주관 Workstream, 첫 채팅과 선행 조건은 루트 [`ROADMAP.md`](../../ROADMAP.md)의 **Stage–Workstream–Session 대응표**를 기준으로 한다.
 
+현재 상태를 읽을 때는 [`00-control-tower/CURRENT.md`](00-control-tower/CURRENT.md)를 운영 진실, 루트 [`ROADMAP.md`](../../ROADMAP.md)를 단계·의존성, [`CHECKLIST.md`](../../CHECKLIST.md)를 독립 검증된 Gate로 사용한다. 개별 Workstream `CURRENT.md`의 오래된 H회차 문장은 제출 당시 이력이며, 파일 상단의 최신 상태와 Control Tower 판정이 우선한다.
+
 ## 1. 기본 개념
 
 - **Stage:** 프로젝트의 진행 순서. `ROADMAP.md`에서 관리한다.
@@ -20,9 +22,9 @@ Stage, Workstream, 작업 패키지와 Session은 서로 다른 개념이다. �
 | 20 Simulation Core | `20`~`29` | 결정론적 TID·SEU 계산과 합성 기준선 |
 | 30 Environment Model | `30`~`39` | 궤도 환경·차폐·TID 모델 |
 | 40 Parts Evidence | `40`~`49` | 실제 부품 시험자료 수집·정규화 |
-| 50 Mitigation & Policy | `50`~`59` | ECC·스크러빙·TMR와 사용자 정책 |
+| 50 Mitigation & Policy | `50`~`59` | 제한된 차폐·ECC 가정과 판정 기준; runtime 완화는 실험 보존 |
 | 60 Assurance & Evals | `60`~`69` | 독립 감사, False PASS, 공격 테스트 |
-| 70 Platform & GCP | `70`~`79` | 저장·워크플로·권한·배포·모니터링 |
+| 70 Platform & GCP | `70`~`79` | 필수 Multi-Agent 실행, GCP 저장·워크플로·IAM·배포·모니터링 |
 | 80 Product & Dashboard | `80`~`89` | 시나리오 입력, 결과, 근거 문서 UI |
 | 90 Business & Presentation | `90`~`99` | 사용자 검증, 차별점, 발표·시연 |
 
@@ -106,10 +108,11 @@ Control Tower가 작업 지침을 줄 때는 항상 현재 지침과 동시에 �
 새 채팅을 실제로 열 때는 전체 과거 대화 대신 다음을 읽는다.
 
 1. `PROJECT_OVERVIEW.md`
-2. 해당 Workstream의 `BRIEF.md`
-3. 해당 Workstream의 `CURRENT.md`
-4. 관련 `schemas/` 계약
-5. 직전 채팅의 인수인계와 현재 작업 패키지
+2. `docs/MVP.md`
+3. 해당 Workstream의 `BRIEF.md`
+4. 해당 Workstream의 `CURRENT.md`
+5. 관련 `schemas/` 계약
+6. 직전 채팅의 최신 handoff와 현재 작업 지침
 
 과거 세션 전체 기록은 현재 상태만으로 판단할 수 없을 때만 참고한다.
 

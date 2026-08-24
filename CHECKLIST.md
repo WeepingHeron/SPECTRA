@@ -186,42 +186,39 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [ ] 조건 불일치가 결과에 노출됨
 - [ ] 증거 없는 부품을 자동 PASS하지 않음
 
-## Stage 5 — 완화 및 정책 엔진
+## Stage 5 — 제한된 설계 가정 및 판정 엔진
 
 > 2026-08-20 Control Tower 재검증: Workstream 20 H03는 결과 스키마를 공통 `processingStatus` `$ref`로 정렬하고 runtime processing 상태에서 `NOT_EVALUATED`를 제거했다. 전용 24개, simulation 55개와 전체 회귀를 재현했으며 합성·증거 부족 결과는 계속 `HOLD`다. 아래 표시는 H03가 직접 검증한 runtime·정책 안전 경계만 반영한다.
 
-### 완화 모델
+### Core 활성 범위
 
-- [ ] 차폐 변경
+- [x] 차폐 변경 — 합성 이산 범위 기준선
 - [ ] 내방사선 부품 교체
-- [ ] ECC 유형
-- [ ] 스크러빙 주기
-- [x] TMR
-- [x] Watchdog·재부팅
-- [ ] 체크포인트·재시도
-- [x] SEL 전류 감지·전원 차단
-- [ ] 예비 장치 전환
-- [ ] 완화 방법별 적용 가능한 고장 유형 매핑
+- [x] ECC 적용 전·후 비교 — 합성 기준선, 실제 효과 아님
+- [x] 완화 방법별 적용 가능한 고장 유형 매핑 — ECC/SEU 경계
+
+### Experimental runtime 보존
+
+- [x] TMR 합성 계산·안전 경계 검증 — 현재 제품 판단·주 발표 제외
+- [x] Watchdog·재부팅 합성 계산·안전 경계 검증 — 현재 제품 판단·주 발표 제외
+- [x] SEL 전류 감지·전원 차단 합성 계산·안전 경계 검증 — 현재 제품 판단·주 발표 제외
 
 ### 정책
 
-- [ ] TID 설계 계수
+- [x] TID 설계 계수 — 합성 사용자 입력
 - [ ] 최소 TID 잔여 마진
-- [ ] 최대 잔여 SEU 횟수
+- [x] 최대 잔여 SEU 횟수 — 합성 사용자 입력
 - [ ] 한 번 이상 SEU 발생 확률
-- [x] 최대 재부팅 횟수·장애시간
-- [ ] 파괴성 SEE 증거 요구
-- [ ] 조직 기본 정책 팩
-- [ ] 커스텀 정책과 변경 사유
-- [ ] 정책 승인자와 승인 상태
+- [x] 파괴성 SEE 증거 요구
+- [ ] 판정 기준 출처·버전·적용 범위
 
 ### 신뢰성
 
 - [x] 임의 완화율 입력 제거 또는 `ASSUMED` 처리
-- [ ] 완화 전·후 계산 분리
+- [x] 완화 전·후 계산 분리
 - [x] 미승인 정책으로 PASS 차단
 - [x] ECC가 파괴성 SEE를 해결했다고 판단하지 않음
-- [ ] 정책 변경 영향 보고서 생성
+- [x] 정책 변경 영향 보고서 생성
 
 ### Exit Gate
 
@@ -231,7 +228,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## Stage 6 — 독립 보증·평가 기준선
 
-> 2026-08-20 Control Tower 검증: manifest 1.2.0의 평가된 공격 실행 47개와 control 4개에서 failure 0, False PASS 0을 재현했다. 아래 완료 표시는 이 고정 합성 세트에 한정하며 실제 GCP `ASR-D02`는 `NOT_EVALUATED`, 실제 원문·과학 정확도·배포 경로는 미검증이다.
+> 2026-08-21 범위 정렬: 검증된 47개 실행 중 29개는 Core schema·evidence·MVP/ECC 공격, 18개는 experimental WATCHDOG·TMR·SEL runtime 공격이다. 두 profile 모두 과거 검증은 유지하지만 발표와 Core 신뢰성 수치에서는 구분한다. 실제 GCP `ASR-D02`는 `NOT_EVALUATED`다.
 
 ### 공격·오류 테스트
 
@@ -266,40 +263,49 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## Stage 7 — Multi-Agent·GCP
 
+> Competition Demo Release 필수 Stage. 교육용 GCP project `iceu-686`, 기본 region `asia-northeast3`을 사용하되 실제 생성된 resource·실행·로그만 완료 증거로 인정한다.
+
+> 2026-08-24 범위 정렬: H04에서 발견한 Core 중복 계산, body-hash 결합 우회, runtime endpoint 교체 가능성은 H05에서 보완했다. H05 로컬 12 tests, 실제 Cloud Run/Workflow revision, production Core parity, 본문·SHA 동시 위조와 endpoint override 차단을 독립 재확인했고 발표 deck의 합성 snapshot 표시도 검증했다. Stage 7은 Workstream 60 `ASR-D02`, 비용 기준선과 최종 통합 전까지 완료로 승격하지 않는다.
+
 ### 에이전트
 
-- [ ] Mission Environment Agent 계약
-- [ ] Parts Evidence Agent 계약
-- [ ] Independent Assurance Agent 계약
-- [ ] 에이전트 입력·출력 Schema 검증
-- [ ] 타임아웃·재시도·실패 상태 정의
-- [ ] 상충 결과 처리 규칙
+- [x] Mission Environment Agent 계약 — 합성 H05 경로
+- [x] Parts Evidence Agent 계약 — 합성 H05 경로
+- [x] Independent Assurance Agent 계약 — 합성 H05 경로
+- [x] Orchestrator 고정 workflow 계약
+- [x] 에이전트 입력·출력 Schema 검증
+- [x] 타임아웃·재시도·실패 상태 정의
+- [x] 상충 결과 처리 규칙
 
 ### GCP
 
-- [ ] GCP 프로젝트·리전·예산 경보
-- [ ] Cloud Storage 원본·결과 버킷
+- [x] GCP 프로젝트 `iceu-686`·리전 `asia-northeast3` 고정
+- [ ] 예산 경보·비용 기준선
+- [x] Cloud Storage 합성 입력·결과 경로
+- [x] Cloud Run Agent·production Core 서비스
+- [x] Workflows 오케스트레이션
+- [x] IAM 최소권한
+- [x] 로그·추적·오류 모니터링
+
+### 확장 후보 — 최소 E2E 이후
+
 - [ ] Document AI 추출 파이프라인
-- [ ] Cloud Run 계산·정책 서비스
-- [ ] Cloud SQL 증거·승인 이력
-- [ ] Workflows/Pub/Sub 오케스트레이션
-- [ ] BigQuery 검증·품질 지표
 - [ ] Vertex AI 증거 구조화·설명
-- [ ] IAM 최소권한
-- [ ] KMS 암호화와 고객 데이터 격리
-- [ ] 로그·추적·오류 모니터링
+- [ ] Cloud SQL 증거·승인 이력
+- [ ] BigQuery 검증·품질 지표
+- [ ] KMS 고객 데이터 암호화
 
 ### Exit Gate
 
-- [ ] End-to-End GCP 실행 증거 확보
-- [ ] 에이전트별 책임과 장애 격리 시연
-- [ ] 에이전트 실패가 최종 PASS로 전파되지 않음
+- [x] End-to-End GCP 합성 실행 증거 확보
+- [x] 에이전트별 책임과 장애 격리 시연
+- [x] 에이전트 실패가 최종 PASS로 전파되지 않음
 - [ ] Stage 6 공격 세트가 배포 경로에서도 통과
 - [ ] 비용 기준선과 데모 예산 확인
 
 ## Stage 8 — 제품·대시보드
 
-> 2026-08-20 Control Tower 검증: H09는 `+0/-0` 양방향 본문 변조를 fail-closed로 닫고 H08 numeric parity·stale-hash 회귀와 실제 브라우저 세 runtime control·console을 통과했다. 아래 완료 표시는 검증된 합성 Product·runtime integrity 기준선에 한정하며 실제 API·원문 evidence·GCP resource 통합은 미완료다.
+> 2026-08-20 Control Tower 검증: H10은 검증된 H09 consumer를 재사용해 정상 WATCHDOG `1 / 1 / 60 s` → `60 → 999 s` stale-preimage 공격 → 수치·ID·hash 비노출과 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD` → Reset을 두 desktop viewport에서 재현했다. 아래 완료 표시는 합성 Product·runtime integrity 데모에 한정하며 실제 API·원문 evidence·GCP resource 통합은 미완료다.
 
 ### 사용자 흐름
 
@@ -326,7 +332,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## Stage 9 — 비즈니스·발표·최종 시연
 
-> 2026-08-20 Control Tower 검증: Workstream 90 H03 비즈니스 검증 프로토콜은 실행 도구로서 확인했다. 실제 인터뷰·pilot·가격·기준선은 각각 0건 또는 `UNSET`이고 모든 가설이 `UNVALIDATED`이므로 비즈니스 검증 완료 항목은 체크하지 않는다.
+> 2026-08-24 범위 정렬: 실제 발표 이력과 13장 deck의 시각·상호작용 검증은 존재한다. 다만 별도 시간 측정 리허설, 실제 인터뷰·pilot·가격·기준선은 각각 `NOT_MEASURED`, 0건 또는 `UNSET`이고 COTS·과학 주장의 출처·적용 범위도 미완료이므로 Stage 9 완료로 승격하지 않는다.
 
 ### 비즈니스 검증
 
@@ -347,17 +353,16 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [ ] 완화·정책 변경 시연
 - [ ] Evidence Packet과 원문 추적 시연
 - [x] 증거 누락 시 HOLD 시연
-- [ ] GCP·Multi-Agent 협업 시연
+- [x] GCP·Multi-Agent 합성 snapshot 시연
 - [x] 한계와 책임 경계 설명
 - [x] 예상 질문과 근거 답변 준비
 
 ### 평가 기준 최종 점검
 
-- [ ] 문제 정의 20점 증거
-- [ ] Multi-Agent·GCP 25점 증거
-- [ ] 신뢰성 20점 증거
-- [ ] 비즈니스 20점 증거
-- [ ] 데이터 15점 증거
+- [ ] Multi-Agent 아키텍처 및 GCP 인프라 완성도 35점 증거
+- [ ] 할루시네이션 방어 및 무결점 신뢰성 20점 증거
+- [ ] 비즈니스 임팩트 및 문제 정의 30점 증거
+- [ ] 팀 시너지 및 프레젠테이션 15점 증거
 
 ### Exit Gate
 
@@ -368,7 +373,9 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## 현재 다음 작업
 
-- [ ] 기존 합성 데모를 이 프로젝트로 이관할지 범위 확인
-- [x] Stage 1 데이터·Evidence Packet 스키마 작성
-- [ ] 첫 실제 환경 모델 시나리오 선정
-- [ ] 첫 실제 부품 후보군 선정
+- [ ] SPENVIS provider reference·권리·승인 raw manifest·과학 교차검산을 갖춘 environment contract 1개
+- [ ] 승인 BOM exact-part 1개와 권리 확인 원문·임무 적용성·필요 SEE coverage 연결
+- [ ] 고정 revision 실제 GCP `ASR-D02` 수행 및 관찰 증거 검증
+- [ ] 실제 contract를 합성 fallback과 구분해 Product Evidence-to-Decision 경로에 연결
+- [ ] 사용자 1명의 5분 실행·판정 이유·다음 행동 탐색 측정
+- [ ] 최종 통합 단위 정리 후 전체 회귀, commit·push 여부 결정

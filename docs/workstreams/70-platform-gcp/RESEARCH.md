@@ -521,3 +521,73 @@ H03 합성 receipt에는 observer나 실제 Cloud Audit reference가 없으며 �
 ### 17.4 declared gap 경계
 
 `real-candidate-holds.json`의 gap은 preflight가 SPENVIS/TI 외부 상태를 확인해 산출한 결과가 아니다. Workstream 30/40의 현재 상태를 reference-only request가 `declared_preflight_gaps`로 전달한 것이다. 테스트 이름도 `declared_gap_reference...`로 고정했다. gap 선언이 없거나 축소돼도 `candidate_manifest=null` 자체가 `RAW_MANIFEST_CANDIDATE_MISSING`으로 발행을 차단한다.
+
+## 18. H04 — Competition Multi-Agent 실제 GCP 최소 E2E
+
+### 18.1 범위와 과학적 경계
+
+H04는 Core Product MVP의 실제 evidence Exit Gate가 아니라 Competition Demo Release의 실행 구조를 검증한다. 입력은 저장소의 두 합성 JSON뿐이며 실제 SPENVIS bundle, 승인 BOM, 시험 PDF, 고객 자료, raw manifest는 업로드하지 않았다. 정상 실행도 계산 재현성만 `VALID`이고 최종은 `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`다.
+
+Mission Agent는 mission/model provenance 필수 문자열과 유한·비음수 Core 입력을 검사한 뒤 고정 equation ID의 합성 TID·SEU 산술만 수행한다. Parts Agent는 exact orderable part number, manufacturer/process/die/lot, event coverage, synthetic rights marker와 evidence hash 일치를 확인한다. Assurance Agent는 두 결과의 status, data class, input SHA-256과 canonical response SHA-256을 독립 재계산하고 하위 실패 code를 보존한다. Workflows는 이 역할 순서를 고정하고 HTTP timeout·오류를 `AGENT_TRANSPORT_FAILURE`, invalid response를 `AGENT_RESPONSE_INVALID`로 변환한다.
+
+### 18.2 실제 리소스와 IAM 선택
+
+| 리소스 | H04 선택 | 근거 |
+|---|---|---|
+| Cloud Run | role별 private service 3개, min 0/max 1, 256 MiB | 역할 장애·IAM·로그를 분리하면서 idle 비용 최소화 |
+| Workflows | `spectra-h04-e2e`, revision `000003-f39` | 고정 순서, execution ID, OIDC 호출과 fail-closed transport adapter |
+| Storage | regional bucket 1개, synthetic input/result만 | 실제 raw zone과 완전히 분리된 대회 fixture 경계 |
+| Artifact Registry | repository 1개, 공통 image | 동일 runtime에서 role contract drift를 줄이고 service/IAM만 분리 |
+| Logging | Agent JSON stdout 9건 + Workflow error call logging | run/correlation/agent/status/code/latency 추적 |
+
+Workflow service account만 Cloud Run 세 service의 `roles/run.invoker`를 가진다. bucket에는 `roles/storage.objectViewer`와 overwrite가 불가능한 `roles/storage.objectCreator`, project에는 Workflow call logging용 `roles/logging.logWriter`만 부여했다. Agent service account 세 개에는 project role이 없다. Cloud Run IAM에는 `allUsers`와 `allAuthenticatedUsers`가 없으며 비인증 probe는 세 endpoint 모두 application 응답이 아닌 HTTP 404로 종료됐다.
+
+bucket은 Public Access Prevention enforced와 uniform bucket-level access를 사용한다. versioning은 off, soft delete는 GCP 기본 7일이며 합성 object는 age 30 Delete lifecycle로 제한했다. 결과 object upload에는 `ifGenerationMatch=0`을 사용한다. input은 exact generation과 upload 시 기록한 SHA-256 metadata를 확인하고, result는 실행 후 실제 bytes를 내려받아 SHA-256을 별도로 관찰했다.
+
+### 18.3 실제 세 실행 결과
+
+- 정상 `1a513bb1-2780-4a7f-a907-a5aa59a8cbc1`: 세 Agent 모두 `VALID`; `SYNTHETIC_ONLY`, 최종 `NOT_EVALUATED/HOLD`.
+- hash 오염 `8b9215e5-65d8-42d2-abb6-7ce41ef46749`: Parts와 Assurance `INVALID_INPUT`; `PART_EVIDENCE_HASH_MISMATCH`, 최종 `HOLD`.
+- Parts test failure `8677c107-84c7-4f09-9f94-2ac061db798f`: Parts와 Assurance `INVALID_INPUT`; `AGENT_TEST_FAILURE`, 최종 `HOLD`.
+
+세 execution은 Workflow 관점에서 `SUCCEEDED`다. 이는 오류를 안전한 결과 object로 완결했다는 의미이며 오염 분석이나 과학 판정의 성공을 뜻하지 않는다. 세 correlation ID 각각 Mission/Parts/Assurance log가 있어 총 9개 structured application log를 확인했다.
+
+### 18.4 구현 중 발견한 운영 결함
+
+1. Workflows call logging을 켠 runtime service account에 `roles/logging.logWriter`가 없으면 첫 Storage step부터 generic IAM error로 종료됐다. call logging을 설계하면 log writer를 명시적 최소 role로 포함해야 한다.
+2. Storage connector의 object+generation 조회가 slash 포함 object name에서 404를 반환했다. Storage JSON API에 `text.url_encode(object_name)`를 적용한 OAuth2 HTTP 조회로 metadata/body 경로를 통일했다.
+3. failed Workflow result에 `result`가 있다고 가정한 runner는 `KeyError`를 냈다. state를 먼저 검사하고 execution name/error context를 포함한 `RuntimeError`로 fail-closed 처리했다.
+4. Cloud Workflows가 JSON의 integral float `12.0`을 `12`로 정규화해 response hash 오탐이 발생했다. hash canonicalization에서 유한 integral float를 integer로 의미 보존 정규화해 Python/Workflows 경계를 안정화했다.
+5. 실패 응답이 input hash를 생략하면 Assurance가 failure cause와 lineage mismatch를 동시에 보고했다. schema-valid envelope의 실패에는 input SHA-256을 유지해 정확한 generation과 연결했다.
+
+### 18.5 비용과 남은 위험
+
+H04 개발 과정에서 Cloud Build 5회와 Artifact Registry image version 5개가 생성됐다. bucket에는 진단 실행을 포함한 input 16개, result 13개, 총 56,110 bytes가 있다. Cloud Run min instance는 0이고 합성 object는 30일 lifecycle 대상이지만 build source archive, image version, logs와 soft-deleted bytes는 별도 비용을 만들 수 있다. Cloud Billing의 실제 청구액은 즉시 관측하지 못했으므로 비용 0원을 주장하지 않는다.
+
+현재 실제 공격 검증은 정상·content hash 오염·구조화 Agent failure에 한정된다. cross-service identity 공격, forged OIDC, result overwrite, transport timeout, log redaction, quota exhaustion과 cleanup 후 잔존 데이터는 Workstream 60이 deployed profile에서 독립 검증해야 한다. 그 전 H04 상태 상한은 `READY_FOR_REVIEW`다.
+
+## 19. H05 — production Core binding과 downloaded-body integrity
+
+### 19.1 중복 계산 제거와 image 경계
+
+H04 Mission의 별도 TID·SEU·ECC 산술은 production Core와 독립적으로 drift할 수 있었다. H05는 이 계산을 삭제하고 고정 합성 case/model을 읽어 `src/spectra_sim/mvp_engine.py::run_mvp_decision(case, model)`을 직접 호출한다. image build context는 service/shared module, `src/spectra_sim`, root/simulation schema, fixed case/model, case가 참조하는 합성 base fixture chain과 semantic validator로 제한한다. repo 전체, docs, private evidence와 실제 원문은 포함하지 않는다.
+
+stored deployed Mission result와 local Core control을 전체 object로 비교했다. run ID, case ID, input/output hash, processing/engineering/assurance를 포함한 semantic payload, 전체 object equality와 canonical SHA equality가 모두 true였다. 이는 합성 Core 재현성 증거일 뿐 실제 radiation evidence나 assurance가 아니다.
+
+### 19.2 canonical body receipt
+
+파일의 원래 pretty-print bytes와 Workflow의 JSON 재직렬화가 다르면 byte hash 계약이 갈라진다. H05 uploader는 integral finite float를 동일 정수 의미로 정규화하고 key-sort/no-whitespace/UTF-8/finite-only인 canonical JSON bytes 자체를 업로드한다. 같은 모듈을 Cloud Run verifier가 사용한다. 검증 순서는 exact object generation 확인, metadata SHA와 expected SHA 비교, downloaded body의 canonical SHA 재계산과 양쪽 receipt 비교다.
+
+Control Tower 재현과 같은 body 변경 + all-zero metadata/expected SHA 공격은 metadata와 expected만 비교하면 통과하지만, H05에서는 실제 body hash가 다르므로 `INPUT_BODY_SHA256_MISMATCH`다. 이 결과는 `INVALID_INPUT / NOT_EVALUATED / HOLD`이며 `core_result`가 없고 Parts/Assurance 호출도 없다.
+
+### 19.3 endpoint와 test-path 경계
+
+Agent URLs는 Workflow execution args가 아니라 deploy-time `userEnvVars`에서 읽는다. execution args에 `mission_url`, `parts_url`, `assurance_url` 중 하나라도 있으면 `ENDPOINT_OVERRIDE_FORBIDDEN` result를 create-only 저장하고 Agent를 호출하지 않는다. OIDC audience도 이 고정 URL이다.
+
+production Agent와 Workflow에서 `test_mode/failure_role` 분기와 `AGENT_TEST_FAILURE`를 제거했다. 실패 검증은 exact part identity가 빠진 별도 합성 fixture로 수행한다. legacy key를 execution args에 추가한 실제 실행은 정상 합성 경로와 같은 결과가 나와 두 key가 Agent failure를 유발하지 않음을 확인했다. 이는 그 실행이 assurance PASS라는 뜻이 아니라 backdoor가 실행 의미를 갖지 않는다는 증거다.
+
+### 19.4 실제 관찰과 남은 검증
+
+최종 revisions는 Cloud Run `00006-*`, Workflow `000005-32c`, image digest `sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569`다. 정상 1건과 integrity/parts/malformed/endpoint/legacy-control 공격 5건을 새 generation으로 실행했다. final execution correlations에서 Cloud Run structured log 13건을 관찰했고 endpoint override는 Agent log 0건이다.
+
+H05는 H04 IAM과 lifecycle을 변경하지 않았다. Workstream 60은 고정 endpoint revision을 기준으로 Workflow SA 외 invoker, forged OIDC, result overwrite, timeout, log redaction 및 false-pass 여부를 독립 검증해야 한다. H05 자체 상태는 `READY_FOR_REVIEW`이고 `VERIFIED/INTEGRATED`를 선언하지 않는다.

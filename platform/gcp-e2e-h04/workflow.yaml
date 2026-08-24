@@ -1,0 +1,246 @@
+main:
+  params: [args]
+  steps:
+    - init:
+        assign:
+          - runId: ${sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+          - projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+          - correlationId: ${"spectra-h05-" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID")}
+          - resultObject: ${"results/" + sys.get_env("GOOGLE_CLOUD_WORKFLOW_EXECUTION_ID") + ".json"}
+          - missionUrl: ${sys.get_env("MISSION_URL")}
+          - partsUrl: ${sys.get_env("PARTS_URL")}
+          - assuranceUrl: ${sys.get_env("ASSURANCE_URL")}
+    - rejectProductionControlOverride:
+        switch:
+          - condition: ${"mission_url" in args or "parts_url" in args or "assurance_url" in args}
+            next: makeEndpointOverrideHold
+        next: getInputMetadata
+    - makeEndpointOverrideHold:
+        assign:
+          - finalResult:
+              schema_version: "1.0.0"
+              run_id: ${runId}
+              correlation_id: ${correlationId}
+              data_class: SYNTHETIC
+              processing_status: INVALID_INPUT
+              engineering_gate: NOT_EVALUATED
+              assurance_decision: HOLD
+              stable_codes: [ENDPOINT_OVERRIDE_FORBIDDEN]
+              input_storage:
+                project_id: ${projectId}
+                bucket_id: ${default(map.get(args, "bucket"), "invalid")}
+                object_name: ${default(map.get(args, "input_object"), "invalid")}
+                generation: ${string(default(map.get(args, "input_generation"), "invalid"))}
+              agent_results: {}
+        next: writeResultCreateOnly
+    - getInputMetadata:
+        call: http.get
+        args:
+          url: ${"https://storage.googleapis.com/storage/v1/b/" + args.bucket + "/o/" + text.url_encode(args.input_object) + "?generation=" + string(args.input_generation)}
+          auth:
+            type: OAuth2
+        result: inputMetadataResponse
+    - validateInputReceipt:
+        switch:
+          - condition: ${string(inputMetadataResponse.body.generation) != string(args.input_generation)}
+            next: makeGenerationHold
+          - condition: ${map.get(inputMetadataResponse.body.metadata, "sha256") != args.input_sha256}
+            next: makeMetadataHold
+        next: getInputBody
+    - makeGenerationHold:
+        assign:
+          - receiptFailureCode: INPUT_GENERATION_MISMATCH
+        next: makeReceiptHold
+    - makeMetadataHold:
+        assign:
+          - receiptFailureCode: INPUT_SHA256_METADATA_MISMATCH
+        next: makeReceiptHold
+    - makeReceiptHold:
+        assign:
+          - finalResult:
+              schema_version: "1.0.0"
+              run_id: ${runId}
+              correlation_id: ${correlationId}
+              data_class: SYNTHETIC
+              processing_status: INVALID_INPUT
+              engineering_gate: NOT_EVALUATED
+              assurance_decision: HOLD
+              stable_codes:
+                - ${receiptFailureCode}
+              input_storage:
+                project_id: ${projectId}
+                bucket_id: ${args.bucket}
+                object_name: ${args.input_object}
+                generation: ${string(args.input_generation)}
+                expected_sha256: ${args.input_sha256}
+              agent_results: {}
+        next: writeResultCreateOnly
+    - getInputBody:
+        call: http.get
+        args:
+          url: ${"https://storage.googleapis.com/download/storage/v1/b/" + args.bucket + "/o/" + text.url_encode(args.input_object) + "?alt=media&generation=" + string(args.input_generation)}
+          auth:
+            type: OAuth2
+        result: inputResponse
+    - makeBaseRequest:
+        assign:
+          - baseRequest:
+              run_id: ${runId}
+              correlation_id: ${correlationId}
+              input_storage:
+                artifact_id: ${inputResponse.body.artifact_id}
+                project_id: ${projectId}
+                bucket_id: ${args.bucket}
+                object_name: ${args.input_object}
+                generation: ${string(inputMetadataResponse.body.generation)}
+                metadata_sha256: ${map.get(inputMetadataResponse.body.metadata, "sha256")}
+                expected_sha256: ${args.input_sha256}
+              fixture: ${inputResponse.body}
+    - callMission:
+        call: invokeAgent
+        args:
+          url: ${missionUrl}
+          request: ${baseRequest}
+          agent: mission
+          run_id: ${runId}
+          correlation_id: ${correlationId}
+        result: missionResult
+    - stopBeforeDownstreamOnMissionFailure:
+        switch:
+          - condition: ${missionResult.processing_status != "VALID" or default(map.get(missionResult, "body_hash_verified"), false) != true}
+            next: assembleMissionBlocked
+        next: callParts
+    - assembleMissionBlocked:
+        assign:
+          - finalResult:
+              schema_version: "1.0.0"
+              run_id: ${runId}
+              correlation_id: ${correlationId}
+              data_class: SYNTHETIC
+              processing_status: INVALID_INPUT
+              engineering_gate: NOT_EVALUATED
+              assurance_decision: HOLD
+              stable_codes: ${missionResult.stable_codes}
+              input_storage: ${baseRequest.input_storage}
+              agent_results:
+                mission: ${missionResult}
+        next: writeResultCreateOnly
+    - callParts:
+        call: invokeAgent
+        args:
+          url: ${partsUrl}
+          request: ${baseRequest}
+          agent: parts
+          run_id: ${runId}
+          correlation_id: ${correlationId}
+        result: partsResult
+    - makeAssuranceRequest:
+        assign:
+          - assuranceRequest:
+              run_id: ${runId}
+              correlation_id: ${correlationId}
+              input_storage: ${baseRequest.input_storage}
+              fixture: ${baseRequest.fixture}
+              prior_results:
+                mission: ${missionResult}
+                parts: ${partsResult}
+    - callAssurance:
+        call: invokeAgent
+        args:
+          url: ${assuranceUrl}
+          request: ${assuranceRequest}
+          agent: assurance
+          run_id: ${runId}
+          correlation_id: ${correlationId}
+        result: assuranceResult
+    - assembleResult:
+        assign:
+          - finalResult:
+              schema_version: "1.0.0"
+              run_id: ${runId}
+              correlation_id: ${correlationId}
+              data_class: SYNTHETIC
+              processing_status: ${assuranceResult.processing_status}
+              engineering_gate: NOT_EVALUATED
+              assurance_decision: HOLD
+              stable_codes: ${assuranceResult.stable_codes}
+              input_storage: ${baseRequest.input_storage}
+              agent_results:
+                mission: ${missionResult}
+                parts: ${partsResult}
+                assurance: ${assuranceResult}
+    - writeResultCreateOnly:
+        call: http.post
+        args:
+          url: ${"https://storage.googleapis.com/upload/storage/v1/b/" + args.bucket + "/o"}
+          query:
+            uploadType: media
+            name: ${resultObject}
+            ifGenerationMatch: "0"
+          headers:
+            Content-Type: application/json
+          auth:
+            type: OAuth2
+          body: ${finalResult}
+        result: resultUpload
+    - returnResult:
+        return:
+          execution_id: ${runId}
+          correlation_id: ${correlationId}
+          result_storage:
+            bucket_id: ${args.bucket}
+            object_name: ${resultObject}
+            generation: ${string(resultUpload.body.generation)}
+          result: ${finalResult}
+
+invokeAgent:
+  params: [url, request, agent, run_id, correlation_id]
+  steps:
+    - invoke:
+        try:
+          call: http.post
+          args:
+            url: ${url}
+            timeout: 60
+            auth:
+              type: OIDC
+              audience: ${url}
+            headers:
+              Content-Type: application/json
+            body: ${request}
+          result: response
+        except:
+          as: error
+          steps:
+            - failClosedTransport:
+                return:
+                  schema_version: "1.0.0"
+                  run_id: ${run_id}
+                  correlation_id: ${correlation_id}
+                  agent: ${agent}
+                  data_class: SYNTHETIC
+                  processing_status: INVALID_INPUT
+                  engineering_gate: NOT_EVALUATED
+                  assurance_decision: HOLD
+                  body_hash_verified: false
+                  stable_codes: [AGENT_TRANSPORT_FAILURE]
+                  message: "agent request failed; details retained by Workflow execution log"
+                  latency_ms: 0
+    - validateResponse:
+        switch:
+          - condition: ${not("body" in response) or not("processing_status" in response.body) or not("assurance_decision" in response.body)}
+            return:
+              schema_version: "1.0.0"
+              run_id: ${run_id}
+              correlation_id: ${correlation_id}
+              agent: ${agent}
+              data_class: SYNTHETIC
+              processing_status: INVALID_INPUT
+              engineering_gate: NOT_EVALUATED
+              assurance_decision: HOLD
+              body_hash_verified: false
+              stable_codes: [AGENT_RESPONSE_INVALID]
+              message: "agent response contract is invalid"
+              latency_ms: 0
+    - returnBody:
+        return: ${response.body}

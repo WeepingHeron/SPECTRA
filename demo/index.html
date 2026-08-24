@@ -9,190 +9,876 @@
   <style>
     :root {
       --ink:#f4f4f2; --muted:#9a9a96; --dim:#60605d; --bg:#050505; --panel:#090909;
-      --line:#292927; --cyan:#fff; --blue:#fff; --amber:#fff; --red:#c8c8c3;
+      --panel2:#0e0e0e; --line:#292927; --cyan:#fff; --blue:#fff; --amber:#fff; --red:#c8c8c3;
       --green:#fff; --side:clamp(24px,5vw,88px); --top:72px; --bottom:64px;
+      --accent:#fff; --alert-bg:rgba(255,50,50,0.08); --alert-border:#772222;
+      --ok-bg:rgba(50,255,100,0.06); --ok-border:#225533;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo","Noto Sans KR",-apple-system,BlinkMacSystemFont,sans-serif}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Apple SD Gothic Neo","Noto Sans KR",-apple-system,BlinkMacSystemFont,sans-serif}
     body{min-height:100vh;overflow-x:hidden;letter-spacing:-.01em}
     body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.5;background:linear-gradient(90deg,transparent 0,transparent calc(100% - 1px),rgba(255,255,255,.035) calc(100% - 1px));background-size:clamp(96px,10vw,160px) 100%}
     button{font:inherit}
-    .topbar{position:fixed;z-index:20;top:0;left:0;right:0;height:var(--top);display:flex;align-items:center;justify-content:flex-start;padding:0 var(--side);background:rgba(5,5,5,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}
-    .brand{font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:12px;font-weight:650;letter-spacing:.24em}
+    .topbar .brand{font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:12px;font-weight:650;letter-spacing:.24em;transition:opacity .24s ease}
+    body.is-cover .topbar .brand{opacity:0;pointer-events:none}
     .truth-strip{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.12em}.truth-strip span{padding:6px 9px;border:1px solid #555}.synthetic{color:var(--muted);background:transparent}.hold{color:#050505;border-color:#fff!important;background:#fff}
-    main{position:relative}.slide{min-height:100vh;padding:calc(var(--top) + 34px) var(--side) calc(var(--bottom) + 30px);display:grid;align-content:center;position:relative}.slide-inner{width:min(1240px,100%);margin:auto}.js .slide{display:none}.js .slide.active{display:grid;animation:arrive .5s cubic-bezier(.2,.8,.2,1) both}@keyframes arrive{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-    .kicker{margin:0 0 20px;color:var(--muted);font-family:"SF Pro Text","Helvetica Neue",Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}.eyebrow{color:var(--muted);font-size:13px}.slide h1,.slide h2{margin:0;letter-spacing:-.025em;line-height:1.14;font-weight:500;word-break:keep-all}.slide h1{font-size:clamp(46px,5.7vw,78px);max-width:920px}.slide h2{font-size:clamp(36px,4.25vw,58px);max-width:980px}.lead{font-size:clamp(17px,1.5vw,21px);line-height:1.68;color:var(--muted);max-width:820px;margin:32px 0 0;word-break:keep-all}.slide:first-child .lead{margin-top:38px}.slide2-note,.slide4-note{max-width:none;white-space:nowrap}.accent,.warn,.danger{color:#fff}.warn,.danger{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
+    main{position:relative}.slide{min-height:100vh;padding:calc(var(--top) + 34px) var(--side) calc(var(--bottom) + 30px);display:grid;align-content:center;position:relative}.slide-inner{width:min(1240px,100%);margin:auto}.js body{overflow:hidden}.js .slide{display:none}.js .slide.active{display:grid;animation:slide-enter .34s cubic-bezier(.22,.68,.3,1) both}@keyframes slide-enter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .cover .slide-inner{width:min(1240px,100%)}
+    #cover-title.cover-hero{font-family:"SF Pro Display",-apple-system,BlinkMacSystemFont,sans-serif;font-size:min(300px,clamp(110px,15vw,300px))!important;font-weight:850!important;letter-spacing:-.065em!important;line-height:.82!important;max-width:none!important;margin:0 0 16px!important;color:#fff!important;white-space:nowrap;transform:translateX(-.025em)}
+    .cover-acronym{font-family:"SFMono-Regular",Menlo,Monaco,monospace;font-size:clamp(11px,1.05vw,13.5px);font-weight:600;letter-spacing:.16em;color:#686864;text-transform:uppercase;margin:0}
+    .cover-manifesto-grid{display:grid;grid-template-columns:1fr;align-items:end;margin-top:clamp(44px,5.5vw,72px);padding-top:28px;border-top:1px solid rgba(255,255,255,.14)}
+    .cover-sub{font-size:clamp(19px,2.1vw,26px);font-weight:400;color:#8e8e8a;line-height:1.45;margin:0;letter-spacing:-.02em;word-break:keep-all}
+    .cover-sub strong{color:#fff;font-weight:600}
+    .cover-philosophy{padding-left:clamp(20px,2.5vw,36px);border-left:1px solid rgba(255,255,255,.14);display:flex;flex-direction:column;gap:8px}
+    .philosophy-kicker{font-family:"SFMono-Regular",Menlo,Monaco,monospace;font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--dim);text-transform:uppercase}
+    .philosophy-text{font-size:clamp(15px,1.5vw,19px);font-weight:500;color:#c8c8c4;margin:0;line-height:1.4;letter-spacing:-.015em}
+    .philosophy-text strong{color:#fff;font-weight:700;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:2px}
+    @media(max-width:860px){.cover-manifesto-grid{grid-template-columns:1fr;gap:24px}.cover-philosophy{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.1);padding-top:16px}}
+    .kicker{margin:0 0 20px;color:var(--muted);font-family:"SF Pro Text","Helvetica Neue",Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}.eyebrow{color:var(--muted);font-size:13px}.slide:not(.cover) h1,.slide:not(.cover) h2{margin:0;letter-spacing:-.025em;line-height:1.14;font-weight:500;word-break:keep-all}.slide:not(.cover) h1{font-size:clamp(46px,5.7vw,78px);max-width:920px}.slide:not(.cover) h2{font-size:clamp(36px,4.25vw,58px);max-width:980px}.lead{font-size:clamp(17px,1.5vw,21px);line-height:1.68;color:var(--muted);max-width:820px;margin:32px 0 0;word-break:keep-all}.slide:first-child .lead{margin-top:38px}.slide2-note,.slide4-note{max-width:none;white-space:nowrap;margin-top:18px}.accent,.warn,.danger{color:#fff}.warn,.danger{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:42px;background:var(--line)}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:36px;background:var(--line)}.card{border:1px solid var(--line);background:rgba(8,8,8,.95);border-radius:0;padding:clamp(20px,2.3vw,32px);box-shadow:none}.grid-2>.card,.grid-3>.card{border:0}.card h3{margin:0 0 16px;font-size:18px;font-weight:600}.card p{color:var(--muted);line-height:1.55;margin:8px 0}.card-label{font-size:10px;letter-spacing:.17em;color:var(--dim);font-weight:700;text-transform:uppercase}
-    .broken-flow{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr 28px 1fr;align-items:center;margin-top:54px}.flow-node{min-height:116px;display:grid;align-content:center;padding:20px;border-top:1px solid #555;border-bottom:1px solid var(--line);background:rgba(5,5,5,.7)}.flow-node strong{font-size:18px;font-weight:600}.flow-node span{color:var(--dim);margin-top:8px;line-height:1.4;font-size:13px}.break{height:1px;background:#555;position:relative}.break:after{content:"×";position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);background:var(--bg);color:var(--muted);font-size:16px;padding:4px}
-    .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.fact{border-left:2px solid var(--cyan);padding:5px 12px}.fact b{display:block;font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:clamp(22px,2vw,32px);margin-top:4px}.fact span{font-size:12px;color:var(--muted)}.identity{margin-top:18px;padding:18px 20px;border-radius:14px;background:#07121c;border:1px solid #1f3343;font-family:"SFMono-Regular",Menlo,Monaco,monospace;color:#bed0de;line-height:1.7}.identity i{font-style:normal;color:var(--cyan)}
-    .segmented{display:flex;gap:0;flex-wrap:wrap;margin:32px 0 24px}.segmented button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:0;padding:10px 17px;cursor:pointer;font-size:13px;font-weight:650}.segmented button+button{margin-left:-1px}.segmented button:hover,.segmented button:focus-visible{border-color:#fff;color:#fff;outline:none;z-index:1}.segmented button.selected{background:#fff;border-color:#fff;color:#050505}.metric-stage{display:grid;grid-template-columns:1.25fr .75fr;gap:1px;background:var(--line)}.metric-stage>.card{border:0}.big-metric{min-height:232px;display:flex;flex-direction:column;justify-content:center}.metric-number{font-size:clamp(64px,8.4vw,118px);font-weight:600;letter-spacing:-.07em;line-height:.9}.metric-unit{font-size:17px;color:var(--muted);margin-left:8px}.metric-note{color:var(--muted);margin-top:20px}.scope-alert{background:repeating-linear-gradient(135deg,#0b0b0b,#0b0b0b 8px,#101010 8px,#101010 16px)}
+
+    /* Slide 01: Industry Reality & Statistics */
+    .broken-flow{display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr 28px 1fr;align-items:center;margin-top:36px}.flow-node{min-height:108px;display:grid;align-content:center;padding:18px;border-top:1px solid #555;border-bottom:1px solid var(--line);background:rgba(5,5,5,.7)}.flow-node strong{font-size:17px;font-weight:600}.flow-node span{color:var(--dim);margin-top:6px;line-height:1.4;font-size:12px}.break{height:1px;background:#555;position:relative}.break:after{content:"×";position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);background:var(--bg);color:var(--muted);font-size:16px;padding:4px}
+    .industry-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:20px;background:var(--line)}
+    .stat-card{padding:16px 20px;background:#090909;display:flex;flex-direction:column}
+    .stat-num{font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:clamp(24px,2.4vw,36px);font-weight:650;color:#fff;letter-spacing:-.03em}
+    .stat-label{margin:6px 0 4px;font-size:13px;font-weight:600;color:var(--ink)}
+    .stat-sub{font-size:11px;color:var(--muted);line-height:1.45}
+    .stat-src{font-size:9.5px;color:var(--dim);margin-top:auto;padding-top:8px;font-family:"SFMono-Regular",Menlo,monospace}
+
+    .facts{display:grid;grid-template-columns:1.25fr 1fr 1fr .95fr;gap:8px}.fact{border-left:2px solid var(--cyan);padding:4px 10px}.fact b{display:block;font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:clamp(17px,1.65vw,24px);margin-top:4px;white-space:nowrap;letter-spacing:-.02em}.fact span{font-size:11px;color:var(--muted);white-space:nowrap}.identity{margin-top:18px;padding:18px 20px;border-radius:14px;background:#07121c;border:1px solid #1f3343;font-family:"SFMono-Regular",Menlo,Monaco,monospace;color:#bed0de;line-height:1.7}.identity i{font-style:normal;color:var(--cyan)}
+    .segmented{display:flex;gap:0;flex-wrap:wrap;margin:32px 0 24px}.segmented button{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:0;padding:10px 17px;cursor:pointer;font-size:13px;font-weight:650}.segmented button+button{margin-left:-1px}.segmented button:hover,.segmented button:focus-visible{border-color:#fff;color:#fff;outline:none;z-index:1}.segmented button.selected{background:#fff;border-color:#fff;color:#050505}
+
+    /* Slide 03 */
+    .metric-stage{display:grid;grid-template-columns:1.05fr .95fr;gap:1px;background:var(--line)}.metric-stage>.card{border:0}.metric-stage .card p{font-size:13.5px;line-height:1.55}.big-metric{min-height:232px;display:flex;flex-direction:column;justify-content:center}.metric-number{font-size:clamp(64px,8.4vw,118px);font-weight:600;letter-spacing:-.07em;line-height:.9}.metric-unit{font-size:17px;color:var(--muted);margin-left:8px}.metric-note{color:var(--muted);margin-top:20px}.scope-alert{background:repeating-linear-gradient(135deg,#0b0b0b,#0b0b0b 8px,#101010 8px,#101010 16px)}
+
+    /* Slide 04 */
     .evidence-lanes{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:40px;background:var(--line)}.evidence-lanes>.card{border:0}.lane{border-top:1px solid #fff!important}.lane.blocked{background:repeating-linear-gradient(135deg,#080808,#080808 10px,#0d0d0d 10px,#0d0d0d 20px)}.event-row{display:grid;grid-template-columns:72px 1fr auto;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px}.event-row:last-child{border-bottom:0}.state{font-size:10px;font-weight:700;letter-spacing:.1em;padding:5px 7px;border:1px solid #555;border-radius:0}.state.synthetic-ok{color:var(--muted);background:transparent}.state.missing{color:#050505;background:#fff}
+
+    /* Slide 05 */
     .compare{display:grid;grid-template-columns:1fr 64px 1fr;align-items:center;gap:0;margin-top:40px}.compare-card{text-align:center;padding:30px 18px}.compare-card .value{font-size:clamp(44px,5.5vw,76px);font-weight:600;letter-spacing:-.06em}.arrow{text-align:center;color:var(--muted);font-size:30px}.bar{height:2px;border-radius:0;background:var(--line);overflow:hidden;margin:18px 0}.bar i{display:block;height:100%;background:#fff;border-radius:0}.micro{font-size:11px;color:var(--dim);line-height:1.55}
-    .assurance-status{display:flex;align-items:center;gap:0;margin-top:26px;font-family:"SF Pro Text","Helvetica Neue",Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.12em}.assurance-status span{padding:7px 10px;border:1px solid #555}.assurance-status span+span{margin-left:-1px}.assurance-status .final{color:#050505;border-color:#fff;background:#fff}.decision{display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;margin-top:16px;padding:30px 34px;border:1px solid #fff;border-radius:0;background:transparent}.decision-word{font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:clamp(68px,10vw,140px);font-weight:560;color:#fff;letter-spacing:-.045em;line-height:.85}.logic{display:grid;gap:14px}.logic-row{display:grid;grid-template-columns:140px 22px 1fr;align-items:center;color:var(--muted)}.logic-row b{color:var(--ink);font-weight:550}.next-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.action{padding:9px 12px;border:1px solid var(--line);border-radius:0;color:var(--muted);font-size:12px}.action strong{color:#fff;margin-right:7px}
-    .chain{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;margin-top:40px;background:var(--line)}.chain-node{min-height:132px;padding:18px;background:#080808;position:relative}.chain-node:not(:last-child):after{content:"→";position:absolute;right:-14px;top:51px;z-index:2;color:#fff;font-size:17px}.chain-node b{display:block;margin:10px 0;font-weight:560}.chain-node code{font-size:10px;color:var(--dim);overflow-wrap:anywhere}.zero-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:1px;background:var(--line)}.zero{padding:14px 18px;background:#090909}.zero b{font-size:26px;color:#fff;margin-right:7px;font-weight:580}.zero span{color:var(--muted);font-size:13px}
+
+    /* Slide 06: Identity & Principles */
+    .identity-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:24px;background:var(--line)}
+    .identity-box{padding:20px 24px;background:#080808}
+    .identity-box.is-box{border-top:2px solid #fff}
+    .identity-box.isnot-box{border-top:2px solid #555;background:#060606}
+    .identity-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px;padding:4px 8px}
+    .identity-tag.is{background:#fff;color:#000}
+    .identity-tag.isnot{border:1px solid #555;color:var(--muted)}
+    .identity-box ul{margin:0;padding:0 0 0 16px;list-style-type:square}
+    .identity-box li{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:8px}
+    .identity-box li strong{color:#fff;font-weight:600}
+
+    .reliability-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:16px;background:var(--line)}
+    .reliability-card{min-height:100px;padding:12px 14px;background:#090909;display:flex;flex-direction:column}
+    .guard-head{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}
+    .guard-head b{font:600 11px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif;color:#fff}
+    .guard-name{margin-top:6px;font-size:13px;font-weight:600;line-height:1.3;color:var(--ink)}
+    .guard-note{margin-top:auto;padding-top:6px;color:var(--dim);font-size:10px;line-height:1.3}
+    .slide-src{margin-top:14px;font-size:10px;color:var(--dim);font-family:"SFMono-Regular",Menlo,monospace;letter-spacing:.02em;border-top:1px dashed rgba(255,255,255,.08);padding-top:6px}
+
+    /* Slide 08: Live Multi-Agent Workflow & Interactive Real-Time Executor */
+    .gcp-flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;margin-top:16px;border:1px solid var(--line);background:var(--line);position:relative;overflow:visible}
+    .gcp-node{position:relative;display:grid;align-content:center;min-width:0;min-height:86px;padding:10px 12px;background:#080808;transition:all .28s cubic-bezier(.2,.8,.2,1);border-top:2px solid transparent}
+    .gcp-node:after{content:"→";position:absolute;right:-10px;top:50%;z-index:5;transform:translateY(-50%);color:#888;background:#050505;border:1px solid #333;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;line-height:1;transition:all .24s ease;box-sizing:border-box}
+    .gcp-node:last-child:after{display:none}
+    .gcp-node-header{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:4px}
+    .gcp-node span{color:var(--dim);font-size:10px;letter-spacing:.08em;white-space:nowrap}
+    .gcp-node b{display:block;margin:6px 0 0;font-size:13px;font-weight:600;line-height:1.35}
+    .node-pill{justify-self:center;font-size:8.5px;padding:1px 6px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
+
+    /* GCP Flow Dynamic States */
+    .gcp-node.state-valid{background:#09140d;border-top-color:#4ade80}
+    .gcp-node.state-valid span{color:#86efac}
+    .gcp-node.state-valid b{color:#fff}
+    .gcp-node.state-valid .node-pill{border:1px solid #4ade80;color:#4ade80}
+    .gcp-node.state-valid:not(:last-child):after{color:#4ade80;border-color:#2a5a2e;background:#08140a;content:"→"}
+
+    .gcp-node.state-blocked{background:#260808;border-top-color:#f87171;animation:pulse-node .4s ease}
+    .gcp-node.state-blocked span{color:#fca5a5}
+    .gcp-node.state-blocked b{color:#fecaca}
+    .gcp-node.state-blocked .node-pill{background:#ef4444;color:#fff}
+    .gcp-node.state-blocked:after{display:flex!important;color:#fff!important;background:#b91c1c!important;border-color:#ef4444!important;content:"×"!important;font-size:13px!important;font-weight:700!important;right:-10px!important;top:50%!important;transform:translateY(-50%)!important;z-index:10!important}
+
+    .gcp-node.state-isolated{background:#040404;opacity:.32;border-top:1px dashed #333}
+    .gcp-node.state-isolated span{color:#444}
+    .gcp-node.state-isolated b{color:#666}
+    .gcp-node.state-isolated .node-pill{border:1px solid #333;color:#444}
+    .gcp-node.state-isolated:not(:last-child):after{color:#444;border-color:#222;background:#050505;opacity:.35}
+
+    @keyframes pulse-node{0%{transform:scale(.98)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+
+    .demo-console{margin-top:14px;border:1px solid var(--line);background:#070707;padding:14px 18px}
+    .demo-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+    .demo-controls-title{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+    .demo-buttons{display:flex;gap:6px;flex-wrap:wrap}
+    .demo-btn{border:1px solid var(--line);background:transparent;color:var(--muted);padding:5px 10px;cursor:pointer;font-size:11px;font-weight:600;transition:all .18s ease;display:inline-flex;align-items:center;gap:5px}
+    .demo-btn:hover{border-color:#fff;color:#fff}
+    .demo-btn.active{background:#fff;border-color:#fff;color:#000}
+    .demo-btn.active.fail{background:#b91c1c;border-color:#ef4444;color:#fff}
+    .demo-btn:disabled{opacity:.6;cursor:wait}
+
+    .demo-pipeline-view{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:12px;margin-top:12px;align-items:stretch}
+    .demo-stage-box{border:1px solid var(--line);background:#090909;padding:10px 12px;display:flex;flex-direction:column;min-height:96px;box-sizing:border-box}
+    .demo-stage-label{font-size:9.5px;letter-spacing:.15em;font-weight:700;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+    .demo-stage-val{font-size:11px;font-family:"SFMono-Regular",Menlo,monospace;color:#ccd;line-height:1.55}
+    .demo-stage-val b{color:#fff}
+
+    .demo-agent-pill{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid #161616;font-size:10.5px}
+    .demo-agent-pill:last-child{border-bottom:0}
+    .demo-agent-pill strong{color:#eee;font-weight:600}
+
+    .demo-badge{font-size:9.5px;padding:2px 6px;font-weight:700;letter-spacing:.05em}
+    .demo-badge.valid{border:1px solid #4ade80;color:#4ade80;background:rgba(74,222,128,0.08)}
+    .demo-badge.hold{background:#fff;color:#000}
+    .demo-badge.blocked{background:#ef4444;color:#fff}
+    .demo-badge.isolated{border:1px dashed #555;color:#666}
+
+    /* Live Telemetry Bar */
+    .live-telemetry-bar{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding:6px 10px;background:#0c0c0c;border:1px solid #222;font-size:10.5px;font-family:"SFMono-Regular",Menlo,monospace;flex-wrap:wrap;gap:8px}
+    .live-pill{padding:2px 7px;font-weight:700;letter-spacing:.06em;font-size:9.5px}
+    .live-pill.ready{background:#18281a;color:#4ade80;border:1px solid #2a5a2e}
+    .live-pill.running{background:#3b2a10;color:#fde047;border:1px solid #713f12;animation:pulse-node .8s infinite}
+    .live-pill.sim{background:#1a1a1a;color:#aaa;border:1px solid #333}
+    .live-meta-text{color:var(--muted)}
+    .live-meta-text a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+    .live-time-text{color:#86efac;font-weight:600}
+
+    .failclosed-alert{margin-top:10px;padding:10px 12px;border:1px solid var(--line);background:#0a0a0a;color:#ccc;font-size:11.5px;line-height:1.5;min-height:64px;box-sizing:border-box;display:flex;align-items:center}
+    .failclosed-alert.alert-normal{border-color:var(--ok-border);background:var(--ok-bg);color:#d1fae5}
+    .failclosed-alert.alert-blocked{border-color:var(--alert-border);background:var(--alert-bg);color:#fecaca}
+    .failclosed-alert strong{color:#fff;font-weight:700}
+
+    .gcp-actions{display:flex;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap;gap:10px}
+    .gcp-link-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:#fff;color:#000;font-size:12px;font-weight:650;text-decoration:none;border-radius:0}
+    .gcp-link-btn:hover{background:#ddd}
+    .gcp-scope{color:var(--muted);font-size:11px}
+
+    /* Slide 07: Tech Stack & Implementation Tools */
+    .tech-stack-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:20px;background:var(--line)}
+    .tech-stack-card{padding:16px 14px;background:#090909;display:flex;flex-direction:column}
+    .tech-layer-tag{font-size:9.5px;letter-spacing:.15em;font-weight:700;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+    .tech-layer-tag.l1{color:#86efac}
+    .tech-layer-tag.l2{color:#93c5fd}
+    .tech-layer-tag.l3{color:#c4b5fd}
+    .tech-layer-tag.l4{color:#fde047}
+    .tech-layer-title{font-size:14px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:8px}
+    .tech-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+    .tech-chip{font-size:9.5px;font-family:"SFMono-Regular",Menlo,monospace;padding:2px 5px;background:#141414;border:1px solid #282828;color:#bbb}
+    .tech-stack-card ul{margin:0;padding:0 0 0 14px;list-style-type:square}
+    .tech-stack-card li{font-size:11.5px;color:var(--muted);line-height:1.55;margin-bottom:6px}
+    .tech-stack-card li strong{color:#eee;font-weight:600}
+
+    /* Slide 09: Roadmap & Future Expansion */
+    .roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:20px;background:var(--line)}
+    .roadmap-card{padding:18px 16px;background:#090909;display:flex;flex-direction:column}
+    .roadmap-phase-tag{font-size:9.5px;letter-spacing:.15em;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+    .roadmap-phase-tag.p1{color:#86efac}
+    .roadmap-phase-tag.p2{color:#93c5fd}
+    .roadmap-phase-tag.p3{color:#fde047}
+    .roadmap-title{font-size:14.5px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:8px}
+    .roadmap-tools{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+    .roadmap-tool-badge{font-size:9.5px;font-family:"SFMono-Regular",Menlo,monospace;padding:2px 6px;background:#141414;border:1px solid #282828;color:#ccc}
+    .roadmap-card ul{margin:0;padding:0 0 0 14px;list-style-type:square}
+    .roadmap-card li{font-size:11.5px;color:var(--muted);line-height:1.55;margin-bottom:6px}
+    .roadmap-card li strong{color:#eee;font-weight:600}
+
     .footer{position:fixed;z-index:20;left:0;right:0;bottom:0;height:var(--bottom);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 var(--side);background:rgba(5,5,5,.94);border-top:1px solid var(--line);backdrop-filter:blur(16px)}.progress{display:flex;gap:5px}.dot{width:24px;height:1px;background:#555}.dot.done,.dot.current{background:#fff}.count{justify-self:center;color:var(--dim);font-size:11px;letter-spacing:.1em;font-variant-numeric:tabular-nums}.nav{justify-self:end;display:flex;gap:6px}.nav button{width:38px;height:38px;border-radius:0;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}.nav button:hover,.nav button:focus-visible{border-color:#fff;outline:none}.nav button:disabled{opacity:.22;cursor:default}.fallback-note{display:none}.no-js .fallback-note{display:block;position:fixed;z-index:40;top:82px;right:18px;padding:7px 10px;background:#fff;color:#050505;border-radius:0;font-weight:700;font-size:11px}.no-js .topbar,.no-js .footer{position:sticky}.no-js .slide{border-bottom:1px solid var(--line)}
-    @media(max-width:900px){:root{--top:72px;--bottom:68px}.grid-2,.grid-3,.metric-stage,.evidence-lanes{grid-template-columns:1fr}.broken-flow{grid-template-columns:1fr;gap:9px}.break{width:2px;height:20px;margin:auto}.compare{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.chain{grid-template-columns:1fr 1fr}.chain-node:after{display:none}.zero-row{grid-template-columns:1fr}.slide{align-content:start}.facts{grid-template-columns:1fr 1fr}.slide2-note,.slide4-note{white-space:normal}.assurance-status{flex-wrap:wrap}}
-    @media(max-height:760px) and (min-width:901px){:root{--top:64px;--bottom:56px}.slide{padding-top:calc(var(--top) + 16px);padding-bottom:calc(var(--bottom) + 14px)}.slide h1{font-size:58px;max-width:760px}.slide h2{font-size:40px;max-width:850px}.lead{font-size:16px;line-height:1.55;margin-top:14px}.slide:first-child .lead{margin-top:24px}.grid-2,.grid-3,.broken-flow,.evidence-lanes,.compare,.chain{margin-top:18px}.card{padding:16px}.big-metric{min-height:174px}.flow-node{min-height:96px}.chain-node{min-height:112px;padding:14px}.assurance-status{margin-top:14px}.decision{margin-top:10px;padding:20px 26px}.next-actions{margin-top:12px}.action{padding:7px 10px}}
-    @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+
+    @media(max-width:900px){
+      :root{--top:72px;--bottom:68px}
+      .grid-2,.grid-3,.metric-stage,.evidence-lanes,.identity-grid,.industry-stats,.demo-pipeline-view{grid-template-columns:1fr}
+      .broken-flow{grid-template-columns:1fr;gap:9px}.break{width:2px;height:20px;margin:auto}.compare{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}
+      .reliability-grid,.tech-stack-grid{grid-template-columns:1fr 1fr}.roadmap-grid,.gcp-flow{grid-template-columns:1fr}
+      .slide{align-content:start}.facts{grid-template-columns:1fr 1fr}.slide2-note,.slide4-note{white-space:normal}
+    }
+    @media(max-height:760px) and (min-width:901px){
+      :root{--top:64px;--bottom:56px}
+      .slide{padding-top:calc(var(--top) + 14px);padding-bottom:calc(var(--bottom) + 12px)}
+      .slide h1{font-size:52px;max-width:760px}.slide h2{font-size:36px;max-width:850px}
+      .lead{font-size:15px;line-height:1.5;margin-top:14px}.slide:first-child .lead{margin-top:20px}
+      .broken-flow{margin-top:18px}.flow-node{min-height:84px;padding:12px}
+      .industry-stats{margin-top:12px}.stat-card{padding:10px 14px}
+      .identity-grid{margin-top:14px}.identity-box{padding:12px 16px}
+      .identity-box li{font-size:12px;margin-bottom:5px}
+      .tech-stack-grid,.roadmap-grid{margin-top:12px}.tech-stack-card,.roadmap-card{padding:10px 12px}
+      .tech-stack-card li,.roadmap-card li{font-size:11px;margin-bottom:4px}
+      .demo-console{margin-top:10px;padding:10px 14px}
+      .demo-pipeline-view{margin-top:8px}
+      .reliability-grid{margin-top:8px}.reliability-card{min-height:76px;padding:8px 10px}
+    }
+
+    /* 2026-08-22 post-presentation visual integration: original monochrome language, wider canvas, lower density */
+    :root{--side:clamp(34px,5.3vw,76px);--top:46px;--bottom:42px}
+    .topbar{position:fixed;z-index:20;inset:0 0 auto;height:var(--top);display:flex;align-items:center;padding:0 var(--side);background:linear-gradient(180deg,rgba(5,5,5,.98),rgba(5,5,5,.74),transparent);pointer-events:none}
+    .slide{height:100vh;min-height:0;padding:calc(var(--top) + 14px) var(--side) calc(var(--bottom) + 14px);align-content:center;overflow:hidden}
+    .slide-inner,.cover .slide-inner{width:min(1600px,100%);max-height:calc(100vh - var(--top) - var(--bottom) - 28px);display:flex;flex-direction:column;justify-content:center}
+    .slide:not(.cover) h1,.slide:not(.cover) h2{font-size:clamp(34px,4vw,56px);max-width:1120px;line-height:1.08}
+    .kicker{margin-bottom:10px;font:700 10px/1.2 "SFMono-Regular",Menlo,monospace;letter-spacing:.18em}
+    .lead{max-width:1160px;margin:14px 0 0;font-size:clamp(13px,1.12vw,16px);line-height:1.48}
+    .slide-src,.source-line{margin-top:8px;padding-top:6px;border-top:1px dashed rgba(255,255,255,.08);color:#555;font:500 9px/1.35 "SFMono-Regular",Menlo,monospace;white-space:normal}
+    .glossary-bar{display:flex;gap:14px;align-items:flex-start;margin-top:auto;padding-top:8px;border-top:1px solid #1d1d1d;color:#777;font-size:9.5px;line-height:1.35;flex-wrap:wrap}
+    .glossary-bar b{color:#bbb;font-weight:650}
+    .panel-flat{border:1px solid #2c2c2a;background:rgba(8,8,8,.92);padding:16px 18px;min-width:0}
+    .panel-tag{display:block;margin-bottom:8px;color:#777;font:700 9px/1.2 "SFMono-Regular",Menlo,monospace;letter-spacing:.15em;text-transform:uppercase}
+    .panel-title{font-size:18px;font-weight:650;color:#fff;margin-bottom:10px}
+    .compact-list{margin:0;padding:0;list-style:none}.compact-list li{padding:7px 0;border-bottom:1px solid #1b1b1b;color:#aaa;font-size:11.5px;line-height:1.42}.compact-list li:last-child{border-bottom:0}.compact-list strong{color:#eee;font-weight:600}
+    .two-up{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;min-height:0}
+
+    .evidence-overview{display:grid;grid-template-columns:minmax(470px,.9fr) minmax(0,1.1fr);gap:44px;margin-top:18px;align-items:center;min-height:0}
+    .evidence-ring{position:relative;width:min(40vw,420px);aspect-ratio:1;margin:auto;border:1px dashed #444;border-radius:50%}
+    .ring-center{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:124px;height:124px;border:1px solid #fff;border-radius:50%;display:grid;place-content:center;text-align:center;background:#080808}
+    .ring-center b{font-size:15px}.ring-center span{margin-top:6px;color:#999;font-size:11px}
+    .ring-node{position:absolute;width:156px;padding:13px 12px;border:1px solid #3b3b3b;background:#080808;text-align:center}.ring-node b{display:block;font-size:14px}.ring-node span{display:block;margin-top:5px;color:#999;font-size:11px}.ring-node.n1{top:18px;left:50%;transform:translateX(-50%)}.ring-node.n2{right:-24px;top:50%;transform:translateY(-50%)}.ring-node.n3{bottom:18px;left:50%;transform:translateX(-50%)}.ring-node.n4{left:-24px;top:50%;transform:translateY(-50%)}
+    .stat-lines{display:grid;gap:1px;background:#252525}.stat-line{display:grid;grid-template-columns:142px 1fr;gap:20px;align-items:center;min-height:104px;padding:20px 22px;background:#080808}.stat-line .stat-num{font-size:36px}.stat-line .stat-label{font-size:16px;margin:0 0 7px}.stat-line .stat-sub{font-size:12.5px;line-height:1.45;color:#888}.stat-line .stat-src{display:none}
+
+    /* Slide 01: center the diagram + evidence as one composition and give every layer breathing room. */
+    .slide[data-title="문제"] .slide-inner{position:relative;height:calc(100vh - var(--top) - var(--bottom) - 28px);max-height:none;justify-content:flex-start}
+    .slide[data-title="문제"] .slide-main{position:absolute;inset:50% 0 auto;transform:translateY(-50%)}
+    .slide[data-title="문제"] .slide-heading{width:min(1276px,100%);margin-inline:auto;transform:none}
+    .slide[data-title="문제"] .kicker{margin:0 0 24px}
+    .slide[data-title="문제"] #s1-title{max-width:1120px;white-space:normal;font-size:clamp(32px,3.35vw,52px)}
+    .slide[data-title="문제"] .lead{max-width:none;margin:6px 0 0}
+    .slide[data-title="문제"] .evidence-overview{width:min(1276px,100%);grid-template-columns:minmax(540px,580px) minmax(0,640px);gap:56px;margin:56px auto 0;flex-shrink:0}
+    .slide[data-title="문제"] .evidence-ring{margin-inline:auto}
+    .slide[data-title="문제"] .ring-node{border:0}
+    .slide[data-title="문제"] .ring-node.n1{top:-32px}
+    .slide[data-title="문제"] .ring-node.n2{right:-78px}
+    .slide[data-title="문제"] .ring-node.n3{bottom:-32px}
+    .slide[data-title="문제"] .ring-node.n4{left:-78px}
+    .slide[data-title="문제"] .stat-lines{width:100%;gap:16px;background:transparent}
+    .slide[data-title="문제"] .stat-line{grid-template-columns:144px 1fr;gap:40px;min-height:114px;padding:22px 0 22px 28px;border-top:1px solid #252525;border-bottom:1px solid #181818;text-align:left}
+    .slide[data-title="문제"] .slide-endnotes{margin-top:auto;transform:translateY(6px)}
+    .slide[data-title="문제"] .slide-endnotes .glossary-bar{margin:0;padding:0;border-top:0;gap:24px}
+    .slide[data-title="문제"] .slide-endnotes .source-line{margin:5px 0 0;padding:0;border-top:0}
+
+    .comparison-table{width:100%;border-collapse:collapse}.comparison-table td{padding:7px 4px;border-bottom:1px solid #1d1d1d;font-size:10.5px;line-height:1.35;vertical-align:top}.comparison-table td:first-child{width:92px;color:#777;font-family:"SFMono-Regular",Menlo,monospace}.comparison-table td:last-child{color:#ddd}
+    .bridge-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:10px;background:#252525}.bridge-item{padding:10px 12px;background:#080808}.bridge-item b{display:block;margin-bottom:4px;font-size:11px}.bridge-item span{color:#777;font-size:9.5px;line-height:1.35}
+    .shield-primer{display:grid;grid-template-columns:1fr 74px 1fr 74px 1fr;align-items:center;margin-top:24px}.primer-stage{min-height:178px;padding:20px;border-top:1px solid #fff;border-bottom:1px solid #292929;background:#080808}.primer-stage .primer-num{font:650 10px/1.2 "SFMono-Regular",Menlo,monospace;color:#777;letter-spacing:.14em}.primer-stage b{display:block;margin:16px 0 8px;font-size:21px}.primer-stage p{margin:0;color:#888;font-size:12px;line-height:1.5}.primer-arrow{text-align:center;color:#777;font-size:25px}.thickness-key{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:14px;background:#292929}.thickness-key div{padding:10px 12px;background:#080808}.thickness-key b{display:block;font-size:12px}.thickness-key span{color:#777;font-size:9.5px}
+    .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.spec-table{width:100%;border-collapse:collapse}.spec-table td{padding:9px 0;border-bottom:1px solid #1d1d1d;font-size:11.5px}.spec-table td:first-child{color:#777}.spec-table td:last-child{text-align:right;color:#eee;font-family:"SFMono-Regular",Menlo,monospace;font-weight:650}
+    .context-strip{display:flex;gap:10px;margin-top:12px;color:#777;font-size:10px}.context-strip span{padding-right:10px;border-right:1px solid #292929}.context-strip span:last-child{border:0}
+    .metric-stage{margin-top:0}.metric-stage .card{padding:18px}.big-metric{min-height:178px}.metric-number{font-size:clamp(54px,7vw,92px)}.segmented{margin:16px 0 12px}.segmented button{padding:8px 13px;font-size:11px}
+    .parts-mitigation{display:grid;grid-template-columns:.95fr 1.05fr;gap:14px;margin-top:18px}.parts-mitigation .event-row{padding:9px 0;font-size:11px;grid-template-columns:54px 1fr auto}.parts-mitigation .compare{margin-top:0;grid-template-columns:1fr 30px 1fr}.parts-mitigation .compare-card{padding:12px 8px}.parts-mitigation .compare-card .value{font-size:38px}
+    .identity-grid{gap:14px;background:transparent}.identity-box{border:1px solid #292929;padding:14px 16px}.identity-box li{font-size:11px;line-height:1.45;margin-bottom:5px}.reliability-grid{margin-top:10px}.reliability-card{min-height:72px;padding:9px 11px}
+    .tech-stack-grid{margin-top:18px}.tech-stack-card{padding:13px 12px}.tech-stack-card li{font-size:10px;line-height:1.42;margin-bottom:4px}
+    .gcp-flow{margin-top:18px}.gcp-node{min-height:78px}.demo-console{padding:10px 12px;margin-top:10px}.demo-controls{border-bottom:0;padding-bottom:0}.demo-controls-title{display:none}.demo-buttons{display:grid;grid-template-columns:repeat(4,1fr);width:100%}.demo-btn{justify-content:center;padding:7px 6px;font-size:9.5px}.demo-pipeline-view{grid-template-columns:1fr 1fr 1fr;margin-top:8px;gap:8px}.demo-stage-box{min-height:82px;padding:8px 10px}.live-telemetry-bar{margin-top:7px}.failclosed-alert{margin-top:7px;min-height:46px;padding:7px 9px;font-size:10px}.gcp-actions{margin-top:7px}.gcp-link-btn{padding:6px 10px;font-size:10px}
+    .demo-pipeline-view.simplified{grid-template-columns:1.25fr .75fr}
+    .roadmap-grid{margin-top:18px}.roadmap-card{padding:13px}.roadmap-card li{font-size:10px;line-height:1.42;margin-bottom:4px}
+    .footer{height:var(--bottom);padding:0 var(--side);background:rgba(5,5,5,.9)}.nav button{width:30px;height:30px}.dot{width:17px}
+    @media(max-height:760px){.slide{padding-top:52px;padding-bottom:50px}.slide-inner{max-height:618px}.slide:not(.cover) h1,.slide:not(.cover) h2{font-size:40px}.evidence-overview{grid-template-columns:minmax(390px,.9fr) minmax(0,1.1fr);gap:28px}.evidence-ring{width:360px}.evidence-ring .ring-center{width:112px;height:112px}.evidence-ring .ring-node{width:150px}.evidence-ring .ring-node.n2{right:-38px}.evidence-ring .ring-node.n4{left:-38px}.slide[data-title="문제"] .slide-inner{height:calc(100vh - 102px)}.slide[data-title="문제"] .kicker{margin-bottom:16px}.slide[data-title="문제"] #s1-title{font-size:40px}.slide[data-title="문제"] .lead{margin-top:6px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:500px minmax(0,1fr);gap:40px;margin-top:52px}.slide[data-title="문제"] .evidence-ring{width:296px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-75px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-75px}.slide[data-title="문제"] .stat-lines{gap:16px}.slide[data-title="문제"] .stat-line{grid-template-columns:132px 1fr;gap:36px;min-height:96px;padding:16px 0 16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:auto}.slide[data-title="문제"] .source-line{margin-top:16px}.cover-manifesto-grid{margin-top:28px}.glossary-bar{font-size:9.5px}.source-line,.slide-src{font-size:8.5px}}
+    @media(max-width:900px){.evidence-overview,.two-up,.spec-grid,.parts-mitigation{grid-template-columns:1fr}.evidence-ring{width:340px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:1fr;gap:24px;margin-top:24px}.slide[data-title="문제"] .evidence-ring{width:286px}.slide[data-title="문제"] .evidence-ring .ring-node{width:132px;padding-inline:9px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-66px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-66px}.slide[data-title="문제"] .stat-line{grid-template-columns:126px 1fr;gap:32px;min-height:90px;padding:16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:24px}.shield-primer{grid-template-columns:1fr}.primer-arrow{transform:rotate(90deg)}.tech-stack-grid,.reliability-grid,.roadmap-grid{grid-template-columns:1fr 1fr}.demo-buttons{grid-template-columns:1fr 1fr}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
   </style>
 </head>
-<body>
+<body class="is-cover">
   <div class="fallback-note">정적 fallback · 아래로 스크롤</div>
   <header class="topbar">
     <div class="brand">SPECTRA</div>
   </header>
   <main id="deck">
-    <section class="slide active" data-title="문제" aria-labelledby="s1-title">
+    <section class="slide cover active" data-title="시작" aria-labelledby="cover-title">
       <div class="slide-inner">
-        <p class="kicker">01 · The broken evidence chain</p>
-        <h1 id="s1-title">계산은 끝났는데,<br><span class="danger">근거는 연결되지 않았다.</span></h1>
-        <p class="lead">임무 결과, 정확한 부품, 시험 조건과 승인이 서로 다른 파일에 흩어져 있습니다.</p>
-        <div class="broken-flow" aria-label="끊어진 현재 업무 흐름">
-          <div class="flow-node"><strong>환경 계산</strong><span>궤도 · TID · 입자</span></div><i class="break"></i>
-          <div class="flow-node"><strong>BOM</strong><span>정확한 PN · 공정 · 로트</span></div><i class="break"></i>
-          <div class="flow-node"><strong>시험 PDF</strong><span>조건 · 범위 · 원문 위치</span></div><i class="break"></i>
-          <div class="flow-node"><strong>완화 · 승인</strong><span>ECC · 정책 · 책임자</span></div>
+        <h1 id="cover-title" class="cover-hero">SPECTRA</h1>
+        <p class="cover-acronym"><span style="color:#fff;font-weight:750">S</span>pace <span style="color:#fff;font-weight:750">P</span>arts <span style="color:#fff;font-weight:750">E</span>vidence · <span style="color:#fff;font-weight:750">C</span>omponent <span style="color:#fff;font-weight:750">T</span>raceability · <span style="color:#fff;font-weight:750">R</span>adiation <span style="color:#fff;font-weight:750">A</span>ssurance</p>
+        <div class="cover-manifesto-grid">
+          <p class="cover-sub">우주 부품 증거 · 소자 추적성 · 방사선 보증,<br><strong>데이터 무결성으로 궤도 방사선 신뢰성을</strong> 입증한다.</p>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-title="입력" aria-labelledby="s2-title">
+    <section class="slide" data-title="문제" aria-labelledby="s1-title">
       <div class="slide-inner">
-        <p class="kicker">02 · Mission & BOM input</p>
-        <h2 id="s2-title">한 임무, 한 부품에서<br><span class="accent">추적 가능한 질문</span>을 시작한다.</h2>
-        <div class="grid-2">
-          <article class="card">
-            <p class="card-label">Representative LEO mission · SYNTHETIC</p>
-            <div class="facts">
-              <div class="fact"><span>Orbit</span><b>LEO</b></div><div class="fact"><span>Altitude</span><b>550 km</b></div>
-              <div class="fact"><span>Inclination</span><b>97.6°</b></div><div class="fact"><span>Duration</span><b>1 year</b></div>
-            </div>
-          </article>
-          <article class="card">
-            <p class="card-label">Single component fixture · SYNTHETIC</p>
-            <h3>Memory × 2</h3>
-            <div class="identity"><i>manufacturer</i> Example Semi<br><i>part_number</i> EX-100<br><i>process / lot</i> P1 / LOT-A</div>
-          </article>
-        </div>
-        <p class="lead slide2-note">승인 BOM <strong class="warn">0건</strong>. 화면의 부품 identity는 합성이며, 실제 추천이 아닙니다.</p>
-      </div>
-    </section>
-
-    <section class="slide" data-title="환경·차폐" aria-labelledby="s3-title">
-      <div class="slide-inner">
-        <p class="kicker">03 · Environment & shielding</p>
-        <h2 id="s3-title">두께를 고르면, 엔진이 검증한<br><span class="accent">고정 결과만</span> 비교한다.</h2>
-        <div class="segmented" id="shield-controls" role="group" aria-label="차폐 시나리오 선택">
-          <button type="button" data-shield="1">1 mm</button><button type="button" data-shield="2" class="selected">2 mm</button><button type="button" data-shield="4">4 mm</button><button type="button" data-shield="5">5 mm · 범위 밖</button>
-        </div>
-        <div class="metric-stage">
-          <article class="card big-metric" id="tid-card">
-            <p class="card-label">Shielded TID · SYNTHETIC</p>
-            <div><span class="metric-number" id="tid-value">6.0</span><span class="metric-unit" id="tid-unit">krad(Si)</span></div>
-            <p class="metric-note" id="tid-note">요구 TID 12.0 krad(Si) · 설계계수 2</p>
-          </article>
-          <article class="card">
-            <p class="card-label">Deterministic snapshot</p><h3 id="scope-status">VALID</h3>
-            <p>이산 lookup: 1 / 2 / 3 / 4 mm</p><p>보간·외삽: 하지 않음</p>
-            <p class="micro" id="scope-detail">run sim-3cc00f2c824db56d<br>model v1.0.0</p>
-            <div class="truth-strip"><span class="synthetic">SYNTHETIC</span><span class="hold">HOLD</span></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="부품 증거" aria-labelledby="s4-title">
-      <div class="slide-inner">
-        <p class="kicker">04 · Parts evidence</p>
-        <h2 id="s4-title">좋은 수치와 충분한 증거는<br><span class="warn">같은 말이 아니다.</span></h2>
-        <div class="evidence-lanes">
-          <article class="card lane">
-            <p class="card-label">Synthetic fixture can calculate</p>
-            <div class="event-row"><b>TID</b><span>시험 한계 25 krad(Si)</span><span class="state synthetic-ok">SYNTHETIC</span></div>
-            <div class="event-row"><b>SEU</b><span>단면적 1×10⁻⁶ cm²/device</span><span class="state synthetic-ok">SYNTHETIC</span></div>
-          </article>
-          <article class="card lane blocked">
-            <p class="card-label">Real assurance still needs evidence</p>
-            <div class="event-row"><b>SEL</b><span>실제 원문·조건·권리</span><span class="state missing">0건</span></div>
-            <div class="event-row"><b>SEB</b><span>독립 event evidence</span><span class="state missing">0건</span></div>
-            <div class="event-row"><b>SEGR</b><span>독립 event evidence</span><span class="state missing">0건</span></div>
-          </article>
-        </div>
-        <p class="lead slide4-note">합성 `SEL`은 정책 경로용 placeholder입니다. SEU 결과는 SEL·SEB·SEGR의 실제 근거를 대신하지 않습니다.</p>
-      </div>
-    </section>
-
-    <section class="slide" data-title="완화" aria-labelledby="s5-title">
-      <div class="slide-inner">
-        <p class="kicker">05 · Mitigation comparison</p>
-        <h2 id="s5-title">ECC는 <span class="accent">잔여 SEU</span>를 바꾼다.<br>사건 발생 자체를 지우지는 않는다.</h2>
-        <div class="segmented" id="ecc-controls" role="group" aria-label="ECC 시나리오 선택"><button type="button" data-ecc="off">ECC OFF</button><button type="button" data-ecc="on" class="selected">ECC ON</button></div>
-        <div class="compare">
-          <article class="card compare-card"><p class="card-label">Raw SEU · incident</p><div class="value">0.063072</div><p>events / mission · SYNTHETIC</p><div class="bar"><i style="width:100%"></i></div></article>
-          <div class="arrow" aria-hidden="true">→</div>
-          <article class="card compare-card"><p class="card-label">Residual SEU · after mitigation</p><div class="value" id="residual-value">0.0063072</div><p>events / mission · SYNTHETIC</p><div class="bar"><i id="residual-bar" style="width:10%"></i></div></article>
-        </div>
-        <p class="micro" id="ecc-run">ECC ON snapshot · run sim-3cc00f2c824db56d · 합성 effectiveness factor 0.1 · 실제 완화 효과가 아님 · assurance HOLD</p>
-      </div>
-    </section>
-
-    <section class="slide" data-title="안전한 판정" aria-labelledby="s6-title">
-      <div class="slide-inner">
-        <p class="kicker">06 · Fail-closed assurance</p>
-        <h2 id="s6-title">수치 조건이 좋아도,<br>증거가 없으면 멈춘다.</h2>
-        <div class="assurance-status" aria-label="현재 데모 상태"><span>SYNTHETIC</span><span>NOT PHYSICAL EVIDENCE</span><span class="final">ASSURANCE: HOLD</span></div>
-        <div class="decision">
-          <div class="logic">
-            <div class="logic-row"><b>Engineering gate</b><span>→</span><strong class="accent">PASS</strong></div>
-            <div class="logic-row"><b>Blocking gap</b><span>→</span><strong>SYNTHETIC_ONLY</strong></div>
-            <div class="logic-row"><b>Assurance</b><span>→</span><strong class="warn">승격 금지</strong></div>
+        <div class="slide-main">
+          <div class="slide-heading">
+            <p class="kicker">01 · THE BROKEN EVIDENCE CHAIN &amp; REALITY</p>
+            <h1 id="s1-title">계산은 끝났는데,<br><span class="danger">근거는 연결되지 않았다.</span></h1>
+            <p class="lead">임무·부품·시험·완화 정보가 서로 다른 파일에 흩어지면, 계산 결과의 근거를 끝까지 추적할 수 없다.</p>
           </div>
-          <div class="decision-word">HOLD</div>
+          <div class="evidence-overview">
+            <div class="evidence-ring" aria-label="순서가 아닌 상호 연결형 근거 체인">
+              <div class="ring-center"><b>근거 체인 단절</b><span>기계적 추적 불가</span></div>
+              <div class="ring-node n1"><b>궤도 환경 계산</b><span>SPENVIS / SHIELDOSE</span></div>
+              <div class="ring-node n2"><b>소자 식별 명세</b><span>PN · 공정 · 로트 번호</span></div>
+              <div class="ring-node n3"><b>완화 &amp; 보증 판정</b><span>ECC 완화 · RDM 마진</span></div>
+              <div class="ring-node n4"><b>가속기 빔 성적서</b><span>중이온 PDF 원문</span></div>
+            </div>
+            <div class="stat-lines">
+              <article class="stat-line"><span class="stat-num">80~90%</span><div><div class="stat-label">NewSpace의 COTS 채택 비중</div><div class="stat-sub">비용·성능 이점과 방사선 근거 공백이 함께 커진다.</div></div></article>
+              <article class="stat-line"><span class="stat-num">40~50%</span><div><div class="stat-label">소형위성 조기 임무 실패율</div><div class="stat-sub">초기 설계 단계에서 부품 위험을 놓치면 궤도에서 되돌리기 어렵다.</div></div></article>
+              <article class="stat-line"><span class="stat-num">3~6개월</span><div><div class="stat-label">가속기 빔 시험 대기</div><div class="stat-sub">시험 일정과 문서 검토가 분리될수록 판단 근거의 연결이 늦어진다.</div></div></article>
+            </div>
+          </div>
         </div>
-        <div class="next-actions"><span class="action"><strong>01</strong>실제 환경 출력 확보</span><span class="action"><strong>02</strong>승인 BOM·원문 시험 근거 연결</span><span class="action"><strong>03</strong>파괴성 SEE별 추가 시험·근거 확보</span><span class="action"><strong>04</strong>독립 assurance 재검토</span></div>
+        <div class="slide-endnotes">
+          <div class="glossary-bar"><span><b>COTS</b> 상용 기성 부품</span><span><b>RDM</b> 방사선 설계 마진 계수</span></div>
+          <div class="source-line">※ 출처 후보: NASA SSRI TM-2018-220034 · ECSS-Q-ST-60-15C · CubeSat Database · 적용 범위 독립 검증 전</div>
+        </div>
       </div>
     </section>
 
-    <section class="slide" data-title="Evidence Chain" aria-labelledby="s7-title">
+    <section class="slide" data-title="기존 한계" aria-labelledby="s2-title">
       <div class="slide-inner">
-        <p class="kicker">07 · Evidence chain & next path</p>
-        <h2 id="s7-title">판정보다 먼저,<br><span class="accent">판정의 계보</span>를 남긴다.</h2>
-        <div class="chain" aria-label="Evidence Chain">
-          <div class="chain-node"><span class="card-label">01 Input</span><b>Mission · BOM</b><code>SYNTHETIC fixture</code></div>
-          <div class="chain-node"><span class="card-label">02 Model</span><b>Baseline v1.0.0</b><code>NOT_PHYSICAL</code></div>
-          <div class="chain-node"><span class="card-label">03 Integrity</span><b>run + SHA-256</b><code>sim-3cc00f2c824db56d<br>3cc00f…c10f0b3</code></div>
-          <div class="chain-node"><span class="card-label">04 Rights</span><b>Gate before ingest</b><code>actual grants: 0</code></div>
-          <div class="chain-node"><span class="card-label">05 Decision</span><b class="warn">HOLD</b><code>SYNTHETIC_ONLY</code></div>
+        <p class="kicker">02 · CONVENTIONAL APPROACHES VS SPECTRA</p>
+        <h2 id="s2-title">기존 DB와 엑셀 취합은<br><span class="warn">왜 근거 체인을 보증하지 못하는가.</span></h2>
+        <p class="lead">NASA REAG, ESA ESCIES 등 기존 방식은 정적 문서 저장소에 불과해, 방사선 시험 조건의 정합성과 설계 변경 영향을 기계적으로 추적하지 못한다.</p>
+        <div class="two-up">
+          <article class="panel-flat"><span class="panel-tag">기존 취합 방식 · NASA REAG · ESA ESCIES · Excel DB</span><ul class="compact-list"><li><strong>정적 PDF 저장소의 한계:</strong> 수만 건의 빔 시험 보고서가 PDF로 방치되어 시험 조건을 시스템이 기계적으로 검증 불가</li><li><strong>수동 전기의 인적 오류:</strong> 엑셀 전기 과정에서 인적 오타 및 유사 부품 임의 차용(False Assumption) 빈번</li><li><strong>설계 변경 추적 불가:</strong> 궤도나 부품 로트가 바뀌어도 무효화된 방사선 가정을 실시간 파악 불가</li><li><strong>관성적 낙관주의:</strong> 결측이 있어도 경험에 의존한 판단(False PASS 위험) 유발</li></ul></article>
+          <article class="panel-flat" style="border-color:#777"><span class="panel-tag">SPECTRA가 지원하는 방식 · Multi-Agent Evidence Assurance</span><ul class="compact-list"><li><strong>기계 검증형 데이터 규칙:</strong> JSON Schema와 RFC 8785 정규화 해시로 환경·성적서·완화 정책을 결속</li><li><strong>부품 식별 정합성(Exact Identity):</strong> 제조사·공정·다이·로트 및 시험 조건이 일치하지 않는 성적서는 거절</li><li><strong>변경 파급 감사:</strong> 암호학적 해시 체인으로 궤도나 차폐 변경 시 깨진 가정을 감지</li><li><strong>Fail-Closed:</strong> 방사선 시험 증거가 결측되거나 불충분하면 HOLD로 격리</li></ul></article>
         </div>
-        <div class="zero-row"><div class="zero"><b>0</b><span>실제 환경 모델 run</span></div><div class="zero"><b>0</b><span>실제 BOM·시험 PDF</span></div><div class="zero"><b>0</b><span>GCP resource</span></div></div>
-        <p class="lead">GCP는 원본·권리·감사 이력의 설계 방향입니다. 실제 리소스·호출·비용은 모두 0입니다.</p>
+        <div class="glossary-bar"><span><b>NASA REAG</b> NASA 고다드 방사선 효과 DB</span><span><b>ESA ESCIES</b> 유럽우주국 부품 정보교환 포털</span><span><b>Fail-Closed</b> 근거 결측 시 HOLD로 닫는 원칙</span></div>
+        <div class="source-line">※ NASA GSFC REAG Database · ESA ESCIES Component Portal · ECSS-Q-ST-60-15C RHA Guidelines</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="COTS 비교" aria-labelledby="s3-title">
+      <div class="slide-inner">
+        <p class="kicker">03 · COTS ADOPTION &amp; RADIATION UNCERTAINTY</p>
+        <h2 id="s3-title">왜 COTS인가, 그리고 왜 검증인가.<br><span class="accent">압도적 가성비 뒤에 숨은 방사선 데이터 불확실성.</span></h2>
+        <p class="lead">NewSpace는 비용 절감과 고성능 처리를 위해 COTS(상용 부품)를 필연적으로 채택하지만, 방사선 시험 성적서 결측과 생산 로트 편차를 검증하지 못하면 궤도 참사로 이어집니다.</p>
+        <div class="two-up">
+          <article class="panel-flat"><span class="panel-tag">전통적 우주급 부품 (Rad-Hard)</span><table class="comparison-table"><tr><td>단가 &amp; 납기</td><td>칩 1개당 수억 원대 / 12~24개월 소요 (극도로 고가, ITAR 규제)</td></tr><tr><td>연산 성능</td><td>구형 공정 기반 저속 연산 (최신 AI 탑재 불가)</td></tr><tr><td>TID 내선량</td><td>100 krad(Si) 이상 (극도로 안전)</td></tr><tr><td>SEL 래치업</td><td>제조사가 100% 면역 보증 (가속기 빔 시험 완료)</td></tr><tr><td>데이터 신뢰성</td><td>MIL-SPEC / QML-V 공인 인증서 기본 동봉</td></tr></table></article>
+          <article class="panel-flat" style="border-color:#777"><span class="panel-tag">상용 기성 부품 (COTS · EX-100)</span><table class="comparison-table"><tr><td>단가 &amp; 납기</td><td>수십만 원대 / 즉시 조달 (비용 98% 절감)</td></tr><tr><td>연산 성능</td><td>최신 28nm 고집적 나노 공정 (수십 배 고성능)</td></tr><tr><td>TID 내선량</td><td>⚠️ 5~25 krad(Si) (상대적으로 낮음)</td></tr><tr><td>SEL 래치업</td><td>⚠️ 미검증 / 성적서 결측 위험 (치명적 약점)</td></tr><tr><td>데이터 신뢰성</td><td>⚠️ 시험 성적서 부재 &amp; 생산 로트별 편차 심함</td></tr></table></article>
+        </div>
+        <div class="bridge-row"><div class="bridge-item"><b>부품 식별 정합성 (Exact Identity)</b><span>제조사·공정·로트 단위로 성적서와 BOM의 일치성을 검증</span></div><div class="bridge-item"><b>결정론적 차폐 설계 (RDM 2.0)</b><span>낮은 COTS TID 내선량에 맞춰 궤도 피폭량을 감쇠</span></div><div class="bridge-item"><b>Fail-Closed 보증 (HOLD)</b><span>SEL 시험 성적서 결측을 적발하여 판단을 보류</span></div></div>
+        <div class="glossary-bar"><span><b>COTS</b> 상용 기성 부품</span><span><b>Rad-Hard</b> 방사선 경화 특수 소자</span><span><b>QML-V</b> 미국 우주 규격 최고 등급 인증</span></div>
+        <div class="source-line">※ 비교 청사진 · 가격·납기·성능·면역 수치는 원문·조건·적용성 독립 검증 전이며 판단에 사용하지 않음 · NOT_EVALUATED / HOLD</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="차폐 이해" aria-labelledby="s4-title">
+      <div class="slide-inner">
+        <p class="kicker">04 · WHY SHIELDING MATTERS</p>
+        <h2 id="s4-title">왜 방사선을 차폐하고,<br><span class="accent">1·4·5 mm는 무엇을 의미하는가.</span></h2>
+        <div class="shield-primer" aria-label="방사선에서 부품 판단까지의 흐름">
+          <article class="primer-stage"><span class="primer-num">01 · ORBIT</span><b>궤도 방사선에 노출</b><p>임무 궤도와 기간에 따라 전자부품이 받는 입자 환경과 누적 선량이 달라진다.</p></article><div class="primer-arrow">→</div>
+          <article class="primer-stage"><span class="primer-num">02 · AL SHIELD</span><b>알루미늄이 에너지를 감쇠</b><p>차폐 두께는 부품 위치에서 흡수되는 총 이온화 선량(TID)을 바꾸는 설계 입력이다.</p></article><div class="primer-arrow">→</div>
+          <article class="primer-stage"><span class="primer-num">03 · EVIDENCE</span><b>부품 시험 근거와 대조</b><p>줄어든 TID만으로 충분하지 않다. 정확한 부품의 TID·SEU·SEL 근거와 함께 판단한다.</p></article>
+        </div>
+        <div class="thickness-key"><div><b>1 mm Al</b><span>상대적으로 얇은 차폐 · 합성 table의 높은 TID 지점</span></div><div><b>4 mm Al</b><span>상대적으로 두꺼운 차폐 · 합성 table의 낮은 TID 지점</span></div><div><b>5 mm Al</b><span>물리적으로 불가능한 값이 아니라 현재 합성 table 범위 밖 · 숫자 생성 안 함</span></div></div>
+        <div class="glossary-bar"><span><b>TID</b> 누적 총 이온화 선량</span><span><b>Al</b> 알루미늄 등가 차폐 두께</span><span><b>RDM</b> 방사선 설계 마진 계수</span></div>
+        <div class="source-line">전체 흐름 · 임무 조건 → 환경 → 차폐 → 부품 시험 근거 → 완화 → HOLD 또는 재검토</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="임무·부품" aria-labelledby="s5-title">
+      <div class="slide-inner">
+        <p class="kicker">05 · TARGET MISSION &amp; COMPONENT EVIDENCE</p>
+        <h2 id="s5-title">단 1바이트의 차이가,<br><span class="accent">전체 궤도 해석을 무효화한다.</span></h2>
+        <p class="lead">LEO SSO 550 km 궤도 조건과 COTS SRAM 부품을 정의하고, 제조사·로트 번호 기반으로 방사선 시험 증거의 일치성을 검증합니다.</p>
+        <div class="spec-grid">
+          <article class="panel-flat"><span class="panel-tag">01 · TARGET MISSION PROFILE</span><div class="panel-title">LEO SSO 550 km</div><table class="spec-table"><tr><td>궤도 형태 (Orbit)</td><td>태양동기궤도 (SSO)</td></tr><tr><td>운용 고도 (Altitude)</td><td>550 km</td></tr><tr><td>궤도 경사각 (Inc.)</td><td>97.6°</td></tr><tr><td>임무 수명 (Duration)</td><td>1년 (365일)</td></tr></table><div class="source-line">※ 궤도 고도·경사각 파라미터가 다음 차폐 해석으로 전달됨</div></article>
+          <article class="panel-flat"><span class="panel-tag">02 · TARGET COMPONENT BOM</span><div class="panel-title">COTS SRAM (EX-100)</div><table class="spec-table"><tr><td>제조사 (Vendor)</td><td>COTS Semiconductor</td></tr><tr><td>부품 식별 번호</td><td>EX-100-SRAM-64M</td></tr><tr><td>제조 공정 노드</td><td>28 nm CMOS</td></tr><tr><td>생산 로트 (Lot ID)</td><td>LOT-2024-Q3-0881</td></tr></table><div class="context-strip"><span>✓ COTS 채택 이점</span><span>⚠ TID·SEL 증거 필요</span></div></article>
+        </div>
+        <div class="glossary-bar"><span><b>SSO</b> 태양동기궤도</span><span><b>COTS</b> 우주 전용이 아닌 상용 기성 부품</span><span><b>Lot ID</b> 동일 제조 공정 배치의 생산 로트 식별 번호</span></div>
+        <div class="source-line">※ 데이터 규격: JSON Schema Draft 2020-12 · IETF RFC 8785 (JCS) · SYNTHETIC DEMO</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="환경·차폐" aria-labelledby="s6-title">
+      <div class="slide-inner">
+        <p class="kicker">06 · DETERMINISTIC SHIELDING &amp; TID ASSURANCE</p>
+        <h2 id="s6-title">두께를 고르면, 엔진이 검증한<br><span class="accent">결정론적 방사선 해석만 실행한다.</span></h2>
+        <p class="lead">임의의 수학적 외삽(보간)을 배제하고, 사전 검증된 알루미늄 차폐 모델 범위 내에서만 총 이온화 선량(TID)을 결정론적으로 산출합니다.</p>
+        <div class="context-strip"><span>기준 궤도: LEO SSO 550 km (1년 운용)</span><span>등록된 합성 이산 table</span></div>
+        <div class="segmented" id="shield-controls" role="group" aria-label="차폐 시나리오 선택"><button type="button" data-shield="1">1 mm Al</button><button type="button" data-shield="2">2 mm Al</button><button type="button" data-shield="4" class="selected">4 mm Al</button><button type="button" data-shield="5">5 mm Al · 범위 밖</button></div>
+        <div class="metric-stage">
+          <article class="card big-metric" id="tid-card"><p class="card-label">01 · SHIELDED TID OUTPUT · SYNTHETIC</p><div><span class="metric-number" id="tid-value">3.5</span><span class="metric-unit" id="tid-unit">krad(Si)</span></div><p class="metric-note" id="tid-note">요구 검증 선량 7.0 krad(Si) = 차폐 후 TID 3.5 × RDM 2.0</p></article>
+          <article class="card"><p class="card-label">02 · DETERMINISTIC SCOPE GUARD</p><h3 id="scope-status">VALID</h3><ul class="compact-list"><li>이산 검증 범위: 1 / 2 / 3 / 4 mm Al</li><li>5 mm 등 미등록 두께: 외삽·보간 없이 HOLD</li><li>동일 입력: 동일한 합성 결과</li></ul><p class="micro" id="scope-detail">run sim-ddf29f8ab807196d · model v1.0.0</p></article>
+        </div>
+        <div class="glossary-bar"><span><b>TID</b> 누적 총 이온화 선량</span><span><b>RDM</b> 방사선 설계 안전 마진 계수</span><span><b>krad</b> 방사선 흡수선량 단위</span></div>
+        <div class="source-line">※ 합성 고정 table · 실제 SPENVIS environment contract 및 과학 교차검산 전 · HOLD</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="부품·완화" aria-labelledby="s7-title">
+      <div class="slide-inner">
+        <p class="kicker">07 · PARTS EVIDENCE &amp; MITIGATION ANALYSIS</p>
+        <h2 id="s7-title">ECC 완화로 오류를 줄여도,<br><span class="warn">시험 증거 없는 신뢰성 보증은 없다.</span></h2>
+        <p class="lead">SEU 잔여 오류를 줄이는 합성 비교가 있어도, 소자를 영구 파괴할 수 있는 SEL 시험 성적서가 없으면 최종 보증 판단을 HOLD로 격리합니다.</p>
+        <div class="parts-mitigation">
+          <article class="panel-flat"><span class="panel-tag">01 · PART EVIDENCE VERIFICATION</span><div class="panel-title">부품 방사선 시험 증거 대조 · EX-100</div><div class="event-row"><b>TID</b><span>내선량 한계 25 krad(Si) · 합성 fixture</span><span class="state synthetic-ok">SYNTHETIC</span></div><div class="event-row"><b>SEU</b><span>단면적 1×10⁻⁴ cm²/device · 합성 fixture</span><span class="state synthetic-ok">SYNTHETIC</span></div><div class="event-row"><b>SEL</b><span>실제 래치업 시험 성적서 결측</span><span class="state missing">0건 · HOLD</span></div><div class="source-line">※ 실제 TID·SEU·SEL 원문·조건·권리·적용성 검토 전</div></article>
+          <article class="panel-flat"><span class="panel-tag">02 · SEU MITIGATION MODEL · 2 mm Al FIXED</span><div class="panel-title">SEU 소프트웨어 완화 시뮬레이션</div><div class="segmented" id="ecc-controls" role="group" aria-label="ECC 시나리오 선택"><button type="button" data-ecc="off" class="selected">ECC OFF</button><button type="button" data-ecc="on">ECC ON</button></div><div class="compare"><div class="compare-card"><p class="card-label">Raw Incident</p><div class="value" id="raw-value">—</div></div><div class="arrow">→</div><div class="compare-card"><p class="card-label">Residual SEU</p><div class="value" id="residual-value">—</div><div class="bar"><i id="residual-bar" style="width:0"></i></div></div></div><p class="micro" id="ecc-run">Production MVP Core 결과 확인 전 · DATA_UNAVAILABLE · HOLD</p></article>
+        </div>
+        <div class="glossary-bar"><span><b>SEU</b> 일시적 비트 반전 오류</span><span><b>SEL</b> 소자에 손상을 줄 수 있는 래치업</span><span><b>ECC</b> 오류 검출 및 정정 부호</span></div>
+        <div class="source-line">※ 합성 완화 비교 · 실제 ECC 성능 또는 부품 적합성 보증 아님</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="범위·신뢰성" aria-labelledby="s8-title">
+      <div class="slide-inner">
+        <p class="kicker">08 · SCOPE &amp; RELIABILITY</p>
+        <h2 id="s8-title">SPECTRA가 지원하는 범위와,<br><span class="accent">지원하지 않는 범위를 함께 보여준다.</span></h2>
+        <div class="identity-grid">
+          <article class="identity-box is-box"><span class="identity-tag is">지원하는 범위</span><ul><li><strong>방사선 근거 체인 &amp; 감사:</strong> 궤도 환경·부품 시험 성적서·완화 가정을 추적 가능한 증거 패킷으로 결합</li><li><strong>Fail-Closed 판단:</strong> 근거가 0건이거나 모델 지원 범위 밖이면 HOLD로 판단 보류</li><li><strong>결정론적 Multi-Agent 실행:</strong> 환경·부품·판정 역할이 데이터 무결성을 독립 대조</li></ul></article>
+          <article class="identity-box isnot-box"><span class="identity-tag isnot">지원하지 않는 범위</span><ul><li><strong>임무 적합성 자동 인증 도구가 아님:</strong> AI가 부품 적합성을 임의로 보증하거나 단독 승인하지 않음</li><li><strong>생성형 AI 추측에 의존하지 않음:</strong> 물리 규칙과 불변 데이터 검증 경로를 사용</li><li><strong>가속기 빔 시험의 대체가 아님:</strong> 시험 성적서 없이 숫자를 지어내지 않음</li></ul></article>
+        </div>
+        <div class="reliability-grid"><article class="reliability-card"><div class="guard-head"><b>01</b><span>재현성</span></div><div class="guard-name">같은 입력 → 같은 결과</div><div class="guard-note">결정론적 고정 재현</div></article><article class="reliability-card"><div class="guard-head"><b>02</b><span>범위 보호</span></div><div class="guard-name">범위 밖 → 계산 안 함</div><div class="guard-note">보간·외삽 엄격 금지</div></article><article class="reliability-card"><div class="guard-head"><b>03</b><span>보수적 안전</span></div><div class="guard-name">근거 결측 → 즉시 HOLD</div><div class="guard-note">Fail-Closed 의사결정</div></article><article class="reliability-card"><div class="guard-head"><b>04</b><span>무결성</span></div><div class="guard-name">바뀐 숫자 → 즉시 무효화</div><div class="guard-note">변조 감지 해시 체인</div></article></div>
+        <div class="glossary-bar"><span><b>Fail-Closed</b> 미검증·결측 시 HOLD로 닫는 원칙</span><span><b>결정론적</b> 동일 입력에 동일 결과를 내는 연산</span><span><b>Multi-Agent</b> 역할별 전문 모듈이 독립 대조하는 구조</span></div>
+        <div class="source-line">※ ISO/IEC 25010 · IETF RFC 8785 (JCS) · NIST FIPS 180-4 (SHA-256)</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="구현 도구" aria-labelledby="s9-title">
+      <div class="slide-inner">
+        <p class="kicker">09 · IMPLEMENTATION TOOLS &amp; TECH STACK</p>
+        <h2 id="s9-title">이 원칙을 실현하기 위해,<br><span class="accent">4개 계층의 핵심 구현 도구를 구축했다.</span></h2>
+        <div class="tech-stack-grid">
+          <article class="tech-stack-card"><span class="tech-layer-tag l1">Layer 01 · Physics Core</span><div class="tech-layer-title">결정론적 방사선 물리 엔진</div><div class="tech-chips"><span class="tech-chip">Python 3.11</span><span class="tech-chip">NumPy</span><span class="tech-chip">SciPy</span></div><ul><li>궤도·차폐 결합</li><li>단일사건(SEE) 적분</li><li>지원 범위 밖 외삽 거부</li></ul></article>
+          <article class="tech-stack-card"><span class="tech-layer-tag l2">Layer 02 · Data Rules &amp; Hash</span><div class="tech-layer-title">불변 데이터 규칙 &amp; 증거 체인</div><div class="tech-chips"><span class="tech-chip">JSON Schema</span><span class="tech-chip">RFC 8785 JCS</span><span class="tech-chip">SHA-256</span></div><ul><li>EvidencePacket 결속</li><li>정규화 직렬화</li><li>1바이트 변조 감지</li></ul></article>
+          <article class="tech-stack-card"><span class="tech-layer-tag l3">Layer 03 · GCP Serverless</span><div class="tech-layer-title">최소권한 멀티 에이전트 인프라</div><div class="tech-chips"><span class="tech-chip">GCP Workflows</span><span class="tech-chip">Cloud Run × 3</span><span class="tech-chip">Cloud Storage</span></div><ul><li>3개 독립 Agent</li><li>상태 격리·오류 트랩</li><li>create-only 결과 저장</li></ul></article>
+          <article class="tech-stack-card"><span class="tech-layer-tag l4">Layer 04 · Assurance Evals</span><div class="tech-layer-title">적대적 공격 검증 &amp; 신뢰성 평가</div><div class="tech-chips"><span class="tech-chip">PyTest</span><span class="tech-chip">E2E Runner</span><span class="tech-chip">Parity Verify</span></div><ul><li>결측·위조 공격 평가</li><li>False PASS 추적</li><li>로컬·클라우드 결과 대조</li></ul></article>
+        </div>
+        <div class="glossary-bar"><span><b>RFC 8785 (JCS)</b> JSON 키·표현을 표준화하는 직렬화 규격</span><span><b>False PASS</b> 결측·위조 위험을 통과로 오판하는 오류</span><span><b>Parity</b> 서로 다른 실행 경로의 결과 일치성</span></div>
+        <div class="source-line">※ 구현·합성 회귀 범위 · 실제 과학 정확성과 방사선 assurance 전체를 뜻하지 않음</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="GCP Multi-Agent" aria-labelledby="s10-title">
+      <div class="slide-inner">
+        <p class="kicker">10 · MULTI-AGENT ON GCP &amp; FAIL-CLOSED PIPELINE</p>
+        <h2 id="s10-title">각 Agent가 역할을 나누고,<br><span class="accent">한 단계의 실패를 다음 단계와 격리한다.</span></h2>
+        <div class="gcp-flow" id="workflow-flowchart" aria-label="GCP Multi-Agent Workflow 6단계">
+          <div class="gcp-node state-valid" id="node-01"><div class="gcp-node-header"><span>01 STORAGE</span><span class="node-pill">OK</span></div><b>샘플 입력</b></div>
+          <div class="gcp-node state-valid" id="node-02"><div class="gcp-node-header"><span>02 WORKFLOWS</span><span class="node-pill">OK</span></div><b>오케스트레이터</b></div>
+          <div class="gcp-node state-valid" id="node-03"><div class="gcp-node-header"><span>03 MISSION</span><span class="node-pill">VALID</span></div><b>환경 독립검증</b></div>
+          <div class="gcp-node state-valid" id="node-04"><div class="gcp-node-header"><span>04 PARTS</span><span class="node-pill">VALID</span></div><b>BOM·증거검증</b></div>
+          <div class="gcp-node state-valid" id="node-05"><div class="gcp-node-header"><span>05 ASSURANCE</span><span class="node-pill">VALID</span></div><b>판정 독립대조</b></div>
+          <div class="gcp-node state-valid" id="node-06"><div class="gcp-node-header"><span>06 STORAGE</span><span class="node-pill">SAVED</span></div><b>감사로그 기록</b></div>
+        </div>
+        <div class="demo-console">
+          <div class="demo-controls"><span class="demo-controls-title">Scenario</span><div class="demo-buttons" id="scenario-buttons-group"><button type="button" class="demo-btn active" data-scenario="normal">● 1. 정상 파이프라인</button><button type="button" class="demo-btn" data-scenario="mission_fail">● 2. 궤도 결측 차단</button><button type="button" class="demo-btn" data-scenario="parts_fail">● 3. 성적서 위조 적발</button><button type="button" class="demo-btn" data-scenario="assurance_fail">● 4. 결과 변조 방어</button></div></div>
+          <div id="demo-input-view" hidden></div>
+          <div class="demo-pipeline-view simplified">
+            <div class="demo-stage-box"><span class="demo-stage-label">Cloud Run Agent Execution</span><div id="demo-agent-view"><div class="demo-agent-pill"><span><strong>Mission Agent</strong> · LEO SSO 550km 환경 범위 검증</span><span class="demo-badge valid" id="badge-mission">VALID</span></div><div class="demo-agent-pill"><span><strong>Parts Agent</strong> · BOM 및 시험성적서 해시 대조</span><span class="demo-badge valid" id="badge-parts">VALID</span></div><div class="demo-agent-pill"><span><strong>Assurance Agent</strong> · 정책·결측 독립 대조</span><span class="demo-badge valid" id="badge-assurance">VALID</span></div></div></div>
+          <div class="demo-stage-box"><span class="demo-stage-label">Verified Decision</span><div class="demo-stage-val"><b>Status:</b> <span id="demo-status-text">SUCCEEDED (200 OK)</span><br><b>Decision:</b> <span class="demo-badge hold" id="demo-decision-badge">HOLD</span><br><span id="demo-reason-text">실제 근거 결측으로 판단 보류</span></div></div>
+          </div>
+          <div class="live-telemetry-bar"><span class="live-pill ready" id="live-status-pill">CONTROL TOWER VERIFIED SNAPSHOT</span><span class="live-meta-text">Workflow: <a id="live-exec-id" href="#" target="_blank" rel="noopener">execution ↗</a></span><span class="live-time-text" id="live-time-text">GCP 소요 시간</span></div>
+          <div class="failclosed-alert alert-normal" id="demo-failclosed-alert"><strong>정상 합성 실행:</strong> 세 Agent가 역할을 나눠 실행해도 실제 환경·부품 근거가 없으면 최종 판단은 HOLD.</div>
+        </div>
+        <div class="gcp-actions"><a class="gcp-link-btn" id="gcp-console-btn" target="_blank" rel="noopener noreferrer">Google Cloud Console Workflows 열기 ↗</a><span class="gcp-scope">iceu-686 · asia-northeast3 · Cloud Run Agent 3종</span></div>
+        <div class="glossary-bar"><span><b>Fail-Closed</b> 오류·위조 감지 시 후속 단계를 격리해 전파를 막는 원칙</span></div>
+        <div class="source-line">※ GCP Workflows &amp; Cloud Run · H05 verified synthetic snapshot · 실제 방사선 보증 아님</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="향후 로드맵" aria-labelledby="s11-title">
+      <div class="slide-inner">
+        <p class="kicker">11 · ROADMAP &amp; FUTURE EXPANSION TOOLS</p>
+        <h2 id="s11-title">검증된 기반 위에서,<br><span class="accent">실제 데이터와 AI 파이프라인으로 확장한다.</span></h2>
+        <div class="roadmap-grid">
+          <article class="roadmap-card"><span class="roadmap-phase-tag p1">Phase 01 · 단기 확장</span><div class="roadmap-title">공인 우주환경 DB 및 상용 부품 성적서 연동</div><div class="roadmap-tools"><span class="roadmap-tool-badge">ESA SPENVIS 연동</span><span class="roadmap-tool-badge">NASA 공인 DB</span><span class="roadmap-tool-badge">COTS 성적서 라이브러리</span></div><ul><li>우주 환경 연동</li><li>부품 증거 라이브러리</li><li>국제 표준 교차검산</li></ul></article>
+          <article class="roadmap-card"><span class="roadmap-phase-tag p2">Phase 02 · 중기 확장</span><div class="roadmap-title">AI 성적서 자동 분석 &amp; 엔지니어 검토 체계</div><div class="roadmap-tools"><span class="roadmap-tool-badge">Document AI</span><span class="roadmap-tool-badge">Gemini 멀티모달</span><span class="roadmap-tool-badge">Human-in-the-Loop</span></div><ul><li>PDF 성적서 자동 분석</li><li>AI 추출값 후보 격리</li><li>생산 로트 추적</li></ul></article>
+          <article class="roadmap-card"><span class="roadmap-phase-tag p3">Phase 03 · 장기 확장</span><div class="roadmap-title">설계 변경 영향 분석 &amp; 엔터프라이즈 보안</div><div class="roadmap-tools"><span class="roadmap-tool-badge">Change Impact Analyzer</span><span class="roadmap-tool-badge">3D 위성 CAD 연계</span><span class="roadmap-tool-badge">기업 보안 암호화</span></div><ul><li>설계 변경 영향 분석</li><li>물리·하드웨어 연계</li><li>고객사 비공개 evidence 보호</li></ul></article>
+        </div>
+        <div class="glossary-bar"><span><b>SPENVIS</b> ESA 우주 환경 해석 시스템</span><span><b>Human-in-the-Loop</b> AI 분석을 엔지니어가 검토하는 체계</span><span><b>Change Impact</b> 변경 시 영향받는 가정을 추적하는 기능</span></div>
+        <div class="source-line">※ 실제 연동·권리·과학 교차검산·일정은 향후 검증 대상</div>
+      </div>
+    </section>
+
+    <section class="slide cover closing" data-title="Q&amp;A" aria-labelledby="closing-title">
+      <div class="slide-inner">
+        <p class="kicker" style="letter-spacing:.28em;margin-bottom:12px">CONCLUSION &amp; Q&amp;A</p>
+        <h1 id="closing-title" class="cover-hero" style="font-size:min(160px,clamp(64px,9.5vw,160px))!important;margin-bottom:12px!important">SPECTRA</h1>
+        <p class="cover-acronym">Space Parts Evidence, Component Traceability, Radiation Assurance</p>
+        <div class="cover-manifesto-grid" style="margin-top:28px;padding-top:22px"><p class="cover-sub">“계산 가능한 것과 판단 가능한 것을 명확히 구분하는 신뢰성,<br><strong>좋은 숫자보다, 믿을 수 있는 판단.</strong>”</p><div class="cover-philosophy"><span class="philosophy-kicker">Discussion &amp; Inquiries</span><p class="philosophy-text">경청해 주셔서 감사합니다.<br><strong>질의응답(Q&amp;A)</strong>을 시작하겠습니다.</p></div></div>
       </div>
     </section>
   </main>
   <footer class="footer">
     <div class="progress" id="progress" aria-label="발표 진행"></div>
-    <div class="count"><span id="current">01</span> / 07 · <span id="section-name">문제</span></div>
+    <div class="count"></div>
     <nav class="nav" aria-label="슬라이드 이동"><button id="prev" type="button" aria-label="이전 화면">←</button><button id="next" type="button" aria-label="다음 화면">→</button></nav>
   </footer>
+
+  <!-- Self-Contained Built-in Data Objects -->
   <script>
-    // Values below are immutable build-time snapshots from spectra_sim; no physics is calculated in the browser.
+    // Complete MVP Product Result Snapshot
+    globalThis.SPECTRA_MVP_PRODUCT_RESULT = {
+      "data_class": "SYNTHETIC",
+      "mvp_decision": {
+        "data_class": "SYNTHETIC",
+        "assurance_decision": "HOLD",
+        "processing_status": "VALID",
+        "run_id": "mvp-cb826edb88ea5b67",
+        "baseline": {
+          "assurance_decision": "HOLD",
+          "metrics": {
+            "raw_seu": {"value": 0.063072},
+            "residual_logical_errors": {"value": 0.063072}
+          }
+        },
+        "variant": {
+          "assurance_decision": "HOLD",
+          "metrics": {
+            "raw_seu": {"value": 0.063072},
+            "residual_logical_errors": {"value": 0.013072}
+          }
+        }
+      }
+    };
+
+    // Complete GCP Workflow Execution Snapshot
+    globalThis.SPECTRA_GCP_H05_SNAPSHOT = {
+      "data_class": "SYNTHETIC",
+      "final_assurance": "HOLD",
+      "logging": {
+        "structured_log_count": 13,
+        "normal_correlation_id": "spectra-h05-ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34"
+      },
+      "workflow": {
+        "name": "spectra-h04-e2e",
+        "revision": "000005-32c",
+        "state": "ACTIVE",
+        "console_url": "https://console.cloud.google.com/workflows/workflow/asia-northeast3/spectra-h04-e2e?project=iceu-686"
+      },
+      "executions": {
+        "normal": {
+          "id": "ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+          "workflow_state": "SUCCEEDED",
+          "processing_status": "VALID",
+          "assurance_decision": "HOLD",
+          "duration": "1.952초"
+        },
+        "mission_fail": {
+          "id": "8677c107-84c7-4f09-9f94-2ac061db798f",
+          "workflow_state": "SUCCEEDED",
+          "processing_status": "INVALID_INPUT",
+          "stable_code": "STAGE3_INPUT_UNAVAILABLE",
+          "assurance_decision": "HOLD",
+          "duration": "1.098초"
+        },
+        "parts_fail": {
+          "id": "8b9215e5-65d8-42d2-abb6-7ce41ef46749",
+          "workflow_state": "SUCCEEDED",
+          "processing_status": "INVALID_INPUT",
+          "stable_code": "PART_EVIDENCE_HASH_MISMATCH",
+          "assurance_decision": "HOLD",
+          "duration": "1.206초"
+        },
+        "assurance_fail": {
+          "id": "3f5d9221-7b7a-4023-be3c-f933fdbaf070",
+          "workflow_state": "SUCCEEDED",
+          "processing_status": "INVALID_INPUT",
+          "stable_code": "INPUT_BODY_SHA256_MISMATCH",
+          "assurance_decision": "HOLD",
+          "duration": "0.825초"
+        }
+      }
+    };
+  </script>
+
+  <script>
+    // Values below are immutable build-time snapshots from spectra_sim
     const snapshots = Object.freeze({
       shield:{
         1:{tid:'8.0',required:'16.0',status:'VALID',run:'sim-d5a72077d684f459'},
         2:{tid:'6.0',required:'12.0',status:'VALID',run:'sim-3cc00f2c824db56d'},
         4:{tid:'3.5',required:'7.0',status:'VALID',run:'sim-ddf29f8ab807196d'},
         5:{tid:null,required:null,status:'OUT_OF_MODEL_SCOPE',run:'sim-27e031f2388ab6fc'}
-      },
-      ecc:{on:{residual:'0.0063072',width:'10%',run:'sim-3cc00f2c824db56d'},off:{residual:'0.063072',width:'100%',run:'sim-b74d7317282b2a82'}}
+      }
     });
-    const slides=[...document.querySelectorAll('.slide')], progress=document.getElementById('progress'); let index=0, wheelDelta=0, wheelLocked=false;
-    slides.forEach((_,i)=>{const d=document.createElement('span');d.className='dot';d.setAttribute('aria-hidden','true');progress.appendChild(d)});
-    function show(next){index=Math.max(0,Math.min(slides.length-1,next));slides.forEach((s,i)=>{s.classList.toggle('active',i===index);s.setAttribute('aria-hidden',i===index?'false':'true')});[...progress.children].forEach((d,i)=>d.className='dot '+(i<index?'done':i===index?'current':''));document.getElementById('current').textContent=String(index+1).padStart(2,'0');document.getElementById('section-name').textContent=slides[index].dataset.title;document.getElementById('prev').disabled=index===0;document.getElementById('next').disabled=index===slides.length-1;window.scrollTo(0,0)}
-    document.getElementById('prev').addEventListener('click',()=>show(index-1));document.getElementById('next').addEventListener('click',()=>show(index+1));
-    document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(index+1)}else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(index-1)}else if(e.key==='Home')show(0);else if(e.key==='End')show(slides.length-1)});
-    document.addEventListener('wheel',e=>{e.preventDefault();if(wheelLocked)return;wheelDelta+=e.deltaY;if(Math.abs(wheelDelta)<36)return;show(index+(wheelDelta>0?1:-1));wheelDelta=0;wheelLocked=true;setTimeout(()=>{wheelLocked=false},620)},{passive:false});
-    document.getElementById('shield-controls').addEventListener('click',e=>{const b=e.target.closest('button[data-shield]');if(!b)return;const v=snapshots.shield[b.dataset.shield],card=document.getElementById('tid-card');[...b.parentElement.children].forEach(x=>x.classList.toggle('selected',x===b));card.classList.toggle('scope-alert',v.tid===null);document.getElementById('tid-value').textContent=v.tid??'계산 안 함';document.getElementById('tid-unit').textContent=v.tid?'krad(Si)':'';document.getElementById('tid-note').textContent=v.tid?`요구 TID ${v.required} krad(Si) · 설계계수 2`:'5 mm는 이산 합성 모델 범위 밖 · 보간/외삽 금지';document.getElementById('scope-status').textContent=v.status;document.getElementById('scope-detail').innerHTML=`run ${v.run}<br>model v1.0.0 · assurance HOLD`});
-    document.getElementById('ecc-controls').addEventListener('click',e=>{const b=e.target.closest('button[data-ecc]');if(!b)return;const k=b.dataset.ecc,v=snapshots.ecc[k];[...b.parentElement.children].forEach(x=>x.classList.toggle('selected',x===b));document.getElementById('residual-value').textContent=v.residual;document.getElementById('residual-bar').style.width=v.width;document.getElementById('ecc-run').textContent=`ECC ${k.toUpperCase()} snapshot · run ${v.run} · ${k==='on'?'합성 effectiveness factor 0.1':'mitigation factor 1.0'} · 실제 완화 효과가 아님 · assurance HOLD`});
+
+    function resolveCoreEcc(){
+      const p=globalThis.SPECTRA_MVP_PRODUCT_RESULT,m=p&&p.mvp_decision,b=m&&m.baseline,v=m&&m.variant;
+      const metric=(scenario,key)=>scenario&&scenario.metrics&&scenario.metrics[key]&&scenario.metrics[key].value;
+      if(!m||m.data_class!=='SYNTHETIC'||m.processing_status!=='VALID'||m.assurance_decision!=='HOLD'||b.assurance_decision!=='HOLD'||v.assurance_decision!=='HOLD')return null;
+      const raw=metric(v,'raw_seu'),on=metric(v,'residual_logical_errors'),off=metric(b,'residual_logical_errors');
+      if(!Number.isFinite(raw)||!Number.isFinite(on)||!Number.isFinite(off))return null;
+      return Object.freeze({raw,on:Object.freeze({residual:String(on),width:'21%',run:m.run_id}),off:Object.freeze({residual:String(off),width:'100%',run:m.run_id})});
+    }
+
+    const coreEcc=resolveCoreEcc();
+    const slides=[...document.querySelectorAll('.slide')], progress=document.getElementById('progress'); let index=0;
+
+    // Dynamic progress dots for all numbered slides
+    slides.slice(1, -1).forEach((_,i)=>{const d=document.createElement('span');d.className='dot';d.setAttribute('aria-hidden','true');progress.appendChild(d)});
+
+    function show(next){
+      index=Math.max(0,Math.min(slides.length-1,next));
+      const isCoverOrClosing = (index === 0 || index === slides.length - 1);
+      document.body.classList.toggle('is-cover', isCoverOrClosing);
+      slides.forEach((s,i)=>{s.classList.toggle('active',i===index);s.setAttribute('aria-hidden',i===index?'false':'true')});
+
+      const dots = [...progress.children];
+      if (index === 0) {
+        dots.forEach(d => d.className = 'dot');
+      } else if (index === slides.length - 1) {
+        dots.forEach(d => d.className = 'dot done');
+      } else {
+        dots.forEach((d,i) => d.className = 'dot ' + (i < index - 1 ? 'done' : i === index - 1 ? 'current' : ''));
+      }
+
+      const countEl = document.querySelector('.count');
+      if (index === 0) {
+        countEl.innerHTML = '';
+      } else if (index === slides.length - 1) {
+        countEl.innerHTML = '<span id="section-name">Q&A · SPECTRA</span>';
+      } else {
+        const numberedTotal = String(slides.length - 2).padStart(2,'0');
+        countEl.innerHTML = '<span id="current">' + String(index).padStart(2,'0') + '</span> / ' + numberedTotal + ' · <span id="section-name">' + slides[index].dataset.title + '</span>';
+      }
+      document.getElementById('prev').disabled=index===0;
+      document.getElementById('next').disabled=index===slides.length-1;
+      window.scrollTo(0,0);
+    }
+
+    document.getElementById('prev').addEventListener('click',()=>show(index-1));
+    document.getElementById('next').addEventListener('click',()=>show(index+1));
+    document.addEventListener('keydown',e=>{
+      if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(index+1)}
+      else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(index-1)}
+      else if(e.key==='Home')show(0);
+      else if(e.key==='End')show(slides.length-1);
+    });
+
+    function normalizeWheelDelta(value,mode=0){if(!Number.isFinite(value))return 0;if(mode===1)return value*16;if(mode===2)return value*100;return value}
+    function createWheelIntentController(move){
+      const threshold=36,quietGap=150,rearmAge=120,hardAge=900,minimumImpulse=12,spikeRatio=1.8;
+      let accumulated=0,locked=false,movedAt=-Infinity,lastAt=-Infinity,lastMagnitude=0,lastDirection=0;
+      const reset=()=>{accumulated=0;locked=false;movedAt=-Infinity;lastAt=-Infinity;lastMagnitude=0;lastDirection=0};
+      const handle=(value,mode=0,timeStamp=performance.now())=>{
+        const normalized=normalizeWheelDelta(value,mode);if(Math.abs(normalized)<1)return false;
+        const at=Number.isFinite(timeStamp)?timeStamp:performance.now(),magnitude=Math.abs(normalized),direction=Math.sign(normalized),gap=at-lastAt,age=at-movedAt;
+        if(locked){
+          const quietRestart=gap>=quietGap;
+          const renewedImpulse=age>=rearmAge&&direction===lastDirection&&magnitude>=Math.max(minimumImpulse,lastMagnitude*spikeRatio);
+          const reversedIntent=age>=rearmAge&&direction!==lastDirection&&gap>=80&&magnitude>=minimumImpulse;
+          const hardBoundImpulse=age>=hardAge&&magnitude>=Math.max(threshold,lastMagnitude*1.25);
+          if(!(quietRestart||renewedImpulse||reversedIntent||hardBoundImpulse)){lastAt=at;lastMagnitude=magnitude;lastDirection=direction;return false}
+          accumulated=0;locked=false;
+        }else if(gap>=quietGap){accumulated=0}
+        accumulated+=normalized;lastAt=at;lastMagnitude=magnitude;lastDirection=direction;
+        if(Math.abs(accumulated)<threshold)return false;
+        move(accumulated>0?1:-1);accumulated=0;locked=true;movedAt=at;return true;
+      };
+      return Object.freeze({handle,reset,state:()=>Object.freeze({locked,accumulated,movedAt,lastAt,lastMagnitude,lastDirection})});
+    }
+
+    const wheelIntent=createWheelIntentController(direction=>show(index+direction));
+    document.addEventListener('wheel',e=>{e.preventDefault();wheelIntent.handle(e.deltaY,e.deltaMode,e.timeStamp)},{passive:false});
+
+    function renderGcpSnapshot(){
+      const s=globalThis.SPECTRA_GCP_H05_SNAPSHOT,valid=s&&s.data_class==='SYNTHETIC'&&s.final_assurance==='HOLD'&&s.workflow&&s.workflow.state==='ACTIVE';
+      if(!valid)return;
+      const btn=document.getElementById('gcp-console-btn');
+      if(btn) btn.href=s.workflow.console_url;
+    }
+
+    // ==========================================
+    // Multi-Agent Fail-Closed Scenario Simulator
+    // ==========================================
+    const SCENARIOS = Object.freeze({
+      normal: {
+        nodes: [
+          {id:'node-01', state:'state-valid', pill:'OK', label:'샘플 입력'},
+          {id:'node-02', state:'state-valid', pill:'OK', label:'오케스트레이터'},
+          {id:'node-03', state:'state-valid', pill:'VALID', label:'환경 독립검증'},
+          {id:'node-04', state:'state-valid', pill:'VALID', label:'BOM·증거검증'},
+          {id:'node-05', state:'state-valid', pill:'VALID', label:'정책 독립대조'},
+          {id:'node-06', state:'state-valid', pill:'SAVED', label:'결과·로그 기록'}
+        ],
+        input: `<b>Mission:</b> LEO 550km · 97.6°<br><b>BOM:</b> EX-100 Memory × 2<br><b>Hash:</b> <span style="font-size:10px;color:var(--dim)">sha256:11bf821d...</span>`,
+        agents: {
+          mission: {badge:'valid', text:'VALID'},
+          parts: {badge:'valid', text:'VALID'},
+          assurance: {badge:'valid', text:'VALID'}
+        },
+        decision: {
+          status: 'SUCCEEDED (200 OK)',
+          statusColor: '#fff',
+          badgeClass: 'hold',
+          badgeText: 'HOLD',
+          reason: 'SEL 시험 근거 0건으로 판단 보류 (정상 감사)'
+        },
+        alertType: 'alert-normal',
+        alertText: '<strong>✅ 정상 합성 파이프라인 감사 완료:</strong> 3개 Agent가 환경·부품·판정 규칙을 독립 대조했으며, SEL 시험 근거 0건을 감지해 <b>Fail-Closed (HOLD)</b>로 닫았습니다.'
+      },
+      mission_fail: {
+        nodes: [
+          {id:'node-01', state:'state-valid', pill:'OK', label:'샘플 입력'},
+          {id:'node-02', state:'state-valid', pill:'OK', label:'오케스트레이터'},
+          {id:'node-03', state:'state-blocked', pill:'OUT_OF_SCOPE', label:'환경 계산 차단'},
+          {id:'node-04', state:'state-isolated', pill:'ISOLATED', label:'호출 격리'},
+          {id:'node-05', state:'state-isolated', pill:'ISOLATED', label:'호출 격리'},
+          {id:'node-06', state:'state-blocked', pill:'FAIL-CLOSED', label:'오류 로그 격리'}
+        ],
+        input: `<b>Mission:</b> <span style="color:#f88">GEO 35,786km (지원 범위 밖)</span><br><b>BOM:</b> EX-100 Memory × 2<br><b>Hash:</b> <span style="font-size:10px;color:var(--dim)">sha256:d9471ab2...</span>`,
+        agents: {
+          mission: {badge:'blocked', text:'OUT_OF_SCOPE'},
+          parts: {badge:'isolated', text:'ISOLATED'},
+          assurance: {badge:'isolated', text:'ISOLATED'}
+        },
+        decision: {
+          status: '400 BAD_REQUEST (FAIL-CLOSED)',
+          statusColor: '#f88',
+          badgeClass: 'blocked',
+          badgeText: 'BLOCKED (HOLD)',
+          reason: 'STAGE3_INPUT_UNAVAILABLE (범위 밖 외삽 금지)'
+        },
+        alertType: 'alert-blocked',
+        alertText: '<strong>⛔ Mission Agent 1차 방어선 작동:</strong> 환경 모델 지원 범위를 벗어난 궤도 입력이 감지되어 Mission Agent가 즉시 실행을 중단했습니다. 불필요한 후속 부품 계산이나 오염을 방지하기 위해 <b>Parts/Assurance 호출을 즉각 격리하고 Fail-Closed (HOLD)</b>로 종료했습니다.'
+      },
+      parts_fail: {
+        nodes: [
+          {id:'node-01', state:'state-valid', pill:'OK', label:'샘플 입력'},
+          {id:'node-02', state:'state-valid', pill:'OK', label:'오케스트레이터'},
+          {id:'node-03', state:'state-valid', pill:'VALID', label:'환경 독립검증'},
+          {id:'node-04', state:'state-blocked', pill:'HASH_MISMATCH', label:'성적서 위조 차단'},
+          {id:'node-05', state:'state-isolated', pill:'ISOLATED', label:'호출 격리'},
+          {id:'node-06', state:'state-blocked', pill:'FAIL-CLOSED', label:'위조 감지 기록'}
+        ],
+        input: `<b>Mission:</b> LEO 550km · 97.6°<br><b>BOM:</b> EX-100 Memory × 2<br><b>Evidence:</b> <span style="color:#f88">PDF SHA-256 변조됨</span>`,
+        agents: {
+          mission: {badge:'valid', text:'VALID'},
+          parts: {badge:'blocked', text:'HASH_MISMATCH'},
+          assurance: {badge:'isolated', text:'ISOLATED'}
+        },
+        decision: {
+          status: '422 UNPROCESSABLE (FAIL-CLOSED)',
+          statusColor: '#f88',
+          badgeClass: 'blocked',
+          badgeText: 'BLOCKED (HOLD)',
+          reason: 'PART_EVIDENCE_HASH_MISMATCH (성적서 위변조)'
+        },
+        alertType: 'alert-blocked',
+        alertText: '<strong>⛔ Parts Agent 2차 방어선 작동:</strong> 부품 시험 성적서(PDF) 해시가 원본 메타데이터와 불일치함을 Parts Agent가 적발했습니다. 불일치 데이터가 다음 판정 단계로 전파되지 않도록 <b>Assurance 호출을 차단하고 Fail-Closed (HOLD)</b>로 격리했습니다.'
+      },
+      assurance_fail: {
+        nodes: [
+          {id:'node-01', state:'state-valid', pill:'OK', label:'샘플 입력'},
+          {id:'node-02', state:'state-valid', pill:'OK', label:'오케스트레이터'},
+          {id:'node-03', state:'state-valid', pill:'VALID', label:'환경 독립검증'},
+          {id:'node-04', state:'state-valid', pill:'VALID', label:'BOM·증거검증'},
+          {id:'node-05', state:'state-blocked', pill:'SHA_MISMATCH', label:'결과 위조 차단'},
+          {id:'node-06', state:'state-blocked', pill:'FAIL-CLOSED', label:'위변조 감사 격리'}
+        ],
+        input: `<b>Mission:</b> LEO 550km · 97.6°<br><b>BOM:</b> EX-100 Memory × 2<br><b>Body:</b> <span style="color:#f88">HOLD → PASS 강제 위조 시도</span>`,
+        agents: {
+          mission: {badge:'valid', text:'VALID'},
+          parts: {badge:'valid', text:'VALID'},
+          assurance: {badge:'blocked', text:'MISMATCH (403)'}
+        },
+        decision: {
+          status: '403 FORBIDDEN (FAIL-CLOSED)',
+          statusColor: '#f88',
+          badgeClass: 'blocked',
+          badgeText: 'BLOCKED (HOLD)',
+          reason: 'INPUT_BODY_SHA256_MISMATCH (Preimage 불일치)'
+        },
+        alertType: 'alert-blocked',
+        alertText: '<strong>⛔ Assurance Agent 최종 방어선 작동:</strong> 중간 전달 과정에서 결과를 강제로 `PASS`로 위조하려 시도했으나, Assurance Agent의 암호학적 Preimage SHA-256 대조에서 불일치가 검출되었습니다. 출력을 즉시 거부하고 <b>Fail-Closed (HOLD)</b>로 보안 격리했습니다.'
+      }
+    });
+
+    function applyScenario(scenarioKey){
+      const data = SCENARIOS[scenarioKey] || SCENARIOS.normal;
+      const sSnap = globalThis.SPECTRA_GCP_H05_SNAPSHOT;
+      const staticExec = sSnap && sSnap.executions && sSnap.executions[scenarioKey];
+
+      // Update Buttons
+      const btnGroup = document.querySelectorAll('#scenario-buttons-group .demo-btn');
+      btnGroup.forEach(btn => {
+        const isMatch = btn.dataset.scenario === scenarioKey;
+        btn.classList.toggle('active', isMatch);
+        btn.classList.toggle('fail', isMatch && scenarioKey !== 'normal');
+      });
+
+      // Update 6 Workflow Nodes
+      data.nodes.forEach(n => {
+        const el = document.getElementById(n.id);
+        if(!el) return;
+        el.className = 'gcp-node ' + n.state;
+        el.querySelector('.node-pill').textContent = n.pill;
+        el.querySelector('b').textContent = n.label;
+      });
+
+      // Update Step 1 Input View
+      document.getElementById('demo-input-view').innerHTML = data.input;
+
+      // Update Step 2 Agents View
+      const bMission = document.getElementById('badge-mission');
+      const bParts = document.getElementById('badge-parts');
+      const bAssurance = document.getElementById('badge-assurance');
+
+      bMission.className = 'demo-badge ' + data.agents.mission.badge;
+      bMission.textContent = data.agents.mission.text;
+
+      bParts.className = 'demo-badge ' + data.agents.parts.badge;
+      bParts.textContent = data.agents.parts.text;
+
+      bAssurance.className = 'demo-badge ' + data.agents.assurance.badge;
+      bAssurance.textContent = data.agents.assurance.text;
+
+      // Update Step 3 Decision View
+      const dStatus = document.getElementById('demo-status-text');
+      const dBadge = document.getElementById('demo-decision-badge');
+      const dReason = document.getElementById('demo-reason-text');
+
+      dStatus.textContent = data.decision.status;
+      dStatus.style.color = data.decision.statusColor;
+      dBadge.className = 'demo-badge ' + data.decision.badgeClass;
+      dBadge.textContent = data.decision.badgeText;
+      dReason.textContent = data.decision.reason;
+
+      // Update Alert Banner
+      const alertBox = document.getElementById('demo-failclosed-alert');
+      alertBox.className = 'failclosed-alert ' + data.alertType;
+      alertBox.innerHTML = data.alertText;
+
+      // Telemetry Elements
+      const statusPill = document.getElementById('live-status-pill');
+      const execLink = document.getElementById('live-exec-id');
+      const timeText = document.getElementById('live-time-text');
+
+      // Control Tower verified snapshot display; this localhost deck does not trigger GCP.
+      statusPill.className = 'live-pill sim';
+      statusPill.textContent = '⚡ VERIFIED GCP EXECUTION';
+      if(staticExec){
+        execLink.textContent = staticExec.id + ' ↗';
+        execLink.href = `https://console.cloud.google.com/workflows/workflow/asia-northeast3/spectra-h04-e2e/execution/asia-northeast3/${staticExec.id}?project=iceu-686`;
+        timeText.textContent = `소요 시간: ${staticExec.duration || '1.8초'} (실제 GCP 기록)`;
+      }
+    }
+
+    document.getElementById('scenario-buttons-group').addEventListener('click', e => {
+      const btn = e.target.closest('button[data-scenario]');
+      if(!btn) return;
+      applyScenario(btn.dataset.scenario);
+    });
+
+    // Shielding Scenario Toggle
+    document.getElementById('shield-controls').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-shield]');if(!b)return;
+      const v=snapshots.shield[b.dataset.shield],card=document.getElementById('tid-card');
+      [...b.parentElement.children].forEach(x=>x.classList.toggle('selected',x===b));
+      card.classList.toggle('scope-alert',v.tid===null);
+      document.getElementById('tid-value').textContent=v.tid??'계산 안 함';
+      document.getElementById('tid-unit').textContent=v.tid?'krad(Si)':'';
+      document.getElementById('tid-note').textContent=v.tid?`요구량 ${v.required} krad(Si) = 차폐 후 TID ${v.tid} × 설계계수 2`:'5 mm는 물리적 계산 불가능이 아니라 이산 합성 table 범위 밖 · 보간/외삽 금지';
+      document.getElementById('scope-status').textContent=v.status;
+      document.getElementById('scope-detail').innerHTML=`run ${v.run}<br>model v1.0.0 · assurance HOLD`;
+    });
+
+    // ECC Scenario Toggle
+    function renderCoreEcc(key='off'){
+      const v=coreEcc&&coreEcc[key];
+      document.getElementById('raw-value').textContent=coreEcc?String(coreEcc.raw):'—';
+      document.getElementById('residual-value').textContent=v?v.residual:'—';
+      document.getElementById('residual-bar').style.width=v?v.width:'0';
+      document.getElementById('ecc-run').textContent=v?`ECC ${key.toUpperCase()} · Production MVP Core ${v.run} · 실제 완화 효과가 아님 · assurance HOLD`:'Production MVP Core 결과 사용 불가 · DATA_UNAVAILABLE · assurance HOLD';
+    }
+
+    document.getElementById('ecc-controls').addEventListener('click',e=>{
+      const b=e.target.closest('button[data-ecc]');if(!b)return;
+      const k=b.dataset.ecc;
+      [...b.parentElement.children].forEach(x=>x.classList.toggle('selected',x===b));
+      renderCoreEcc(k);
+    });
+
+    renderCoreEcc('off');
+    renderGcpSnapshot();
+    applyScenario('normal');
     show(0);
   </script>
 </body>

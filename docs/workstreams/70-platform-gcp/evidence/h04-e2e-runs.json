@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "iceu-686",
+  "region": "asia-northeast3",
+  "data_class": "SYNTHETIC",
+  "assurance_decision": "HOLD",
+  "cases": [
+    {
+      "case": "normal",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/1a513bb1-2780-4a7f-a907-a5aa59a8cbc1",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h04-1a513bb1-2780-4a7f-a907-a5aa59a8cbc1",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T155445Z-normal.json",
+        "generation": "1787241287203919",
+        "sha256": "sha256:a7359dcaadec22c56f70e2937333a22bfdf95138742f706d30cf70e3a22a060a"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787241292513530",
+        "object_name": "results/1a513bb1-2780-4a7f-a907-a5aa59a8cbc1.json",
+        "sha256": "sha256:376f06e48cdd5c00470c51c434d48a37ae656d895ea84776bf6e6b0d3f4d7bcd"
+      },
+      "result_summary": {
+        "processing_status": "VALID",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "SYNTHETIC_ONLY"
+        ],
+        "agent_statuses": {
+          "assurance": "VALID",
+          "mission": "VALID",
+          "parts": "VALID"
+        },
+        "agent_codes": {
+          "assurance": [
+            "SYNTHETIC_ONLY"
+          ],
+          "mission": [
+            "REAL_ENVIRONMENT_EVIDENCE_MISSING",
+            "SYNTHETIC_CORE_REPRODUCED"
+          ],
+          "parts": [
+            "EXACT_PART_IDENTITY_MATCHED",
+            "REAL_PART_TEST_EVIDENCE_MISSING",
+            "SYNTHETIC_EVIDENCE_ONLY"
+          ]
+        }
+      }
+    },
+    {
+      "case": "corrupted-hash",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/8b9215e5-65d8-42d2-abb6-7ce41ef46749",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h04-8b9215e5-65d8-42d2-abb6-7ce41ef46749",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T155456Z-corrupted-hash.json",
+        "generation": "1787241298116798",
+        "sha256": "sha256:03ace0c2db8d090bdb6cb5fff06681fdb82d2cad94b13fc75d170dc6e6a5579a"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787241303412096",
+        "object_name": "results/8b9215e5-65d8-42d2-abb6-7ce41ef46749.json",
+        "sha256": "sha256:19b1d35cd40c7211acbe9d25f773729f33bc960312f25e97e8b4959cbb6cc849"
+      },
+      "result_summary": {
+        "processing_status": "INVALID_INPUT",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "PARTS_AGENT_NOT_VALID",
+          "PART_EVIDENCE_HASH_MISMATCH",
+          "SYNTHETIC_ONLY"
+        ],
+        "agent_statuses": {
+          "assurance": "INVALID_INPUT",
+          "mission": "VALID",
+          "parts": "INVALID_INPUT"
+        },
+        "agent_codes": {
+          "assurance": [
+            "PARTS_AGENT_NOT_VALID",
+            "PART_EVIDENCE_HASH_MISMATCH",
+            "SYNTHETIC_ONLY"
+          ],
+          "mission": [
+            "REAL_ENVIRONMENT_EVIDENCE_MISSING",
+            "SYNTHETIC_CORE_REPRODUCED"
+          ],
+          "parts": [
+            "PART_EVIDENCE_HASH_MISMATCH"
+          ]
+        }
+      }
+    },
+    {
+      "case": "parts-agent-failure",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/8677c107-84c7-4f09-9f94-2ac061db798f",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h04-8677c107-84c7-4f09-9f94-2ac061db798f",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T155507Z-parts-agent-failure.json",
+        "generation": "1787241308768408",
+        "sha256": "sha256:a7359dcaadec22c56f70e2937333a22bfdf95138742f706d30cf70e3a22a060a"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787241313811707",
+        "object_name": "results/8677c107-84c7-4f09-9f94-2ac061db798f.json",
+        "sha256": "sha256:244a10130ef6b76fa2f48d60d941dbd21532b4a23a931db3f5aacd8a2dc6bc1c"
+      },
+      "result_summary": {
+        "processing_status": "INVALID_INPUT",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "AGENT_TEST_FAILURE",
+          "PARTS_AGENT_NOT_VALID",
+          "SYNTHETIC_ONLY"
+        ],
+        "agent_statuses": {
+          "assurance": "INVALID_INPUT",
+          "mission": "VALID",
+          "parts": "INVALID_INPUT"
+        },
+        "agent_codes": {
+          "assurance": [
+            "AGENT_TEST_FAILURE",
+            "PARTS_AGENT_NOT_VALID",
+            "SYNTHETIC_ONLY"
+          ],
+          "mission": [
+            "REAL_ENVIRONMENT_EVIDENCE_MISSING",
+            "SYNTHETIC_CORE_REPRODUCED"
+          ],
+          "parts": [
+            "AGENT_TEST_FAILURE"
+          ]
+        }
+      }
+    }
+  ]
+}

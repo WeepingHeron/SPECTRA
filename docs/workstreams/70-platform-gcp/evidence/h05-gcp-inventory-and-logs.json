@@ -1,0 +1,370 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "iceu-686",
+  "region": "asia-northeast3",
+  "services": [
+    {
+      "name": "spectra-h04-assurance",
+      "region": "asia-northeast3",
+      "latest_ready_revision": "spectra-h04-assurance-00006-zfx",
+      "url": "https://spectra-h04-assurance-mwmfe3da5q-du.a.run.app",
+      "runtime_service_account": "spectra-h04-assurance@iceu-686.iam.gserviceaccount.com",
+      "role": "assurance",
+      "ingress": "all",
+      "public_iam_members": [],
+      "unauthenticated_healthz_http_status": 404
+    },
+    {
+      "name": "spectra-h04-mission",
+      "region": "asia-northeast3",
+      "latest_ready_revision": "spectra-h04-mission-00006-4f5",
+      "url": "https://spectra-h04-mission-mwmfe3da5q-du.a.run.app",
+      "runtime_service_account": "spectra-h04-mission@iceu-686.iam.gserviceaccount.com",
+      "role": "mission",
+      "ingress": "all",
+      "public_iam_members": [],
+      "unauthenticated_healthz_http_status": 404
+    },
+    {
+      "name": "spectra-h04-parts",
+      "region": "asia-northeast3",
+      "latest_ready_revision": "spectra-h04-parts-00006-p6c",
+      "url": "https://spectra-h04-parts-mwmfe3da5q-du.a.run.app",
+      "runtime_service_account": "spectra-h04-parts@iceu-686.iam.gserviceaccount.com",
+      "role": "parts",
+      "ingress": "all",
+      "public_iam_members": [],
+      "unauthenticated_healthz_http_status": 404
+    }
+  ],
+  "workflow": {
+    "name": "projects/iceu-686/locations/asia-northeast3/workflows/spectra-h04-e2e",
+    "revision_id": "000005-32c",
+    "state": "ACTIVE",
+    "service_account": "projects/iceu-686/serviceAccounts/spectra-h04-workflow@iceu-686.iam.gserviceaccount.com",
+    "call_log_level": "LOG_ERRORS_ONLY",
+    "deployment_bound_agent_urls": {
+      "ASSURANCE_URL": "https://spectra-h04-assurance-mwmfe3da5q-du.a.run.app",
+      "MISSION_URL": "https://spectra-h04-mission-mwmfe3da5q-du.a.run.app",
+      "PARTS_URL": "https://spectra-h04-parts-mwmfe3da5q-du.a.run.app"
+    }
+  },
+  "bucket": {
+    "name": "spectra-h04-iceu-686",
+    "location": "ASIA-NORTHEAST3",
+    "public_access_prevention": "enforced",
+    "uniform_bucket_level_access": true,
+    "soft_delete_policy": {
+      "effectiveTime": "2026-08-20T15:38:01.428000+00:00",
+      "retentionDurationSeconds": "604800"
+    },
+    "versioning_enabled": false,
+    "lifecycle_config": {
+      "rule": [
+        {
+          "action": {
+            "type": "Delete"
+          },
+          "condition": {
+            "age": 30
+          }
+        }
+      ]
+    }
+  },
+  "artifact_image": {
+    "fully_qualified_digest": "asia-northeast3-docker.pkg.dev/iceu-686/spectra-h04/agents@sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+    "digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569"
+  },
+  "service_accounts": [
+    "spectra-h04-assurance@iceu-686.iam.gserviceaccount.com",
+    "spectra-h04-mission@iceu-686.iam.gserviceaccount.com",
+    "spectra-h04-parts@iceu-686.iam.gserviceaccount.com",
+    "spectra-h04-workflow@iceu-686.iam.gserviceaccount.com"
+  ],
+  "iam": {
+    "cloud_run": {
+      "spectra-h04-mission": [
+        {
+          "role": "roles/run.invoker",
+          "members": [
+            "serviceAccount:spectra-h04-workflow@iceu-686.iam.gserviceaccount.com"
+          ]
+        }
+      ],
+      "spectra-h04-parts": [
+        {
+          "role": "roles/run.invoker",
+          "members": [
+            "serviceAccount:spectra-h04-workflow@iceu-686.iam.gserviceaccount.com"
+          ]
+        }
+      ],
+      "spectra-h04-assurance": [
+        {
+          "role": "roles/run.invoker",
+          "members": [
+            "serviceAccount:spectra-h04-workflow@iceu-686.iam.gserviceaccount.com"
+          ]
+        }
+      ]
+    },
+    "bucket": [
+      {
+        "role": "roles/storage.objectCreator",
+        "members": [
+          "serviceAccount:spectra-h04-workflow@iceu-686.iam.gserviceaccount.com"
+        ]
+      },
+      {
+        "role": "roles/storage.objectViewer",
+        "members": [
+          "serviceAccount:spectra-h04-workflow@iceu-686.iam.gserviceaccount.com"
+        ]
+      }
+    ],
+    "project": [
+      {
+        "role": "roles/logging.logWriter",
+        "members": [
+          "serviceAccount:spectra-h04-workflow@iceu-686.iam.gserviceaccount.com"
+        ]
+      }
+    ]
+  },
+  "cloud_run_structured_logs": [
+    {
+      "timestamp": "2026-08-20T16:33:45.374541Z",
+      "insert_id": "6a872c690005b70da2fa0dcb",
+      "service_name": "spectra-h04-assurance",
+      "revision_name": "spectra-h04-assurance-00006-zfx",
+      "run_id": "270332c4-232c-4dda-84d5-12ef92e36efa",
+      "correlation_id": "spectra-h05-270332c4-232c-4dda-84d5-12ef92e36efa",
+      "agent": "assurance",
+      "processing_status": "INVALID_INPUT",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "EXACT_PART_IDENTITY_INVALID",
+        "PARTS_AGENT_NOT_VALID",
+        "SYNTHETIC_ONLY"
+      ],
+      "body_hash_verified": null,
+      "core_run_id": null,
+      "latency_ms": 3
+    },
+    {
+      "timestamp": "2026-08-20T16:33:45.009100Z",
+      "insert_id": "6a872c690000238caaf1a3aa",
+      "service_name": "spectra-h04-mission",
+      "revision_name": "spectra-h04-mission-00006-4f5",
+      "run_id": "270332c4-232c-4dda-84d5-12ef92e36efa",
+      "correlation_id": "spectra-h05-270332c4-232c-4dda-84d5-12ef92e36efa",
+      "agent": "mission",
+      "processing_status": "VALID",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "PRODUCTION_CORE_BOUND",
+        "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+      ],
+      "body_hash_verified": true,
+      "core_run_id": "mvp-cb826edb88ea5b67",
+      "latency_ms": 375
+    },
+    {
+      "timestamp": "2026-08-20T16:33:45.191524Z",
+      "insert_id": "6a872c690002ec24c74903f1",
+      "service_name": "spectra-h04-parts",
+      "revision_name": "spectra-h04-parts-00006-p6c",
+      "run_id": "270332c4-232c-4dda-84d5-12ef92e36efa",
+      "correlation_id": "spectra-h05-270332c4-232c-4dda-84d5-12ef92e36efa",
+      "agent": "parts",
+      "processing_status": "INVALID_INPUT",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "EXACT_PART_IDENTITY_INVALID"
+      ],
+      "body_hash_verified": null,
+      "core_run_id": null,
+      "latency_ms": 0
+    },
+    {
+      "timestamp": "2026-08-20T16:33:27.130160Z",
+      "insert_id": "6a872c570001fc709e6c6bc8",
+      "service_name": "spectra-h04-mission",
+      "revision_name": "spectra-h04-mission-00006-4f5",
+      "run_id": "3f5d9221-7b7a-4023-be3c-f933fdbaf070",
+      "correlation_id": "spectra-h05-3f5d9221-7b7a-4023-be3c-f933fdbaf070",
+      "agent": "mission",
+      "processing_status": "INVALID_INPUT",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "INPUT_BODY_SHA256_MISMATCH"
+      ],
+      "body_hash_verified": false,
+      "core_run_id": null,
+      "latency_ms": 0
+    },
+    {
+      "timestamp": "2026-08-20T16:33:36.713611Z",
+      "insert_id": "6a872c60000ae38bea9fab9c",
+      "service_name": "spectra-h04-assurance",
+      "revision_name": "spectra-h04-assurance-00006-zfx",
+      "run_id": "bbf7d6c7-bcfb-4dd7-87a5-38303e861738",
+      "correlation_id": "spectra-h05-bbf7d6c7-bcfb-4dd7-87a5-38303e861738",
+      "agent": "assurance",
+      "processing_status": "INVALID_INPUT",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "PARTS_AGENT_NOT_VALID",
+        "PART_EVIDENCE_HASH_MISMATCH",
+        "SYNTHETIC_ONLY"
+      ],
+      "body_hash_verified": null,
+      "core_run_id": null,
+      "latency_ms": 2
+    },
+    {
+      "timestamp": "2026-08-20T16:33:36.287199Z",
+      "insert_id": "6a872c60000461df73c9a6a6",
+      "service_name": "spectra-h04-mission",
+      "revision_name": "spectra-h04-mission-00006-4f5",
+      "run_id": "bbf7d6c7-bcfb-4dd7-87a5-38303e861738",
+      "correlation_id": "spectra-h05-bbf7d6c7-bcfb-4dd7-87a5-38303e861738",
+      "agent": "mission",
+      "processing_status": "VALID",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "PRODUCTION_CORE_BOUND",
+        "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+      ],
+      "body_hash_verified": true,
+      "core_run_id": "mvp-cb826edb88ea5b67",
+      "latency_ms": 420
+    },
+    {
+      "timestamp": "2026-08-20T16:33:36.474879Z",
+      "insert_id": "6a872c6000073eff1fa45b83",
+      "service_name": "spectra-h04-parts",
+      "revision_name": "spectra-h04-parts-00006-p6c",
+      "run_id": "bbf7d6c7-bcfb-4dd7-87a5-38303e861738",
+      "correlation_id": "spectra-h05-bbf7d6c7-bcfb-4dd7-87a5-38303e861738",
+      "agent": "parts",
+      "processing_status": "INVALID_INPUT",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "PART_EVIDENCE_HASH_MISMATCH"
+      ],
+      "body_hash_verified": null,
+      "core_run_id": null,
+      "latency_ms": 0
+    },
+    {
+      "timestamp": "2026-08-20T16:34:01.713818Z",
+      "insert_id": "6a872c79000ae45aafe1bf6d",
+      "service_name": "spectra-h04-assurance",
+      "revision_name": "spectra-h04-assurance-00006-zfx",
+      "run_id": "e51de87e-3b84-4c57-8eb1-89f0ce755782",
+      "correlation_id": "spectra-h05-e51de87e-3b84-4c57-8eb1-89f0ce755782",
+      "agent": "assurance",
+      "processing_status": "VALID",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "SYNTHETIC_ONLY"
+      ],
+      "body_hash_verified": null,
+      "core_run_id": null,
+      "latency_ms": 2
+    },
+    {
+      "timestamp": "2026-08-20T16:34:01.305898Z",
+      "insert_id": "6a872c790004aaea2577df83",
+      "service_name": "spectra-h04-mission",
+      "revision_name": "spectra-h04-mission-00006-4f5",
+      "run_id": "e51de87e-3b84-4c57-8eb1-89f0ce755782",
+      "correlation_id": "spectra-h05-e51de87e-3b84-4c57-8eb1-89f0ce755782",
+      "agent": "mission",
+      "processing_status": "VALID",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "PRODUCTION_CORE_BOUND",
+        "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+      ],
+      "body_hash_verified": true,
+      "core_run_id": "mvp-cb826edb88ea5b67",
+      "latency_ms": 384
+    },
+    {
+      "timestamp": "2026-08-20T16:34:01.481607Z",
+      "insert_id": "6a872c7900075947b62058f6",
+      "service_name": "spectra-h04-parts",
+      "revision_name": "spectra-h04-parts-00006-p6c",
+      "run_id": "e51de87e-3b84-4c57-8eb1-89f0ce755782",
+      "correlation_id": "spectra-h05-e51de87e-3b84-4c57-8eb1-89f0ce755782",
+      "agent": "parts",
+      "processing_status": "VALID",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "EXACT_PART_IDENTITY_MATCHED",
+        "REAL_PART_TEST_EVIDENCE_MISSING",
+        "SYNTHETIC_EVIDENCE_ONLY"
+      ],
+      "body_hash_verified": null,
+      "core_run_id": null,
+      "latency_ms": 0
+    },
+    {
+      "timestamp": "2026-08-20T16:33:19.671656Z",
+      "insert_id": "6a872c4f000a3fa894716843",
+      "service_name": "spectra-h04-assurance",
+      "revision_name": "spectra-h04-assurance-00006-zfx",
+      "run_id": "ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+      "correlation_id": "spectra-h05-ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+      "agent": "assurance",
+      "processing_status": "VALID",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "SYNTHETIC_ONLY"
+      ],
+      "body_hash_verified": null,
+      "core_run_id": null,
+      "latency_ms": 2
+    },
+    {
+      "timestamp": "2026-08-20T16:33:19.202171Z",
+      "insert_id": "6a872c4f000315bb1d7638dd",
+      "service_name": "spectra-h04-mission",
+      "revision_name": "spectra-h04-mission-00006-4f5",
+      "run_id": "ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+      "correlation_id": "spectra-h05-ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+      "agent": "mission",
+      "processing_status": "VALID",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "PRODUCTION_CORE_BOUND",
+        "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+      ],
+      "body_hash_verified": true,
+      "core_run_id": "mvp-cb826edb88ea5b67",
+      "latency_ms": 533
+    },
+    {
+      "timestamp": "2026-08-20T16:33:19.428951Z",
+      "insert_id": "6a872c4f00068b976b276126",
+      "service_name": "spectra-h04-parts",
+      "revision_name": "spectra-h04-parts-00006-p6c",
+      "run_id": "ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+      "correlation_id": "spectra-h05-ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+      "agent": "parts",
+      "processing_status": "VALID",
+      "assurance_decision": "HOLD",
+      "stable_codes": [
+        "EXACT_PART_IDENTITY_MATCHED",
+        "REAL_PART_TEST_EVIDENCE_MISSING",
+        "SYNTHETIC_EVIDENCE_ONLY"
+      ],
+      "body_hash_verified": null,
+      "core_run_id": null,
+      "latency_ms": 0
+    }
+  ]
+}

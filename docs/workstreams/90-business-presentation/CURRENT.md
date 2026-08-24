@@ -2,9 +2,296 @@
 
 ## 상태
 
-`INTEGRATED — H03 Business Validation Instrument / commit b2c8ef6`
+`IN_PROGRESS — index visual integration VERIFIED; content claims and measured rehearsal pending`
 
-H02 7분 발표 서사 패키지의 `INTEGRATED / commit 379f3ad` 기준선은 유지한다. H03 `90-business-validation-instrument-v1` 문서 패키지는 commit `b2c8ef6`로 통합했지만, Stage 9 비즈니스 검증 완료를 뜻하지 않는다.
+H02 7분 발표 서사 패키지의 `INTEGRATED / commit 379f3ad`, H03 Business Validation Instrument의 `INTEGRATED / commit b2c8ef6`, H05 Runtime Alignment과 H08 Plain-Language Alignment의 `VERIFIED` 기준선은 유지한다. H09 `CHANGES_REQUESTED`를 반영해 표지, ECC 선택 이유, 보증 판단과 결과 전달 무결성을 초심자 흐름으로 정렬했다. WATCHDOG·TMR·SEL과 관련 runtime 합성 수치는 현재 사용자 결정에 연결되지 않으므로 주 발표·Product 시연에서 제외하고 기술 Q&A의 `현재 주 데모 범위 밖`으로만 남겼다.
+
+2026-08-21 공식 평가 기준은 Multi-Agent·GCP 35, 신뢰성 20, 비즈니스·문제 정의 30, 팀 시너지·발표 15로 정정됐다. H11의 배점·시간 산술·Agent/Core 역할·fail-closed·발표 경계를 Control Tower가 독립 대조해 문서 계약을 `VERIFIED`로 판정했다. 이후 Workstream 70 H05는 H04 무결성 결함을 보완해 실제 revision·정상/공격 result와 함께 `VERIFIED`됐다. 다만 사람 리허설, Product H17 실제 브라우저, 실제 GCP `ASR-D02`는 각각 `NOT_MEASURED / NOT_EVALUATED / NOT_EVALUATED`이며 발표 후보가 이 범위를 넘을 수 없다.
+
+## 2026-08-22 실제 발표 경로와 Antigravity 청사진 — Control Tower 최신화
+
+- 사용자가 실제 발표에는 `demo/product.html`을 쓰지 않고 `demo/index.html`만 사용했다고 확인했다. 실제 사용한 최신 HTML은 Downloads의 `spectra_presentation.html`이며, 생성 시각 기준 실제 대본은 2026-08-21 13:55에 추가된 `spectra_7min_presentation_script.md`다. 01:55 구간의 부품 증거·ECC 통합 흐름을 사용했다.
+- cover·01~09·COTS HTML은 발표 후 피드백을 Antigravity로 반영한 배치·문구 청사진이다. 디자인 자체를 대치하지 않고 저장소 `demo/index.html`의 기존 흑백 언어 안에서 참고한다.
+- `spectra_slide_cots_comparison.html`은 기존 03을 대치하지 않고 03번에 삽입했다. 이후 기존 화면을 뒤로 이동하고 차폐 primer·비교·기술 스택·로드맵·Closing을 포함해 `Cover + 01~11 + Closing`, 총 13장으로 정렬했다.
+- Downloads 대본과 COTS 청사진은 합성 fixture를 AP-8/AE-8·SHIELDOSE-2·Weibull 기반 검증 결과, `EX-100` 실제 성적서 결과 또는 ECSS 승인처럼 설명한다. 현재 실제 environment contract·승인 BOM·시험 원문·과학 교차검산은 없으므로 실제 발표 이력은 인정하되 assurance 대본 판정은 `CHANGES_REQUESTED`다. 저장소 COTS 화면은 해당 글자를 유지하면서 하단에 `원문·조건·적용성 독립 검증 전 / NOT_EVALUATED / HOLD`를 표시한다.
+- `19/19`, `1,000회 Monte Carlo`, `Δ=0.0000`, WORM·전 과정 위변조 원천 차단, `완벽히 실행`, `실시간 GCP VERIFIED`는 현재 제출 증거와 일치하지 않는다. 다운로드 통합본의 버튼은 `/api/trigger-workflow` 실패 시 embedded snapshot을 `VERIFIED GCP EXECUTION`으로 표시하므로 실제 live 실행과 고정 snapshot도 구분되지 않는다.
+- COTS 비율·고장률·방사선 원인 비율·시험 비용/대기, ECSS/RDM·표준 compliance와 기존 NASA/ESA 도구에 대한 비교 문구는 exact source·locator·적용 범위가 확인되지 않았다. 발표에 유지하려면 주장별 검증 가능한 출처와 제한을 붙여야 하며, 확인 전에는 삭제하거나 `UNVERIFIED`로 닫는다.
+- 대본은 `5분 20초 + 1분 40초 라이브 데모 버퍼 및 Q&A`를 7분으로 묶어, 확정된 `발표 7분 + 질의응답 3분` 운영과도 맞지 않는다. 사람 낭독·클릭 리허설은 `NOT_MEASURED`다.
+- 확대 주장이 포함된 Downloads 원본 자체의 `CHANGES_REQUESTED` 이력은 유지하지만, 이는 청사진의 배치·문구 사용을 금지하는 판정이 아니다. 저장소 통합본은 검증되지 않은 비교 숫자에 인접한 `NOT_EVALUATED / HOLD` 경계를 붙였고, localhost 버튼이 실제 Workflow를 새로 트리거하는 동작은 제거해 Control Tower verified H05 snapshot 전환으로 한정했다.
+- 새 Workflow execution `ad392071-1554-43e8-9447-5b92d4790a48`은 Control Tower가 API·Storage generation·Cloud Run 시간창 로그로 독립 확인했다. Mission Agent가 합성 all-zero SHA-256 공격을 `INPUT_BODY_SHA256_MISMATCH`로 차단한 `INVALID_INPUT / NOT_EVALUATED / HOLD` 실행이며, 세 Agent 정상 실행이나 실제 방사선 보증처럼 말하지 않는다. 화면 본문은 기존 H05 snapshot만 표시하며 새 실행은 문서 증거로 분리한다.
+- localhost 1280×720 실제 브라우저에서 13장 모두 horizontal·vertical overflow 0, console warning/error 0을 확인했다. 차폐 1/2/4/5 mm, 2 mm 고정 ECC OFF/ON, GCP 네 scenario, 6개 node, 35점 badge 제거, 범위·신뢰성 박스와 GCP decision 박스 정렬도 통과했다. Product 직접 테스트 16개, JavaScript syntax와 `git diff --check`가 통과해 **시각·상호작용 통합만 `VERIFIED`**다.
+- Google Cloud Console 버튼은 실제 발표본의 stable Workflow 링크를 그대로 유지한다. 로그인 세션에서 Console이 `executions?...&rapt=...`로 이동할 수 있지만, `rapt` 인증 파라미터는 저장소에 저장하지 않는다.
+
+## H11 Rubric and Multi-Agent/GCP Narrative Alignment — 2026-08-21
+
+### 패키지와 공식 배점
+
+- package: `90-rubric-multi-agent-gcp-alignment-v1`
+- submission: `H11`
+- status ceiling: `READY_FOR_REVIEW`
+- 공식 배점은 모든 H11 기준 문서에서 다음으로 고정했다.
+  - Multi-Agent 아키텍처 및 GCP 인프라 완성도: **35점**
+  - 할루시네이션 방어 및 무결점 신뢰성: **20점**
+  - 비즈니스 임팩트 및 문제 정의: **30점**
+  - 팀 시너지 및 프레젠테이션: **15점**
+- `BRIEF.md`와 `DEMO_SCREEN_GUIDE_GLOSSARY_SCRIPT.md`의 배점·발표 증거를 동일하게 정렬했다.
+
+### 7분 core 서사
+
+- 기존 `PLANNED 405초(6분 45초)`를 늘리지 않고 `문제와 제품 가치 → 결정론적 Core → 세 Agent의 증거 책임 → GCP 실행·격리·감사 → fail-closed → 사용자 행동과 차별점 → 한계·팀 연결·다음 단계 → 마무리`로 재배치했다.
+- 산술은 `20 + 40 + 45 + 55 + 50 + 45 + 45 + 85 + 20 = 405초`다. 선택 확장 60초를 붙이면 `465초(7분 45초)`이며 사람 리허설은 `NOT_MEASURED`다.
+- Agent/GCP 전용 live 화면이 없어 현재 deck 07 Evidence Chain을 배경으로 말한다. 화면 추가는 Workstream 80 change request로만 남겼다.
+
+### Agent와 결정론적 Core의 책임
+
+- Environment Agent는 임무·환경 모델 metadata, 버전과 provenance 조건을 확인한다.
+- Parts Evidence Agent는 exact-part identity, 시험 event coverage, 원문 locator와 권리·출처 상태를 확인한다.
+- Independent Assurance Agent는 앞선 결과와 Core 결과의 schema·status·hash·blocking gap 일관성을 독립 확인한다.
+- 세 Agent는 방사선 숫자·시험값·최종 PASS를 생성하지 않는다. 계산·정책·gate는 결정론적 Core가 소유한다.
+- 필수 입력 누락, 범위 밖, Agent 실패, invalid response와 결과 불일치는 `NOT_EVALUATED/HOLD`로 닫고 다음 역할이 빈칸을 추측하지 않는다.
+- WATCHDOG·TMR·SEL runtime과 관련 합성 수치, runtime이 섞인 `47 / 0` aggregate는 주 발표와 핵심 신뢰성 수치에서 제외한다. ECC는 residual SEU 계산에 쓰는 제한된 합성 설계 가정이며 실제 하드웨어 구현이 아니다.
+
+### GCP 실행 경계와 H04 상태
+
+- H04 target은 `Cloud Storage synthetic input → Workflows → Environment Agent on Cloud Run → Parts Evidence Agent on Cloud Run → Independent Assurance Agent on Cloud Run → Storage result + Cloud Logging trace`다.
+- Workflows는 호출 순서·context와 오류 전파, Cloud Run은 역할별 실행 격리, Storage는 exact object 경계, Logging은 run 상태·오류 trace, IAM은 호출 권한 경계를 맡는다.
+- GCP는 단순 저장 방향이 아니라 실행·격리·감사 인프라로 설명한다. timeout·HTTP 오류·invalid response를 낙관적으로 우회하지 않는 fail-closed target이다.
+- Workstream 70 H04 handoff는 아직 없으므로 다음은 모두 `PENDING_H04_VERIFICATION`이다.
+  - 실제 resource명과 revision
+  - Workflow execution ID와 Cloud Run request/log correlation ID
+  - Storage generation·SHA-256 관측값
+  - 실제 IAM binding 관측, latency, 비용과 성공 횟수
+- H04가 성공하더라도 합성 fixture 실행 증거이며 실제 환경·승인 BOM·시험 원문이 없으면 최종 assurance는 `HOLD`다.
+- 아래 H10 이하의 `live GCP resource 0` 문구는 각 과거 제출 당시 상태 기록이다. H11의 현재 발표 계약에서는 H04 병렬 실행 가능성을 반영해 실제 cloud 상태를 0이나 성공으로 단정하지 않고 `PENDING_H04_VERIFICATION`으로 대체한다.
+
+### Q&A와 변경 경계
+
+- 우선 Q&A는 `왜 세 Agent인가`, `Agent 할루시네이션 방어`, `왜 GCP인가`, `실제 배포됐는가`, `Agent 실패 시 처리`, `GCP 성공과 실제 부품 적합성의 차이` 여섯 질문으로 정렬했다.
+- 각 답변의 첫 문장은 결론형이며 `PLANNED 30~45초`다.
+- Workstream 80 change request: Agent/GCP 책임 구조와 H04 검증 상태를 평가용 화면에 추가하되, 검증 전 live 필드는 `PENDING_H04_VERIFICATION`으로 표시한다.
+- Product/demo 코드·테스트·Workstream 70·80·공통 계약·engine·루트 문서는 수정하지 않았다.
+- 문서 전용 H11이라 Product 테스트와 전체 회귀는 실행하지 않는다.
+- `CONTRACT_CHANGE_REQUEST`: H10의 ECC residual 결과 계층 결정을 유지하고, Workstream 80 Agent/GCP 평가 화면은 H04 검증 뒤 별도 소유 작업으로 요청한다.
+
+## H10 Cover and Product Clarity Narrative — 2026-08-21
+
+### 패키지와 범위
+
+- package: `90-cover-and-product-clarity-narrative-v1`
+- submission: `H10`
+- status ceiling: `READY_FOR_REVIEW`
+- 수정 파일은 `DEMO_SCREEN_GUIDE_GLOSSARY_SCRIPT.md`, `ASSURANCE_ATTACK_DEMO_RUNBOOK.md`, 이 `CURRENT.md`와 H10 handoff다.
+- Product/demo 코드·테스트·Workstream 80·공통 계약·engine·루트 문서는 수정하지 않았다.
+
+### 초심자 주 발표 정렬
+
+- 표지에 `SPECTRA`, `위성 전자부품 방사선 검토를, 계산에서 근거와 판단까지 연결합니다.`, `좋은 숫자보다, 믿을 수 있는 판단.`을 두고 20초 시작 대본을 추가했다.
+- `오늘 보시는 수치는 합성 데모이며 실제 방사선 보증 결과는 아닙니다.`를 시작에서 한 번 말하고, 이후에는 판단이 바뀌는 지점에서만 합성·0건·`HOLD` 경계를 말한다.
+- 주 흐름은 `차폐·TID·SEU·ECC → 정확한 부품 근거 연결 → 5 mm 범위 밖 차단 → 보증 판단 HOLD → 결과 전달 숫자 변경 차단`이다.
+- ECC ON은 실제 하드웨어 구현이 아니라 수정 가능한 메모리 오류가 줄어든다는 제한된 합성 설계 가정을 residual SEU 계산에 적용한 것이다. 발표 HTML의 `0.063072 → 0.0063072`는 동결 합성 fixture 비교일 뿐 실제 효과가 아니며, 실제 채택에는 부품 지원·오류 패턴·적용 조건·효과 근거가 필요하다. Product 시연에서는 current generated payload의 화면값을 따른다.
+- WATCHDOG·TMR·SEL과 `10%→2.8%`, `1회·60초`, `2회·32초` runtime 수치는 주 대본과 Product 시연에서 읽지 않는다. 관련 계산·schema·합성 fixture는 실제 하드웨어·장비 제어·현재 임무 채택·효과 입증이 아니며, 용어집의 기술 Q&A에서만 `현재 주 데모 범위 밖`으로 설명한다.
+- Product 03은 실제 label인 `확인된 것 → 아직 필요한 것 → 그래서 내린 결정` 세 문장만 따라간다. `HOLD`는 불합격이 아니라 현재 근거로 안전하다고 승인하지 않겠다는 상태다.
+- Product 04는 차폐·TID·SEU·ECC 계산과 분리된 결과 전달 layer다. 화면에는 고정 오류 주입 값 `60 → 999`가 보이지만 주 대본에서는 숫자를 읽지 않고 `원래 기록 → 일부러 바꾼 테스트 값 → 불일치 시 숫자 숨김·판단 보류`로만 설명한다.
+- 화면의 기존 `47 / 0` aggregate에는 핵심 발표 범위 밖 ASR-D03 runtime 18개가 포함되므로 H10에서는 공격 횟수나 잘못 PASS 0을 핵심 신뢰성 수치로 말하지 않는다. core profile 후보인 기존 18개와 MVP/ECC 11개는 Control Tower 독립 재검증 전 `UNSET`이다.
+
+### 가치·경계·다음 단계
+
+- 제품 가치는 `계산값만 보여 주는 도구가 아니라, 어떤 근거가 연결됐고 무엇이 부족해 판단을 보류했는지까지 보여 줍니다.`로 정리했다.
+- 차별점은 같은 입력의 재현, 지원 범위 밖 비추정, 실제 근거 부족 시 비승인, 전달 숫자 불일치 시 비노출이다.
+- 실제 environment model run, 승인 BOM, 시험 원문·실제 수치, live GCP resource·호출·실측 비용은 0이다. 합성값의 과학 정확성, 실제 부품 적합성·인증, 실제 사용자 가치와 프로젝트 전체 보안도 검증되지 않았다. 최종 assurance는 계속 `HOLD`다.
+- 다음 경로는 실제 임무 환경과 권리·출처 → 승인 BOM exact-part 시험 근거 → 실제 부품 ECC 지원·오류 패턴·효과 근거와 채택 정책 → 독립 assurance·실제 GCP 운영 검증이다.
+- 마무리는 `SPECTRA의 목표는 항상 답을 내는 것이 아닙니다. 믿을 수 있는 근거가 있을 때만 답하고, 그렇지 않으면 왜 멈췄는지와 다음 행동을 보여 주는 것입니다.`로 유지했다.
+
+### 시간과 H15 대조 상태
+
+- 이해 우선 core: `20 + 35 + 50 + 35 + 40 + 70 + 45 + 90 + 20 = 405초`, 즉 `PLANNED 6분 45초`.
+- 선택 확장: `20 + 20 + 20 = 60초`; 전체 `405 + 60 = 465초`, 즉 `PLANNED 7분 45초`.
+- 7개 본문 화면 fallback은 `212초`, 표지 포함 `232초`로 모두 `PLANNED`다.
+- 사람 낭독·클릭·탭 전환 리허설은 `NOT_MEASURED`다.
+- 2026-08-21 Workstream 80 H15 `READY_FOR_REVIEW` handoff와 current source에서 번호 없는 표지, ECC 설명, Product 03의 인과 label, Product 04의 화면명·제목·control·처리 문구와 계산/전달 layer 문장을 exact 대조했다. H15 actual browser는 `NOT_EVALUATED`이고 Control Tower `VERIFIED` 전이다.
+- H15가 기록한 계약 차이를 인수했다. 발표 HTML의 동결 Stage 2 residual은 `0.0063072`, Product current generated payload residual은 `0.013072`다. H10은 두 값을 같은 결과 계층으로 합치지 않고 Product 시연에서는 current 화면값, 발표 HTML fallback에서는 동결 fixture 값을 사용한다.
+- 문서 전용 H10이므로 Product 테스트와 저장소 전체 회귀는 실행하지 않는다.
+- `CONTRACT_CHANGE_REQUEST`: Product가 어느 residual 결과 계층을 대표할지 Control Tower 후속 계약이 필요하다. H10은 authoritative source·consumer·수치를 변경하지 않는다.
+
+## H09 Control Tower 독립 검토 — 2026-08-21
+
+- H14 source와 네 안전장치·`47/0` 범위·Product 04 control의 exact 정합성은 확인했다.
+- `git diff --check`는 통과했다.
+- H09는 TMR을 `세 장치가 같은 계산`으로 설명하지만, 정확한 가정은 동일 기능의 복제 채널 3개와 제한된 독립 오류 fixture다. 세 위성 가정이 아니라는 설명과 현재 임무 설계 비채택 경계가 빠졌다.
+- SEL 과전류 보호는 TMR과 별개의 단일 device/전원 rail 보호 경로이며 세 장치 가정이 아니다. 이 구분도 주 대본과 용어집에서 명시해야 한다.
+- ECC의 기능은 설명했지만 실제로 왜 고려하는지와 실제 부품 지원·오류 패턴·효과 근거가 있어야 채택할 수 있다는 의사결정 문장이 부족하다.
+- Product 보증 판단의 네 gap을 그대로 읽는 방식보다 `확인된 것 / 아직 필요한 것 / 현재 결정`으로 설명해야 한다.
+- 따라서 H09의 초심자 명료성 Exit Gate는 `CHANGES_REQUESTED`다. 이전 H08 `VERIFIED`는 유지한다.
+- 후속 지침: `instructions/SPECTRA_90_COVER_AND_PRODUCT_CLARITY_NARRATIVE_H10.md`.
+
+## H09 Screen-First Reliability Narrative
+
+### 현재 작업 상태
+
+- package: `90-screen-first-reliability-narrative-v1`
+- submission: `H09`
+- status ceiling: `READY_FOR_REVIEW`
+- deck 06 설명을 `같은 입력 → 같은 결과`, `지원 범위 밖 → 계산 안 함`, `실제 근거 부족 → 판단 보류(HOLD)`, `전달된 숫자가 다름 → 숫자 숨김`의 네 안전장치로 정렬했다.
+- `47회 / 잘못 PASS 0`은 단위·범위·식별·증거·정책·결과 변경을 포함한 고정 합성 오류·공격 실행 세트로만 한정했다. 모든 공격, 실제 GCP `ASR-D02`, 과학 정확성 또는 실제 evidence 검증 완료 주장이 아니다.
+- Product 04는 `Assurance Attack`이 아니라 네 번째 안전장치의 `결과 전달 오류 테스트` 또는 `오류 주입 테스트`로 연결했다.
+- `재현 가능`, `지원 범위`, `오류 주입 테스트`, `잘못된 PASS(False PASS)`, `고정 합성 테스트 세트`를 초심자용 용어집에 추가했다.
+- Product 02의 `Runtime 완화`를 주 대본에서 `고장 대응 방법`으로 설명하고, 자동 재시작·3중 다수결·과전류 전원 보호를 각각 `무엇을 하는가 → 어떤 대가가 남는가`로 정리했다. 현재 합성 수치 `1회·60초`, `10%→2.8%`, `2회·32초`와 실제 효과 미검증·최종 `HOLD`를 함께 말한다.
+- `runtime`, `false activation`, `projection`, `processing status`, `equation ID`, policy code와 hash는 주 대본의 이해 전제에서 제외했다.
+- 기존 제품 가치·한계·다음 단계·마무리는 유지했다. Product 02 설명을 core에 포함하면서 이해 우선 core는 `PLANNED 390초`, 선택 1분 포함 전체는 `PLANNED 450초`다. 화면 06 이해를 늘린 7개 deck 화면 연속본은 별도로 `PLANNED 202초`이며 사람 리허설은 수행하지 않았다.
+- current `demo/index.html`의 deck 06 네 카드·`47 / 0` 범위 문구와 `demo/product.html`의 Product 04 새 맥락 label·연결 문장을 source 기준 exact 대조했다. 이는 H14의 `VERIFIED` 또는 실제 browser 검증을 뜻하지 않는다.
+- current Product 02 source의 탭 `고장 대응 방법`, 질문 `오류가 생겼을 때 시스템은 어떻게 버티고 복구할까요?`, 중심 문장, `자동 재시작·3중 다수결·과전류 전원 보호`, `문제가 생김 → 대응 동작 → 남는 영향·대가`, 합성 수치와 `합성 계산 결과 · 실제 완화 효과 검증 아님 · 근거 부족으로 HOLD`를 exact 대조했다. `WATCHDOG/TMR/SEL 대응`은 보조 기술명, 내부 상태·equation·policy·hash는 접힌 기술 상세에만 있다.
+- Product/demo 코드, 테스트, Workstream 80, 루트 문서는 수정하지 않았다.
+- `CONTRACT_CHANGE_REQUEST`: 없음.
+
+## H08 H07 Presentation Copy & Current-State Remediation
+
+### Control Tower 독립 검증 — 2026-08-20
+
+- H07의 provenance 오탈자, H12 미제출 stale 문구와 이전 H10 85초 표현이 제거됐음을 확인했다.
+- 장면명·제목·중심 문장·세 카드·세 control·처리 문구를 H13 current Product source와 exact 대조했다.
+- `60초 → 999초 → 서로 다름 → 숫자 숨김·판단 보류`가 주 대본에 기술 식별자 없이 설명되고, 기술 용어는 Q&A·용어집에만 남았음을 확인했다.
+- `70 / 360 / 420초` 산술과 모든 `PLANNED`, 실제 evidence·GCP 0 및 과학 정확성·보안 비검증 경계를 재확인했다.
+- `git diff --check`가 통과했다. H08 문서 정합성 패키지만 `VERIFIED`이며 사람 리허설과 H13 actual browser는 여전히 `NOT_EVALUATED`다.
+
+### 변경 범위
+
+- `DEMO_SCREEN_GUIDE_GLOSSARY_SCRIPT.md`의 provenance 조사 오탈자를 자연스러운 `남기는 계보이다`로 수정했다.
+- 화면 7과 연결 문장의 이전 H10 시간 표현을 현재 독립 `숫자 변경 감지`의 `PLANNED 70초`로 정렬했다.
+- `ASSURANCE_ATTACK_DEMO_RUNBOOK.md`의 H12 미제출 상태를 현재 사실로 갱신했다. H12 handoff와 Product 13개 테스트 통과 증거는 제출됐지만 실제 `file://` browser·viewport·console 검증은 `NOT_EVALUATED`다.
+- 사용자 설명 검토에서 `결과 검증`이라는 장면명이 이해되지 않은 실패를 반영해 H13 목표 `숫자 변경 감지`와 세 문장 인과관계로 주 대본을 좁혔다.
+
+### 유지한 계약
+
+- 초심자용 숫자 변경 감지 주본 `PLANNED 70초`
+- `6분 core 360초 + 선택 1분 60초 = 420초`
+- H12 화면·control·카드·한국어 우선 상태 exact label
+- 실제 environment·parts evidence와 GCP resource 0, 과학 정확성·보안·전자서명 비검증, 최종 `HOLD`
+- 제품 가치·차별점·한계·다음 단계·마무리 내용
+- Product 테스트와 저장소 전체 회귀는 문서 전용 H08에서 반복하지 않았다.
+- 현재 dirty working tree의 H13 Product source에서 화면명·제목·중심 문장·세 카드·세 control·처리 문구를 exact 대조했다. H13 handoff·테스트·실제 browser 검증은 아직 확인되지 않았다.
+- `CONTRACT_CHANGE_REQUEST`: 없음.
+
+## H07 Beginner Integrity Story and Closing
+
+### 패키지와 변경
+
+- package: `90-beginner-integrity-story-and-closing-v1`
+- submission: `H07`
+- baseline: Workstream 80 H10·Workstream 90 H05 `VERIFIED`; H11·H06 `READY_FOR_REVIEW`
+- status ceiling: `READY_FOR_REVIEW`
+- `ASSURANCE_ATTACK_DEMO_RUNBOOK.md`를 방사선 수치 변화와 분리된 독립 `숫자 변경 감지` 장면의 `PLANNED 70초` 초심자 대본으로 다시 작성했다.
+- `DEMO_SCREEN_GUIDE_GLOSSARY_SCRIPT.md`에 assurance·결과 일치성·자동 복구 감시 기능·서비스 중단 시간·테스트용 사본·원래 기록·부분 불일치와 세 안전 상태를 추가하고 `6분 core + 선택 1분` 구조를 통합했다.
+- 제품 가치·차별점·한계·다음 단계·마무리를 6분 core 안에 포함했다.
+
+### 초심자 인과관계
+
+- 자동 복구 감시 기능의 정상 합성 서비스 중단 시간은 `60초`다.
+- 원본을 보존한 테스트용 사본의 숫자만 `60 → 999`로 바꾸며, `999`는 새 계산이나 실제 중단 시간이 아니다.
+- 정상 계산 당시 저장한 원래 기록 `60`과 화면 입력 `999`가 맞지 않으면 어느 값도 추측하지 않는다.
+- 주 대본은 `계산 직후 기록 60초 → 화면 테스트 값 999초 → 서로 다르면 숫자 숨김·판단 보류` 세 문장으로 설명하며 기술 식별자는 Q&A로 내린다.
+- 이 시연은 Product runtime result의 부분 불일치를 fail-closed로 처리하는 합성 시연이며 해커 방어·전자서명·공격자 인증·GCP 보안·과학 정확성 검증이 아니다.
+
+### 시간과 UI 대조
+
+- 숫자 변경 감지 주본: 세 문장 `20 + 20 + 20초`와 범위 고지 `10초`, 합계 `70초`, `PLANNED`
+- 6분 core: `35 + 60 + 40 + 70 + 45 + 90 + 20 = 360초`, `PLANNED`
+- 선택 확장: `20 + 20 + 20 = 60초`; 전체 `420초 = 7분`
+- 현재 dirty working tree의 H12 Product HTML에서 화면 순서, 카드·control·상태명과 중심 문구를 exact 대조했다. H12 handoff와 Product 13개 테스트 통과 증거는 제출됐지만 실제 `file://` browser·viewport·console 검증은 `NOT_EVALUATED`이며 H12는 아직 `VERIFIED`가 아니다.
+- 사람 낭독·실제 클릭·탭 전환은 미실행이며 `MEASURED` 시간이 없다.
+- Product 테스트와 전체 저장소 회귀는 문서 전용 H07에서 반복하지 않았다.
+- `CONTRACT_CHANGE_REQUEST`: 없음.
+
+## H06 Screen Guide, Glossary and Script
+
+### 패키지와 산출물
+
+- package: `90-screen-guide-glossary-script-v1`
+- submission: `H06`
+- baseline: Workstream 80 H10 `VERIFIED`, Workstream 90 H05 `VERIFIED`
+- status ceiling: `READY_FOR_REVIEW`
+- 신규: `docs/workstreams/90-business-presentation/DEMO_SCREEN_GUIDE_GLOSSARY_SCRIPT.md`
+- handoff: `docs/workstreams/90-business-presentation/handoffs/SPECTRA_90_SCREEN_GUIDE_GLOSSARY_SCRIPT_HANDOFF_H06.md`
+
+### 작성 범위
+
+- 전체 이야기를 5문장으로 정리하고 `demo/index.html` 화면 1~7마다 질문·요소 의미·핵심 한 문장·20~35초 대본·금지 주장을 작성했다.
+- BOM exact identity, TID·SEE 계열, 단위·설계계수, snapshot·lookup 범위, ECC, evidence·fail-closed, integrity·rights·GCP 용어를 초심자용 네 열 용어집으로 정의했다.
+- 현재 합성 snapshot 값만 사용한 7개 화면 연속 대본은 `22 + 23 + 27 + 25 + 25 + 28 + 25 = 175초`, 즉 `PLANNED 2분 55초`다.
+- H10 85초 무결성 공격 설명과 중복하지 않고 화면 7 뒤 한 문장 연결부만 뒀다.
+
+### 사실 경계와 남은 대조
+
+- 모든 화면 값은 `SYNTHETIC`이며 실제 environment·parts evidence와 live GCP resource·호출·실측 비용은 0이다.
+- `1 krad = 1000 rad`, `1 rad = 0.01 Gy`, `(Si)`의 실리콘 흡수선량 기준을 단위 설명으로만 사용하며 합성값의 과학 정확성을 주장하지 않는다.
+- 설계계수 2를 보편값·승인값으로, 5 mm 범위 밖을 일반 물리 계산 불가로, SEU를 파괴성 SEE 근거로, SHA-256을 과학적 진실성·권리 증명으로 확대하지 않는다.
+- 현재 비용 0은 로컬 데모의 실측 GCP 비용 0이며, 실제 배포 시 저장·실행·로그·네트워크 비용을 별도 측정해야 한다.
+- H11은 지침만 확인했으며 실제 HTML·handoff가 아직 없어 exact label 대조는 `NOT_PERFORMED`다.
+- 사람 낭독 리허설은 미실행이며 시간은 `PLANNED`다.
+- `CONTRACT_CHANGE_REQUEST`: 없음.
+
+## H05 Control Tower 독립 검증 — 2026-08-20
+
+- 변경 범위가 runbook·Workstream 90 CURRENT·handoff에 한정되고 Product 구현·테스트·Workstream 80·공통 계약과 engine을 변경하지 않았음을 확인했다.
+- runbook에서 pre-H10 상태·미제출·검증 전·후속 대조 placeholder를 독립 검색해 0건을 확인했다.
+- 실제 H10 UI의 `수치 변화 보기 →`, `Assurance 공격`, `공격 입력 만들기`, `동일 consumer로 검증`, `정상 원본으로 Reset`, `신뢰하지 않는 공격 입력 (UNTRUSTED)`가 코드와 runbook에서 exact match함을 확인했다.
+- 정상·공격·차단·보존·Reset 관측과 합성 Product integrity 한계가 H10 검증 결과를 넘지 않으며, 실제 GCP 보안·전자서명·공격자 인증·방사선 assurance로 확대되지 않았다.
+- `18 + 18 + 32 + 17 = 85`, `155 + 85 = 240`, `400 + 20 = 420` 산술과 `PLANNED` 표기를 재검산했고 `git diff --check`가 통과했다.
+- H05 문서 정합성 패키지는 `VERIFIED`다. 사람 낭독·클릭·탭 전환 시간은 아직 `MEASURED`가 아니며 Stage 9과 Git 통합은 미완료다.
+
+## H05 Assurance Attack Demo Runtime Alignment
+
+### 패키지와 변경
+
+- package: `90-assurance-attack-demo-runtime-alignment-v1`
+- submission: `H05`
+- baseline: Workstream 80 H10 `VERIFIED`, Workstream 90 H04 `CHANGES_REQUESTED`
+- status ceiling: `READY_FOR_REVIEW`
+- pre-H10 상태 문구와 후속 대조 placeholder를 모두 제거했다.
+- 실제 동선을 `수치 변화 보기 →` → `Assurance 공격` → `공격 입력 만들기` → `동일 consumer로 검증` → `정상 원본으로 Reset`으로 확정 반영했다.
+- 실제 경고 label `신뢰하지 않는 공격 입력 (UNTRUSTED)`과 차단·보존·Reset 관측값을 runbook cue에 정렬했다.
+- fallback을 구현 제출 전 대응이 아니라 발표 현장의 UI 실행·탭 전환 실패 대응으로 갱신했다.
+
+### 검증 상태와 경계
+
+- H10은 1280×720·1440×900 실제 브라우저에서 horizontal overflow 0, 핵심 control 노출, console warning/error 0과 정상 → 공격 → 차단 → Reset 동선이 검증됐다.
+- 차단 뒤 WATCHDOG는 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`, reason `RUNTIME_PREIMAGE_VALUE_MISMATCH`, 수치·result ID·input/output hash `—`다. TMR·SEL·방사선 residual `0.013072`는 유지되고 Reset 뒤 정상 원본이 복원된다.
+- 이는 합성 Product integrity 검증이다. 실제 GCP 보안·전자서명·공격자 인증·방사선 assurance 검증이 아니며 실제 environment·parts evidence와 live GCP resource는 0이다.
+- `85초`, fallback `30초`, 전체 `6:40 + 0:20 = 7:00`은 계속 계산된 `PLANNED` 계약이다. 사람 리허설은 수행하지 않았다.
+- Product 테스트와 저장소 전체 회귀는 H05 지침에 따라 반복하지 않았다.
+- `CONTRACT_CHANGE_REQUEST`: 없음.
+
+## H04 Control Tower 독립 검토 — 2026-08-20
+
+- `PLANNED 85초` 구간 합계와 기존 Product 240초 안의 `155 + 85 = 240` 교체 산술, 정상·공격·차단 상태 구분, 합성·비보증 경계와 30초 fallback은 적합하다.
+- 그러나 H10 제출과 실제 브라우저 검증이 끝난 뒤에도 runbook은 pre-H10 상태 문구와 후속 대조 placeholder를 유지했다. 실제 control label·순서와 복원 관측을 문서에 확정 반영하지 않아 제출 자체의 필수 후속 대조가 완료되지 않았다.
+- H04는 `CHANGES_REQUESTED`다. H05에서 실제 H10 label과 검증 결과만 좁게 정렬하고 `PLANNED` 시간을 `MEASURED`로 승격하지 않는다. Product 구현·테스트는 변경하지 않는다.
+
+## H04 Assurance Attack Demo Runbook
+
+### 패키지
+
+- package: `90-assurance-attack-demo-runbook-v1`
+- submission: `H04`
+- baseline: `main / d287d62`
+- status ceiling: `READY_FOR_REVIEW`
+- 산출물: `docs/workstreams/90-business-presentation/ASSURANCE_ATTACK_DEMO_RUNBOOK.md`
+- handoff: `docs/workstreams/90-business-presentation/handoffs/SPECTRA_90_ASSURANCE_ATTACK_DEMO_RUNBOOK_HANDOFF_H04.md`
+
+### 작성 범위
+
+- 정상 WATCHDOG `1 / 1 / 60 s`와 `VALID / NOT_EVALUATED / HOLD` 경계를 한국어 대사와 화면 cue로 대응했다.
+- clone의 downtime만 `60 → 999`로 바꾸고 production preimage·hash를 stale로 두는 공격을 설명했다.
+- H09 consumer의 `RUNTIME_PREIMAGE_VALUE_MISMATCH` 탐지 뒤 대상 record 수치·result ID·input/output hash 비노출과 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`를 명시했다.
+- 기존 7분 Product 구간 `1:20–5:20` 후반의 85초를 교체해 전체 발표시간을 늘리지 않는 산술 계약을 정의했다.
+- 발표 현장에서 공격 UI 실행이나 탭 전환이 실패할 때 기존 self-contained Product 정상 화면으로 설명하는 `PLANNED 30초` fallback과 20초 이내 Q&A를 포함했다.
+
+### 현재 경계
+
+- H04 제출 때 남았던 UI label·동선 대조 항목은 H10 `VERIFIED` 결과를 기준으로 H05에서 해소했다.
+- 85초 주본과 30초 fallback은 계산된 `PLANNED` 시간이다. 사람 낭독·클릭·탭 전환은 아직 `MEASURED`하지 않았다.
+- 모든 값은 `SYNTHETIC`이다. 실제 environment·parts evidence와 live GCP resource는 0이며 실제 방사선 assurance, GCP security, 전자서명 또는 공격자 인증을 주장하지 않는다.
+- 기존 7분 주본의 계산된 핵심 설명 `6:40`과 여유 `0:20` 계약은 변경하지 않았다.
+- demo, Product 테스트, Workstream 80, 공통 schema·engine·Assurance 파일은 수정하지 않았다.
 
 ## H03 Business Validation Instrument
 

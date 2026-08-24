@@ -1,0 +1,291 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "iceu-686",
+  "region": "asia-northeast3",
+  "data_class": "SYNTHETIC",
+  "assurance_decision": "HOLD",
+  "cases": [
+    {
+      "case": "normal-production-core",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h05-ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T163312Z-11bf821d-normal-production-core.json",
+        "generation": "1787243596527806",
+        "canonical_body_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "metadata_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "expected_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787243600145935",
+        "object_name": "results/ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34.json",
+        "sha256": "sha256:68d66ef0578ddb4d2e3078a01baac3679333fb6c2cae39a3eaafc8cf670939e2"
+      },
+      "result_summary": {
+        "processing_status": "VALID",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "SYNTHETIC_ONLY"
+        ],
+        "agent_statuses": {
+          "assurance": "VALID",
+          "mission": "VALID",
+          "parts": "VALID"
+        },
+        "agent_codes": {
+          "assurance": [
+            "SYNTHETIC_ONLY"
+          ],
+          "mission": [
+            "PRODUCTION_CORE_BOUND",
+            "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+          ],
+          "parts": [
+            "EXACT_PART_IDENTITY_MATCHED",
+            "REAL_PART_TEST_EVIDENCE_MISSING",
+            "SYNTHETIC_EVIDENCE_ONLY"
+          ]
+        },
+        "mission_body_hash_verified": true,
+        "production_core_run_id": "mvp-cb826edb88ea5b67",
+        "production_core_output_hash": "sha256:9ea2090a5b57317e72a6fd883dc3b8e7f92a4bd5793c304e2ec57d54d981f973",
+        "production_core_result_sha256": "sha256:a7e7de0d71e9ec5f94574ae5bd2244a94ef70169304b190c2126b1698d701a27"
+      }
+    },
+    {
+      "case": "body-metadata-expected-forgery",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/3f5d9221-7b7a-4023-be3c-f933fdbaf070",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h05-3f5d9221-7b7a-4023-be3c-f933fdbaf070",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T163321Z-02370297-body-metadata-expected-forgery.json",
+        "generation": "1787243605139995",
+        "canonical_body_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "metadata_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+        "expected_sha256": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787243607524347",
+        "object_name": "results/3f5d9221-7b7a-4023-be3c-f933fdbaf070.json",
+        "sha256": "sha256:5747fb72cc802cc11348b5cc801ac1ee2daaeccd8b88758715496cf4aac0432a"
+      },
+      "result_summary": {
+        "processing_status": "INVALID_INPUT",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "INPUT_BODY_SHA256_MISMATCH"
+        ],
+        "agent_statuses": {
+          "mission": "INVALID_INPUT"
+        },
+        "agent_codes": {
+          "mission": [
+            "INPUT_BODY_SHA256_MISMATCH"
+          ]
+        },
+        "mission_body_hash_verified": false,
+        "production_core_run_id": null,
+        "production_core_output_hash": null,
+        "production_core_result_sha256": null
+      }
+    },
+    {
+      "case": "parts-evidence-hash-corruption",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/bbf7d6c7-bcfb-4dd7-87a5-38303e861738",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h05-bbf7d6c7-bcfb-4dd7-87a5-38303e861738",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T163330Z-770ef00c-parts-evidence-hash-corruption.json",
+        "generation": "1787243613818349",
+        "canonical_body_sha256": "sha256:2cd55d9bd3130bd87674ecb19d8ffbe7186ec6121e378b19f6efe8400c9eafa4",
+        "metadata_sha256": "sha256:2cd55d9bd3130bd87674ecb19d8ffbe7186ec6121e378b19f6efe8400c9eafa4",
+        "expected_sha256": "sha256:2cd55d9bd3130bd87674ecb19d8ffbe7186ec6121e378b19f6efe8400c9eafa4"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787243617223759",
+        "object_name": "results/bbf7d6c7-bcfb-4dd7-87a5-38303e861738.json",
+        "sha256": "sha256:ef9b2c02a9fc1022d63098fdeacef8d9a2ae944da1d3f449d090724094c915a6"
+      },
+      "result_summary": {
+        "processing_status": "INVALID_INPUT",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "PARTS_AGENT_NOT_VALID",
+          "PART_EVIDENCE_HASH_MISMATCH",
+          "SYNTHETIC_ONLY"
+        ],
+        "agent_statuses": {
+          "assurance": "INVALID_INPUT",
+          "mission": "VALID",
+          "parts": "INVALID_INPUT"
+        },
+        "agent_codes": {
+          "assurance": [
+            "PARTS_AGENT_NOT_VALID",
+            "PART_EVIDENCE_HASH_MISMATCH",
+            "SYNTHETIC_ONLY"
+          ],
+          "mission": [
+            "PRODUCTION_CORE_BOUND",
+            "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+          ],
+          "parts": [
+            "PART_EVIDENCE_HASH_MISMATCH"
+          ]
+        },
+        "mission_body_hash_verified": true,
+        "production_core_run_id": "mvp-cb826edb88ea5b67",
+        "production_core_output_hash": "sha256:9ea2090a5b57317e72a6fd883dc3b8e7f92a4bd5793c304e2ec57d54d981f973",
+        "production_core_result_sha256": "sha256:a7e7de0d71e9ec5f94574ae5bd2244a94ef70169304b190c2126b1698d701a27"
+      }
+    },
+    {
+      "case": "malformed-agent-input",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/270332c4-232c-4dda-84d5-12ef92e36efa",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h05-270332c4-232c-4dda-84d5-12ef92e36efa",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T163339Z-d3914cc7-malformed-agent-input.json",
+        "generation": "1787243622595123",
+        "canonical_body_sha256": "sha256:e9a3c7c352327eed3f8aa745e1047877688b4f94f0787ee380cbfbbc9c927461",
+        "metadata_sha256": "sha256:e9a3c7c352327eed3f8aa745e1047877688b4f94f0787ee380cbfbbc9c927461",
+        "expected_sha256": "sha256:e9a3c7c352327eed3f8aa745e1047877688b4f94f0787ee380cbfbbc9c927461"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787243625729310",
+        "object_name": "results/270332c4-232c-4dda-84d5-12ef92e36efa.json",
+        "sha256": "sha256:36f820a914ced7c64b6b9da310b066ff1201a236435f16d3bd072e34d339382b"
+      },
+      "result_summary": {
+        "processing_status": "INVALID_INPUT",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "EXACT_PART_IDENTITY_INVALID",
+          "PARTS_AGENT_NOT_VALID",
+          "SYNTHETIC_ONLY"
+        ],
+        "agent_statuses": {
+          "assurance": "INVALID_INPUT",
+          "mission": "VALID",
+          "parts": "INVALID_INPUT"
+        },
+        "agent_codes": {
+          "assurance": [
+            "EXACT_PART_IDENTITY_INVALID",
+            "PARTS_AGENT_NOT_VALID",
+            "SYNTHETIC_ONLY"
+          ],
+          "mission": [
+            "PRODUCTION_CORE_BOUND",
+            "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+          ],
+          "parts": [
+            "EXACT_PART_IDENTITY_INVALID"
+          ]
+        },
+        "mission_body_hash_verified": true,
+        "production_core_run_id": "mvp-cb826edb88ea5b67",
+        "production_core_output_hash": "sha256:9ea2090a5b57317e72a6fd883dc3b8e7f92a4bd5793c304e2ec57d54d981f973",
+        "production_core_result_sha256": "sha256:a7e7de0d71e9ec5f94574ae5bd2244a94ef70169304b190c2126b1698d701a27"
+      }
+    },
+    {
+      "case": "endpoint-override",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/df49b5c1-3883-468e-bf1e-67e87ee0b6a7",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h05-df49b5c1-3883-468e-bf1e-67e87ee0b6a7",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T163347Z-560beee9-endpoint-override.json",
+        "generation": "1787243630828136",
+        "canonical_body_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "metadata_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "expected_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787243632821248",
+        "object_name": "results/df49b5c1-3883-468e-bf1e-67e87ee0b6a7.json",
+        "sha256": "sha256:8c91d97594f145d9c32d62042977cc5bc647ce09079c2b9cc21ff4aa14e6f616"
+      },
+      "result_summary": {
+        "processing_status": "INVALID_INPUT",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "ENDPOINT_OVERRIDE_FORBIDDEN"
+        ],
+        "agent_statuses": {},
+        "agent_codes": {},
+        "mission_body_hash_verified": null,
+        "production_core_run_id": null,
+        "production_core_output_hash": null,
+        "production_core_result_sha256": null
+      }
+    },
+    {
+      "case": "production-test-control",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/e51de87e-3b84-4c57-8eb1-89f0ce755782",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h05-e51de87e-3b84-4c57-8eb1-89f0ce755782",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260820T163355Z-3026f64f-production-test-control.json",
+        "generation": "1787243638954681",
+        "canonical_body_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "metadata_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "expected_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787243642221772",
+        "object_name": "results/e51de87e-3b84-4c57-8eb1-89f0ce755782.json",
+        "sha256": "sha256:e9483895a5dd73e2ee3895662dbded24547af88aeb131550a3f670cf321709af"
+      },
+      "result_summary": {
+        "processing_status": "VALID",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "SYNTHETIC_ONLY"
+        ],
+        "agent_statuses": {
+          "assurance": "VALID",
+          "mission": "VALID",
+          "parts": "VALID"
+        },
+        "agent_codes": {
+          "assurance": [
+            "SYNTHETIC_ONLY"
+          ],
+          "mission": [
+            "PRODUCTION_CORE_BOUND",
+            "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+          ],
+          "parts": [
+            "EXACT_PART_IDENTITY_MATCHED",
+            "REAL_PART_TEST_EVIDENCE_MISSING",
+            "SYNTHETIC_EVIDENCE_ONLY"
+          ]
+        },
+        "mission_body_hash_verified": true,
+        "production_core_run_id": "mvp-cb826edb88ea5b67",
+        "production_core_output_hash": "sha256:9ea2090a5b57317e72a6fd883dc3b8e7f92a4bd5793c304e2ec57d54d981f973",
+        "production_core_result_sha256": "sha256:a7e7de0d71e9ec5f94574ae5bd2244a94ef70169304b190c2126b1698d701a27"
+      }
+    }
+  ]
+}

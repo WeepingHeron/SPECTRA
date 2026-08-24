@@ -38,3 +38,13 @@ The JSON summary reports top-level cases, evaluated attack executions,
 evaluated controls, dependency-wait cases, False PASSes, and failures
 separately. `ASR-D02` remains `NOT_EVALUATED` until real deployed GCP bytes,
 generation metadata, and IAM behavior exist to attack.
+
+The H04 deployed-GCP preparation package is isolated under `gcp_d02/`. Its
+offline validator checks the prepared matrix, Assurance-owned synthetic fixture,
+stable-code expectations, False Accept/False PASS rules, and empty evidence
+template. It does not call GCP or add any execution to the main assurance
+summary:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 tests/assurance/gcp_d02/run_preparation.py
+```

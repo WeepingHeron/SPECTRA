@@ -6,6 +6,13 @@
 
 이 상태는 완화·정책 엔진의 **계약 조사와 결정론적 설계 패키지 H02**가 Control Tower 독립 검증 후 Git에 통합됐다는 뜻이다. Stage 5 전체 구현, 실제 효과 계산 또는 실제 policy 승인을 뜻하지 않는다.
 
+## 2026-08-21 현재 범위 결정
+
+- 활성 Core 범위는 차폐·부품 대체·ECC와 TID 설계 계수·잔여 SEU·파괴성 SEE 판정 기준이다.
+- WATCHDOG·TMR·SEL protection과 기타 runtime 완화는 과거 검증 이력을 보존하는 `EXPERIMENTAL` 범위다.
+- 실험 범위의 기존 구현·schema·fixture를 삭제하지 않지만 Product 주 동선, Competition Demo 사용자 결정과 Core 신뢰성 집계에 사용하지 않는다.
+- 이 결정은 과거 H02/H03 검증을 취소하지 않으며 현재 제품 범위만 축소한다.
+
 ## 이번 패키지
 
 - 세션: `50-mitigation-policy`

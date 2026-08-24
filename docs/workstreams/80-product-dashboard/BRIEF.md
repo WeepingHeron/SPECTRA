@@ -28,6 +28,8 @@ Product & Dashboard Workstream은 검증된 입력·계산·증거·판정 계�
 - 범위 밖 입력은 값 없이 `OUT_OF_MODEL_SCOPE/HOLD`로 표시한다.
 - 실제 환경·부품·시험·GCP가 0임을 마지막 화면에서 숨기지 않는다.
 - JavaScript 실패 시 전체 메시지가 정적 문서로 남는다.
+- WATCHDOG·TMR·SEL runtime은 주 제품 동선에서 제외하고 기술 Q&A의 실험적 확장으로만 둔다.
+- Competition Demo에서는 Workstream 70이 제공하는 실제 Agent 실행 ID·GCP 상태·HOLD 결과를 읽기 전용으로 표시하며 브라우저가 상태를 창작하지 않는다.
 
 ## 검증 명령
 

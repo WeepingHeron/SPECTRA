@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0.0",
+  "data_class": "SYNTHETIC",
+  "fixture_status": "PREPARATION_ONLY_NOT_LIVE_EVIDENCE",
+  "control_input": {
+    "schema_version": "1.0.0",
+    "artifact_id": "assurance-d02-synthetic-chain-001",
+    "data_class": "SYNTHETIC",
+    "mission": {
+      "mission_id": "synthetic-leo-001",
+      "model_name": "SPECTRA_SYNTHETIC_BASELINE_NOT_PHYSICAL",
+      "model_version": "1.0.0",
+      "source_ref": "fixture://simulation/config/synthetic-model.json",
+      "input_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "core_case_id": "mvp-synthetic-ecc-policy-001"
+    },
+    "part_evidence": {
+      "artifact_id": "assurance-d02-synthetic-part-001",
+      "manufacturer": "SYNTHETIC-MANUFACTURER",
+      "exact_orderable_part_number": "SYNTHETIC-PART-001",
+      "process": "SYNTHETIC-PROCESS",
+      "die_revision": "SYNTHETIC-DIE-A",
+      "lot_code": "SYNTHETIC-LOT-001",
+      "evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "expected_evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "event_types": ["TID", "SEU", "SEL"],
+      "rights_status": "SYNTHETIC_FIXTURE_ONLY"
+    },
+    "core_input": {
+      "reference_tid_krad_si": 10.0,
+      "duration_years": 1.0,
+      "reference_years": 1.0,
+      "shielding_factor": 0.6,
+      "tid_design_factor": 2.0,
+      "particle_flux_cm2_s": 1000000.0,
+      "cross_section_cm2_device": 1e-10,
+      "part_count": 2,
+      "duration_seconds": 31536000,
+      "synthetic_exposure_scale": 1e-5,
+      "mitigation_factor": 0.1
+    }
+  },
+  "base_agent_result": {
+    "schema_version": "1.0.0",
+    "run_id": "assurance-preparation-run",
+    "correlation_id": "assurance-preparation-correlation",
+    "agent": "parts",
+    "data_class": "SYNTHETIC",
+    "processing_status": "VALID",
+    "engineering_gate": "NOT_EVALUATED",
+    "assurance_decision": "HOLD",
+    "stable_codes": ["SYNTHETIC_EVIDENCE_ONLY"],
+    "input_sha256": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "response_sha256": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+  },
+  "mutations": {
+    "ASR-D02-01": {
+      "intent": "BODY_AND_DECLARED_SHA_FORGERY",
+      "operations": [
+        {"channel": "GCS_OBJECT_BYTES", "op": "set", "path": "/mission/mission_id", "value": "forged-mission"},
+        {"channel": "GCS_CUSTOM_METADATA", "op": "set", "path": "/sha256", "value_from": "FORGED_BODY_SHA256"},
+        {"channel": "WORKFLOW_INPUT", "op": "set", "path": "/input_sha256", "value_from": "FORGED_BODY_SHA256"}
+      ],
+      "trusted_reference_unchanged": "LOCKED_MANIFEST_SHA256"
+    },
+    "ASR-D02-02": {
+      "intent": "EXACT_GENERATION_MISMATCH",
+      "operations": [{"channel": "WORKFLOW_INPUT", "op": "set", "path": "/input_generation", "value": "WRONG_GENERATION"}]
+    },
+    "ASR-D02-03": {
+      "intent": "SUPERSEDED_EXACT_GENERATION",
+      "operations": [{"channel": "WORKFLOW_INPUT", "op": "set", "path": "/input_generation", "value": "SUPERSEDED_GENERATION"}]
+    },
+    "ASR-D02-04": {
+      "intent": "PART_EVIDENCE_HASH_ONLY",
+      "operations": [{"channel": "FIXTURE_BODY", "op": "set", "path": "/part_evidence/evidence_hash", "value": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]
+    },
+    "ASR-D02-05": {
+      "intent": "EXACT_PART_NUMBER_ONLY",
+      "operations": [{"channel": "FIXTURE_BODY", "op": "set", "path": "/part_evidence/exact_orderable_part_number", "value": "SYNTHETIC-PART-999"}]
+    },
+    "ASR-D02-06": {
+      "intent": "AGENT_INVALID_JSON",
+      "transport_fixture": {"http_status": 200, "content_type": "application/json", "raw_body": "{invalid-json"}
+    },
+    "ASR-D02-07": {
+      "intent": "AGENT_SCHEMA_INVALID_JSON",
+      "transport_fixture": {"http_status": 200, "content_type": "application/json", "json_body": {"schema_version": "1.0.0", "agent": "parts"}}
+    },
+    "ASR-D02-08": {
+      "intent": "AGENT_TIMEOUT",
+      "transport_fixture": {"delay_exceeds_configured_timeout": true}
+    },
+    "ASR-D02-09": {
+      "intent": "AGENT_HTTP_503",
+      "transport_fixture": {"http_status": 503, "json_body": {"error": "controlled-unavailable"}}
+    },
+    "ASR-D02-10": {
+      "intent": "ENDPOINT_OVERRIDE_ARGUMENTS",
+      "operations": [
+        {"channel": "WORKFLOW_INPUT", "op": "set", "path": "/mission_url", "value": "https://attacker.invalid/mission"},
+        {"channel": "WORKFLOW_INPUT", "op": "set", "path": "/parts_url", "value": "https://attacker.invalid/parts"},
+        {"channel": "WORKFLOW_INPUT", "op": "set", "path": "/assurance_url", "value": "https://attacker.invalid/assurance"}
+      ]
+    },
+    "ASR-D02-11": {
+      "intent": "AGENT_PAYLOAD_VALUE_ONLY",
+      "operations": [{"channel": "AGENT_RESULT", "op": "set", "path": "/processing_status", "value": "INVALID_INPUT"}]
+    },
+    "ASR-D02-12": {
+      "intent": "AGENT_CORRELATION_ID_ONLY",
+      "operations": [{"channel": "AGENT_RESULT", "op": "set", "path": "/correlation_id", "value": "foreign-correlation"}]
+    },
+    "ASR-D02-13": {
+      "intent": "AGENT_DECLARED_HASH_ONLY",
+      "operations": [{"channel": "AGENT_RESULT", "op": "set", "path": "/response_sha256", "value": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]
+    },
+    "ASR-D02-14": {
+      "intent": "ASSURANCE_DECISION_PROMOTION_ONLY",
+      "operations": [{"channel": "ASSURANCE_OR_FINAL_RESULT", "op": "set", "path": "/assurance_decision", "value": "PASS"}]
+    },
+    "ASR-D02-15": {
+      "intent": "NON_WORKFLOW_PRINCIPAL_DIRECT_INVOKE",
+      "iam_fixture": {"caller_class": "AUTHENTICATED_NON_WORKFLOW_SERVICE_ACCOUNT", "target": "LOCKED_PRODUCTION_AGENT"}
+    },
+    "ASR-D02-16": {
+      "intent": "INVALID_OIDC_OR_AUDIENCE",
+      "iam_fixture": {"token_class": "INVALID_OR_WRONG_AUDIENCE", "record_token_material": false, "target": "LOCKED_PRODUCTION_AGENT"}
+    }
+  }
+}

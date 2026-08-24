@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0.0",
+  "package_id": "60-deployed-gcp-asr-d02-preparation-h04",
+  "evidence_status": "TEMPLATE_NOT_EXECUTED",
+  "target_lock": {
+    "state": "WAITING_FOR_H05_REVISION",
+    "project_id": null,
+    "region": null,
+    "workflow_name": null,
+    "workflow_revision": null,
+    "workflow_source_sha256": null,
+    "mission_revision": null,
+    "parts_revision": null,
+    "assurance_revision": null,
+    "image_digest": null,
+    "locked_at": null,
+    "locked_by": null
+  },
+  "required_permissions_observed": {
+    "workflow_execute": null,
+    "workflow_execution_get": null,
+    "storage_object_create": null,
+    "storage_object_get_exact_generation": null,
+    "storage_object_metadata_get": null,
+    "cloud_run_revision_get": null,
+    "workflow_revision_get": null,
+    "logging_read_scoped_by_correlation": null,
+    "iam_policy_read": null,
+    "credential_material_recorded": false
+  },
+  "case_observations": [
+    {"attack_id": "ASR-D02-C01", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-01", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-02", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-03", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-04", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-05", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-06", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-07", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-08", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-09", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-10", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-11", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-12", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-13", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-14", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-15", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null},
+    {"attack_id": "ASR-D02-16", "execution_attempted": false, "classification": "NOT_EVALUATED", "observed_status": null, "observed_engineering_gate": null, "observed_decision": null, "observed_stable_codes": null, "downstream_payload_accepted": null, "recommendation_present": null, "core_semantic_parity": null, "gcp_observations": null}
+  ],
+  "aggregate": {
+    "live_executions": 0,
+    "evaluated_controls": 0,
+    "evaluated_attacks": 0,
+    "safe_failures": null,
+    "false_accepts": null,
+    "false_passes": null,
+    "unexpected_results": null,
+    "result": "NOT_EVALUATED"
+  },
+  "boundary_notes": [
+    "Workflow SUCCEEDED is an orchestration state and is not a business PASS.",
+    "Every fixture is SYNTHETIC; the normal control must remain HOLD.",
+    "Do not place access tokens, identity tokens, credential files, or raw private evidence in this document."
+  ]
+}

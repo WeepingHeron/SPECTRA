@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_id": "synthetic-h05-malformed-part-001",
+  "data_class": "SYNTHETIC",
+  "mission": {
+    "mission_id": "mission-001",
+    "model_name": "SPECTRA_SYNTHETIC_BASELINE_NOT_PHYSICAL",
+    "model_version": "1.0.0",
+    "source_ref": "fixture://simulation/config/synthetic-model.json",
+    "input_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "core_case_id": "mvp-synthetic-ecc-policy-001"
+  },
+  "part_evidence": {
+    "artifact_id": "synthetic-part-evidence-001",
+    "manufacturer": "SYNTHETIC-MANUFACTURER",
+    "process": "SYNTHETIC-PROCESS",
+    "die_revision": "SYNTHETIC-DIE-A",
+    "lot_code": "SYNTHETIC-LOT-001",
+    "evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "expected_evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "event_types": ["TID", "SEU", "SEL"],
+    "rights_status": "SYNTHETIC_FIXTURE_ONLY"
+  }
+}

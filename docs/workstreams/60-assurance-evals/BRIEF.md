@@ -17,6 +17,12 @@ Assurance & Evals Workstream은 구현팀의 PASS 주장이나 정상 walkthroug
 - 고정 공격 세트의 False PASS와 결정론적 재현성 보고
 - 미구현 engine·실제 원문·GCP 상태를 `NOT_EVALUATED`로 분리
 
+## 평가 profile
+
+- **Core profile:** schema·provenance·exact identity·TID/SEE·차폐·ECC·판정 기준·Change Impact 공격. 제품과 발표의 핵심 신뢰성 근거다.
+- **Experimental runtime profile:** WATCHDOG·TMR·SEL protection 공격. 과거 검증을 보존하지만 Core 공격 수와 합치지 않는다.
+- **Deployed GCP profile:** 실제 Cloud Storage generation·SHA-256·IAM·Agent 경계와 E2E 결과를 공격한다. 로컬 synthetic receipt로 통과 처리하지 않는다.
+
 ## 소유 파일
 
 - `docs/workstreams/60-assurance-evals/`

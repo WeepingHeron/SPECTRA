@@ -2,9 +2,15 @@
 
 ## 상태
 
-`INTEGRATED — H03 Runtime Mitigation Independent Assurance / commit 32b6131`
+`READY_FOR_REVIEW — H04 Deployed GCP ASR-D02 Preparation / H05 target locked, live stopped`
 
-H01 고정 공격 기준선의 `VERIFIED`와 H02의 `INTEGRATED / commit 379f3ad` 상태는 유지한다. Control Tower는 H03의 `ASR-D03`이 Workstream 20 H03의 `evaluate_runtime_mitigation()`을 직접 독립 공격하는지 확인하고 전체 회귀를 재현한 뒤 commit `32b6131`로 통합했다. 실제 GCP 의존성 `ASR-D02`와 실제 과학·증거 검증은 남아 있으므로 Stage 6 완료를 뜻하지 않는다.
+H01 고정 공격 기준선의 `VERIFIED`, H02의 `INTEGRATED / commit 379f3ad`, H03의 `INTEGRATED / commit 32b6131` 상태는 유지한다. H05 deployed identity는 고정되었지만 시간·사용량 우선 중단 지시에 따라 `ASR-D02` live 공격은 시작하지 않았다. 따라서 False Accept/False PASS actual은 계산하지 않으며 `ASR-D02=NOT_EVALUATED`를 유지한다. 이 상태는 `VERIFIED`, `INTEGRATED` 또는 Stage 6 완료가 아니다.
+
+## 2026-08-21 현재 profile 결정
+
+- Core profile은 기존 공격 18개와 MVP/ECC 공격 11개, 총 29개 공격이다. 이 값은 고정 합성 세트의 과거 검증 범위이며 실제 과학 정확도나 GCP 보안 검증이 아니다.
+- ASR-D03의 WATCHDOG·TMR·SEL protection 공격 18개는 `EXPERIMENTAL_RUNTIME` profile로 분리한다. 과거 `VERIFIED`는 유지하지만 Core·발표 집계에 합산하지 않는다.
+- ASR-D02는 실제 GCP 배포 후 Cloud Storage object·generation·hash·IAM과 Agent 경계를 대상으로 재설계·실행하며, 그 전까지 `NOT_EVALUATED`다.
 
 ## 범위 경계
 
@@ -302,3 +308,97 @@ exit code: 0
 - 실제 WATCHDOG/TMR/SEL 효과, 실제 부품 시험, 실제 정책 승인 권한, 실제 환경 출력과 과학적 정확도는 검증하지 않았다.
 - `ASR-D02` 실제 GCP bytes·generation·IAM은 계속 `NOT_EVALUATED`다.
 - H03은 `READY_FOR_REVIEW` 상한이며 `VERIFIED`, `INTEGRATED`, Stage 6 완료, checklist 완료나 Git 반영을 주장하지 않는다.
+
+## H04 Deployed GCP ASR-D02 Preparation — 2026-08-21
+
+### 상태와 실행 경계
+
+- 패키지 `60-deployed-gcp-asr-d02-preparation-h04`를 별도 `DEPLOYED_GCP` profile로 준비했다.
+- Workstream 70 H04 evidence와 H05 remediation 지침은 공격 설계의 입력으로만 읽었다. H04 revision과 execution은 H05 성공 증거나 D02 actual로 재사용하지 않았다.
+- H05 target lock은 project `iceu-686`, region `asia-northeast3`, Workflow `spectra-h04-e2e@000005-32c`, Mission `spectra-h04-mission-00006-4f5`, Parts `spectra-h04-parts-00006-p6c`, Assurance `spectra-h04-assurance-00006-zfx`, image `sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569`로 고정했다.
+- 중단 전 read-only identity 확인만 완료했다. 공격용 Workflow 실행, Assurance object 업로드, endpoint 호출, IAM probe는 각각 0건이다.
+- main `tests/assurance/manifest.json`의 `ASR-D02=DEPENDENCY_WAIT / NOT_EVALUATED`와 기존 `actual`은 변경하지 않았다.
+- 따라서 live 평가 공격은 0개이며 False Accept와 False PASS는 모두 `NOT_COMPUTED`다. 준비 validator의 PASS는 배포 보안 PASS가 아니다.
+
+### 준비 파일
+
+- `tests/assurance/gcp_d02/manifest.json` — control 1개, 공격 16개, 관찰 항목과 False Accept/False PASS 규칙
+- `tests/assurance/gcp_d02/fixtures/asr-d02-preparation-fixtures.json` — Assurance 소유 합성 control과 단일 mutation intent
+- `tests/assurance/gcp_d02/run_preparation.py` — 구조·target unlock·빈 evidence·classifier 계약 validator와 이후 offline evidence evaluator
+- `tests/assurance/gcp_d02/README.md` — target lock, 권한과 H05 이후 평가 절차
+- `docs/workstreams/60-assurance-evals/evidence/ASR_D02_DEPLOYED_GCP_EVIDENCE_TEMPLATE_H04.json` — credential을 제외한 machine-readable evidence template
+- `docs/workstreams/60-assurance-evals/handoffs/SPECTRA_60_DEPLOYED_GCP_ASR_D02_PREPARATION_HANDOFF_H04.md`
+
+### 준비된 공격 matrix
+
+| ID | target layer와 mutation | 기대 stable code |
+|---|---|---|
+| `ASR-D02-C01` | 정상 production Core semantic/canonical-hash parity control | `SYNTHETIC_ONLY` |
+| `ASR-D02-01` | body 변조와 metadata/expected SHA 동시 위조 | `INPUT_BODY_SHA256_MISMATCH` |
+| `ASR-D02-02` | exact generation 불일치 | `INPUT_GENERATION_MISMATCH` |
+| `ASR-D02-03` | superseded exact generation을 current로 제출 | `INPUT_OBJECT_STALE` |
+| `ASR-D02-04` | parts evidence hash만 변조 | `PART_EVIDENCE_HASH_MISMATCH` |
+| `ASR-D02-05` | exact orderable part number만 변조 | `PART_IDENTITY_MISMATCH` |
+| `ASR-D02-06` | Agent invalid JSON bytes | `AGENT_RESPONSE_INVALID` |
+| `ASR-D02-07` | Agent schema-invalid JSON | `AGENT_RESPONSE_INVALID` |
+| `ASR-D02-08` | Agent timeout | `AGENT_TRANSPORT_FAILURE` |
+| `ASR-D02-09` | Agent HTTP 503 | `AGENT_TRANSPORT_FAILURE` |
+| `ASR-D02-10` | Workflow endpoint override argument 삽입 | `ENDPOINT_OVERRIDE_FORBIDDEN` |
+| `ASR-D02-11` | Agent result payload 값만 변조 | `AGENT_RESPONSE_HASH_MISMATCH` |
+| `ASR-D02-12` | Agent correlation ID만 변조 | `AGENT_IDENTITY_MISMATCH` |
+| `ASR-D02-13` | Agent declared response hash만 변조 | `AGENT_RESPONSE_HASH_MISMATCH` |
+| `ASR-D02-14` | Assurance/final decision을 `PASS`로 승격 | `ASSURANCE_DECISION_INVALID` |
+| `ASR-D02-15` | Workflow SA가 아닌 인증 주체의 Agent 직접 호출 | `IAM_INVOKE_DENIED` |
+| `ASR-D02-16` | invalid OIDC 또는 잘못된 audience | `IAM_IDENTITY_REJECTED` |
+
+위 code는 H04 preparation의 고정 기대 계약이며 live actual이 아니다. H05가 다른 stable code를 고정하면 target lock 전에 의미와 fail-closed 동등성을 검토해 revision된 manifest로 명시적으로 조정해야 하며, 실행 중 baseline을 조용히 이동하지 않는다.
+
+### 판정 계약
+
+- 필수 무결성 결함이나 Agent 실패가 있는데 영향받은 payload를 후속 Agent가 trusted로 소비하면 `FALSE_ACCEPT`다.
+- 공격 중 최종 decision이 `PASS`, `SUPPORTED_WITH_MITIGATION`, `CONDITIONAL`, `RECOMMENDED`이거나 engineering gate가 `PASS`, 또는 recommendation이 존재하면 `FALSE_PASS`다.
+- 기대 stable code와 `INVALID_INPUT / NOT_EVALUATED / HOLD`가 모두 관측되고 downstream 수용·추천이 없어야 `SAFE_FAILURE`다.
+- Workflow `SUCCEEDED`는 fail-closed result 저장 성공일 수 있으므로 classifier가 business PASS로 사용하지 않는다.
+- 정상 합성 control도 Core parity가 일치해야 하지만 assurance는 `HOLD`다.
+
+### Offline 준비 검증
+
+```text
+PYTHONDONTWRITEBYTECODE=1 python3 tests/assurance/gcp_d02/run_preparation.py
+prepared controls: 1
+prepared attacks: 16
+classifier contract checks: 65
+live executions: 0
+evaluated attacks: 0
+false passes: NOT_COMPUTED
+ASR-D02: NOT_EVALUATED
+failures: 0
+result: READY_FOR_REVIEW
+exit code: 0
+
+run_preparation.py --evaluate-evidence <unlocked H04 template>
+result: FAIL
+failure: filled evidence target_lock.state must be LOCKED
+exit code: 1 (expected guard)
+
+tests/assurance/run_all.py
+existing evaluated attack executions: 47
+ASR-D02: NOT_EVALUATED
+false passes: 0 (existing evaluated fixed set only)
+failures: 0
+exit code: 0
+
+git diff --check
+output: none
+exit code: 0
+```
+
+### 중단 상태와 남은 한계
+
+- exact H05 target tuple은 고정되었지만, 2026-08-21 시간·사용량 우선 중단 지시로 live 확대를 종료했다.
+- `docs/workstreams/60-assurance-evals/evidence/ASR_D02_DEPLOYED_GCP_STOPPED_H05.json`에 target lock, read-only 확인 범위와 0건 실행을 기록했다.
+- 재개 시 별도 명시적 지시와 허용 범위를 다시 확인하기 전에는 공격 실행을 시작하지 않는다.
+- 실행자는 Workflow 실행·조회, Assurance-owned synthetic object의 create/exact-generation read, Workflow/Cloud Run revision 조회, correlation-scoped log 조회와 관련 IAM policy read만 필요하다. 배포 수정·service-account key 생성·광범위 project admin은 필요하지 않다.
+- invalid JSON·timeout·HTTP failure는 identity가 기록된 Assurance test endpoint 또는 test-only Workflow에서 수행하며 production Workflow에 endpoint override나 `test_mode/failure_role`을 되살리지 않는다.
+- 실제 환경, BOM, 시험 원문, 실제 방사선 효과, 전체 GCP 보안과 과학 정확성은 이 profile의 검증 대상이 아니다.
+- H04 상태 상한은 `READY_FOR_REVIEW`; commit·push, root checklist 변경과 Stage 6 완료 선언을 수행하지 않는다.

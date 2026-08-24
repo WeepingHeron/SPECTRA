@@ -2,7 +2,7 @@
 
 ## 1. 한 문장 정의
 
-**SPECTRA(Space Parts Evidence, Component Traceability, Radiation Assurance)는 위성의 임무 조건과 전자부품 목록(BOM)을 우주 방사선 환경 모델 및 부품 시험 증거와 대조하여, TID·SEE 위험과 추가 시험·차폐·완화 조치를 산출하는 증거 기반 방사선 보증 플랫폼이다.**
+**SPECTRA(Space Parts Evidence, Component Traceability, Radiation Assurance)는 위성의 임무 조건과 전자부품 목록(BOM)을 우주 방사선 환경 모델 및 정확한 부품 시험 증거와 대조하여, TID·SEU 분석을 재현하고 근거 공백에서는 판단을 보류하는 Multi-Agent 기반 방사선 증거 검증 플랫폼이다.**
 
 > SPECTRA는 부품의 비행 적합성을 AI가 추측하거나 인증하는 시스템이 아니다. 어떤 계산과 시험 증거로 현재 판단에 도달했으며 무엇이 부족한지를 추적하고 감사한다.
 
@@ -10,7 +10,7 @@
 
 **소형위성 팀은 성능·가격·조달성 때문에 COTS 전자부품을 사용하지만, 임무별 방사선 환경과 정확한 부품 identity·시험 조건·완화 설계·승인 정책은 서로 다른 도구와 문서에 흩어져 있다. 그 결과 “이 시험 결과가 이 부품과 이 임무에 실제로 적용되는가”를 일관되고 재현 가능하게 검증하기 어렵다.**
 
-문제는 방사선 계산식 하나가 없는 것이 아니다. 환경 모델 출력, BOM spreadsheet, 시험 PDF, 제조사 변경 정보, ECC·TMR·watchdog 설계와 조직 정책 사이의 **증거 연결이 끊기는 것**이다.
+문제는 방사선 계산식 하나가 없는 것이 아니다. 환경 모델 출력, BOM spreadsheet, 시험 PDF와 제조사·공정·로트 변경 정보가 서로 다른 형식으로 분리되어 있어, 같은 임무와 정확한 부품을 가리키는지 재현하고 감사하기 어렵다는 것이다.
 
 ### 확인된 산업·기술 근거
 
@@ -27,13 +27,13 @@
 
 1. 환경 모델은 선량·입자 결과를 만들지만 특정 BOM의 시험 증거 적용성을 판정하지 않는다.
 2. 시험 보고서는 존재해도 정확한 부품번호·공정·die·lot·온도·bias·선량률이 현재 설계와 다를 수 있다.
-3. ECC·scrubbing·TMR·watchdog는 서로 다른 고장 유형에 작용하지만 하나의 임의 완화율로 합쳐지기 쉽다.
+3. 차폐와 ECC 같은 계산 가정은 어떤 결과에 적용됐는지 추적되지 않으면 임의의 완화율처럼 오용되기 쉽다.
 4. 부품·궤도·차폐·정책이 바뀌어도 이전 계산과 승인 중 무엇이 무효가 됐는지 자동으로 드러나지 않는다.
 5. 근거가 부족한 상태가 명시적 `HOLD`가 아니라 낙관적인 PASS 또는 불필요한 전면 재시험으로 이어질 수 있다.
 
 마지막 항목은 SPECTRA가 검증할 **실무 가설**이며, 실제 발생 빈도와 절감 효과는 사용자 인터뷰와 pilot으로 측정해야 한다.
 
-따라서 SPECTRA의 역할은 기존 환경 모델이나 방사선 시험을 대체하는 것이 아니다. **환경 계산 → 정확한 부품 증거 적용성 → 완화·정책 계산 → 변경 영향 → 독립 감사**를 하나의 Evidence Chain으로 연결해, 현재 지원 가능한 주장과 아직 부족한 근거를 구분하는 것이다.
+따라서 SPECTRA의 역할은 기존 환경 모델이나 방사선 시험을 대체하는 것이 아니다. **환경 계산 → 정확한 부품 증거 적용성 → 제한된 설계 가정 → 변경 영향 → 독립 감사**를 하나의 Evidence Chain으로 연결해, 현재 지원 가능한 주장과 아직 부족한 근거를 구분하는 것이다.
 
 ## 3. 주요 사용자와 비즈니스 가치
 
@@ -48,15 +48,19 @@
 
 ## 4. 프로젝트 범위
 
-제품 MVP의 단일 완료 기준은 [`docs/MVP.md`](docs/MVP.md)를 따른다. MVP는 고정된 LEO 임무 1개와 exact-part 1개를 대상으로 실제 환경 산출물·시험 증거·완화·정책·독립 감사를 하나의 Evidence Chain으로 연결한다. 합성 화면만으로는 MVP 완료로 선언하지 않으며, 최종 `HOLD`도 근거와 다음 행동이 정확하면 정상적인 제품 결과로 인정한다.
+제품의 과학적 범위와 대회 시연의 아키텍처 범위를 분리한다.
+
+- **Core Product Scope:** 고정된 LEO 임무 1개와 exact-part 1개를 대상으로 환경 모델, 부품 시험 증거, 결정론적 TID·SEU 계산, 제한된 차폐·ECC 가정과 fail-closed 판정을 연결한다. 단일 완료 기준은 [`docs/MVP.md`](docs/MVP.md)를 따른다.
+- **Competition Demo Release:** 위 Core를 역할이 분리된 Multi-Agent 흐름으로 실행하고 실제 GCP 저장·실행·오케스트레이션·감사 로그 증거를 남긴다. 이는 채점 필수 범위지만 실제 방사선 보증 완료를 뜻하지 않는다.
+- **Experimental Archive:** WATCHDOG·TMR·SEL 보호의 합성 runtime 계산은 과거 검증 이력을 보존하되 현재 제품 판단·주 발표·핵심 신뢰성 지표에서 제외한다.
 
 ### 초기 범위
 
 - LEO 대표 임무 시나리오
-- 전자부품 5~10종의 정확한 부품 단위 증거 패킷
+- MVP exact-part 1종의 증거 패킷과 이후 5~10종 확장 경로
 - 차폐·임무 기간에 따른 TID 계산과 마진 비교
 - 시험 단면적이 존재하는 부품의 SEU 발생률 추정
-- 완화 전·후 잔여 SEU와 사용자 정책 비교
+- ECC 미적용·적용의 잔여 SEU 비교와 가정 provenance
 - TID, SEU, 파괴성 SEE 증거의 독립 감사
 - 설계 변경 전·후 비교 보고서
 
@@ -68,6 +72,8 @@
 - 근거가 없는 최신 상용부품의 성능 추정
 - 완전한 3D 방사선 수송·차폐 해석
 - SEL·SEB·SEGR을 SEU 수치만으로 대체 판정
+- 실제 WATCHDOG·TMR·SEL 보호장치 또는 탑재 소프트웨어의 구현·제어
+- 합성 runtime 완화 수치를 현재 임무의 채택 설계나 입증된 효과로 주장
 
 ## 5. 입력과 산출물
 
@@ -76,8 +82,8 @@
 - 임무: 궤도, 고도, 경사각, 시작 시점, 기간
 - 설계: 차폐 재료·등가 두께, 적용 기준, TID 설계 계수
 - BOM: 부품번호, 제조사, 기능, 수량, 공정·다이·로트 정보
-- 완화 구조: ECC 종류, 스크러빙 주기, TMR, Watchdog, 전류 차단, 중복 장치
-- 정책: 허용 잔여 SEU, 장애시간, 재부팅 횟수, 파괴성 SEE 증거 요구
+- 제한된 설계 가정: 차폐 조건, ECC 적용 여부와 근거·분류
+- 판정 기준: TID 설계 계수, 허용 잔여 SEU, 파괴성 SEE 증거 요구
 - 증거: 환경 모델 출력, 시험 보고서, 데이터시트, 내부 검토 문서
 
 ### 핵심 산출물
@@ -86,8 +92,8 @@
    모델·버전·입력·불확실성을 포함한 환경 및 차폐 뒤 선량
 2. **Evidence Coverage Matrix**
    부품별 TID·SEU·파괴성 SEE 증거와 적용 조건
-3. **Risk & Mitigation Simulation**
-   완화 전·후 예상 오류와 사용자 정책 비교
+3. **Radiation Analysis Comparison**
+   차폐·ECC 가정 전후의 TID·잔여 SEU와 적용 근거 비교
 4. **Change Impact Report**
    부품·궤도·차폐·완화 변경으로 무효화된 증거와 판정 변화
 5. **Evidence Packet**
@@ -113,11 +119,17 @@ TID 요구량 = 예상 임무 TID × 사용자 설계 계수
 잔여 SEU = 완화 전 SEU × 검증된 완화 모델
 ```
 
-사용자는 허용 잔여 오류 정책을 정한다. 완화 효과는 임의의 백분율이 아니라 ECC 종류, 스크러빙 주기, 중복 구조 등 구체적인 설계 입력과 검증 근거로 계산한다.
+사용자는 허용 잔여 오류 기준을 정한다. ECC는 실제 하드웨어 구현이 아니라, 명시된 효과 모델이 수정 가능한 오류에만 적용되는 제한된 계산 가정이다. 근거가 합성 또는 가정이면 실제 적합성 판단에 사용하지 않는다.
 
 SEU가 낮더라도 SEL·SEB·SEGR과 같은 파괴성 SEE 증거가 없으면 최종 판단을 보류한다.
 
 ## 7. Multi-Agent 아키텍처
+
+Multi-Agent는 방사선 수치를 자율 생성하는 장치가 아니라, 서로 다른 증거 책임을 분리하고 한 Agent의 누락이나 오류가 낙관적인 최종 판정으로 전파되지 않게 하는 실행 구조다.
+
+### Orchestrator
+
+고정된 workflow 상태를 관리하고 각 Agent의 schema-valid 결과만 다음 단계로 전달한다. 최종 과학 판정은 생성하지 않는다.
 
 ### Mission Environment Agent
 
@@ -140,13 +152,14 @@ BOM 식별자를 정규화하고 NASA·ESA·제조사·고객 자료에서 시�
 | 구성 | 역할 |
 |---|---|
 | Cloud Storage | 원본 BOM, 모델 출력, 시험 보고서와 결과 버전 보관 |
-| Document AI | PDF 표와 시험 조건 추출 후보 생성 |
-| Vertex AI | 근거 후보 검색·구조화와 결과 설명 |
-| Cloud Run | 환경 어댑터, TID·SEU 계산과 정책 엔진 |
-| Cloud SQL | 부품–시험–조건–임무–판정 관계 및 이력 |
-| Workflows / Pub/Sub | 수집 → 계산 → 증거 대조 → 감사 → 발행 흐름 |
-| BigQuery | 검증 세트, 오류 유형, 품질 지표와 시뮬레이션 비교 |
-| IAM / KMS | 고객별 BOM·시험자료 격리와 암호화 |
+| Cloud Run | Orchestrator와 세 Agent API, 결정론적 계산·판정 호출 |
+| Workflows 또는 Pub/Sub | 환경 검증 → 부품 증거 검증 → 독립 감사 순서와 실패 격리 |
+| Cloud Logging | Agent별 요청 ID, 상태, 오류 코드와 실행 이력 |
+| IAM | Agent별 service account와 최소권한 경계 |
+| Document AI / Vertex AI | PDF 추출·근거 구조화 확장; 사용 시 후보값으로만 처리 |
+| Cloud SQL / BigQuery / KMS | 관계형 이력·평가 분석·고객 암호화가 필요할 때 확장 |
+
+대회 최소 구현은 Cloud Run, Cloud Storage, 실제 오케스트레이션 1회, Agent별 IAM과 로그를 포함한다. 단순 아키텍처 그림이나 로컬 mock만으로 GCP 구현 완료를 주장하지 않는다.
 
 ## 9. 신뢰성 계약
 
@@ -189,25 +202,25 @@ SPENVIS·OMERE는 환경과 방사선 영향을 계산하고 FASTRAD는 차폐 �
 
 SPECTRA의 정체성은 새로운 물리 계산기를 만드는 것이 아니라 다음 공백을 해결하는 것이다.
 
-> **환경 모델 결과, 부품 시험 증거, 완화 구조와 사용자 정책을 연결하고, 변경 시 무효화된 증거까지 독립적으로 감사하는 Evidence Assurance 계층**
+> **환경 모델 결과와 정확한 부품 시험 증거를 연결하고, 계산의 재현성·데이터 무결성·변경 영향을 독립적으로 감사하는 Evidence Assurance 계층**
 
 ## 12. 평가 기준 대응
 
 | 평가 항목 | 비중 | SPECTRA의 증명 과제 |
 |---|---:|---|
-| 문제 정의 | 20 | 입력–판정–조치가 연결된 실제 검토 흐름 시연 |
-| Multi-Agent·GCP | 25 | 역할별 계약, 장애 격리, GCP 실행 증거 |
-| 신뢰성 | 20 | 출처 추적, 재현 계산, 악성·누락 데이터에서 False PASS 0 |
-| 비즈니스 | 20 | 고객 인터뷰와 시간·시험 비용 절감 가설 검증 |
-| 데이터 | 15 | 공개·고객 데이터 범위, 품질과 공백의 정량 보고 |
+| Multi-Agent 아키텍처 및 GCP 인프라 완성도 | 35 | 역할별 계약, Agent 장애 격리, 실제 GCP E2E 실행·로그·IAM 증거 |
+| 할루시네이션 방어 및 무결점 신뢰성 | 20 | 출처 추적, 결정론적 계산, 오염·누락 데이터의 fail-closed와 False PASS 0 |
+| 비즈니스 임팩트 및 문제 정의 | 30 | 증거 단절 문제, 사용자 결정과 검토·시험 비용 절감 가설 |
+| 팀 시너지 및 프레젠테이션 | 15 | 역할 분담, 일관된 데모 흐름, 시간 내 설명과 Q&A |
 
 ## 13. 현재 상태
 
 - 프로젝트 문서와 검증 가능한 Workstream 운영 구조가 마련됐다.
 - Stage 2 결정론적 합성 TID·SEE 기준선이 통합됐으며 모든 합성 실행은 `SYNTHETIC/HOLD`를 유지한다.
 - Stage 3은 사람 주도 SPENVIS 실행의 실제 원본 bundle 1세트·9개와 실제-format parser 후보를 확보했고, checksum·입력 gate의 fail-closed 동작을 검증했다. 다만 provider job reference·action별 권리·승인 raw manifest가 없어 제품 contract 발행은 0건이며 계속 `HOLD`다.
-- Stage 4의 부품 증거 출처·권리·identity·적용성 조사도 통합됐지만 승인 BOM, 실제 시험 원문과 실제 수치는 아직 0건이다.
+- Stage 4의 부품 증거 출처·권리·identity·적용성 조사와 exact-part/TID 원문 후보 1건은 확보했지만, 승인 BOM·권리 manifest·임무 적용성·필요 SEE coverage를 통과한 ingest는 0건이다.
 - 실제 환경 원본은 Git 밖 private evidence bundle로만 보존하며 dose 값은 제품 입력·fixture·문서에 발행하지 않았다. 실제 부품 시험자료의 승인 ingest와 과학적 교차검산은 아직 완료하지 않았다.
+- Competition Demo Release용 합성 Multi-Agent·GCP 경로는 교육용 project에 production Core-bound Cloud Run Agent 3개, Workflows, Storage, IAM, Logging으로 실제 배포됐다. H05에서 body-hash 결합 우회와 endpoint override를 차단해 해당 수정 패키지는 `VERIFIED`다. 다만 Workstream 60의 고정 revision `ASR-D02`는 아직 `NOT_EVALUATED`이고 최종 통합도 미완료이며, 이 인프라는 실제 환경·부품 evidence 0건을 대체하지 않는다.
 - 실제 비행 적합성 또는 과학적 정확도 검증을 완료하지 않았다.
 
 상세 실행 순서는 [ROADMAP.md](ROADMAP.md), 진행 상태는 [CHECKLIST.md](CHECKLIST.md)를 따른다.

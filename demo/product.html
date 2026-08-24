@@ -13,30 +13,34 @@
     .brand{font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:13px;font-weight:650;letter-spacing:.24em}.brand-sub{display:block;margin-top:4px;color:var(--dim);font-size:12px;letter-spacing:.06em}
     .steps{display:flex;align-items:center}.step{display:flex;align-items:center;gap:8px;padding:10px 17px;border:0;border-bottom:1px solid var(--line2);background:transparent;color:var(--dim);cursor:pointer;font-size:13px}.step b{display:grid;place-items:center;width:22px;height:22px;border:1px solid var(--line2);font:600 12px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif}.step small{color:var(--dim);font-size:12px}.step.active{color:var(--ink);border-bottom-color:var(--accent)}.step.active b{border-color:var(--accent);color:var(--accent)}.step.done{color:var(--muted)}
     .reset{justify-self:end;border:1px solid var(--line2);background:transparent;color:var(--muted);padding:8px 12px;cursor:pointer;font-size:12px}.reset:hover{border-color:var(--accent);color:var(--ink)}
-    .safety-rail{height:36px;display:flex;align-items:center;gap:15px;padding:0 var(--pad);border-bottom:1px solid var(--line);color:var(--dim);font:650 12px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif;letter-spacing:.04em}.safety-rail strong{color:var(--accent)}.safety-rail .hold{margin-left:auto;color:var(--ink)}
+    .safety-rail{height:36px;display:flex;align-items:center;gap:10px;padding:0 var(--pad);border-bottom:1px solid var(--line);color:var(--muted);font:650 12px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif;letter-spacing:.04em}.safety-rail strong{color:var(--accent)}.safety-rail .hold{margin-left:auto;color:var(--ink)}
     .workspace{height:calc(100vh - var(--header) - var(--footer) - 36px);position:relative}.view{display:none;height:100%;padding:clamp(16px,2vh,24px) var(--pad);overflow:hidden}.view.active{display:grid;grid-template-rows:auto 1fr auto;gap:clamp(12px,1.7vh,18px)}
-    .view-head{display:block}.eyebrow{margin:0 0 7px;color:var(--dim);font:650 12px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif;letter-spacing:.08em}.view h1{margin:0;font-size:clamp(28px,2.6vw,38px);font-weight:500;letter-spacing:-.025em;line-height:1.16;word-break:keep-all}.answer{margin:8px 0 0;color:var(--accent);font-size:clamp(16px,1.45vw,20px);font-weight:550;line-height:1.42;word-break:keep-all}.answer .contract-note{margin-left:8px;color:var(--muted);font-size:12px;font-weight:400}.view-lead{display:none}
+    .view-head{display:block}.eyebrow{margin:0 0 7px;color:var(--dim);font:650 12px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif;letter-spacing:.08em}.context-label{display:inline-flex;margin-left:9px;padding:4px 7px;border:1px solid var(--line2);color:var(--muted);letter-spacing:.03em}.view h1{margin:0;font-size:clamp(28px,2.6vw,38px);font-weight:500;letter-spacing:-.025em;line-height:1.16;word-break:keep-all}.answer{margin:8px 0 0;color:var(--accent);font-size:clamp(16px,1.45vw,20px);font-weight:550;line-height:1.42;word-break:keep-all}.answer .contract-note{margin-left:8px;color:var(--muted);font-size:12px;font-weight:400}.view-lead{display:none}
     .panel{border:1px solid var(--line);background:var(--panel)}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 15px;border-bottom:1px solid var(--line)}.panel-head h2{margin:0;font-size:14px;font-weight:550}.panel-body{padding:14px}.label{color:var(--dim);font:650 12px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif;letter-spacing:.04em}.tag{display:inline-flex;align-items:center;min-height:26px;padding:5px 8px;border:1px solid var(--line2);color:var(--muted);font:650 12px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif}.tag.accent{border-color:var(--accent);color:var(--accent)}.tag.hold{background:var(--ink);border-color:var(--ink);color:var(--bg)}
     .scenario-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;min-height:0}.input-stack{display:grid;grid-template-rows:1fr 1fr;gap:12px;min-height:0}.mission-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}.fact{background:var(--panel2);padding:12px}.fact span{display:block;color:var(--dim);font-size:12px}.fact strong{display:block;margin-top:6px;font-family:"SF Pro Display","Helvetica Neue",Arial,sans-serif;font-size:20px;font-weight:520}.identity-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.identity-item{padding-left:10px;border-left:1px solid var(--line2)}.identity-item span{display:block;color:var(--dim);font-size:12px}.identity-item code{display:block;margin-top:6px;color:var(--ink);font:500 14px/1.3 "SFMono-Regular",Menlo,monospace;overflow-wrap:anywhere}
-    .control-panel{display:grid;grid-template-rows:auto 1fr auto}.control-group{padding:14px 16px;border-bottom:1px solid var(--line)}.control-group:last-child{border-bottom:0}.control-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.control-title b{font-size:14px;font-weight:550}.choices{display:flex;gap:0}.choice{min-width:60px;padding:9px 13px;border:1px solid var(--line2);background:transparent;color:var(--muted);cursor:pointer;font:600 13px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif}.choice+.choice{margin-left:-1px}.choice:hover:not(:disabled){border-color:var(--accent);color:var(--ink);z-index:1}.choice.selected{border-color:var(--accent);background:rgba(121,216,255,.08);color:var(--accent);z-index:1}.choice:disabled{opacity:.36;cursor:not-allowed}.control-note{margin:9px 0 0;color:var(--dim);font-size:12px;line-height:1.4}.zero-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}.zero{padding:10px;background:var(--panel2)}.zero b{display:block;color:var(--accent);font:550 19px/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif}.zero span{display:block;margin-top:5px;color:var(--dim);font-size:12px}
+    .control-panel{display:grid;grid-template-rows:auto 1fr auto}.control-group{padding:14px 16px;border-bottom:1px solid var(--line)}.control-group:last-child{border-bottom:0}.control-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.control-title b{font-size:14px;font-weight:550}.choices{display:flex;gap:0}.choice{min-width:60px;padding:9px 13px;border:1px solid var(--line2);background:transparent;color:var(--muted);cursor:pointer;font:600 13px/1 "SF Pro Text","Helvetica Neue",Arial,sans-serif}.choice+.choice{margin-left:-1px}.choice:hover:not(:disabled){border-color:var(--accent);color:var(--ink);z-index:1}.choice.selected{border-color:var(--accent);background:rgba(121,216,255,.08);color:var(--accent);z-index:1}.choice:disabled{opacity:.36;cursor:not-allowed}.control-note{margin:9px 0 0;color:var(--dim);font-size:12px;line-height:1.4}.evidence-scope{padding:11px 14px;border-top:1px solid var(--line);background:var(--panel2)}.evidence-scope strong{display:block;color:var(--accent);font-size:14px;font-weight:560}.evidence-scope span{display:block;margin-top:5px;color:var(--muted);font-size:12px}
     .view-actions{display:flex;align-items:center;justify-content:space-between}.keyhint{color:var(--dim);font-size:12px}.keyhint kbd{padding:2px 5px;border:1px solid var(--line2);font:500 12px "SFMono-Regular",Menlo,monospace}.primary,.secondary{padding:9px 14px;cursor:pointer;font-size:13px}.primary{border:1px solid var(--accent);background:var(--accent);color:#031016;font-weight:650}.secondary{border:1px solid var(--line2);background:transparent;color:var(--muted)}
     .analysis-workspace{display:grid;grid-template-rows:auto 1fr;gap:9px;min-height:0}.analysis-modes{display:flex;align-items:center;gap:0}.analysis-mode{padding:7px 12px;border:1px solid var(--line2);background:transparent;color:var(--muted);cursor:pointer;font-size:13px}.analysis-mode+.analysis-mode{margin-left:-1px}.analysis-mode.selected{border-color:var(--accent);color:var(--accent);background:rgba(121,216,255,.06);z-index:1}.analysis-main{display:grid;grid-template-rows:auto auto 1fr auto;gap:9px;min-height:0}.analysis-main.hidden,.runtime-main.hidden{display:none}.scenario-bar{display:flex;align-items:center;gap:14px;padding:8px 12px;border:1px solid var(--line);background:var(--panel)}.scenario-bar .choices{margin-left:3px}.scenario-bar .choice{padding:7px 10px;min-width:50px}.divider{width:1px;height:25px;background:var(--line)}.scenario-summary{margin-left:auto;color:var(--dim);font-size:12px}.scenario-summary strong{color:var(--ink)}.insight{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:11px 14px;border-left:3px solid var(--accent);background:rgba(121,216,255,.055)}.insight strong{font-size:clamp(15px,1.35vw,18px);font-weight:550;line-height:1.35;word-break:keep-all}.insight span{flex:0 0 auto;color:var(--muted);font-size:12px}.data-alert{display:none;padding:8px 12px;border:1px solid var(--accent);color:var(--accent);font-size:13px}.data-alert.visible{display:block}
-    .metrics{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:9px;min-height:0}.metric{display:flex;flex-direction:column;justify-content:space-between;padding:14px;border:1px solid var(--line);background:var(--panel)}.metric-value{margin:10px 0 6px;font:520 clamp(34px,4.1vw,58px)/.95 "SF Pro Display","Helvetica Neue",Arial,sans-serif;letter-spacing:-.04em}.metric-unit{color:var(--dim);font-size:13px;line-height:1.35}.metric-foot{padding-top:9px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;line-height:1.35}.metric .bar{height:2px;margin:9px 0;background:var(--line2);overflow:hidden}.metric .bar i{display:block;height:100%;background:var(--accent)}.metric.scope{background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 9px,#101417 9px,#101417 18px)}
+    .metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;min-height:0}.metric{display:flex;min-width:0;flex-direction:column;justify-content:space-between;padding:14px;border:1px solid var(--line);background:var(--panel)}.metric-value{min-width:0;margin:10px 0 6px;font:520 clamp(30px,3.7vw,54px)/.95 "SF Pro Display","Helvetica Neue",Arial,sans-serif;letter-spacing:-.04em;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.metric-unit{color:var(--dim);font-size:13px;line-height:1.35}.metric-foot{padding-top:9px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;line-height:1.35}.metric .bar{height:2px;margin:9px 0;background:var(--line2);overflow:hidden}.metric .bar i{display:block;height:100%;background:var(--accent)}.metric.scope{background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 9px,#101417 9px,#101417 18px)}
     .gate-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}.gate{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--panel2);font-size:13px}.gate span{color:var(--dim)}.gate b{font:650 13px "SF Pro Text","Helvetica Neue",Arial,sans-serif}.gate .assurance{color:var(--accent)}
     .runtime-main{display:grid;grid-template-rows:auto auto 1fr auto;gap:9px;min-height:0}.runtime-methods{display:flex;align-items:center;padding:8px 12px;border:1px solid var(--line);background:var(--panel)}.runtime-methods .label{margin-right:12px}.runtime-method{padding:8px 12px;border:1px solid var(--line2);background:transparent;color:var(--muted);cursor:pointer;font-size:13px}.runtime-method+.runtime-method{margin-left:-1px}.runtime-method.selected{border-color:var(--accent);color:var(--accent);background:rgba(121,216,255,.06);z-index:1}.runtime-summary{margin-left:auto;color:var(--dim);font-size:12px}.runtime-summary strong{color:var(--ink)}.runtime-status{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}.runtime-status div{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--panel2);font-size:13px}.runtime-status span{color:var(--dim)}.runtime-status b{font-size:13px}.runtime-status .hold{color:var(--accent)}.runtime-body{display:grid;grid-template-columns:1.35fr .65fr;gap:9px;min-height:0}.runtime-projection{display:grid;grid-template-rows:auto 1fr;gap:9px;min-height:0}.runtime-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;min-height:0}.runtime-metric{display:flex;flex-direction:column;justify-content:space-between;padding:13px;border:1px solid var(--line);background:var(--panel)}.runtime-metric-value{margin:9px 0 5px;font:520 clamp(28px,3vw,46px)/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif;letter-spacing:-.03em}.runtime-evidence{padding:13px;border:1px solid var(--line);background:var(--panel);min-height:0;overflow:hidden}.runtime-evidence h2{margin:0 0 8px;font-size:14px;font-weight:550}.runtime-code-list{display:grid;gap:6px;margin:0;padding:0;list-style:none}.runtime-code-list li{padding-bottom:6px;border-bottom:1px solid var(--line);font-size:12px;line-height:1.35}.runtime-code-list code{display:block;color:var(--muted);font:600 12px/1.3 "SFMono-Regular",Menlo,monospace;overflow-wrap:anywhere}.runtime-code-list span{display:block;margin-top:2px;color:var(--dim)}.runtime-technical{display:flex;gap:14px;overflow:hidden;color:var(--dim);font:500 12px/1.35 "SFMono-Regular",Menlo,monospace}.runtime-technical span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.runtime-technical strong{color:var(--muted);font-weight:500}
-    .assurance-stack{display:grid;grid-template-rows:auto 1fr auto;gap:10px;min-height:0}.causal-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}.cause{position:relative;display:grid;align-content:center;min-height:64px;padding:10px 12px;background:var(--panel);border-bottom:1px solid var(--line2);font-size:14px;line-height:1.35}.cause:not(:last-child):after{content:"→";position:absolute;right:-18px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:18px}.cause strong{display:block;color:var(--dim);font-size:12px;font-weight:500}.cause.result{border-bottom:2px solid var(--accent)}.cause.result b{color:var(--accent)}
-    .gap-action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;min-height:0}.gap-action{display:grid;grid-template-rows:auto 1fr auto;padding:13px;border:1px solid var(--line);background:var(--panel)}.gap-action h2{margin:8px 0 4px;font-size:14px;font-weight:550}.gap-action p{margin:0;color:var(--dim);font-size:12px;line-height:1.4}.gap-status{color:var(--muted);font-size:13px;font-weight:650}.gap-next{margin-top:11px;padding-top:10px;border-top:1px solid var(--line);font-size:13px;line-height:1.35}.gap-next b{display:block;margin-bottom:4px;color:var(--accent);font-size:12px}.technical{border-top:1px solid var(--line);padding-top:8px;color:var(--dim);font-size:12px}.technical summary{cursor:pointer;color:var(--muted);font-size:12px}.technical p{margin:7px 0 0;font:500 12px/1.45 "SFMono-Regular",Menlo,monospace;overflow-wrap:anywhere}.technical strong{color:var(--muted);font-weight:500}.impact-list{margin:7px 0 0;padding-left:18px;font:500 12px/1.45 "SFMono-Regular",Menlo,monospace}
+    .runtime-method small{display:block;margin-top:4px;color:var(--dim);font:500 10px/1 "SFMono-Regular",Menlo,monospace}.runtime-method.selected small{color:var(--accent)}.runtime-story{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:1px;background:var(--line);border:1px solid var(--line)}.story-step{position:relative;min-height:82px;padding:11px 13px;background:var(--panel2)}.story-step:not(:last-child):after{content:"→";position:absolute;right:-13px;top:50%;z-index:2;transform:translateY(-50%);color:var(--accent);background:var(--bg);padding:2px}.story-step span{display:block;color:var(--dim);font-size:12px}.story-step b{display:block;margin-top:8px;font-size:14px;font-weight:550;line-height:1.4}.story-step.cost{border-bottom:2px solid var(--accent)}.runtime-body{display:block}.runtime-projection{display:grid;grid-template-rows:auto 1fr;gap:9px}.runtime-disclosure{border-top:1px solid var(--line);padding-top:7px;color:var(--dim);font-size:12px}.runtime-disclosure summary{cursor:pointer;color:var(--muted);font-size:12px}.runtime-disclosure .runtime-status{margin-top:8px}.runtime-disclosure .runtime-evidence{margin-top:8px}.runtime-disclosure .runtime-technical{margin-top:8px}
+    .attack-main{display:grid;grid-template-rows:auto 1fr auto;gap:9px;min-height:0}.attack-claim{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:10px 13px;border-left:3px solid var(--accent);background:rgba(121,216,255,.055)}.attack-claim strong{font-size:16px;font-weight:550;line-height:1.35}.attack-claim span{color:var(--muted);font-size:12px}.attack-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;min-height:0}.attack-card{display:grid;grid-template-rows:auto auto 1fr;padding:13px;border:1px solid var(--line);background:var(--panel);min-width:0}.attack-card.untrusted{border-color:var(--line2);background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 10px,#101417 10px,#101417 20px)}.attack-card.blocked{border-bottom:2px solid var(--accent)}.attack-card-head{display:flex;justify-content:space-between;gap:8px;color:var(--dim);font-size:12px}.attack-card-head b{color:var(--muted);font-size:13px}.attack-card.untrusted .attack-card-head b,.attack-card.blocked .attack-card-head b{color:var(--accent)}.attack-value{margin:11px 0 8px;font:520 clamp(24px,2.5vw,38px)/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif}.attack-card.blocked .attack-value{font-size:clamp(18px,1.7vw,25px);line-height:1.35;letter-spacing:-.01em;word-break:keep-all}.attack-state{margin:0;color:var(--muted);font-size:13px;line-height:1.45}.attack-state strong{color:var(--ink)}.attack-tech{align-self:end;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);color:var(--dim);font:500 11px/1.4 "SFMono-Regular",Menlo,monospace;overflow-wrap:anywhere}.attack-tech summary{cursor:pointer;color:var(--muted);font-family:"Apple SD Gothic Neo","Noto Sans KR",sans-serif;font-size:12px}.attack-tech p{margin:6px 0 0}.attack-warning{color:var(--accent);font-weight:650}.attack-controls{display:flex;align-items:center;justify-content:space-between;gap:12px}.attack-preserved{margin:0;color:var(--muted);font-size:12px;line-height:1.4}.attack-preserved strong{color:var(--ink)}
+    .assurance-stack{display:grid;grid-template-rows:auto 1fr auto;gap:10px;min-height:0}.causal-flow,.gap-action-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;min-height:0}.cause{box-sizing:border-box;position:relative;display:grid;align-content:center;height:100%;min-height:68px;padding:11px 13px;background:var(--panel);border:1px solid var(--line);font-size:14px;line-height:1.35}.cause strong{display:block;color:var(--dim);font-size:12px;font-weight:500}.cause.result{box-shadow:inset 0 -2px var(--accent)}.cause.result b{color:var(--accent)}
+    .gap-action{display:grid;grid-template-rows:auto 1fr 70px;min-height:148px;padding:13px;border:1px solid var(--line);background:var(--panel);min-width:0}.gap-action h2{margin:8px 0 4px;font-size:14px;font-weight:550}.gap-action p{margin:0;color:var(--dim);font-size:12px;line-height:1.4}.gap-status{color:var(--muted);font-size:13px;font-weight:650}.gap-next{box-sizing:border-box;height:70px;margin:0;padding-top:10px;border-top:1px solid var(--line);font-size:13px;line-height:1.35}.gap-next b{display:block;margin-bottom:4px;color:var(--accent);font-size:12px}.technical{border-top:1px solid var(--line);padding-top:8px;color:var(--dim);font-size:12px}.technical summary{cursor:pointer;color:var(--muted);font-size:12px}.technical p{margin:7px 0 0;font:500 12px/1.45 "SFMono-Regular",Menlo,monospace;overflow-wrap:anywhere}.technical strong{color:var(--muted);font-weight:500}.impact-list{margin:7px 0 0;padding-left:18px;font:500 12px/1.45 "SFMono-Regular",Menlo,monospace}
     .app-footer{height:var(--footer);display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);border-top:1px solid var(--line);color:var(--dim);font-size:10px}.app-footer strong{color:var(--muted);font-weight:500}.safe-fallback{display:none;min-height:100vh;padding:40px;background:var(--bg)}.no-js .app-header,.no-js .safety-rail,.no-js .workspace,.no-js .app-footer{display:none}.no-js .safe-fallback{display:grid;align-content:center;gap:20px}.safe-fallback h1{margin:0;font-size:56px;font-weight:520}.safe-fallback p{max-width:720px;color:var(--muted);font-size:18px;line-height:1.6}.safe-fallback .fallback-states{display:flex;gap:0}.safe-fallback span{padding:10px;border:1px solid var(--line2);font:650 13px "SF Pro Text","Helvetica Neue",Arial,sans-serif}.safe-fallback span:last-child{border-color:var(--accent);color:var(--accent)}
     @media(max-width:1050px){.app-header{grid-template-columns:auto 1fr auto}.steps{justify-self:center}.step{padding:10px 11px}.step small{display:none}.scenario-grid{grid-template-columns:1fr 1fr}.gap-action p{display:none}}
-    @media(max-height:760px){:root{--header:58px;--footer:32px}.brand-sub{display:none}.safety-rail{height:32px}.workspace{height:calc(100vh - var(--header) - var(--footer) - 32px)}.view{padding:11px var(--pad);gap:8px}.view h1{font-size:27px}.answer{margin-top:4px;font-size:16px}.answer .contract-note{display:none}.panel-head{padding:8px 12px}.panel-body{padding:10px}.scenario-grid,.input-stack{gap:8px}.fact{padding:9px}.fact strong{font-size:17px}.identity-grid{gap:7px}.control-group{padding:10px 12px}.control-note{margin-top:6px}.zero{padding:8px}.analysis-workspace,.analysis-main,.runtime-main,.runtime-projection{gap:6px}.analysis-mode,.runtime-method{padding:6px 10px}.scenario-bar,.runtime-methods{padding:6px 10px}.insight{padding:8px 11px}.metric,.runtime-metric{padding:10px}.metric-value{margin:7px 0 4px;font-size:38px}.runtime-metric-value{margin:6px 0 3px;font-size:32px}.metric-foot{padding-top:6px}.gate,.runtime-status div{padding:7px 9px}.runtime-evidence{padding:9px}.runtime-code-list{gap:3px}.runtime-code-list li{padding-bottom:3px}.runtime-code-list span{display:none}.runtime-technical{display:none}.causal-flow{gap:20px}.cause{min-height:54px;padding:8px 10px;font-size:13px}.gap-action{padding:10px}.gap-action h2{margin:5px 0 3px}.gap-action p{display:none}.gap-next{margin-top:7px;padding-top:7px}.technical{padding-top:5px}.technical p{display:none}.primary,.secondary{padding:7px 12px}.keyhint{display:none}}
+    @media(max-height:760px){:root{--header:58px;--footer:32px}.brand-sub{display:none}.safety-rail{height:32px}.workspace{height:calc(100vh - var(--header) - var(--footer) - 32px)}.view{padding:11px var(--pad);gap:8px}.view h1{font-size:27px}.answer{margin-top:4px;font-size:16px}.answer .contract-note{display:none}.panel-head{padding:8px 12px}.panel-body{padding:10px}.scenario-grid,.input-stack{gap:8px}.fact{padding:9px}.fact strong{font-size:17px}.identity-grid{gap:7px}.control-group{padding:10px 12px}.control-note{margin-top:6px}.zero{padding:8px}.analysis-workspace,.analysis-main,.runtime-main,.runtime-projection,.attack-main{gap:6px}.analysis-mode,.runtime-method{padding:6px 10px}.scenario-bar,.runtime-methods{padding:6px 10px}.insight,.attack-claim{padding:8px 11px}.metric,.runtime-metric,.attack-card{padding:10px}.metric-value{margin:7px 0 4px;font-size:38px}.runtime-metric-value{margin:6px 0 3px;font-size:32px}.attack-value{margin:7px 0 5px;font-size:25px}.attack-tech{margin-top:6px;padding-top:5px;font-size:10px}.metric-foot{padding-top:6px}.gate,.runtime-status div{padding:7px 9px}.runtime-evidence{padding:9px}.runtime-code-list{gap:3px}.runtime-code-list li{padding-bottom:3px}.runtime-code-list span{display:none}.runtime-technical{display:none}.causal-flow{gap:20px}.cause{min-height:54px;padding:8px 10px;font-size:13px}.gap-action{padding:10px}.gap-action h2{margin:5px 0 3px}.gap-action p{display:none}.gap-next{margin-top:7px;padding-top:7px}.technical{padding-top:5px}.technical p{display:none}.primary,.secondary{padding:7px 12px}.keyhint{display:none}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+    .analysis-modes,.runtime-main{display:none!important}.analysis-workspace{grid-template-rows:1fr}.analysis-main{grid-template-rows:auto auto auto 1fr auto}.ecc-explainer{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;padding:10px 13px;border:1px solid var(--line);background:var(--panel)}.ecc-explainer strong{font-size:14px;line-height:1.45;font-weight:560}.ecc-explainer span{color:var(--muted);font-size:12px;line-height:1.45}
+    .gcp-workspace{display:grid;grid-template-rows:auto auto 1fr auto;gap:9px;min-height:0}.gcp-workflow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line)}.gcp-workflow article{position:relative;min-width:0;padding:10px 11px;background:var(--panel)}.gcp-workflow article:not(:last-child):after{content:"→";position:absolute;right:-11px;top:38px;z-index:2;color:var(--accent)}.gcp-workflow article.agent{border-top:1px solid var(--accent)}.gcp-workflow span,.gcp-infra span{display:block;color:var(--dim);font-size:11px}.gcp-workflow b{display:block;margin-top:6px;font-size:13px;font-weight:560}.gcp-workflow p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.35}.gcp-infra{display:grid;grid-template-columns:1.15fr .9fr .95fr;gap:1px;background:var(--line)}.gcp-infra>div{min-width:0;padding:9px 12px;background:var(--panel2)}.gcp-infra b{display:block;margin-top:5px;font-size:12px;font-weight:550;overflow-wrap:anywhere}.gcp-executions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-height:0}.gcp-executions article{display:grid;grid-template-rows:auto auto 1fr;min-width:0;padding:11px 12px;border:1px solid var(--line);background:var(--panel)}.gcp-executions article>div{display:flex;justify-content:space-between;gap:8px}.gcp-executions article>div b{font-size:13px}.gcp-executions article>div span{color:var(--accent);font-size:12px}.gcp-executions code{margin-top:7px;color:var(--muted);font-size:10px;overflow-wrap:anywhere}.gcp-executions p{margin:7px 0 0;color:var(--muted);font-size:12px;line-height:1.4}.gcp-proof-footer{display:flex;align-items:center;justify-content:space-between;gap:14px}.gcp-proof-footer a{color:var(--accent);font-size:13px;text-underline-offset:3px}.gcp-proof-footer span{color:var(--muted);font-size:11px;text-align:right;overflow-wrap:anywhere}
   </style>
 </head>
 <body>
   <div class="safe-fallback">
     <div class="fallback-states"><span>합성 데모 데이터 (SYNTHETIC)</span><span>실제 물리 근거 아님 (NOT PHYSICAL EVIDENCE)</span><span>근거 부족으로 판단 보류 (HOLD)</span></div>
-    <h1>근거가 없으면 판정을 보류합니다.</h1>
-    <p>JavaScript가 실행되지 않아 제품 조작은 중단됐습니다. 실제 환경 모델 출력, 승인 BOM, 시험 원문과 GCP resource는 모두 0이며 보증 판정은 HOLD입니다.</p>
+    <h1>근거가 없으면 판정을 보류한다.</h1>
+    <p>JavaScript가 실행되지 않아 제품 조작은 중단됐다. 실제 환경 모델 출력, 승인 BOM과 시험 원문은 모두 0이며 보증 판정은 HOLD다.</p>
   </div>
 
   <header class="app-header">
@@ -45,14 +49,16 @@
       <button class="step active" type="button" data-step="0"><b>1</b><span>검토 조건 <small>Scenario</small></span></button>
       <button class="step" type="button" data-step="1"><b>2</b><span>수치 변화 <small>Analysis</small></span></button>
       <button class="step" type="button" data-step="2"><b>3</b><span>보증 판단 <small>Assurance</small></span></button>
+      <button class="step" type="button" data-step="3"><b>4</b><span>GCP 실행 <small>Workflow</small></span></button>
+      <button class="step" type="button" data-step="4"><b>5</b><span>결과 전달 무결성 <small>Integrity</small></span></button>
     </nav>
     <button class="reset" id="reset" type="button">데모 초기화</button>
   </header>
-  <div class="safety-rail"><strong>합성 데모 데이터 (SYNTHETIC)</strong><span>실제 물리 근거 아님</span><span>실제 데이터 0건 · GCP resource 0개</span><span class="hold">근거 부족으로 판단 보류 (HOLD)</span></div>
+  <div class="safety-rail"><strong>합성 데모 · 실제 보증 아님</strong><span class="hold">현재 결론 HOLD</span></div>
 
   <main class="workspace">
     <section class="view active" data-view="0" aria-labelledby="scenario-title">
-      <div class="view-head"><p class="eyebrow">01 · 검토 조건 <span lang="en">Scenario</span></p><h1 id="scenario-title">어떤 임무와 부품을 검토하나요?</h1><p class="answer">550 km LEO 임무에서 합성 메모리 부품 1종을 검토합니다.<span class="contract-note">승인 BOM 0건 · 실제 추천 아님</span></p></div>
+      <div class="view-head"><p class="eyebrow">01 · 검토 조건 <span lang="en">Scenario</span></p><h1 id="scenario-title">어떤 임무와 부품을 검토하나요?</h1><p class="answer">550 km LEO 임무와 정확히 식별한 메모리 부품 1종을 검토한다.</p></div>
       <div class="scenario-grid">
         <div class="input-stack">
           <article class="panel"><div class="panel-head"><h2>임무 조건 <span lang="en">Mission profile</span></h2><span class="tag accent">합성 데모 데이터</span></div><div class="mission-facts"><div class="fact"><span>궤도</span><strong>LEO</strong></div><div class="fact"><span>고도</span><strong>550 km</strong></div><div class="fact"><span>경사각</span><strong>97.6°</strong></div><div class="fact"><span>기간</span><strong>1 year</strong></div></div></article>
@@ -61,61 +67,81 @@
         <article class="panel control-panel">
           <div class="panel-head"><h2>검토값 선택</h2><span class="tag">검증된 고정 결과</span></div>
           <div>
-            <div class="control-group"><div class="control-title"><b>알루미늄 등가 차폐</b><span class="label">누적선량 TID를 낮춤</span></div><div class="choices" data-shield-group><button class="choice" type="button" data-shield="1">1 mm</button><button class="choice selected" type="button" data-shield="2">2 mm</button><button class="choice" type="button" data-shield="4">4 mm</button><button class="choice" type="button" data-shield="5">5 mm</button></div><p class="control-note">5 mm는 지원 범위 밖이므로 값을 추정하지 않습니다.</p></div>
-            <div class="control-group"><div class="control-title"><b>ECC 오류정정</b><span class="label">SEU 잔여 오류를 낮춤</span></div><div class="choices" data-ecc-group><button class="choice" type="button" data-ecc="off">미적용</button><button class="choice selected" type="button" data-ecc="on">적용</button></div><p class="control-note" data-ecc-note>ECC 비교는 검증된 2 mm 고정 결과에서만 제공합니다.</p></div>
+            <div class="control-group"><div class="control-title"><b>알루미늄 등가 차폐</b><span class="label">누적선량 TID를 낮춤</span></div><div class="choices" data-shield-group><button class="choice" type="button" data-shield="1">1 mm</button><button class="choice selected" type="button" data-shield="2">2 mm</button><button class="choice" type="button" data-shield="4">4 mm</button><button class="choice" type="button" data-shield="5">5 mm</button></div><p class="control-note">5 mm는 지원 범위 밖이므로 값을 추정하지 않는다.</p></div>
+            <div class="control-group"><div class="control-title"><b>ECC 오류정정</b><span class="label">SEU 잔여 오류를 낮춤</span></div><div class="choices" data-ecc-group><button class="choice" type="button" data-ecc="off">미적용</button><button class="choice selected" type="button" data-ecc="on">적용</button></div><p class="control-note" data-ecc-note>ECC 비교는 검증된 2 mm 고정 결과에서만 제공한다.</p></div>
           </div>
-          <div class="zero-facts"><div class="zero"><b>0</b><span>실제 환경 모델 결과</span></div><div class="zero"><b>0</b><span>승인 BOM·시험 원문</span></div><div class="zero"><b>0</b><span>GCP resource</span></div></div>
+          <div class="evidence-scope"><strong>현재 연결된 실제 근거: 0건</strong><span>환경 run / 승인 BOM·시험 원문</span></div>
         </article>
       </div>
-      <div class="view-actions"><span class="keyhint"><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> 단계 이동 · <kbd>R</kbd> 초기화</span><button class="primary" type="button" data-next>수치 변화 보기 →</button></div>
+      <div class="view-actions"><span class="keyhint"><kbd>1</kbd>–<kbd>5</kbd> 단계 이동 · <kbd>R</kbd> 초기화</span><button class="primary" type="button" data-next>수치 변화 보기 →</button></div>
     </section>
 
     <section class="view" data-view="1" aria-labelledby="analysis-title">
-      <div class="view-head"><p class="eyebrow">02 · 수치 변화 <span lang="en">Analysis</span></p><h1 id="analysis-title" data-analysis-title>차폐와 ECC가 어떤 값을 바꾸나요?</h1><p class="answer" data-analysis-answer>차폐는 누적선량(TID), ECC는 단일사건 오류(SEU)의 잔여량을 낮춥니다.<span class="contract-note">검증된 합성 결과만 표시</span></p></div>
+      <div class="view-head"><p class="eyebrow">02 · 수치 변화 <span lang="en">Analysis</span></p><h1 id="analysis-title" data-analysis-title>차폐와 ECC가 어떤 값을 바꾸나요?</h1><p class="answer" data-analysis-answer>차폐는 누적선량(TID), ECC는 단일사건 오류(SEU)의 잔여량을 낮춘다.<span class="contract-note">검증된 합성 결과만 표시</span></p></div>
       <div class="analysis-workspace">
-        <div class="analysis-modes" aria-label="분석 결과 종류"><button class="analysis-mode selected" type="button" data-analysis-mode="radiation">방사선 수치</button><button class="analysis-mode" type="button" data-analysis-mode="runtime">Runtime 완화</button></div>
       <div class="analysis-main" data-analysis-panel="radiation">
         <div class="scenario-bar"><span class="label">차폐</span><div class="choices" data-shield-group><button class="choice" type="button" data-shield="1">1</button><button class="choice selected" type="button" data-shield="2">2</button><button class="choice" type="button" data-shield="4">4</button><button class="choice" type="button" data-shield="5">5 mm</button></div><span class="divider"></span><span class="label">ECC 오류정정</span><div class="choices" data-ecc-group><button class="choice" type="button" data-ecc="off">미적용</button><button class="choice selected" type="button" data-ecc="on">적용</button></div><span class="scenario-summary"><strong data-scenario-name>데이터 확인 중</strong> · <span data-case-mode>—</span></span></div>
-        <div class="data-alert" data-alert role="status">결과 데이터가 없거나 손상되어 수치를 표시하지 않습니다. 최종 판단은 HOLD입니다.</div>
-        <div class="insight"><strong data-insight>결정 엔진 결과를 확인하고 있습니다.</strong><span>실제 물리 성능 주장이 아님</span></div>
+        <div class="data-alert" data-alert role="status">결과 데이터가 없거나 손상되어 수치를 표시하지 않는다. 최종 판단은 HOLD다.</div>
+        <div class="ecc-explainer"><strong>방사선으로 메모리 정보가 뒤집힐 수 있음 → ECC가 수정 가능한 오류를 찾아 고침 → 임무 중 남는 논리 오류를 줄임</strong><span>ECC는 SEU 사건 자체나 SEL·SEB·SEGR 같은 파괴성 SEE를 해결하지 않는다. 실제 채택에는 부품 지원, 오류 패턴·적용 조건과 효과 근거가 필요하며 현재 비교는 합성 fixture다.</span></div>
+        <div class="insight"><strong data-insight>결정 엔진 결과를 확인하고 있다.</strong><span>실제 물리 성능 주장이 아님</span></div>
         <div class="metrics">
-          <article class="metric scope" id="tid-metric"><div><div class="label">차폐 후 누적선량 (TID)</div><div class="metric-value" data-tid>—</div><div class="metric-unit" data-tid-unit></div></div><div class="metric-foot" data-tid-foot>결과 데이터 확인 전에는 표시하지 않습니다.</div></article>
-          <article class="metric"><div><div class="label">완화 전 오류 (SEU)</div><div class="metric-value" data-raw>—</div><div class="metric-unit">events / mission · 단일사건 오류 · 합성</div></div><div class="metric-foot">오류 발생량이며 ECC 후 잔여 오류와 구분합니다.</div></article>
-          <article class="metric"><div><div class="label">완화 후 잔여 오류 (Residual SEU)</div><div class="metric-value" data-residual>—</div><div class="metric-unit">events / mission · 합성 데모 데이터</div></div><div class="metric-foot" data-ecc-foot>결과 데이터 확인 전에는 표시하지 않습니다.</div></article>
+          <article class="metric scope" id="tid-metric"><div><div class="label">차폐 후 누적선량 (TID)</div><div class="metric-value" data-tid>—</div><div class="metric-unit" data-tid-unit></div></div><div class="metric-foot" data-tid-foot>결과 데이터 확인 전에는 표시하지 않는다.</div></article>
+          <article class="metric"><div><div class="label">완화 전 오류 (SEU)</div><div class="metric-value" data-raw>—</div><div class="metric-unit">events / mission · 단일사건 오류 · 합성</div></div><div class="metric-foot">오류 발생량이며 ECC 후 잔여 오류와 구분한다.</div></article>
+          <article class="metric"><div><div class="label">완화 후 잔여 오류 (Residual SEU)</div><div class="metric-value" data-residual>—</div><div class="metric-unit">events / mission · 합성 데모 데이터</div></div><div class="metric-foot" data-ecc-foot>결과 데이터 확인 전에는 표시하지 않는다.</div></article>
         </div>
         <div class="gate-strip"><div class="gate"><span>처리 상태</span><b data-processing>DATA_UNAVAILABLE</b></div><div class="gate"><span>수치 조건</span><b data-engineering>평가하지 않음 (NOT_EVALUATED)</b></div><div class="gate"><span>최종 보증 판단</span><b class="assurance" data-assurance>근거 부족으로 판단 보류 (HOLD)</b></div></div>
-      </div>
-      <div class="runtime-main hidden" data-analysis-panel="runtime">
-        <div class="runtime-methods"><span class="label">완화 method</span><button class="runtime-method selected" type="button" data-runtime-method="WATCHDOG">WATCHDOG</button><button class="runtime-method" type="button" data-runtime-method="TMR">TMR</button><button class="runtime-method" type="button" data-runtime-method="SEL_PROTECTION">SEL 보호</button><span class="runtime-summary"><strong data-runtime-name>결과 확인 전</strong> · production API 결과</span></div>
-        <div class="data-alert visible" data-runtime-alert role="status">Runtime 결과가 없거나 손상되어 수치와 ID를 표시하지 않습니다. 최종 판단은 HOLD입니다.</div>
-        <div class="runtime-status" aria-label="Runtime 결과 상태"><div><span>처리 상태</span><b data-runtime-processing>DATA_UNAVAILABLE</b></div><div><span>데이터 분류</span><b data-runtime-class>UNKNOWN</b></div><div><span>수치 조건</span><b data-runtime-engineering>NOT_EVALUATED</b></div><div><span>최종 보증 판단</span><b class="hold" data-runtime-assurance>HOLD</b></div></div>
-        <div class="runtime-body">
-          <div class="runtime-projection">
-            <div class="insight"><strong data-runtime-insight>정규 runtime 결과를 확인하고 있습니다.</strong><span>실제 assurance support 아님</span></div>
-            <div class="runtime-metrics" data-runtime-metrics><article class="runtime-metric"><div class="label">결과 데이터</div><div class="runtime-metric-value">—</div><div class="metric-unit">DATA_UNAVAILABLE</div></article></div>
-          </div>
-          <aside class="runtime-evidence"><h2>Stable code → 다음 행동</h2><ul class="runtime-code-list" data-runtime-codes><li><code>DATA_UNAVAILABLE</code><span>정규 payload를 복구하고 다시 검증</span></li></ul></aside>
-        </div>
-        <div class="runtime-technical"><span>equation <strong data-runtime-equation>—</strong></span><span>result <strong data-runtime-result-id>—</strong></span><span>packet <strong data-runtime-packet-id>—</strong></span><span>policy <strong data-runtime-policy>—</strong></span><span>input <strong data-runtime-input-hash>—</strong></span><span>output <strong data-runtime-output-hash>—</strong></span></div>
       </div>
       </div>
       <div class="view-actions"><button class="secondary" type="button" data-prev>← 검토 조건</button><button class="primary" type="button" data-next>왜 판단을 보류하나요? →</button></div>
     </section>
 
     <section class="view" data-view="2" aria-labelledby="assurance-title">
-      <div class="view-head"><p class="eyebrow">03 · 보증 판단 <span lang="en">Assurance</span></p><h1 id="assurance-title">일부 수치 규칙이 통과해도 왜 HOLD인가요?</h1><p class="answer">결정 엔진이 실제 환경·부품 근거 공백을 차단 사유로 반환해 판단을 보류합니다.<span class="contract-note">HOLD · 근거 부족으로 판단 보류</span></p></div>
+      <div class="view-head"><p class="eyebrow">03 · 보증 판단 <span lang="en">Assurance</span></p><h1 id="assurance-title">일부 수치 규칙이 통과해도 왜 HOLD인가요?</h1><p class="answer">계산 규칙은 확인했지만, 실제 임무와 부품에 연결할 근거가 부족해 판단을 보류한다.</p></div>
       <div class="assurance-stack">
-        <div class="causal-flow" aria-label="판정 인과관계"><div class="cause"><strong>01</strong><b>결정 엔진의 합성 규칙 결과</b></div><div class="cause"><strong>02</strong><b>차단 근거 공백 반환</b></div><div class="cause result"><strong>03</strong><b>근거 부족으로 판단 보류 (HOLD)</b></div><div class="cause"><strong>04</strong><b>공백별 필요한 증거 확보</b></div></div>
-        <div class="gap-action-grid" data-gap-actions aria-label="근거 공백과 다음 행동"><article class="gap-action"><div><span class="gap-status">DATA_UNAVAILABLE</span><h2>결과 데이터 확인 필요</h2><p>정규 결과를 읽기 전에는 근거 상태를 표시하지 않습니다.</p></div><div></div><div class="gap-next"><b>안전 상태</b>수치와 낙관 판정을 숨기고 HOLD 유지</div></article></div>
-        <details class="technical"><summary>기술 세부정보 보기</summary><p>case <strong data-case-id>—</strong> · mode <strong data-mode>—</strong> · run <strong data-run>—</strong> · result <strong data-result-id>—</strong> · EvidencePacket <strong data-packet-id>—</strong> · data class <strong data-data-class>UNKNOWN</strong> · policy <strong data-policy>—</strong></p><p>Change Impact <strong data-impact-id>—</strong></p><ul class="impact-list" data-invalidations><li>정규 결과 확인 전에는 invalidation을 표시하지 않습니다.</li></ul></details>
+        <div class="causal-flow" aria-label="판정 인과관계"><div class="cause"><strong>확인된 것</strong><b>합성 계산 재현 · 5 mm 차단 · 규칙 실행</b></div><div class="cause"><strong>아직 필요한 것</strong><b>실제 환경 · 승인 부품·시험 · 독립 검토</b></div><div class="cause result"><strong>그래서 내린 결정</strong><b>근거 부족으로 판단 보류 (HOLD)</b></div><div class="cause"><strong>다음</strong><b>필요한 근거를 연결한 뒤 재검토</b></div></div>
+        <div class="gap-action-grid" data-gap-actions aria-label="근거 공백과 다음 행동"><article class="gap-action"><div><span class="gap-status">DATA_UNAVAILABLE</span><h2>결과 데이터 확인 필요</h2><p>정규 결과를 읽기 전에는 근거 상태를 표시하지 않는다.</p></div><div></div><div class="gap-next"><b>안전 상태</b>수치와 낙관 판정을 숨기고 HOLD 유지</div></article></div>
+        <details class="technical"><summary>machine code·식별자·무효화 기술 상세 보기</summary><p>blocking gaps <strong data-gap-codes>—</strong></p><p>case <strong data-case-id>—</strong> · mode <strong data-mode>—</strong> · run <strong data-run>—</strong> · result <strong data-result-id>—</strong> · EvidencePacket <strong data-packet-id>—</strong> · data class <strong data-data-class>UNKNOWN</strong> · policy <strong data-policy>—</strong></p><p>exact identity: part/process/die/lot · Change Impact <strong data-impact-id>—</strong></p><ul class="impact-list" data-invalidations><li>정규 결과 확인 전에는 invalidation을 표시하지 않는다.</li></ul></details>
       </div>
-      <div class="view-actions"><button class="secondary" type="button" data-prev>← 수치 변화</button><button class="primary" type="button" id="reset-end">데모 처음부터</button></div>
+      <div class="view-actions"><button class="secondary" type="button" data-prev>← 수치 변화</button><button class="primary" type="button" data-next>GCP 실행 증거 보기 →</button></div>
+    </section>
+
+    <section class="view" data-view="3" aria-labelledby="gcp-title">
+      <div class="view-head"><p class="eyebrow">04 · GCP 실행 <span lang="en">Workflow snapshot</span></p><h1 id="gcp-title">이 결과가 실제 GCP에서 어떻게 처리됐나?</h1><p class="answer">세 Agent가 근거 책임을 나누고, Workflows가 순서·격리·HOLD를 관리한다.<span class="contract-note">Control Tower 검증 snapshot · live 조회 아님</span></p></div>
+      <div class="gcp-workspace" data-gcp-screen>
+        <div class="gcp-workflow" aria-label="GCP workflow 6단계">
+          <article><span>01 · STORAGE 입력</span><b>합성 입력 고정</b><p>generation과 SHA를 보존한다.</p></article>
+          <article><span>02 · WORKFLOWS</span><b>순서·실패 관리</b><p>호출과 차단 경로를 관리한다.</p></article>
+          <article class="agent"><span>03 · CLOUD RUN</span><b>Mission Agent</b><p>Core·입력 무결성 책임</p></article>
+          <article class="agent"><span>04 · CLOUD RUN</span><b>Parts Agent</b><p>identity·증거 hash 책임</p></article>
+          <article class="agent"><span>05 · CLOUD RUN</span><b>Assurance Agent</b><p>독립 대조·HOLD 책임</p></article>
+          <article><span>06 · STORAGE·LOGGING</span><b>결과·감사 기록</b><p>결과와 correlation log를 남긴다.</p></article>
+        </div>
+        <div class="gcp-infra"><div><span>마지막 검증 revision</span><b data-product-gcp-revision>DATA_UNAVAILABLE · HOLD</b></div><div><span>IAM 최소권한·격리</span><b data-product-gcp-iam>snapshot 확인 전</b></div><div><span>Core parity·감사</span><b data-product-gcp-audit>snapshot 확인 전</b></div></div>
+        <div class="gcp-executions"><article><div><b>정상 합성 실행</b><span data-product-gcp-normal-state>HOLD</span></div><code data-product-gcp-normal-id>—</code><p data-product-gcp-normal-copy>정상 실행도 실제 근거가 없어 보증 판단은 HOLD다.</p></article><article><div><b>위조 입력 차단</b><span>HOLD</span></div><code data-product-gcp-forgery-id>—</code><p data-product-gcp-forgery-copy>body hash가 다르면 입력 단계에서 닫는다.</p></article><article><div><b>endpoint 교체 차단</b><span>HOLD</span></div><code data-product-gcp-endpoint-id>—</code><p data-product-gcp-endpoint-copy>허용하지 않은 endpoint는 Agent 호출 전에 닫는다.</p></article></div>
+        <div class="gcp-proof-footer"><a data-product-gcp-console>GCP Console에서 Workflow 확인</a><span data-product-gcp-provenance>snapshot provenance 확인 전 · 최종 HOLD</span></div>
+      </div>
+      <div class="view-actions"><button class="secondary" type="button" data-prev>← 보증 판단</button><button class="primary" type="button" data-next>결과 전달 무결성 보기 →</button></div>
+    </section>
+
+    <section class="view" data-view="4" aria-labelledby="number-change-title">
+      <div class="view-head"><p class="eyebrow">05 · 결과 전달 무결성 <span lang="en">Result integrity</span></p><h1 id="number-change-title">Core 결과가 전달 중 바뀌면 어떻게 할까요?</h1><p class="answer">Core 기록과 Product에 도착한 값이 다르면 숫자를 숨기고 판단을 보류한다.<span class="contract-note">결과 파일의 부분 불일치만 확인</span></p></div>
+      <div class="attack-main" data-number-change-screen>
+        <div class="attack-claim"><strong>Production MVP Core의 Residual SEU 기록과 도착 값을 대조한다.</strong><span>결과 전달 무결성 합성 시연 · 하드웨어 완화 구현 아님</span></div>
+        <div class="attack-flow" aria-label="계산 직후 기록, 화면에 들어온 값, 처리 결과">
+          <article class="attack-card"><div class="attack-card-head"><span>01 · Core 계산 결과</span><b>Residual SEU</b></div><div class="attack-value" data-attack-normal-value>—</div><div><p class="attack-state" data-attack-normal-state>Production MVP Core가 만든 합성 variant 기록이다.</p><details class="attack-tech"><summary>기술 상세</summary><p>result <span data-attack-normal-result>—</span><br>input hash <span data-attack-normal-input>—</span><br>output hash <span data-attack-normal-output>—</span></p></details></div></article>
+          <article class="attack-card untrusted"><div class="attack-card-head"><span>02 · Product 도착 사본</span><b data-attack-warning>테스트 전</b></div><div class="attack-value" data-attack-preview-value>—</div><div><p class="attack-state" data-attack-preview-state>원본을 보존한 테스트용 사본의 Residual SEU만 바꾼다.</p><details class="attack-tech"><summary>기술 상세</summary><p>Core result · input/output hash 유지 <span data-attack-stale-state>변경 전</span></p></details></div></article>
+          <article class="attack-card blocked"><div class="attack-card-head"><span>03 · 대조 결과</span><b data-attack-result-label>비교 전</b></div><div class="attack-value" data-attack-result-value>—</div><div><p class="attack-state" data-attack-result-state>Core 기록과 대조하기 전에는 도착 값을 신뢰하지 않는다.</p><details class="attack-tech"><summary>기술 상세</summary><p>reason <span data-attack-reason>—</span><br>result · input hash · output hash <span data-attack-hidden-ids>— / — / —</span></p></details></div></article>
+        </div>
+        <div class="attack-controls"><p class="attack-preserved" data-attack-preserved><strong>확인 범위</strong> Core 결과 파일의 Residual SEU 하나가 다른 경우만 재현한다.</p><button class="primary" id="attack-action" type="button">테스트용 숫자 바꾸기</button></div>
+      </div>
+      <div class="view-actions"><button class="secondary" type="button" data-prev>← GCP 실행</button><button class="primary" type="button" id="reset-end">데모 처음부터</button></div>
     </section>
   </main>
 
-  <footer class="app-footer"><span>프로토타입 · backend/network 없음 · 실제 물리 보증 아님</span><strong data-footer-state>결과 확인 전 · 최종 HOLD</strong></footer>
+  <footer class="app-footer"><span>Offline prototype</span><strong data-footer-state>결과 확인 전 · 최종 HOLD</strong></footer>
 
   <script src="data/mvp-product-result.js"></script>
+  <script src="data/h05-gcp-snapshot.js"></script>
   <script>
     // Display binding only: all metrics, statuses, gaps and IDs originate in the generated payload.
     (() => {
@@ -277,20 +303,41 @@
       function runtimeDisplayMetrics(record) {
         if (!record.ready || !isObject(record.projection)) return [];
         if (record.method === 'WATCHDOG') return [
-          ['False activation', record.projection.false_positive_activation_count, '회 / evaluation window'],
-          ['Reboot', record.projection.reboot_count_total, '회 / evaluation window'],
-          ['Downtime', record.projection.downtime_total_seconds, 'seconds']
+          ['잘못 감지한 재시작', record.projection.false_positive_activation_count, '회 · 합성 평가 구간'],
+          ['재시작', record.projection.reboot_count_total, '회 · 합성 평가 구간'],
+          ['서비스 중단', record.projection.downtime_total_seconds, '초']
         ];
         if (record.method === 'TMR') return [
-          ['Replica failure p', record.controlInputs.replica_failure_probability, '합성 입력'],
-          ['System failure probability', record.projection.system_failure_probability, '정규 계산 projection']
+          ['개별 오류 가능성', record.controlInputs.replica_failure_probability, '합성 입력 p'],
+          ['시스템 실패 가능성', record.projection.system_failure_probability, 'production API 결과']
         ];
         if (record.method === 'SEL_PROTECTION') return [
-          ['True + false activation', `${record.projection.true_sel_activation_count} + ${record.projection.false_trip_activation_count}`, '회 / evaluation window'],
-          ['Power cycles', record.projection.power_cycle_count_total, '회 / evaluation window'],
-          ['Downtime', record.projection.downtime_total_seconds, 'seconds']
+          ['실제 사건 + 잘못 감지', `${record.projection.true_sel_activation_count} + ${record.projection.false_trip_activation_count}`, '회 · 합성 평가 구간'],
+          ['전원 재시작', record.projection.power_cycle_count_total, '회 · 합성 평가 구간'],
+          ['서비스 중단', record.projection.downtime_total_seconds, '초']
         ];
         return [];
+      }
+
+      function formatRuntimePercent(value) {
+        return Number.isFinite(value) ? new Intl.NumberFormat('ko-KR', {style:'percent', maximumFractionDigits:4}).format(value) : '—';
+      }
+
+      function runtimeStory(record) {
+        if (!record.ready || !isObject(record.projection)) return {name:'결과 사용 불가',problem:'결과 파일을 확인할 수 없음',response:'수치와 낙관 판정을 표시하지 않음',impact:'근거 부족으로 판단 보류(HOLD)'};
+        if (record.method === 'WATCHDOG') return {
+          name:'자동 재시작', problem:'시스템이 멈춤', response:'멈춤 확인 → 필요하면 다시 시작',
+          impact:`잘못 감지해도 재시작 가능 · 재시작 ${record.projection.reboot_count_total}회 · 서비스 중단 ${record.projection.downtime_total_seconds}초`
+        };
+        if (record.method === 'TMR') return {
+          name:'3중 다수결', problem:'한 장치의 계산 오류', response:'세 장치가 같은 계산 → 다수 결과 선택',
+          impact:`장치·전력·복잡도 증가 · 개별 오류 가능성 ${formatRuntimePercent(record.controlInputs.replica_failure_probability)} → 시스템 실패 가능성 ${formatRuntimePercent(record.projection.system_failure_probability)}`
+        };
+        if (record.method === 'SEL_PROTECTION') return {
+          name:'과전류 전원 보호', problem:'위험한 과전류', response:'과전류 감지 → 전원 차단·다시 켬',
+          impact:`실제 사건·잘못 감지 모두 재가동 가능 · 전원 재시작 ${record.projection.power_cycle_count_total}회 · 서비스 중단 ${record.projection.downtime_total_seconds}초`
+        };
+        return {name:'알 수 없는 대응 방법',problem:'지원하지 않는 method',response:'수치와 식별자를 숨김',impact:'근거 부족으로 판단 보류(HOLD)'};
       }
 
       function mvpRecord(scenario, mode, top) {
@@ -375,15 +422,100 @@
         }
       }
 
-      globalThis.SPECTRA_PRODUCT_BINDING = Object.freeze({resolveProductData, resolveRuntimeCollection, getRuntimeRecord, runtimeDisplayMetrics, jsonDeepExact, runtimePreimageHash, verifyRuntimePreimage, fallbackModel});
+      function buildWatchdogAttackPayload(payload) {
+        const clone = JSON.parse(JSON.stringify(payload));
+        const projection = clone && clone.runtime_mitigation_results && clone.runtime_mitigation_results.WATCHDOG && clone.runtime_mitigation_results.WATCHDOG.result && clone.runtime_mitigation_results.WATCHDOG.result.computed_projection;
+        if (!isObject(projection) || projection.downtime_total_seconds !== 60) throw new Error('ATTACK_SOURCE_INVALID');
+        projection.downtime_total_seconds = 999;
+        return clone;
+      }
+
+      function createAttackDemoController(payload) {
+        const source = payload;
+        const sourceBytes = JSON.stringify(source);
+        let phase = 'normal';
+        let attackPayload = null;
+        let currentModel = resolveProductData(source);
+        const snapshot = () => ({phase, model:currentModel, preview:attackPayload ? {before:60, after:attackPayload.runtime_mitigation_results.WATCHDOG.result.computed_projection.downtime_total_seconds} : null});
+        return Object.freeze({
+          current:snapshot,
+          preview() { attackPayload = buildWatchdogAttackPayload(source); phase = 'preview'; currentModel = resolveProductData(source); return snapshot(); },
+          verify() { if (!attackPayload) attackPayload = buildWatchdogAttackPayload(source); currentModel = resolveProductData(attackPayload); phase = 'blocked'; return snapshot(); },
+          reset() { attackPayload = null; phase = 'normal'; currentModel = JSON.stringify(source) === sourceBytes ? resolveProductData(source) : fallbackModel('ATTACK_SOURCE_MUTATED'); return snapshot(); }
+        });
+      }
+
+      function buildCoreIntegrityTestPayload(payload) {
+        const clone = JSON.parse(JSON.stringify(payload));
+        const metric = clone && clone.mvp_decision && clone.mvp_decision.variant && clone.mvp_decision.variant.metrics && clone.mvp_decision.variant.metrics.residual_logical_errors;
+        if (!isObject(metric) || !Number.isFinite(metric.value)) throw new Error('CORE_INTEGRITY_SOURCE_INVALID');
+        metric.value = Number((metric.value + 0.000001).toFixed(6));
+        return clone;
+      }
+
+      function createCoreIntegrityDemoController(payload) {
+        const source = payload;
+        const sourceBytes = JSON.stringify(source);
+        const trusted = source && source.mvp_decision;
+        const variant = trusted && trusted.variant;
+        const originalValue = variant && variant.metrics && variant.metrics.residual_logical_errors && variant.metrics.residual_logical_errors.value;
+        let phase = 'normal';
+        let testPayload = null;
+        let currentModel = resolveProductData(source);
+        const previewValue = () => testPayload && testPayload.mvp_decision.variant.metrics.residual_logical_errors.value;
+        const snapshot = () => ({phase, model:currentModel, preview:testPayload ? {before:originalValue, after:previewValue()} : null, anchors:trusted ? {resultId:variant.result_id,inputHash:trusted.input_hash,outputHash:trusted.output_hash} : null});
+        return Object.freeze({
+          current:snapshot,
+          preview() { testPayload = buildCoreIntegrityTestPayload(source); phase = 'preview'; currentModel = resolveProductData(source); return snapshot(); },
+          verify() {
+            if (!testPayload) testPayload = buildCoreIntegrityTestPayload(source);
+            const changed = previewValue() !== originalValue;
+            currentModel = changed ? fallbackModel('CORE_RESULT_VALUE_MISMATCH') : resolveProductData(testPayload);
+            phase = changed ? 'blocked' : 'normal';
+            return snapshot();
+          },
+          reset() { testPayload = null; phase = 'normal'; currentModel = JSON.stringify(source) === sourceBytes ? resolveProductData(source) : fallbackModel('CORE_SOURCE_MUTATED'); return snapshot(); }
+        });
+      }
+
+      function resolveGcpSnapshot(payload) {
+        const fallback = reason => ({ready:false, reason, assurance:'HOLD'});
+        try {
+          if (!isObject(payload) || payload.schema_version !== '1.0.0' || payload.data_class !== 'SYNTHETIC' || payload.final_assurance !== 'HOLD') throw new Error('GCP_SNAPSHOT_INVALID');
+          if (typeof payload.snapshot_hash_preimage !== 'string' || !hashPattern.test(payload.snapshot_sha256)) throw new Error('GCP_SNAPSHOT_HASH_MISSING');
+          if (`sha256:${sha256Hex(payload.snapshot_hash_preimage)}` !== payload.snapshot_sha256) throw new Error('GCP_SNAPSHOT_HASH_MISMATCH');
+          const parsed = JSON.parse(payload.snapshot_hash_preimage);
+          const body = {...payload}; delete body.snapshot_hash_preimage; delete body.snapshot_sha256;
+          if (!jsonDeepExact(parsed, body)) throw new Error('GCP_SNAPSHOT_PREIMAGE_MISMATCH');
+          if (!isObject(payload.workflow) || payload.workflow.state !== 'ACTIVE' || typeof payload.workflow.console_url !== 'string') throw new Error('GCP_WORKFLOW_INVALID');
+          if (!Array.isArray(payload.agents) || payload.agents.map(item => item.role).join('|') !== 'mission|parts|assurance') throw new Error('GCP_AGENTS_INVALID');
+          const normal = payload.executions && payload.executions.normal;
+          const forged = payload.executions && payload.executions.body_hash_forgery;
+          const endpoint = payload.executions && payload.executions.endpoint_override;
+          if (!normal || normal.workflow_state !== 'SUCCEEDED' || normal.processing_status !== 'VALID' || normal.engineering_gate !== 'NOT_EVALUATED' || normal.assurance_decision !== 'HOLD' || Object.values(normal.agent_statuses).some(value => value !== 'VALID')) throw new Error('GCP_NORMAL_STATE_INVALID');
+          if (!forged || forged.stable_code !== 'INPUT_BODY_SHA256_MISMATCH' || forged.assurance_decision !== 'HOLD') throw new Error('GCP_FORGERY_STATE_INVALID');
+          if (!endpoint || endpoint.stable_code !== 'ENDPOINT_OVERRIDE_FORBIDDEN' || endpoint.agent_call_count !== 0 || endpoint.assurance_decision !== 'HOLD') throw new Error('GCP_ENDPOINT_STATE_INVALID');
+          return {ready:true, reason:'', assurance:'HOLD', payload};
+        } catch (error) {
+          return fallback(error instanceof Error ? error.message : 'GCP_SNAPSHOT_INVALID');
+        }
+      }
+
+      globalThis.SPECTRA_PRODUCT_BINDING = Object.freeze({resolveProductData, resolveRuntimeCollection, resolveGcpSnapshot, getRuntimeRecord, runtimeDisplayMetrics, runtimeStory, jsonDeepExact, runtimePreimageHash, verifyRuntimePreimage, buildWatchdogAttackPayload, createAttackDemoController, buildCoreIntegrityTestPayload, createCoreIntegrityDemoController, fallbackModel});
       if (typeof document === 'undefined') return;
 
-      let model = resolveProductData(globalThis.SPECTRA_MVP_PRODUCT_RESULT);
+      const attackDemo = createCoreIntegrityDemoController(globalThis.SPECTRA_MVP_PRODUCT_RESULT);
+      let model = attackDemo.current().model;
+      const gcpModel = resolveGcpSnapshot(globalThis.SPECTRA_GCP_H05_SNAPSHOT);
       const state = {step: 0, shield: '2', ecc: 'on', lastChange: 'shield', analysisMode: 'radiation', runtimeMethod: 'WATCHDOG'};
       const all = selector => [...document.querySelectorAll(selector)];
       const one = selector => document.querySelector(selector);
       const formatTid = value => value === null ? '—' : (Number.isInteger(value) ? value.toFixed(1) : String(value));
-      const formatMetric = value => value === null ? '—' : String(value);
+      // Keep source values untouched; normalize only their UI representation so
+      // binary floating-point tails never look like additional precision.
+      const formatMetric = value => value === null || !Number.isFinite(Number(value))
+        ? '—'
+        : String(Number(Number(value).toFixed(7)));
       const current = () => model.selections[`${state.shield}-${state.ecc}`] || null;
 
       const gapActions = Object.freeze({
@@ -402,18 +534,20 @@
 
       function setText(selector, value) { all(selector).forEach(node => { node.textContent = value; }); }
       function setStep(value) {
-        state.step = Math.max(0, Math.min(2, value));
+        state.step = Math.max(0, Math.min(4, value));
         all('[data-view]').forEach((view, index) => view.classList.toggle('active', index === state.step));
         all('[data-step]').forEach((button, index) => {
           button.classList.toggle('active', index === state.step);
           button.classList.toggle('done', index < state.step);
           button.setAttribute('aria-current', index === state.step ? 'step' : 'false');
         });
+        renderStepFooter();
       }
 
       function renderGaps() {
         const container = one('[data-gap-actions]');
         container.replaceChildren();
+        setText('[data-gap-codes]', model.ready ? model.gaps.map(gap => gap.gap_code).join(' · ') : 'DATA_UNAVAILABLE');
         if (!model.ready || model.gaps.length === 0) {
           const article = document.createElement('article');
           article.className = 'gap-action';
@@ -422,18 +556,23 @@
           const next = document.createElement('div'); next.className = 'gap-next'; next.textContent = '수치와 낙관 판정을 숨기고 HOLD 유지';
           article.append(status, title, next); container.append(article); return;
         }
-        model.gaps.forEach((gap, index) => {
-          const action = gapActions[gap.gap_code] || ['차단 근거 공백', '근거 소유자와 해소 조건 확인'];
+        const groups = [
+          ['확인된 것', '고정 합성 계산과 범위 차단', '같은 입력 재현 · 5 mm 계산 차단 · 규칙 실행'],
+          ['아직 필요한 것', '실제 임무·부품 근거', '환경 출력 · 승인 BOM과 시험·권리 · 독립 검토'],
+          ['그래서 내린 결정', 'HOLD · 실패나 불합격 아님', '현재 근거로는 승인하지 않는 안전 상태'],
+          ['다음', '실제 근거를 연결한 뒤 재검토', '환경 출력, 승인 BOM·시험 원문, 독립 검토를 채우면 같은 규칙으로 다시 판정한다.']
+        ];
+        groups.forEach((group, index) => {
           const article = document.createElement('article'); article.className = 'gap-action';
           const top = document.createElement('div');
-          const status = document.createElement('span'); status.className = 'gap-status'; status.textContent = gap.gap_code;
-          const title = document.createElement('h2'); title.textContent = action[0];
-          const description = document.createElement('p'); description.textContent = gap.description;
+          const status = document.createElement('span'); status.className = 'gap-status'; status.textContent = group[0];
+          const title = document.createElement('h2'); title.textContent = group[1];
+          const description = document.createElement('p'); description.textContent = index === 2 ? '현재 근거로는 승인하지 않는 안전 상태다.' : index === 3 ? '같은 결정 계약을 다시 사용한다.' : '정규 결과 계약에서 확인한 범위다.';
           top.append(status, title, description);
           const spacer = document.createElement('div');
           const next = document.createElement('div'); next.className = 'gap-next';
-          const label = document.createElement('b'); label.textContent = `다음 행동 ${String(index + 1).padStart(2, '0')}`;
-          next.append(label, document.createTextNode(action[1])); article.append(top, spacer, next); container.append(article);
+          const label = document.createElement('b'); label.textContent = index === 0 ? '검증 범위' : index === 1 ? '필요한 근거' : index === 2 ? '안전한 결정' : '다음 행동';
+          next.append(label, document.createTextNode(group[2])); article.append(top, spacer, next); container.append(article);
         });
       }
 
@@ -442,7 +581,7 @@
         list.replaceChildren();
         const entries = model.ready ? model.impact.invalidations : [];
         if (entries.length === 0) {
-          const item = document.createElement('li'); item.textContent = '정규 결과 확인 전에는 invalidation을 표시하지 않습니다.'; list.append(item); return;
+          const item = document.createElement('li'); item.textContent = '정규 결과 확인 전에는 invalidation을 표시하지 않는다.'; list.append(item); return;
         }
         entries.forEach(entry => {
           const item = document.createElement('li');
@@ -486,14 +625,18 @@
       function renderRuntime() {
         const record = getRuntimeRecord(model, state.runtimeMethod);
         const safe = !record.ready;
+        const story = runtimeStory(record);
         all('[data-runtime-alert]').forEach(node => node.classList.toggle('visible', safe));
         all('[data-runtime-method]').forEach(button => { button.classList.toggle('selected', button.dataset.runtimeMethod === state.runtimeMethod); button.disabled = !model.runtime; });
-        setText('[data-runtime-name]', safe ? '결과 사용 불가' : record.method);
+        setText('[data-runtime-name]', story.name);
+        setText('[data-runtime-problem]', story.problem);
+        setText('[data-runtime-response]', story.response);
+        setText('[data-runtime-impact]', story.impact);
         setText('[data-runtime-processing]', safe ? 'DATA_UNAVAILABLE' : record.processing);
         setText('[data-runtime-class]', safe ? 'UNKNOWN' : `${record.dataClass} · 실제 증거 아님`);
         setText('[data-runtime-engineering]', safe ? 'NOT_EVALUATED' : `${record.engineering} · 보증 아님`);
         setText('[data-runtime-assurance]', 'HOLD · 근거 부족');
-        setText('[data-runtime-insight]', safe ? 'Runtime 결과가 없거나 손상되어 값을 표시하지 않습니다.' : `${record.method} 계산은 ${record.processing}이지만 합성 입력과 증거 공백 때문에 assurance는 ${record.assurance}입니다.`);
+        setText('[data-runtime-insight]', safe ? '고장 대응 결과가 없거나 손상되어 값을 표시하지 않는다. 근거 부족으로 HOLD한다.' : '합성 계산 결과 · 실제 완화 효과 검증 아님 · 근거 부족으로 HOLD');
         setText('[data-runtime-equation]', safe ? '—' : record.equationId);
         setText('[data-runtime-result-id]', safe ? '—' : record.resultId);
         setText('[data-runtime-packet-id]', safe ? '—' : record.packetId);
@@ -503,17 +646,69 @@
         renderRuntimeMetrics(record); renderRuntimeCodes(record);
       }
 
+      function renderAttackDemo() {
+        const demo = attackDemo.current();
+        const normalModel = resolveProductData(globalThis.SPECTRA_MVP_PRODUCT_RESULT);
+        const normal = normalModel.ready && normalModel.selections['2-on'];
+        const normalValue = normal ? formatMetric(normal.residualSeu) : '—';
+        setText('[data-attack-normal-value]', normalValue);
+        setText('[data-attack-normal-state]', normal ? 'Production MVP Core가 만든 합성 variant의 Residual SEU 기록이다.' : '결과 사용 불가(DATA_UNAVAILABLE) · 평가하지 않음(NOT_EVALUATED) · 판단 보류(HOLD)');
+        setText('[data-attack-normal-result]', normal && demo.anchors ? demo.anchors.resultId : '—');
+        setText('[data-attack-normal-input]', normal && demo.anchors ? demo.anchors.inputHash : '—');
+        setText('[data-attack-normal-output]', normal && demo.anchors ? demo.anchors.outputHash : '—');
+        const hasAttack = demo.preview !== null;
+        setText('[data-attack-warning]', hasAttack ? '오류 주입 테스트' : '테스트 전');
+        one('[data-attack-warning]').classList.toggle('attack-warning', hasAttack);
+        setText('[data-attack-preview-value]', hasAttack ? formatMetric(demo.preview.after) : '—');
+        setText('[data-attack-preview-state]', hasAttack ? '테스트용 사본의 Residual SEU만 바꿨다. 새 계산 결과가 아니다.' : '원본을 보존한 테스트용 사본의 Residual SEU만 바꾼다.');
+        setText('[data-attack-stale-state]', hasAttack ? 'Core result ID와 input/output hash는 변경하지 않음' : '변경 전');
+        const blocked = demo.phase === 'blocked';
+        setText('[data-attack-result-label]', blocked ? '서로 다름' : '비교 전');
+        setText('[data-attack-result-value]', blocked ? '불일치 → 숫자 비노출 → 판단 보류(HOLD)' : '—');
+        setText('[data-attack-result-state]', blocked ? '도착 값을 추측하지 않는다. 결과 사용 불가(DATA_UNAVAILABLE) · 평가하지 않음(NOT_EVALUATED)' : 'Core 기록과 대조하기 전에는 도착 값을 신뢰하지 않는다.');
+        setText('[data-attack-reason]', blocked ? demo.model.reason : '—');
+        setText('[data-attack-hidden-ids]', blocked ? '— / — / —' : '— / — / —');
+        setText('[data-attack-preserved]', blocked ? `확인 범위 · Core의 다른 결과와 원본은 유지 · Residual SEU ${normalValue} 원본 보존` : '확인 범위 · Core 결과 파일의 Residual SEU 하나가 다른 경우만 재현');
+        one('#attack-action').textContent = demo.phase === 'normal' ? '테스트용 숫자 바꾸기' : demo.phase === 'preview' ? 'Core 기록과 대조' : '정상 상태로 되돌리기';
+      }
+
       function renderAnalysisMode() {
         const runtimeMode = state.analysisMode === 'runtime';
         all('[data-analysis-mode]').forEach(button => button.classList.toggle('selected', button.dataset.analysisMode === state.analysisMode));
         all('[data-analysis-panel]').forEach(panel => panel.classList.toggle('hidden', panel.dataset.analysisPanel !== state.analysisMode));
-        setText('[data-analysis-title]', runtimeMode ? '세 가지 완화는 어떤 운영 결과를 만들까요?' : '차폐와 ECC가 어떤 값을 바꾸나요?');
+        setText('[data-analysis-title]', runtimeMode ? '오류가 생겼을 때 시스템은 어떻게 버티고 복구할까요?' : '차폐와 ECC가 어떤 값을 바꾸나요?');
         const answer = one('[data-analysis-answer]');
-        answer.firstChild.textContent = runtimeMode ? 'Production API의 WATCHDOG·TMR·SEL 보호 합성 결과를 그대로 표시합니다.' : '차폐는 누적선량(TID), ECC는 단일사건 오류(SEU)의 잔여량을 낮춥니다.';
+        answer.firstChild.textContent = runtimeMode ? '이 방법들은 방사선 사건을 없애지 않고, 오류가 발생했을 때 영향을 줄이거나 복구하도록 돕는다.' : '차폐는 누적선량(TID), ECC는 단일사건 오류(SEU)의 잔여량을 낮춘다.';
         if (runtimeMode) {
           const record = getRuntimeRecord(model, state.runtimeMethod);
           setText('[data-footer-state]', record.ready ? `${record.method} · ${record.engineering} · 최종 ${record.assurance}` : 'Runtime 안전 fallback · 최종 HOLD');
         }
+      }
+
+      function renderStepFooter() {
+        if (state.step === 4) setText('[data-footer-state]', '결과 불일치 시 숫자 비노출 · 판단 보류(HOLD)');
+        else if (state.step === 3) setText('[data-footer-state]', gcpModel.ready ? 'H05 GCP 검증 snapshot · 최종 HOLD' : 'GCP snapshot 사용 불가 · 최종 HOLD');
+        else if (state.step === 2) setText('[data-footer-state]', '보증 판단 · 근거 부족으로 판단 보류(HOLD)');
+      }
+
+      function renderGcpEvidence() {
+        if (!gcpModel.ready) {
+          setText('[data-product-gcp-provenance]', `DATA_UNAVAILABLE · ${gcpModel.reason} · 최종 HOLD`);
+          return;
+        }
+        const snapshot = gcpModel.payload;
+        setText('[data-product-gcp-revision]', `${snapshot.project_id} · ${snapshot.region} · ${snapshot.workflow.name} · ${snapshot.workflow.revision} · ${snapshot.workflow.state}`);
+        setText('[data-product-gcp-iam]', `Cloud Run 3개 분리 · public member ${snapshot.iam.public_agent_members} · Workflow SA 최소권한`);
+        setText('[data-product-gcp-audit]', `canonical parity ${snapshot.core_parity.canonical_hash_equal} · structured log ${snapshot.logging.structured_log_count}건`);
+        setText('[data-product-gcp-normal-state]', `${snapshot.executions.normal.workflow_state} · HOLD`);
+        setText('[data-product-gcp-normal-id]', snapshot.executions.normal.id);
+        setText('[data-product-gcp-normal-copy]', `Mission·Parts·Assurance 모두 VALID · ${snapshot.executions.normal.engineering_gate} / ${snapshot.executions.normal.assurance_decision}`);
+        setText('[data-product-gcp-forgery-id]', snapshot.executions.body_hash_forgery.id);
+        setText('[data-product-gcp-forgery-copy]', `${snapshot.executions.body_hash_forgery.stable_code} · 최종 HOLD`);
+        setText('[data-product-gcp-endpoint-id]', snapshot.executions.endpoint_override.id);
+        setText('[data-product-gcp-endpoint-copy]', `${snapshot.executions.endpoint_override.stable_code} · Agent 호출 ${snapshot.executions.endpoint_override.agent_call_count}회 · 최종 HOLD`);
+        setText('[data-product-gcp-provenance]', `${snapshot.source.classification} · ${snapshot.generated_at} · ${snapshot.snapshot_sha256} · live 조회 아님 · 비용 ${snapshot.cost_status}`);
+        const link = one('[data-product-gcp-console]'); link.href = snapshot.workflow.console_url; link.target = '_blank'; link.rel = 'noopener noreferrer';
       }
 
       function render() {
@@ -523,26 +718,27 @@
         all('[data-alert]').forEach(node => node.classList.toggle('visible', safe));
         all('[data-shield]').forEach(button => { button.classList.toggle('selected', !safe && button.dataset.shield === state.shield); button.disabled = safe; });
         all('[data-ecc]').forEach(button => { button.classList.toggle('selected', !safe && button.dataset.ecc === state.ecc); button.disabled = safe || (state.shield !== '2' && button.dataset.ecc === 'off'); });
-        setText('[data-ecc-note]', state.shield === '2' ? 'ECC 적용/미적용 비교는 결정 엔진 baseline/variant 결과입니다.' : '이 두께에서는 생성된 ECC 적용 scope 결과만 제공합니다.');
+        setText('[data-ecc-note]', state.shield === '2' ? 'ECC 적용/미적용 비교는 결정 엔진 baseline/variant 결과다.' : '이 두께에서는 생성된 ECC 적용 scope 결과만 제공한다.');
         setText('[data-scenario-name]', safe ? '결과 데이터 없음' : `${state.shield} mm · ECC ${state.ecc === 'on' ? '적용' : '미적용'}`);
         setText('[data-case-mode]', safe ? 'SAFE FALLBACK' : `${model.caseId} · ${result.mode}`);
         setText('[data-tid]', safe ? '—' : formatTid(result.tid));
         setText('[data-tid-unit]', outside ? '' : 'krad(Si) · 반도체 누적선량 단위');
         setText('[data-tid-foot]', outside ? '지원 범위 밖 또는 데이터 없음 · 값을 생성하지 않음' : `요구 누적선량 ${formatTid(result.requiredTid)} krad(Si) · 엔진 결과`);
+        const comparableEcc = !safe && !outside && state.shield === '2';
         setText('[data-raw]', safe ? '—' : formatMetric(result.rawSeu));
-        setText('[data-residual]', safe ? '—' : formatMetric(result.residualSeu));
-        setText('[data-ecc-foot]', outside ? '평가하지 않음 (NOT_EVALUATED) · 값 생성 안 함' : `${result.mode} 결정 엔진 결과 · 실제 완화 성능 아님`);
+        setText('[data-residual]', comparableEcc ? formatMetric(result.residualSeu) : '—');
+        setText('[data-ecc-foot]', outside ? '평가하지 않음 (NOT_EVALUATED) · 값 생성 안 함' : comparableEcc ? `${result.mode} 결정 엔진 결과 · 실제 완화 성능 아님` : '비교 가능한 ECC 정책 결과 없음 · 2 mm에서만 비교');
         setText('[data-processing]', safe ? 'DATA_UNAVAILABLE' : result.processing);
         setText('[data-engineering]', safe ? '평가하지 않음 (NOT_EVALUATED)' : `${result.engineering} · 보증 아님`);
         setText('[data-assurance]', '근거 부족으로 판단 보류 (HOLD)');
-        let insight = '결과 데이터가 없거나 손상되어 값을 표시하지 않습니다.';
-        if (!safe && outside) insight = '지원 범위를 벗어나 값을 추정하지 않았습니다.';
+        let insight = '결과 데이터가 없거나 손상되어 값을 표시하지 않는다.';
+        if (!safe && outside) insight = '지원 범위를 벗어나 값을 추정하지 않았다.';
         else if (!safe && state.lastChange === 'ecc') {
           const before = model.selections['2-off'].residualSeu;
           const after = model.selections['2-on'].residualSeu;
           insight = state.ecc === 'on' ? `결정 엔진의 합성 잔여 SEU 비교: ${formatMetric(before)} → ${formatMetric(after)}.` : `ECC 미적용 baseline의 합성 잔여 SEU: ${formatMetric(before)}.`;
         } else if (!safe) {
-          insight = `합성 TID 비교: 1 mm ${formatTid(model.selections['1-on'].tid)} → 2 mm ${formatTid(model.selections['2-on'].tid)} → 4 mm ${formatTid(model.selections['4-on'].tid)} krad(Si).`;
+          insight = `합성 TID 비교: 1 mm ${formatTid(model.selections['1-on'].tid)} → 2 mm ${formatTid(model.selections['2-on'].tid)} → 4 mm ${formatTid(model.selections['4-on'].tid)} krad(Si). ECC 비교는 동일 정책이 있는 2 mm에서만 표시한다.`;
         }
         setText('[data-insight]', insight);
         setText('[data-case-id]', safe ? '—' : model.caseId);
@@ -555,15 +751,16 @@
         setText('[data-impact-id]', safe ? '—' : model.impact.id);
         setText('[data-footer-state]', safe ? '안전 fallback · 최종 HOLD' : `${state.shield} mm · ECC ${state.ecc === 'on' ? '적용' : '미적용'} · 최종 ${result.assurance}`);
         one('#tid-metric').classList.toggle('scope', outside);
-        renderGaps(); renderInvalidations(); renderRuntime(); renderAnalysisMode();
+        renderGaps(); renderInvalidations(); renderGcpEvidence(); renderAttackDemo(); renderAnalysisMode(); renderStepFooter();
       }
 
       function setShield(value) { if (!model.ready) return; state.shield = value; state.ecc = value === '2' ? state.ecc : 'on'; state.lastChange = 'shield'; render(); }
       function setEcc(value) { if (!model.ready || (state.shield !== '2' && value === 'off')) return; state.ecc = value; state.lastChange = 'ecc'; render(); }
       function setAnalysisMode(value) { if (!['radiation', 'runtime'].includes(value)) return; state.analysisMode = value; render(); }
       function setRuntimeMethod(value) { if (!runtimeMethods.includes(value)) return; state.runtimeMethod = value; render(); }
-      function reset() { state.step = 0; state.shield = '2'; state.ecc = 'on'; state.lastChange = 'shield'; state.analysisMode = 'radiation'; state.runtimeMethod = 'WATCHDOG'; setStep(0); render(); }
+      function reset() { model = attackDemo.reset().model; state.step = 0; state.shield = '2'; state.ecc = 'on'; state.lastChange = 'shield'; state.analysisMode = 'radiation'; state.runtimeMethod = 'WATCHDOG'; setStep(0); render(); }
       function activateFallback(reason) { model = fallbackModel(reason); render(); }
+      function advanceAttackDemo() { const phase = attackDemo.current().phase; const next = phase === 'normal' ? attackDemo.preview() : phase === 'preview' ? attackDemo.verify() : attackDemo.reset(); model = next.model; render(); }
 
       all('[data-step]').forEach(button => button.addEventListener('click', () => setStep(Number(button.dataset.step))));
       all('[data-next]').forEach(button => button.addEventListener('click', () => setStep(state.step + 1)));
@@ -572,11 +769,14 @@
       all('[data-ecc]').forEach(button => button.addEventListener('click', () => setEcc(button.dataset.ecc)));
       all('[data-analysis-mode]').forEach(button => button.addEventListener('click', () => setAnalysisMode(button.dataset.analysisMode)));
       all('[data-runtime-method]').forEach(button => button.addEventListener('click', () => setRuntimeMethod(button.dataset.runtimeMethod)));
+      one('#attack-action').addEventListener('click', advanceAttackDemo);
       one('#reset').addEventListener('click', reset); one('#reset-end').addEventListener('click', reset);
       document.addEventListener('keydown', event => {
         if (['INPUT', 'TEXTAREA'].includes(event.target.tagName)) return;
-        if (['1', '2', '3'].includes(event.key)) setStep(Number(event.key) - 1);
+        if (['1', '2', '3', '4', '5'].includes(event.key)) setStep(Number(event.key) - 1);
         else if (event.key.toLowerCase() === 'r') reset();
+        else if (event.key === 'Home') setStep(0);
+        else if (event.key === 'End') setStep(4);
         else if (event.altKey && event.key === 'ArrowRight') setStep(state.step + 1);
         else if (event.altKey && event.key === 'ArrowLeft') setStep(state.step - 1);
       });
