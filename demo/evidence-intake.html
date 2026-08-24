@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPECTRA · Evidence Source Intake</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg:#090b0e; --panel:#11151a; --panel2:#171c22; --line:#303741;
+      --soft:#242a32; --text:#f4f7fa; --muted:#b6bec8; --quiet:#8d97a4;
+      --accent:#75b9ff; --hold:#d7e7f7; --danger:#ffb3b3;
+      font-family:"Apple SD Gothic Neo","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    * { box-sizing:border-box; }
+    html,body { width:100%; height:100%; margin:0; overflow:hidden; }
+    body { min-width:1080px; background:var(--bg); color:var(--text); font-size:14px; }
+    button,input { font:inherit; } button { cursor:pointer; }
+    .app { display:grid; grid-template-rows:58px 38px minmax(0,1fr); height:100vh; }
+    .topbar,.truth { display:flex; align-items:center; padding:0 18px; border-bottom:1px solid var(--line); background:#0c0f13; }
+    .topbar { justify-content:space-between; gap:16px; }
+    .brand { display:flex; align-items:baseline; gap:14px; min-width:0; }
+    .brand strong { font-size:17px; letter-spacing:.1em; } .brand span { color:var(--muted); font-size:13px; white-space:nowrap; }
+    .actions { display:flex; gap:8px; align-items:center; } .actions input { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+    .button { min-height:34px; padding:7px 12px; border:1px solid var(--line); border-radius:8px; background:var(--panel2); color:var(--text); }
+    .button.primary { border-color:var(--accent); background:var(--accent); color:#08121d; font-weight:700; }
+    .button:hover,.button:focus-visible { border-color:var(--accent); outline:none; }
+    a.button { display:inline-flex; align-items:center; justify-content:center; text-decoration:none; }
+    .button[aria-disabled="true"] { cursor:not-allowed; color:var(--quiet); opacity:.65; }
+    .truth { gap:14px; background:#0f1318; color:var(--muted); font-size:12px; }
+    .truth strong { color:var(--accent); letter-spacing:.08em; } .truth .decision { margin-left:auto; color:var(--hold); font-weight:700; }
+    main { display:grid; grid-template-rows:auto minmax(0,1fr); gap:10px; min-height:0; padding:10px; }
+    .summary,.source-card,.decision-panel { border:1px solid var(--soft); border-radius:12px; background:var(--panel); }
+    .summary { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:20px; padding:13px 16px; }
+    .eyebrow { margin:0 0 5px; color:var(--accent); font:700 11px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.1em; text-transform:uppercase; }
+    h1,h2,h3,p { margin-top:0; } h1 { margin-bottom:4px; font-size:20px; } h2 { margin-bottom:4px; font-size:16px; } h3 { margin:0; font-size:15px; }
+    .summary p { margin:0; color:var(--muted); font-size:12px; }
+    .intake { text-align:right; color:var(--muted); font-size:11px; } .intake strong { display:block; margin-bottom:3px; color:var(--hold); font-size:13px; }
+    .content { display:grid; grid-template-columns:minmax(0,1fr) 292px; gap:10px; min-height:0; }
+    .sources { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; min-height:0; }
+    .source-card { min-width:0; padding:14px; overflow:auto; }
+    .source-head { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:12px; }
+    .status { display:inline-flex; min-height:24px; align-items:center; padding:3px 7px; border:1px solid #724646; border-radius:999px; color:var(--danger); font:700 9px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; white-space:nowrap; }
+    .requirements { display:grid; gap:0; margin-bottom:14px; }
+    .requirement { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:center; min-height:42px; padding:7px 0; border-bottom:1px solid var(--soft); }
+    .requirement span { color:var(--muted); font-size:11px; overflow-wrap:anywhere; } .requirement strong { color:var(--danger); font:700 9px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace; }
+    .blocker { padding:10px; border-left:2px solid var(--accent); background:var(--panel2); }
+    .code { margin-bottom:6px; color:var(--accent); font:700 9px/1.25 ui-monospace,SFMono-Regular,Menlo,monospace; overflow-wrap:anywhere; }
+    .meta { display:grid; gap:7px; } .meta span { display:block; margin-bottom:2px; color:var(--quiet); font-size:9px; } .meta strong { display:block; color:var(--muted); font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
+    .decision-panel { padding:15px; overflow:auto; }
+    .hold-box { margin:11px 0 14px; padding:13px; border:1px solid #52677b; border-radius:10px; background:#121922; }
+    .hold-box .hold { margin:4px 0; color:var(--hold); font-size:30px; font-weight:700; } .hold-box p { margin:0; color:var(--muted); font-size:12px; line-height:1.45; }
+    .steps { display:grid; gap:8px; margin:0 0 15px; padding:0; list-style:none; } .steps li { padding:8px; border-left:2px solid var(--line); color:var(--muted); font-size:11px; line-height:1.4; }
+    .steps strong { display:block; margin-bottom:2px; color:var(--text); font-size:10px; }
+    .export-note { color:var(--quiet); font-size:10px; line-height:1.4; }
+    .fallback { display:none; }
+    @media(max-height:760px){ .app{grid-template-rows:54px 34px minmax(0,1fr)} main{padding:8px;gap:8px}.summary{padding:9px 14px}.content,.sources{gap:8px}.source-card,.decision-panel{padding:11px}.requirement{min-height:36px;padding:5px 0}.blocker{padding:8px}.hold-box{margin:8px 0 10px;padding:10px}.steps{gap:5px;margin-bottom:10px}.steps li{padding:6px 8px} }
+    noscript .fallback { display:block; position:fixed; inset:96px 10px 10px; z-index:5; padding:24px; border:1px solid #724646; border-radius:12px; background:var(--panel); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><strong>SPECTRA</strong><span>Evidence Source Intake</span></div>
+      <div class="actions">
+        <input id="intake-file" type="file" accept="application/json,.json">
+        <button class="button" id="load-sample" type="button">합성 Readiness 샘플</button>
+        <button class="button primary" id="open-file" type="button">로컬 JSON 열기</button>
+        <button class="button" id="reset" type="button">초기화</button>
+      </div>
+    </header>
+    <div class="truth"><strong>SYNTHETIC · DEMO ONLY</strong><span>Live connector가 아니며 파일은 브라우저 메모리에서만 읽는다.</span><span class="decision" id="truth-decision">NOT_EVALUATED · HOLD</span></div>
+    <main>
+      <section class="summary" aria-labelledby="page-title">
+        <div><p class="eyebrow">Source connector readiness</p><h1 id="page-title">어떤 근거 소스를 연결할 준비가 됐는가?</h1><p>접속 가능성이 아니라 locator·권리·provenance가 제품 입력 경계에 충분한지 확인한다.</p></div>
+        <div class="intake"><strong id="intake-status">DATA_UNAVAILABLE</strong><span id="intake-message">검증 가능한 로컬 JSON을 선택한다.</span></div>
+      </section>
+      <div class="content">
+        <section class="sources" id="source-list" aria-label="Evidence source readiness"></section>
+        <aside class="decision-panel" aria-labelledby="decision-title">
+          <p class="eyebrow">Decision boundary</p><h2 id="decision-title">지금 자동 연결해도 되는가?</h2>
+          <div class="hold-box"><span class="status" id="processing-status">DATA_UNAVAILABLE</span><div class="hold">HOLD</div><p id="decision-reason">입력이 없으므로 source identity와 connector 상태를 사용하지 않는다.</p></div>
+          <ul class="steps" id="next-actions"><li><strong>REVIEW_OWNER</strong>입력 형식과 출처를 확인한다.</li></ul>
+          <a class="button" id="export" role="button" aria-disabled="true">비민감 Audit JSON 내보내기</a>
+          <p class="export-note">locator 원문, URL, local path, identity, raw evidence와 공학 수치는 export하지 않는다.</p>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <noscript><div class="fallback"><strong>SYNTHETIC · NOT A LIVE CONNECTOR</strong><br><br>JavaScript가 없어 입력을 검토할 수 없다.<br><strong>DATA_UNAVAILABLE · NOT_EVALUATED · HOLD</strong></div></noscript>
+  <script>
+    (function(){
+      "use strict";
+      const FORMAT="spectra-evidence-source-readiness-demo-v1";
+      const SOURCE_ORDER=Object.freeze(["SPENVIS","NASA_PUBLIC_DB","COTS_EVIDENCE_LIBRARY"]);
+      const SOURCE_LABELS=Object.freeze({SPENVIS:"ESA SPENVIS",NASA_PUBLIC_DB:"NASA Public DB",COTS_EVIDENCE_LIBRARY:"COTS Evidence Library"});
+      const REQUIREMENT_KEYS=Object.freeze({SPENVIS:["provider_job_reference","rights","raw_manifest","provenance"],NASA_PUBLIC_DB:["exact_locator","rights","provenance"],COTS_EVIDENCE_LIBRARY:["exact_locator","rights","provenance"]});
+      const REQUIREMENT_VALUES=new Set(["MISSING","UNRESOLVED","NOT_VERIFIED"]);
+      const OWNER_ROLES=new Set(["ENVIRONMENT_EVIDENCE_OWNER","SOURCE_EVIDENCE_OWNER","PARTS_EVIDENCE_OWNER"]);
+      const ACTION_CODES=new Set(["SUPPLY_SPENVIS_ISSUANCE_INPUTS","RESOLVE_NASA_SOURCE_BOUNDARY","RESOLVE_COTS_SOURCE_BOUNDARY"]);
+      const SAFE_MODEL=Object.freeze({ready:false,reason_code:"DATA_UNAVAILABLE",sources:Object.freeze([]),decision:Object.freeze({processing_status:"DATA_UNAVAILABLE",engineering_gate:"NOT_EVALUATED",assurance_decision:"HOLD"})});
+      const DEMO_SAMPLE=Object.freeze({intake_format:FORMAT,data_class:"SYNTHETIC",review_scope:"DEMO_ONLY",sources:Object.freeze([
+        Object.freeze({source_id:"SPENVIS",connector_status:"CONNECTOR_NOT_READY",requirements:Object.freeze({provider_job_reference:"MISSING",rights:"UNRESOLVED",raw_manifest:"MISSING",provenance:"NOT_VERIFIED"}),blockers:Object.freeze([Object.freeze({stable_code:"SPENVIS_ISSUANCE_INPUTS_INCOMPLETE",owner_role:"ENVIRONMENT_EVIDENCE_OWNER",next_action_code:"SUPPLY_SPENVIS_ISSUANCE_INPUTS",next_action_ko:"provider job reference, action별 권리와 승인 raw manifest를 준비한다."})])}),
+        Object.freeze({source_id:"NASA_PUBLIC_DB",connector_status:"CONNECTOR_NOT_READY",requirements:Object.freeze({exact_locator:"MISSING",rights:"UNRESOLVED",provenance:"NOT_VERIFIED"}),blockers:Object.freeze([Object.freeze({stable_code:"NASA_LOCATOR_RIGHTS_UNRESOLVED",owner_role:"SOURCE_EVIDENCE_OWNER",next_action_code:"RESOLVE_NASA_SOURCE_BOUNDARY",next_action_ko:"사용할 record의 exact locator, 권리와 provenance를 확인한다."})])}),
+        Object.freeze({source_id:"COTS_EVIDENCE_LIBRARY",connector_status:"CONNECTOR_NOT_READY",requirements:Object.freeze({exact_locator:"MISSING",rights:"UNRESOLVED",provenance:"NOT_VERIFIED"}),blockers:Object.freeze([Object.freeze({stable_code:"COTS_LOCATOR_RIGHTS_UNRESOLVED",owner_role:"PARTS_EVIDENCE_OWNER",next_action_code:"RESOLVE_COTS_SOURCE_BOUNDARY",next_action_ko:"승인 BOM exact-part 원문의 locator, 권리와 provenance를 확인한다."})])})
+      ]),decision:Object.freeze({processing_status:"VALID",engineering_gate:"NOT_EVALUATED",assurance_decision:"HOLD"})});
+      function isObject(v){return v!==null&&typeof v==="object"&&!Array.isArray(v);}
+      function exactKeys(v,keys){if(!isObject(v))return false;const a=Object.keys(v).sort(),b=keys.slice().sort();return a.length===b.length&&a.every((k,i)=>k===b[i]);}
+      function safeText(v,max){return typeof v==="string"&&v.length>0&&v.length<=max&&!/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(v);}
+      function fail(code){return Object.assign({},SAFE_MODEL,{reason_code:code});}
+      function resolve(payload){
+        if(!exactKeys(payload,["intake_format","data_class","review_scope","sources","decision"]))return fail("INTAKE_SHAPE_INVALID");
+        if(payload.intake_format!==FORMAT)return fail("INTAKE_FORMAT_UNKNOWN");
+        if(payload.data_class!=="SYNTHETIC"||payload.review_scope!=="DEMO_ONLY")return fail("UNAUTHENTICATED_ACTUAL_PROMOTION");
+        if(!Array.isArray(payload.sources)||payload.sources.length!==SOURCE_ORDER.length)return fail("SOURCES_SHAPE_INVALID");
+        const seen=new Set(),resolved=[];
+        for(const source of payload.sources){
+          if(!exactKeys(source,["source_id","connector_status","requirements","blockers"]))return fail("SOURCE_SHAPE_INVALID");
+          if(!SOURCE_ORDER.includes(source.source_id)||seen.has(source.source_id))return fail("SOURCE_ID_INVALID");
+          if(source.connector_status!=="CONNECTOR_NOT_READY")return fail("OPTIMISTIC_CONNECTOR_STATUS_REJECTED");
+          const reqKeys=REQUIREMENT_KEYS[source.source_id];
+          if(!exactKeys(source.requirements,reqKeys)||!reqKeys.every(k=>REQUIREMENT_VALUES.has(source.requirements[k])))return fail("REQUIREMENTS_INVALID");
+          if(!Array.isArray(source.blockers)||source.blockers.length!==1)return fail("BLOCKERS_INVALID");
+          const blocker=source.blockers[0];
+          if(!exactKeys(blocker,["stable_code","owner_role","next_action_code","next_action_ko"]))return fail("BLOCKER_SHAPE_INVALID");
+          if(!/^[A-Z][A-Z0-9_]{2,79}$/.test(blocker.stable_code)||/(^|_)PASS($|_)/.test(blocker.stable_code)||!OWNER_ROLES.has(blocker.owner_role)||!ACTION_CODES.has(blocker.next_action_code)||!safeText(blocker.next_action_ko,200))return fail("BLOCKER_INVALID");
+          seen.add(source.source_id); resolved.push(source);
+        }
+        if(!SOURCE_ORDER.every(id=>seen.has(id)))return fail("SOURCES_INCOMPLETE");
+        if(!exactKeys(payload.decision,["processing_status","engineering_gate","assurance_decision"])||payload.decision.processing_status!=="VALID"||payload.decision.engineering_gate!=="NOT_EVALUATED"||payload.decision.assurance_decision!=="HOLD")return fail("OPTIMISTIC_DECISION_REJECTED");
+        return {ready:true,reason_code:null,sources:SOURCE_ORDER.map(id=>resolved.find(s=>s.source_id===id)),decision:payload.decision};
+      }
+      function parse(text){if(typeof text!=="string")return fail("INPUT_TEXT_INVALID");try{return resolve(JSON.parse(text));}catch(_e){return fail("MALFORMED_JSON");}}
+      function audit(model){
+        if(!model||model.ready!==true)return {export_format:"spectra-evidence-source-audit-v1",data_class:"DATA_UNAVAILABLE",sources:[],decision:{processing_status:"DATA_UNAVAILABLE",engineering_gate:"NOT_EVALUATED",assurance_decision:"HOLD"}};
+        return {export_format:"spectra-evidence-source-audit-v1",data_class:"SYNTHETIC",sources:model.sources.map(s=>({source_id:s.source_id,connector_status:s.connector_status,requirement_statuses:Object.keys(s.requirements).map(k=>({requirement:k,status:s.requirements[k]})),blockers:s.blockers.map(b=>({stable_code:b.stable_code,owner_role:b.owner_role,next_action_code:b.next_action_code}))})),decision:{processing_status:"VALID",engineering_gate:"NOT_EVALUATED",assurance_decision:"HOLD"}};
+      }
+      function serialize(model){return JSON.stringify(audit(model),null,2)+"\n";}
+      const api=Object.freeze({FORMAT,SAFE_MODEL,DEMO_SAMPLE,resolve,parse,audit,serialize}); globalThis.SPECTRA_EVIDENCE_SOURCE_INTAKE=api; if(typeof document==="undefined")return;
+      const n={input:document.getElementById("intake-file"),sample:document.getElementById("load-sample"),open:document.getElementById("open-file"),reset:document.getElementById("reset"),export:document.getElementById("export"),list:document.getElementById("source-list"),intake:document.getElementById("intake-status"),message:document.getElementById("intake-message"),processing:document.getElementById("processing-status"),reason:document.getElementById("decision-reason"),actions:document.getElementById("next-actions"),truth:document.getElementById("truth-decision")}; let current=SAFE_MODEL;
+      function text(el,value){el.textContent=value;}
+      function renderSafe(model){current=model;text(n.intake,"DATA_UNAVAILABLE");text(n.message,"입력을 사용할 수 없다 · "+model.reason_code);text(n.processing,"DATA_UNAVAILABLE");text(n.reason,"입력 오류로 source identity와 connector 상태를 숨기고 자동 연결을 보류한다.");text(n.truth,"NOT_EVALUATED · HOLD");n.list.replaceChildren();SOURCE_ORDER.forEach(id=>n.list.appendChild(sourceCard({source_id:id,connector_status:"CONNECTOR_NOT_READY",requirements:Object.fromEntries(REQUIREMENT_KEYS[id].map(k=>[k,"NOT_VERIFIED"])),blockers:[{stable_code:model.reason_code,owner_role:"REVIEW_OWNER",next_action_ko:"입력 형식과 출처를 확인한다."}]})));n.actions.replaceChildren();const li=document.createElement("li"),strong=document.createElement("strong");strong.textContent="REVIEW_OWNER";li.append(strong,document.createTextNode("입력 형식과 출처를 확인한다."));n.actions.appendChild(li);n.export.removeAttribute("href");n.export.removeAttribute("download");n.export.setAttribute("aria-disabled","true");}
+      function sourceCard(source){const card=document.createElement("article");card.className="source-card";const head=document.createElement("div");head.className="source-head";const title=document.createElement("h3");title.textContent=SOURCE_LABELS[source.source_id];const status=document.createElement("span");status.className="status";status.textContent=source.connector_status;head.append(title,status);const req=document.createElement("div");req.className="requirements";Object.entries(source.requirements).forEach(([key,value])=>{const row=document.createElement("div");row.className="requirement";const label=document.createElement("span");label.textContent=key.replaceAll("_"," ");const state=document.createElement("strong");state.textContent=value;row.append(label,state);req.appendChild(row);});const b=source.blockers[0],block=document.createElement("div");block.className="blocker";const code=document.createElement("div");code.className="code";code.textContent=b.stable_code;const meta=document.createElement("div");meta.className="meta";const owner=document.createElement("div"),ownerLabel=document.createElement("span"),ownerValue=document.createElement("strong");ownerLabel.textContent="담당 역할";ownerValue.textContent=b.owner_role;owner.append(ownerLabel,ownerValue);const action=document.createElement("div"),actionLabel=document.createElement("span"),actionValue=document.createElement("strong");actionLabel.textContent="다음 행동";actionValue.textContent=b.next_action_ko;action.append(actionLabel,actionValue);meta.append(owner,action);block.append(code,meta);card.append(head,req,block);return card;}
+      function renderReady(model){current=model;text(n.intake,"STRUCTURE_VALID · 0/3 READY");text(n.message,"세 source 모두 연결 전 조건이 남아 있다.");text(n.processing,"VALID · CONNECTOR_NOT_READY");text(n.reason,"locator·권리·provenance가 닫히지 않아 실제 connector나 decision input으로 사용하지 않는다.");text(n.truth,"NOT_EVALUATED · HOLD");n.list.replaceChildren();model.sources.forEach(s=>n.list.appendChild(sourceCard(s)));n.actions.replaceChildren();model.sources.forEach(s=>{const b=s.blockers[0],li=document.createElement("li"),strong=document.createElement("strong");strong.textContent=b.owner_role;li.append(strong,document.createTextNode(b.next_action_ko));n.actions.appendChild(li);});n.export.href="data:application/json;charset=utf-8,"+encodeURIComponent(serialize(model));n.export.download="spectra-evidence-source-audit.json";n.export.setAttribute("aria-disabled","false");}
+      function render(model){if(model.ready)renderReady(model);else renderSafe(model);}
+      async function openFile(){const file=n.input.files&&n.input.files[0];if(!file)return;try{render(parse(await file.text()));}catch(_e){render(fail("LOCAL_FILE_READ_FAILED"));}finally{n.input.value="";}}
+      n.sample.addEventListener("click",()=>render(resolve(DEMO_SAMPLE)));n.open.addEventListener("click",()=>n.input.click());n.input.addEventListener("change",openFile);n.reset.addEventListener("click",()=>render(fail("DATA_UNAVAILABLE")));n.export.addEventListener("click",e=>{if(!current.ready)e.preventDefault();});render(fail("DATA_UNAVAILABLE"));
+    }());
+  </script>
+</body>
+</html>

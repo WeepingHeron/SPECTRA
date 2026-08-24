@@ -1,0 +1,64 @@
+{
+  "intake_format": "spectra-evidence-source-readiness-demo-v1",
+  "data_class": "SYNTHETIC",
+  "review_scope": "DEMO_ONLY",
+  "sources": [
+    {
+      "source_id": "SPENVIS",
+      "connector_status": "CONNECTOR_NOT_READY",
+      "requirements": {
+        "provider_job_reference": "MISSING",
+        "rights": "UNRESOLVED",
+        "raw_manifest": "MISSING",
+        "provenance": "NOT_VERIFIED"
+      },
+      "blockers": [
+        {
+          "stable_code": "SPENVIS_ISSUANCE_INPUTS_INCOMPLETE",
+          "owner_role": "ENVIRONMENT_EVIDENCE_OWNER",
+          "next_action_code": "SUPPLY_SPENVIS_ISSUANCE_INPUTS",
+          "next_action_ko": "provider job reference, action별 권리와 승인 raw manifest를 준비한다."
+        }
+      ]
+    },
+    {
+      "source_id": "NASA_PUBLIC_DB",
+      "connector_status": "CONNECTOR_NOT_READY",
+      "requirements": {
+        "exact_locator": "MISSING",
+        "rights": "UNRESOLVED",
+        "provenance": "NOT_VERIFIED"
+      },
+      "blockers": [
+        {
+          "stable_code": "NASA_LOCATOR_RIGHTS_UNRESOLVED",
+          "owner_role": "SOURCE_EVIDENCE_OWNER",
+          "next_action_code": "RESOLVE_NASA_SOURCE_BOUNDARY",
+          "next_action_ko": "사용할 record의 exact locator, 권리와 provenance를 확인한다."
+        }
+      ]
+    },
+    {
+      "source_id": "COTS_EVIDENCE_LIBRARY",
+      "connector_status": "CONNECTOR_NOT_READY",
+      "requirements": {
+        "exact_locator": "MISSING",
+        "rights": "UNRESOLVED",
+        "provenance": "NOT_VERIFIED"
+      },
+      "blockers": [
+        {
+          "stable_code": "COTS_LOCATOR_RIGHTS_UNRESOLVED",
+          "owner_role": "PARTS_EVIDENCE_OWNER",
+          "next_action_code": "RESOLVE_COTS_SOURCE_BOUNDARY",
+          "next_action_ko": "승인 BOM exact-part 원문의 locator, 권리와 provenance를 확인한다."
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "processing_status": "VALID",
+    "engineering_gate": "NOT_EVALUATED",
+    "assurance_decision": "HOLD"
+  }
+}

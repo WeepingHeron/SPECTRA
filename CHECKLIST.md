@@ -25,6 +25,20 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [ ] 5분 사용자 실행과 설명 가능성 검증
 - 근거가 부족한 작업은 `HOLD` 또는 `INSUFFICIENT_EVIDENCE`로 기록한다.
 
+## 발표 로드맵 확장 기능 Gate
+
+- [x] 7개 확장 화면을 `Roadmap Lab` 단일 진입점에 연결
+- [x] Phase 1 source intake와 COTS 후보 registry를 decision-ineligible·fail-closed로 구현
+- [x] NASA public DB용 local snapshot hash·locator·rights·exact-part intake gate와 공격 테스트 구현
+- [x] Phase 2 합성 document candidate 검토와 processor별 AI readiness gate 구현
+- [x] Phase 3 generated Change Impact, CAD linkage readiness와 H05 security posture 화면 구현
+- [x] 화면별 `IMPLEMENTED_BOUNDED / READINESS_ONLY / BLOCKED_EXTERNAL`와 최종 `HOLD` 경계 표시
+- [ ] 실제 SPENVIS/NASA connector와 production COTS evidence library
+- [ ] Document AI·Gemini API, authenticated HITL와 actual audit trail
+- [ ] 실제 CAD parser·3D shielding 계산, KMS 운영과 승인된 penetration test
+
+위 완료 표시는 로컬 합성 workflow와 readiness gate에 한정한다. 외부 권리·승인·과학적 교차검산이 필요한 항목은 완료 처리하지 않는다.
+
 ## Stage 1 — 프로젝트 계약과 기준선
 
 ### 문서와 범위

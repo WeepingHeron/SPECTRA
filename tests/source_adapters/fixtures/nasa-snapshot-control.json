@@ -1,0 +1,25 @@
+{
+  "snapshot_class": "SYNTHETIC_CONTROL",
+  "provider": "NASA",
+  "record_id": "NASA-SYNTHETIC-RECORD-001",
+  "official_locator": "https://nepp.nasa.gov/radhome/raddatabase/synthetic-control",
+  "redirect_chain": [],
+  "captured_at": "2026-08-24T09:00:00Z",
+  "last_modified": "2026-08-23T12:00:00Z",
+  "source_revision": "synthetic-control-revision-1",
+  "content_sha256": "sha256:106a6ea81acf8de2ca2f4416f242b53e380ea6ed556b9a08047875e881f4332b",
+  "rights": [
+    {"action": "LOCATOR_SHARE", "grant_status": "ALLOWED", "grant_source": "SYNTHETIC_CONTROL_ONLY", "inherited_from": null},
+    {"action": "FETCH", "grant_status": "ALLOWED", "grant_source": "SYNTHETIC_CONTROL_ONLY", "inherited_from": null},
+    {"action": "PRIVATE_STORE", "grant_status": "ALLOWED", "grant_source": "SYNTHETIC_CONTROL_ONLY", "inherited_from": null},
+    {"action": "PROCESS_LOCAL", "grant_status": "ALLOWED", "grant_source": "SYNTHETIC_CONTROL_ONLY", "inherited_from": null},
+    {"action": "DISPLAY_INTERNAL", "grant_status": "ALLOWED", "grant_source": "SYNTHETIC_CONTROL_ONLY", "inherited_from": null}
+  ],
+  "part_identity": {
+    "manufacturer": "SYNTHETIC SEMICONDUCTOR",
+    "orderable_part_number": "SYNTH-PN-001",
+    "identity_status": "EXACT_ORDERABLE"
+  },
+  "claimed_decision": "HOLD",
+  "claimed_suitability": "NOT_EVALUATED"
+}

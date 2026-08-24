@@ -1,0 +1,48 @@
+{
+  "document_review_format": "spectra-document-extraction-candidate-demo-v1",
+  "data_class": "SYNTHETIC",
+  "review_scope": "DEMO_ONLY",
+  "candidate_id": "syn-doc-candidate-001",
+  "source": {
+    "document_id": "synthetic-datasheet-001",
+    "source_page": 12,
+    "source_locator": "page-12/table-3/row-2",
+    "artifact_sha256": "954d9d06a17aee6f92c40f0a377fbe665c4295e703ea304faf057a3d08220471",
+    "rights": {
+      "status": "PROCESS_AI_ALLOWED",
+      "scope": "SYNTHETIC_DEMO_ONLY"
+    },
+    "document_text": "Synthetic page 12 table 3 row 2: EX-100-SRAM-64M, process 28 nm CMOS, die D-SYN-01, lot LOT-SYN-001, proposed TID limit 25 krad(Si). Human review required."
+  },
+  "candidate": {
+    "claimed_data_class": "SYNTHETIC",
+    "proposed_identity": {
+      "manufacturer": "SYNTHETIC SEMICONDUCTOR",
+      "part_number": "EX-100-SRAM-64M",
+      "process": "28 nm CMOS",
+      "die": "D-SYN-01",
+      "lot": "LOT-SYN-001"
+    },
+    "proposed_value": {
+      "parameter": "TID_LIMIT",
+      "value_text": "25 krad(Si)",
+      "applicability": "CANDIDATE_ONLY"
+    },
+    "confidence_classification": "REVIEW_REQUIRED"
+  },
+  "review_policy": {
+    "allowed_actions": [
+      "REQUEST_EVIDENCE",
+      "REJECT",
+      "APPROVE_FOR_REVIEW_ONLY"
+    ],
+    "authenticated_approval": false,
+    "actual_audit_trail": false
+  },
+  "decision": {
+    "processing_status": "VALID",
+    "engineering_gate": "NOT_EVALUATED",
+    "assurance_decision": "HOLD",
+    "decision_use": false
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_id": "SECURITY_POSTURE_H05_2026-08-20",
+  "snapshot_sha256": "sha256:ee35cc72cbb8432ad0468032a744a46c6f3c9a27f6ff8994624aeb51ca2b5cda",
+  "data_class": "SYNTHETIC",
+  "source_classification": "CONTROL_TOWER_VERIFIED_H05_SNAPSHOT",
+  "captured_at": "2026-08-20T16:34:01Z",
+  "live": false,
+  "posture_status": "BOUNDED_READINESS",
+  "assurance_decision": "HOLD",
+  "controls": [
+    {
+      "control_id": "PRIVATE_CLOUD_RUN_AGENTS",
+      "label_ko": "Private Cloud Run Agent 3개",
+      "status": "VERIFIED_BOUNDED",
+      "observed_value": "3_PRIVATE_SERVICES",
+      "evidence_refs": ["H05-CLOUD-RUN-PRIVATE-3"]
+    },
+    {
+      "control_id": "PUBLIC_IAM_PRINCIPALS",
+      "label_ko": "공개 IAM principal",
+      "status": "VERIFIED_BOUNDED",
+      "observed_value": "0_PUBLIC_PRINCIPALS",
+      "evidence_refs": ["H05-PUBLIC-IAM-0"]
+    },
+    {
+      "control_id": "INPUT_BODY_REVISION_BINDING",
+      "label_ko": "입력 body hash + revision 결속",
+      "status": "VERIFIED_BOUNDED",
+      "observed_value": "MISMATCH_BLOCKED",
+      "evidence_refs": ["H05-EXEC-BODY-HASH-3F5D9221", "H05-WORKFLOW-REV-000005-32C"]
+    },
+    {
+      "control_id": "ENDPOINT_OVERRIDE_BLOCKING",
+      "label_ko": "승인되지 않은 endpoint override 차단",
+      "status": "VERIFIED_BOUNDED",
+      "observed_value": "AGENT_CALLS_0",
+      "evidence_refs": ["H05-EXEC-ENDPOINT-DF49B5C1"]
+    },
+    {
+      "control_id": "FAIL_CLOSED_OUTPUT",
+      "label_ko": "오류 시 fail-closed output",
+      "status": "VERIFIED_BOUNDED",
+      "observed_value": "NOT_EVALUATED_HOLD",
+      "evidence_refs": ["H05-FAIL-CLOSED-HOLD"]
+    },
+    {
+      "control_id": "KMS_CMEK",
+      "label_ko": "KMS / CMEK 고객 암호화",
+      "status": "NOT_IMPLEMENTED",
+      "observed_value": "NO_KEY_CREATED",
+      "evidence_refs": ["H05-KMS-CREATED-0"]
+    },
+    {
+      "control_id": "TENANT_ISOLATION",
+      "label_ko": "실제 tenant 격리",
+      "status": "NOT_IMPLEMENTED",
+      "observed_value": "DESIGN_ONLY",
+      "evidence_refs": ["H05-TENANT-ACTUAL-0"]
+    },
+    {
+      "control_id": "ACTUAL_CUSTOMER_RBAC",
+      "label_ko": "실제 고객 RBAC",
+      "status": "NOT_IMPLEMENTED",
+      "observed_value": "NO_CUSTOMER_ROLES",
+      "evidence_refs": ["H05-CUSTOMER-RBAC-0"]
+    },
+    {
+      "control_id": "RETENTION_DELETION_AUDIT",
+      "label_ko": "보존·삭제 감사",
+      "status": "NOT_EVALUATED",
+      "observed_value": "AUDIT_NOT_RUN",
+      "evidence_refs": ["H05-RETENTION-AUDIT-NE"]
+    },
+    {
+      "control_id": "PENETRATION_TEST",
+      "label_ko": "침투시험",
+      "status": "NOT_EVALUATED",
+      "observed_value": "PEN_TEST_NOT_RUN",
+      "evidence_refs": ["H05-PEN-TEST-NE"]
+    }
+  ]
+}

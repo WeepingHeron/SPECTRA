@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SPECTRA · Security Posture H05</title>
+  <style>
+    :root{color-scheme:dark;--bg:#07090c;--panel:#10141a;--line:#29313a;--text:#f1f4f6;--muted:#8d98a3;--good:#63d5a5;--warn:#ffb66e;--bad:#ff8585}*{box-sizing:border-box}html,body{margin:0;min-width:1080px;min-height:640px;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{height:100vh;overflow:hidden}
+    button{font:inherit}.shell{height:100vh;display:grid;grid-template-rows:58px 38px 1fr 30px}.top{display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:baseline;gap:12px}.brand strong{font-size:18px;letter-spacing:.15em}.brand span{font-size:11px;color:var(--muted)}.actions{display:flex;gap:8px}.btn{padding:8px 12px;border:1px solid #3b4550;border-radius:7px;background:#151a20;color:var(--text);cursor:pointer}.btn:hover{border-color:var(--good);color:var(--good)}.btn[aria-disabled="true"]{opacity:.42;pointer-events:none}
+    .truth{display:flex;align-items:center;gap:18px;padding:0 24px;background:#121916;border-bottom:1px solid #28483b;font-size:10px}.truth strong{color:var(--good);letter-spacing:.1em}.truth .boundary{color:var(--warn)}.truth .decision{margin-left:auto;font-weight:750;color:var(--warn)}
+    main{min-height:0;padding:14px 20px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:12px}.panel{min-height:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;overflow:hidden}.eyebrow{margin:0 0 7px;color:var(--muted);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase}h1,h2,h3,p{margin-top:0}h1{font-size:22px;margin-bottom:8px}h2{font-size:17px;margin-bottom:5px}.lead{font-size:11px;line-height:1.45;color:#c7cdd2}
+    .summary{display:grid;gap:9px;margin-top:15px}.metric{padding:10px;border:1px solid var(--line);border-radius:8px;background:#0b0f13}.metric span{display:block;font-size:9px;color:var(--muted);text-transform:uppercase}.metric b{display:block;margin-top:4px;font-size:13px;overflow-wrap:anywhere}.metric b.good{color:var(--good)}.metric b.warn{color:var(--warn)}.hold{margin-top:11px;padding:12px;border:1px solid #654326;background:#1a130d;border-radius:8px}.hold strong{display:block;font-size:25px;color:var(--warn)}.hold p{margin:5px 0 0;font-size:10px;line-height:1.4;color:#c9bfb6}
+    .grid{height:calc(100% - 42px);margin-top:11px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;overflow:auto}.card{min-width:0;border:1px solid var(--line);border-radius:8px;background:#0b0f13;padding:10px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 10px}.card h3{margin:0;font-size:12px}.pill{align-self:start;padding:4px 6px;border-radius:5px;font-size:8.5px;font-weight:800;letter-spacing:.04em}.pill.verified{color:var(--good);background:#10241d}.pill.missing{color:var(--warn);background:#241b12}.card .value{font-size:10px;color:#c5ccd2}.card .refs{grid-column:1/-1;font-size:9px;color:var(--muted);overflow-wrap:anywhere}.card .refs b{color:#aeb8c0}.empty{grid-column:1/-1;display:grid;place-items:center;border:1px dashed var(--line);color:var(--muted);font-size:12px}
+    footer{display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-top:1px solid var(--line);color:var(--muted);font-size:9px}.fail{color:var(--bad)!important}@media(max-height:680px){main{padding:9px 14px}.panel{padding:11px}.grid{margin-top:7px;height:calc(100% - 37px)}.card{padding:8px}.summary{gap:6px;margin-top:9px}.metric{padding:7px}.hold{padding:8px}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header class="top"><div class="brand"><strong>SPECTRA</strong><span>Enterprise Security Readiness · H05</span></div><div class="actions"><button class="btn" id="load" type="button">Bundled snapshot load</button><button class="btn" id="export" type="button" aria-disabled="true">Allowlist export</button><button class="btn" id="reset" type="button">Reset</button></div></header>
+  <div class="truth"><strong>SYNTHETIC H05 SNAPSHOT</strong><span class="boundary">NOT LIVE · NOT PEN TEST · NOT ASSURANCE</span><span>비민감 stable evidence reference만 표시</span><span class="decision" id="truth-decision">DATA_UNAVAILABLE · HOLD</span></div>
+  <main>
+    <aside class="panel"><p class="eyebrow">Bounded posture</p><h1>무엇을 검증했고,<br>무엇을 하지 않았나?</h1><p class="lead">완료율을 만들지 않는다. H05에서 확인한 접근·입력 결속·차단만 제한적으로 표시하고 고객 보안 항목은 별도 상태로 남긴다.</p>
+      <div class="summary"><div class="metric"><span>Snapshot</span><b id="snapshot-id">—</b></div><div class="metric"><span>Verified bounded</span><b class="good" id="verified-count">—</b></div><div class="metric"><span>Not implemented / evaluated</span><b class="warn" id="gap-count">—</b></div></div>
+      <div class="hold"><strong>HOLD</strong><p id="hold-reason">검증된 snapshot을 읽기 전에는 security posture를 표시하지 않는다.</p></div>
+    </aside>
+    <section class="panel"><div><p class="eyebrow">Control register</p><h2>구현 경계와 남은 보안 공백</h2></div><div class="grid" id="controls"><div class="empty">DATA_UNAVAILABLE</div></div></section>
+  </main>
+  <footer><span>H05 snapshot replay · current cloud state를 조회하지 않음</span><span>NO SECRET · NO IAM MEMBER · NO OBJECT PATH</span></footer>
+</div>
+<script>
+(() => {
+  'use strict';
+  const SOURCE='data/security-posture-h05-snapshot.json';
+  const SAFE=Object.freeze({ready:false,reason:'DATA_UNAVAILABLE',processing:'DATA_UNAVAILABLE',assurance:'HOLD'});
+  const EXPECTED=Object.freeze({
+    PRIVATE_CLOUD_RUN_AGENTS:Object.freeze({status:'VERIFIED_BOUNDED',label:'Private Cloud Run Agent 3개',value:'3_PRIVATE_SERVICES'}),PUBLIC_IAM_PRINCIPALS:Object.freeze({status:'VERIFIED_BOUNDED',label:'공개 IAM principal',value:'0_PUBLIC_PRINCIPALS'}),INPUT_BODY_REVISION_BINDING:Object.freeze({status:'VERIFIED_BOUNDED',label:'입력 body hash + revision 결속',value:'MISMATCH_BLOCKED'}),ENDPOINT_OVERRIDE_BLOCKING:Object.freeze({status:'VERIFIED_BOUNDED',label:'승인되지 않은 endpoint override 차단',value:'AGENT_CALLS_0'}),FAIL_CLOSED_OUTPUT:Object.freeze({status:'VERIFIED_BOUNDED',label:'오류 시 fail-closed output',value:'NOT_EVALUATED_HOLD'}),
+    KMS_CMEK:Object.freeze({status:'NOT_IMPLEMENTED',label:'KMS / CMEK 고객 암호화',value:'NO_KEY_CREATED'}),TENANT_ISOLATION:Object.freeze({status:'NOT_IMPLEMENTED',label:'실제 tenant 격리',value:'DESIGN_ONLY'}),ACTUAL_CUSTOMER_RBAC:Object.freeze({status:'NOT_IMPLEMENTED',label:'실제 고객 RBAC',value:'NO_CUSTOMER_ROLES'}),RETENTION_DELETION_AUDIT:Object.freeze({status:'NOT_EVALUATED',label:'보존·삭제 감사',value:'AUDIT_NOT_RUN'}),PENETRATION_TEST:Object.freeze({status:'NOT_EVALUATED',label:'침투시험',value:'PEN_TEST_NOT_RUN'})
+  });
+  const ROOT_KEYS=['schema_version','snapshot_id','snapshot_sha256','data_class','source_classification','captured_at','live','posture_status','assurance_decision','controls'];
+  const CONTROL_KEYS=['control_id','label_ko','status','observed_value','evidence_refs'];
+  const isObject=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);const exactKeys=(value,keys)=>isObject(value)&&Object.keys(value).sort().join('|')===[...keys].sort().join('|');
+  const safeText=value=>typeof value==='string'&&value.length>0&&value.length<=160&&!/[\0\r\n]/.test(value);const isSha=value=>typeof value==='string'&&/^sha256:[0-9a-f]{64}$/.test(value);const safeRef=value=>typeof value==='string'&&/^H05-[A-Z0-9-]{3,80}$/.test(value);
+  function canonical(value){if(value===null||typeof value!=='object')return JSON.stringify(value);if(Array.isArray(value))return '['+value.map(canonical).join(',')+']';return '{'+Object.keys(value).sort().map(key=>JSON.stringify(key)+':'+canonical(value[key])).join(',')+'}'}
+  async function digest(value){const bytes=new TextEncoder().encode(canonical(value));const hash=await crypto.subtle.digest('SHA-256',bytes);return 'sha256:'+Array.from(new Uint8Array(hash),byte=>byte.toString(16).padStart(2,'0')).join('')}
+  async function resolveSnapshot(payload){
+    try{
+      if(!exactKeys(payload,ROOT_KEYS))throw new Error('SNAPSHOT_SHAPE_INVALID');
+      if(payload.schema_version!=='1.0.0'||payload.data_class!=='SYNTHETIC'||payload.source_classification!=='CONTROL_TOWER_VERIFIED_H05_SNAPSHOT'||payload.live!==false)throw new Error('SNAPSHOT_BOUNDARY_INVALID');
+      if(payload.posture_status!=='BOUNDED_READINESS'||payload.assurance_decision!=='HOLD')throw new Error('OPTIMISTIC_POSTURE_REJECTED');
+      if(!safeText(payload.snapshot_id)||!safeText(payload.captured_at)||!isSha(payload.snapshot_sha256)||!Array.isArray(payload.controls)||payload.controls.length!==10)throw new Error('SNAPSHOT_CONTENT_INVALID');
+      const ids=new Set();for(const control of payload.controls){
+        if(!exactKeys(control,CONTROL_KEYS)||!safeText(control.control_id)||!safeText(control.label_ko)||!safeText(control.observed_value)||!Array.isArray(control.evidence_refs)||control.evidence_refs.length<1||control.evidence_refs.length>3||!control.evidence_refs.every(safeRef))throw new Error('CONTROL_SHAPE_INVALID');
+        if(!Object.prototype.hasOwnProperty.call(EXPECTED,control.control_id))throw new Error('UNKNOWN_CONTROL_REJECTED');if(ids.has(control.control_id))throw new Error('DUPLICATE_CONTROL_REJECTED');ids.add(control.control_id);
+        const expected=EXPECTED[control.control_id];if(control.status!==expected.status)throw new Error('OPTIMISTIC_CONTROL_REJECTED');if(control.label_ko!==expected.label||control.observed_value!==expected.value)throw new Error('CONTROL_CONTENT_MISMATCH');
+      }
+      if(ids.size!==Object.keys(EXPECTED).length)throw new Error('CONTROL_SET_INCOMPLETE');
+      const preimage={...payload};delete preimage.snapshot_sha256;if(await digest(preimage)!==payload.snapshot_sha256)throw new Error('SNAPSHOT_HASH_MISMATCH');
+      return {ready:true,reason:'',processing:'VALID',assurance:'HOLD',snapshot:payload};
+    }catch(error){return {...SAFE,reason:error instanceof Error?error.message:'DATA_UNAVAILABLE'}}
+  }
+  function buildExport(model){if(!model||model.ready!==true)throw new Error('EXPORT_UNAVAILABLE');const source=model.snapshot;return {schema_version:'1.0.0',export_kind:'SECURITY_POSTURE_ALLOWLIST',snapshot_id:source.snapshot_id,data_class:'SYNTHETIC',live:false,posture_status:'BOUNDED_READINESS',assurance_decision:'HOLD',controls:source.controls.map(control=>({control_id:control.control_id,status:control.status,evidence_refs:[...control.evidence_refs]}))}}
+  function serializeExport(model){return JSON.stringify(buildExport(model),null,2)+'\n'}
+  const api=Object.freeze({SOURCE,SAFE,EXPECTED,canonical,digest,resolveSnapshot,buildExport,serializeExport});globalThis.SPECTRA_SECURITY_POSTURE=api;if(typeof document==='undefined')return;
+  const $=id=>document.getElementById(id);let model=SAFE,exportUrl='';function text(id,value){$(id).textContent=value}function clear(node){while(node.firstChild)node.removeChild(node.firstChild)}function revoke(){if(exportUrl){URL.revokeObjectURL(exportUrl);exportUrl=''}}
+  function render(){
+    const ready=model.ready===true;document.body.dataset.ready=String(ready);text('truth-decision',(ready?'VALID':'DATA_UNAVAILABLE')+' · HOLD');text('snapshot-id',ready?model.snapshot.snapshot_id:'—');
+    const controls=ready?model.snapshot.controls:[];text('verified-count',ready?String(controls.filter(item=>item.status==='VERIFIED_BOUNDED').length)+' / 5':'—');text('gap-count',ready?String(controls.filter(item=>item.status!=='VERIFIED_BOUNDED').length)+' / 5':'—');
+    const host=$('controls');clear(host);if(!ready){const empty=document.createElement('div');empty.className='empty';empty.textContent='DATA_UNAVAILABLE';host.append(empty)}else controls.forEach(control=>{const card=document.createElement('article');card.className='card';const title=document.createElement('h3');title.textContent=control.label_ko;const status=document.createElement('span');status.className='pill '+(control.status==='VERIFIED_BOUNDED'?'verified':'missing');status.textContent=control.status;const value=document.createElement('div');value.className='value';value.textContent=control.observed_value;const refs=document.createElement('div');refs.className='refs';const prefix=document.createElement('b');prefix.textContent='evidence ';refs.append(prefix,document.createTextNode(control.evidence_refs.join(' · ')));card.append(title,status,value,refs);host.append(card)});
+    text('hold-reason',ready?'검증된 다섯 control은 H05 합성 snapshot 범위에 한정된다. 고객 보안·침투시험·assurance는 완료되지 않았다.':'검증 실패: '+model.reason+' · security posture와 evidence reference를 표시하지 않는다.');$('hold-reason').classList.toggle('fail',!ready);$('export').setAttribute('aria-disabled',String(!ready));if(!ready)revoke();
+  }
+  async function load(){model=SAFE;render();try{const response=await fetch(SOURCE,{cache:'no-store'});if(!response.ok)throw new Error('SNAPSHOT_FETCH_FAILED');model=await resolveSnapshot(await response.json())}catch(error){model={...SAFE,reason:error instanceof Error?error.message:'DATA_UNAVAILABLE'}}render()}
+  $('load').addEventListener('click',load);$('reset').addEventListener('click',()=>{model=SAFE;revoke();render()});$('export').addEventListener('click',event=>{if(model.ready!==true){event.preventDefault();return}revoke();exportUrl=URL.createObjectURL(new Blob([serializeExport(model)],{type:'application/json'}));const link=document.createElement('a');link.href=exportUrl;link.download='security-posture-allowlist.json';link.click()});render();
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,47 @@
 # SPECTRA Offline HTML Demo
 
+## H25 Roadmap Lab 실행 안내
+
+`roadmap-lab.html`은 확장 기능 7개의 로컬 진입점이다. 아래 화면은 모두 `SYNTHETIC / LOCAL DEMO`이며 최종 assurance는 `HOLD`다. 상태는 다음 경계로 읽는다.
+
+- `IMPLEMENTED_BOUNDED`: 제한된 합성·로컬 workflow가 구현됐지만 실제 승인이나 production 처리가 아니다.
+- `READINESS_ONLY`: 외부 실행 전 입력·권리·결속 조건을 확인하는 gate이며 실제 처리 호출이나 계산은 없다.
+- `BLOCKED_EXTERNAL`: 로컬 검토 화면은 있으나 승인된 외부 source·권리·BOM 같은 선행 입력이 없어 실제 연결을 시작할 수 없다.
+
+| Phase | 화면 | Route | 상태 |
+|---|---|---|---|
+| 01 | Evidence Source Intake | `evidence-intake.html` | `BLOCKED_EXTERNAL` |
+| 01 | COTS Candidate Library | `cots-candidate-library.html` | `BLOCKED_EXTERNAL` |
+| 02 | Document Review | `document-review.html` | `IMPLEMENTED_BOUNDED` |
+| 02 | AI Processing Readiness | `ai-processing-readiness.html` | `READINESS_ONLY` |
+| 03 | Change Impact | `change-impact.html` | `IMPLEMENTED_BOUNDED` |
+| 03 | CAD Linkage Readiness | `cad-linkage-readiness.html` | `READINESS_ONLY` |
+| 03 | Security Posture | `security-posture.html` | `IMPLEMENTED_BOUNDED` |
+
+저장소 루트에서 localhost를 loopback에만 bind한다.
+
+```bash
+cd /Users/taehoon/Desktop/IAA/SPECTRA
+python3 -m http.server 8765 --bind 127.0.0.1
+```
+
+브라우저에서 `http://127.0.0.1:8765/demo/roadmap-lab.html`을 연다. 각 카드는 같은 `demo/` 아래의 상대 route로 이동한다.
+
+직접 테스트:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_evidence_source_intake
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_cots_candidate_library
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_document_review_workflow
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_ai_processing_readiness
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_change_impact_demo
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_cad_linkage_readiness
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_security_posture
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_roadmap_lab
+```
+
+이 묶음에는 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini API 호출, authenticated HITL, 실제 CAD parser·3D shielding 계산, KMS 서명 운영 또는 penetration test가 없다. 각 화면의 `VALID`, `IMPLEMENTED_BOUNDED`와 로컬 test 통과는 실제 environment/part contract, suitability 또는 방사선 assurance 완료를 뜻하지 않는다.
+
 ## H19 Readiness Receipt Integration
 
 `workspace.html`은 공용 `readiness-receipt.schema.json` dispatcher의 v1 두 종류를 별도 upstream test module import 없이 로컬 파일 선택 경로에서 읽는다. 예시는 `data/readiness-environment-hold-v1.json`과 `data/readiness-part-contract-not-implemented-v1.json`이다.

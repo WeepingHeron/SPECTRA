@@ -1,0 +1,59 @@
+{
+  "manifest_format": "spectra-cad-linkage-readiness-demo-v1",
+  "data_class": "SYNTHETIC",
+  "usage": "DEMO_ONLY",
+  "geometry": {
+    "source_status": "MISSING",
+    "approved_revision_status": "MISSING",
+    "artifact_hash_status": "MISSING"
+  },
+  "coordinate_binding": {
+    "coordinate_system_status": "NOT_EVALUATED",
+    "unit_status": "NOT_EVALUATED"
+  },
+  "linkages": [
+    {
+      "gate_id": "COMPONENT_POSITION_BINDING",
+      "readiness_status": "NOT_READY",
+      "evidence_status": "NOT_BOUND",
+      "blocker": {
+        "stable_code": "COMPONENT_POSITION_NOT_BOUND",
+        "owner_role": "CAD_INTEGRATION_OWNER",
+        "next_action_code": "BIND_COMPONENT_POSITION",
+        "next_action_ko": "승인 geometry revision의 component 위치 식별자를 연결한다."
+      }
+    },
+    {
+      "gate_id": "MATERIAL_THICKNESS_MAPPING",
+      "readiness_status": "NOT_READY",
+      "evidence_status": "NOT_VERIFIED",
+      "blocker": {
+        "stable_code": "MATERIAL_THICKNESS_NOT_VERIFIED",
+        "owner_role": "SHIELDING_MODEL_OWNER",
+        "next_action_code": "VERIFY_MATERIAL_THICKNESS_MAP",
+        "next_action_ko": "재료와 두께 mapping의 출처와 적용 범위를 검토한다."
+      }
+    },
+    {
+      "gate_id": "ENVIRONMENT_MODEL_REVISION_BINDING",
+      "readiness_status": "NOT_READY",
+      "evidence_status": "NOT_BOUND",
+      "blocker": {
+        "stable_code": "ENVIRONMENT_REVISION_NOT_BOUND",
+        "owner_role": "ENVIRONMENT_EVIDENCE_OWNER",
+        "next_action_code": "BIND_ENVIRONMENT_MODEL_REVISION",
+        "next_action_ko": "발행 가능한 environment model revision과 입력 hash를 연결한다."
+      }
+    }
+  ],
+  "output": {
+    "computed_dose_status": "NOT_COMPUTED",
+    "scientific_evidence_status": "NOT_ESTABLISHED"
+  },
+  "decision": {
+    "readiness_status": "NOT_READY",
+    "engineering_gate": "NOT_EVALUATED",
+    "assurance_decision": "HOLD",
+    "used_for_decision": false
+  }
+}

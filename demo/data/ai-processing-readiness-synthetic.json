@@ -1,0 +1,78 @@
+{
+  "readiness_format": "spectra-ai-processing-readiness-demo-v1",
+  "data_class": "SYNTHETIC",
+  "review_scope": "DEMO_ONLY",
+  "input_artifact": {
+    "generation_id": "syn-input-generation-001",
+    "artifact_sha256": "642b63d3410e9b122eed3759bb433ae0c680b3795514eb4f9000fc12ed66d368"
+  },
+  "review_request_text": "Evaluate synthetic processor readiness only. Human review remains required.",
+  "processors": [
+    {
+      "processor_id": "DOCUMENT_AI",
+      "configuration_status": "NOT_CONFIGURED",
+      "authorization_status": "NOT_AUTHORIZED",
+      "action_right": {
+        "action": "PROCESS_AI",
+        "status": "NOT_AUTHORIZED",
+        "scope": "DOCUMENT_AI_ONLY"
+      },
+      "region": {
+        "policy_region": "asia-northeast3",
+        "configured_region": "UNSET",
+        "status": "NOT_EVALUATED"
+      },
+      "logging_training": {
+        "logging_use": "UNCONFIRMED",
+        "training_use": "UNCONFIRMED"
+      },
+      "retention_deletion": {
+        "retention_policy": "UNCONFIRMED",
+        "deletion_policy": "UNCONFIRMED"
+      },
+      "output_readiness": {
+        "locator_status": "MISSING",
+        "hash_status": "MISSING",
+        "output_locator": null,
+        "output_sha256": null
+      },
+      "evaluation_status": "NOT_EVALUATED"
+    },
+    {
+      "processor_id": "GEMINI_MULTIMODAL",
+      "configuration_status": "NOT_CONFIGURED",
+      "authorization_status": "NOT_AUTHORIZED",
+      "action_right": {
+        "action": "PROCESS_AI",
+        "status": "NOT_AUTHORIZED",
+        "scope": "GEMINI_MULTIMODAL_ONLY"
+      },
+      "region": {
+        "policy_region": "asia-northeast3",
+        "configured_region": "UNSET",
+        "status": "NOT_EVALUATED"
+      },
+      "logging_training": {
+        "logging_use": "UNCONFIRMED",
+        "training_use": "UNCONFIRMED"
+      },
+      "retention_deletion": {
+        "retention_policy": "UNCONFIRMED",
+        "deletion_policy": "UNCONFIRMED"
+      },
+      "output_readiness": {
+        "locator_status": "MISSING",
+        "hash_status": "MISSING",
+        "output_locator": null,
+        "output_sha256": null
+      },
+      "evaluation_status": "NOT_EVALUATED"
+    }
+  ],
+  "decision": {
+    "processing_status": "VALID",
+    "engineering_gate": "NOT_EVALUATED",
+    "assurance_decision": "HOLD",
+    "decision_use": false
+  }
+}

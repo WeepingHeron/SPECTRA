@@ -904,9 +904,13 @@ process.stdout.write(JSON.stringify(observed));
         presentation = (ROOT / "demo/index.html").read_text(encoding="utf-8")
         for inserted_copy in (
             '03 · COTS ADOPTION &amp; RADIATION UNCERTAINTY',
-            '전통적 우주급 부품 (Rad-Hard)',
+            '우주급 부품 (Rad-Hard)',
             '상용 기성 부품 (COTS · EX-100)',
-            '비교 청사진 · 가격·납기·성능·면역 수치는 원문·조건·적용성 독립 검증 전이며 판단에 사용하지 않음 · NOT_EVALUATED / HOLD',
+            'Commercial availability',
+            'Evidence gap',
+            'Mission-specific verification',
+            '정성적 검토 구조 · 외부 가격·납기·성능 수치를 사용하지 않음',
+            'NOT_EVALUATED / HOLD',
             '04 · WHY SHIELDING MATTERS',
             '왜 방사선을 차폐하고,<br><span class="accent">1·4·5 mm는 무엇을 의미하는가.',
             '05 · TARGET MISSION &amp; COMPONENT EVIDENCE',
@@ -938,10 +942,20 @@ process.stdout.write(JSON.stringify(observed));
         self.assertIn("globalThis.SPECTRA_GCP_H05_SNAPSHOT", presentation)
         for cover_copy in (
             "SPECTRA", "Space", "Parts", "Evidence", "Component", "Traceability", "Radiation", "Assurance",
-            "우주 부품 증거 · 소자 추적성 · 방사선 보증", "데이터 무결성으로 궤도 방사선 신뢰성을",
+            "우주 부품 증거 · 소자 추적성 · 방사선 보증", "데이터 무결성으로 방사선 판단 근거를",
+            "SYNTHETIC DEMO · ACTUAL EVIDENCE 0 · FINAL HOLD",
         ):
             self.assertIn(cover_copy, presentation)
+        self.assertNotIn("궤도 방사선 신뢰성을", presentation)
+        cots_slide = re.search(r'<section class="slide" data-title="COTS 비교".*?</section>', presentation, re.S).group(0)
+        for unsupported_comparison in (
+            "수억 원", "12~24개월", "98% 절감", "수십 배 고성능", "100% 면역",
+            "100 krad", "5~25 krad", "$1,000", "$1k",
+        ):
+            self.assertNotIn(unsupported_comparison, cots_slide)
         self.assertEqual(len(re.findall(r'<section class="slide(?: [^"]*)?"', presentation)), 13)
+        self.assertIn('href="roadmap-lab.html"', presentation)
+        self.assertIn('7개 로드맵 기능 열기 ↗', presentation)
         self.assertIn("String(slides.length - 2).padStart(2,'0')", presentation)
         self.assertIn("@keyframes slide-enter", presentation)
         self.assertIn("animation:slide-enter", presentation)

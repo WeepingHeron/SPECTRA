@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-24
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 통합 체크포인트: 직전 기준 `d730ded` 위 readiness contract·environment/parts gate·local Assurance QA·Product Workspace·발표 Trust & Integrity·문서 정합성 단위를 최종 검증했다. 이 문서를 포함하는 main commit으로 `origin/main`에 통합하며 ignored `instructions/`와 Git 밖 private evidence는 포함하지 않는다.
+- Git 통합 체크포인트: 직전 기준 `1cbf7e5` 위 Roadmap Lab·NASA snapshot gate·발표 truth boundary·Product Workspace 동선을 최종 검증했다. 이 문서를 포함하는 main commit으로 `origin/main`에 통합하며 ignored `instructions/`와 Git 밖 private evidence는 포함하지 않는다.
 
 ## 현재 확인된 산출물
 
@@ -22,6 +22,9 @@
 
 ## 현재 진실
 
+- 2026-08-24 발표 로드맵 Phase 01~03을 `Roadmap Lab` 7개 local 화면과 NASA snapshot intake gate로 제품화했다. Control Tower 직접 테스트 11개 module 136 tests와 red-team 후속 8개 module 95 tests, localhost 1280×720의 hub·발표 링크·수정 화면 overflow 0을 확인했다. 상태는 bounded 구현 3, readiness 2, external blocker 2이며 전체는 `SYNTHETIC / HOLD`다. 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini 호출, authenticated HITL, CAD/3D 계산, KMS와 penetration test는 완료되지 않았다.
+- 같은 회차의 독립 red-team P1 다섯 건을 보완했다. COTS audit export에서 identity-bearing record ID를 제거했고, local document action right를 `SYNTHETIC_DEMO_ONLY`로 표시했으며, AI region과 security snapshot display 값을 exact allowlist로 닫고, generated policy approval을 `SYNTHETIC_` 상태로 인접 표기했다. NASA synthetic control 권리는 `SYNTHETIC_CONTROL_ONLY`로 분리했다.
+- 통합 회귀는 schema 17개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 65, Product 125, GCP H05 local 12, source adapter 14 tests를 통과했다. Assurance는 47 attack executions·False PASS 0이고 `ASR-D02` 1건은 계속 `NOT_EVALUATED`다. 최초에 존재하지 않는 `tests/schema/run_all.py`를 호출한 명령 오류 1건은 올바른 `tests/schema/validate_contracts.py`와 readiness 8 tests로 바로 재검증했으며 제품 실패가 아니다.
 - 2026-08-24 readiness 최종 통합 회귀에서 schema 17개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 65, Product 17, GCP H05 local 12 tests를 재현했다. 추가 직접 회귀는 readiness schema 8, exact-part test gate 7, local readiness QA 3, Evidence Review Workspace 21 tests가 모두 통과했다. Assurance는 47 attack executions·False PASS 0을 유지하며 실제 GCP `ASR-D02`는 `NOT_EVALUATED`다.
 - Workstream 10 readiness receipt v1, Workstream 31 issuance time fail-closed, Workstream 40 artifact path fail-closed, Workstream 60 local readiness 공격, Workstream 80 H19 Workspace를 독립 검증해 각 좁은 구현 범위를 `VERIFIED`로 판정했다. actual environment contract 0건, 승인 BOM exact-part packet 0건, suitability와 실제 방사선 assurance `HOLD`는 바뀌지 않는다.
 - 발표 13장을 localhost 1280×720에서 실제 순회해 모든 화면 x/y overflow 0을 확인했다. Multi-Agent 화면의 Trust & Integrity는 private 접근·입력 결속·자체 승인 차단·fail-closed만 주장하고 `NOT PEN TEST / KMS / ASSURANCE` 경계를 인접 표시한다. 이 표현 패키지만 `VERIFIED`이며 완전한 보안 또는 보안 인증을 뜻하지 않는다.

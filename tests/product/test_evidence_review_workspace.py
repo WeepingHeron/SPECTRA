@@ -27,6 +27,7 @@ if (process.argv[2] === "resolve") result = api.resolveReviewPayload(input);
 else if (process.argv[2] === "parse") result = api.parseReviewText(input.text);
 else if (process.argv[2] === "parse-workspace") result = api.parseWorkspaceText(input.text);
 else if (process.argv[2] === "receipt") result = api.resolveReadinessReceipt(input);
+else if (process.argv[2] === "demo-sample") result = { receipt: api.DEMO_ENVIRONMENT_RECEIPT, model: api.resolveReadinessReceipt(api.DEMO_ENVIRONMENT_RECEIPT) };
 else if (process.argv[2] === "export") result = JSON.parse(api.serializeAuditSummary(api.resolveReviewPayload(input)));
 else if (process.argv[2] === "receipt-export") result = JSON.parse(api.serializeAuditSummary(api.resolveReadinessReceipt(input)));
 else throw new Error("unknown operation");
@@ -75,6 +76,15 @@ class EvidenceReviewWorkspaceTests(unittest.TestCase):
             "ENVIRONMENT", "EXACT_PART", "TID", "SEL", "SEB", "SEGR", "RIGHTS", "SCIENTIFIC_CROSSCHECK"
         ])
         self.assertIn("AUTHENTICATED_ISSUANCE_ROOT_MISSING", [gap["stable_code"] for gap in model["blocking_gaps"]])
+
+    def test_one_click_environment_demo_sample_matches_fixture_and_holds(self):
+        demo = run_node("demo-sample", {})
+        self.assertEqual(demo["receipt"], self.environment_receipt)
+        self.assertTrue(demo["model"]["ready"])
+        self.assertEqual(demo["model"]["readiness_status"], "HOLD_NOT_ISSUED")
+        self.assertEqual(demo["model"]["decision"]["assurance_decision"], "HOLD")
+        self.assertIn('id="load-sample"', self.html)
+        self.assertIn("환경 HOLD 샘플", self.html)
 
     def test_malformed_json_fails_closed_without_throwing(self):
         self.assert_fail_closed(run_node("parse", {"text": "{not-json"}), "MALFORMED_JSON")

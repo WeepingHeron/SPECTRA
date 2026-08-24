@@ -70,6 +70,7 @@ MVP는 부품의 비행 적합성을 인증하지 않는다. 최종 결과가 `H
 - Stage 6 일부: Core 공격 29회와 별도 experimental runtime 공격 18회에서 False PASS 0; 실제 GCP `ASR-D02`는 `NOT_EVALUATED`
 - Stage 7 일부: 교육용 GCP의 private Cloud Run Agent 3개·Workflows·Storage·IAM·Logging 합성 E2E H05
 - Stage 8 일부: generated 결과를 소비하는 합성 Product UI, 안전한 offline fallback과 fail-closed Evidence Review Workspace
+- Stage 8 확장: 7개 Roadmap Lab 화면과 NASA local snapshot gate. 이는 합성·readiness 제품화이며 실제 evidence contract 또는 production connector가 아니다.
 
 ## MVP 완료를 위해 남은 핵심
 

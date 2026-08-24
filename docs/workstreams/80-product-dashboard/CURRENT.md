@@ -2,7 +2,46 @@
 
 ## 상태
 
-`VERIFIED — H19 Readiness Receipt Integration`
+`VERIFIED — H26 Roadmap Lab bounded expansion`
+
+## H26 Roadmap Lab bounded expansion — 2026-08-24
+
+- `demo/roadmap-lab.html`은 발표 Phase 01~03의 7개 local 화면을 단일 진입점으로 연결한다. 상태는 `IMPLEMENTED_BOUNDED / READINESS_ONLY / BLOCKED_EXTERNAL`로 분리하고 전체 묶음은 `SYNTHETIC / LOCAL DEMO / ASSURANCE HOLD`다.
+- Phase 01은 SPENVIS·NASA·COTS source readiness와 decision-ineligible COTS discovery registry를 표시한다. 별도 Python NASA snapshot gate는 caller-supplied local bytes의 hash·NASA allowlisted host·record/revision/time·action rights·exact orderable identity와 외부 anchor 결속을 검사하며, 실제 후보의 상한도 `READY_FOR_REVIEW / NOT_FOR_DECISION / HOLD`다.
+- Phase 02는 합성 document extraction candidate의 source binding·local reviewer action과 Document AI/Gemini processor별 미구성·미승인 readiness를 분리한다. API 호출·credential·authenticated approval·actual audit trail은 0건이다.
+- Phase 03은 authoritative generated result의 Change Impact, CAD revision 결속 readiness, H05 snapshot의 다섯 bounded control과 다섯 미구현·미평가 보안 gap을 표시한다. 실제 CAD parser·3D shielding 계산·KMS 운영·침투시험은 없다.
+- 독립 red-team에서 발견한 COTS export identity 우회, document rights scope 누락, AI region display injection, security snapshot의 재계산 hash display 우회, synthetic policy `APPROVED` 용어 충돌을 모두 차단했다.
+- 직접 테스트 11개 module 136 tests, 후속 P1 보완 대상 8개 module 95 tests가 통과했다. localhost 1280×720에서 Roadmap Lab 7 route와 발표 11번 링크, 수정된 Document Review·Change Impact·Security Posture를 확인했고 각 화면 x/y overflow는 0이다.
+- 최종 통합 회귀에서 Product 전체 125 tests, source adapter 14 tests가 통과했고 인접 schema·simulation·environment·Assurance·GCP H05 회귀도 실패 없이 유지됐다.
+- 발표 cover와 COTS 비교의 검증되지 않은 비용·납기·성능·면역 수치를 제거하고 `SYNTHETIC DEMO · ACTUAL EVIDENCE 0 · FINAL HOLD` 경계를 추가했다. Product binding 17 tests와 실제 1280×720 slide overflow 0을 확인했다.
+- 실제 environment contract·승인 exact-part packet·live connector/API·과학적 assurance는 계속 0건이다. H26 검증은 로컬 기능과 fail-closed 경계만 `VERIFIED`하며 Stage 8과 Core MVP는 `IN_PROGRESS`, 최종 판단은 `HOLD`다.
+- `CONTRACT_CHANGE_REQUEST`: 없음. 공용 schema·Core engine을 수정하지 않았다.
+
+H21은 SPENVIS·NASA Public DB·COTS Evidence Library를 live 연동했다고 가장하지 않고, source별 connector readiness와 locator·권리·provenance 공백, blocker owner/action을 별도 fail-closed intake 화면에서 검토한다.
+
+## H21 Evidence Source Intake — 2026-08-24
+
+- 새 `demo/evidence-intake.html`은 remote dependency·API·telemetry·storage 없이 bundled synthetic sample 또는 사용자가 선택한 local JSON을 브라우저 메모리에서 검토한다.
+- SPENVIS는 provider job reference·action별 권리·승인 raw manifest·provenance, NASA/COTS는 exact locator·권리·provenance가 모두 닫히기 전 `CONNECTOR_NOT_READY`를 유지한다.
+- 세 source 모두 stable blocker code, 제한된 담당 역할과 다음 action만 표시한다. 정상 synthetic fixture도 `VALID / NOT_EVALUATED / HOLD`이며 connector나 decision input으로 사용하지 않는다.
+- malformed JSON·nested shape 오류·중복/누락 source·`ACTUAL` 자기 승격·connector `READY`·decision `PASS`·`PASS` blocker·임의 locator/token 삽입은 source identity와 세부값을 숨긴 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`로 닫힌다.
+- Audit export는 source ID, connector/requirement status, blocker code·owner·action code와 HOLD decision만 allowlist로 내보낸다. locator 원문·URL·로컬 경로·identity·설명 원문·raw evidence와 공학 수치는 제외한다.
+- H21 직접 테스트 11개와 JavaScript syntax, fixture JSON parsing, `git diff --check`가 통과했다.
+- localhost server는 실행했지만 Control Tower 브라우저 backend가 사라져 실제 1280×720 viewport·console 검증은 `NOT_EVALUATED`다. 자동 테스트를 브라우저 렌더링 증거로 확대하지 않는다.
+- 실제 live connector, provider job reference, 승인 rights/raw manifest, exact source locator와 실제 contract는 계속 0건이다.
+- `CONTRACT_CHANGE_REQUEST`: 없음. H21은 새 독립 demo·fixture·test와 이 CURRENT 기록만 추가하며 H20 Workspace, 공용 schema·engine·발표 deck을 수정하지 않았다.
+
+H20은 H19에서 검증된 synthetic Environment readiness receipt와 byte-equivalent인 내장 sample을 같은 validator 경로로 읽는 `환경 HOLD 샘플` 버튼을 추가했다. 발표자는 파일 선택 없이 blocker → 담당 역할 → 다음 행동 → `HOLD`를 설명한 뒤 초기화할 수 있다. 실제 contract나 공학 수치·suitability·assurance를 추가하지 않았다.
+
+## H20 One-click Hold Demo Path — 2026-08-24
+
+- `demo/workspace.html`의 `환경 HOLD 샘플`은 `demo/data/readiness-environment-hold-v1.json`과 동일한 synthetic receipt를 `resolveReadinessReceipt()`에 전달한다. 별도 성공 경로나 parser 우회는 없다.
+- 화면은 `ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED → ENVIRONMENT_EVIDENCE_OWNER → 배포 소유 인증기 구성·Gate 재실행`과 `HOLD_NOT_ISSUED / PROVENANCE_FAILURE / NOT_EVALUATED / HOLD`만 표시한다.
+- 초기화는 identity를 숨기고 export를 비활성화한 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`로 복귀한다.
+- Workspace 직접 테스트 22개가 fixture 동등성, 정상 HOLD, malformed·optimistic receipt 차단과 export redaction을 통과했다.
+- localhost 실제 브라우저 1280×720에서 one-click sample → blocker/owner/action → HOLD → reset 동선을 확인했다. document와 세 panel의 x/y overflow는 0이고 console warning/error도 0이다.
+- 실제 environment contract, 승인 evidence와 assurance evidence는 계속 0건이다. H20은 발표 시연 동선 단축이며 실제 Evidence-to-Decision 발행이 아니다.
+- `CONTRACT_CHANGE_REQUEST`: 없음. 공용 schema·engine·upstream Workstream·발표 deck은 수정하지 않았다.
 
 H19는 Control Tower가 검증한 `schemas/readiness-receipt.schema.json` dispatcher의 Environment·Part v1 receipt를 기존 Evidence Review Workspace가 직접 소비하도록 연결했다. upstream `tests/parts_evidence`나 다른 test module을 import하지 않고, WS80 내부 fixture와 브라우저 validator로 제한된 readiness 상태만 표시한다.
 
