@@ -6,7 +6,7 @@
 
 | 조작 | 실제 입력 | 화면 결과 |
 |---|---|---|
-| 근거 검사 실행 | `evidence-source-readiness-synthetic.json` | 원본·exact source·권리 공백과 `HOLD` |
+| 근거 검사 실행 | readiness JSON + generated NASA gate receipt | SPENVIS·승인 BOM 공백, NASA control 검증과 `HOLD` |
 | 검토 액션 선택 | `document-extraction-candidate-synthetic.json` | PN·process·lot·TID 후보와 local review action |
 | 변경 영향 불러오기 | `mvp-product-result.json` | `0.063072 → 0.013072`, 근거 공백, 최종 `HOLD` |
 
@@ -26,7 +26,10 @@ python3 -m http.server 8765 --bind 127.0.0.1
 ```bash
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_roadmap_lab
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_product_data_binding
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.source_adapters.test_nasa_snapshot_gate
 ```
+
+`python3 demo/build_nasa_gate_receipt.py`는 caller-supplied synthetic bytes를 production `evaluate_nasa_snapshot()`에 넣어 deterministic read model을 갱신한다. 화면의 `CONTROL VALID`는 이 로컬 gate가 hash·NASA host·revision·rights·exact identity 형식을 확인했다는 뜻이며 실제 NASA evidence나 decision input 승인이 아니다.
 
 이 묶음에는 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini API 호출 또는 authenticated approval이 없다. 로컬 기능과 fail-closed 검증 통과는 실제 environment/part contract, suitability 또는 방사선 assurance 완료를 뜻하지 않는다.
 

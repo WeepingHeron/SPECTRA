@@ -51,6 +51,7 @@ class RoadmapLabTests(unittest.TestCase):
     def test_bundled_data_files_are_bound_to_runtime_fetches(self) -> None:
         expected = {
             "evidence-source-readiness-synthetic.json",
+            "nasa-snapshot-gate-receipt.json",
             "document-extraction-candidate-synthetic.json",
             "mvp-product-result.json",
         }
@@ -69,10 +70,24 @@ class RoadmapLabTests(unittest.TestCase):
             result["states"],
             {
                 "environment": "PROVIDER REF MISSING",
-                "parts": "EXACT SOURCE MISSING",
-                "rights": "RIGHTS UNRESOLVED",
+                "parts": "APPROVED BOM MISSING",
             },
         )
+
+    def test_nasa_local_gate_receipt_is_control_only(self) -> None:
+        result = self.evaluate(
+            "validateNasaReceipt", "nasa-snapshot-gate-receipt.json"
+        )
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["assurance"], "HOLD")
+        self.assertEqual(result["state"], "CONTROL VALID · NO DECISION")
+        tampered = self.evaluate(
+            "validateNasaReceipt",
+            "nasa-snapshot-gate-receipt.json",
+            'payload.use_status="FOR_DECISION";',
+        )
+        self.assertFalse(tampered["ok"])
+        self.assertEqual(tampered["assurance"], "HOLD")
 
     def test_evidence_intake_rejects_optimistic_decision(self) -> None:
         result = self.evaluate(

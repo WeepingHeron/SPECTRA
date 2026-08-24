@@ -2,7 +2,13 @@
 
 ## 상태
 
-`VERIFIED — H28 Functional Evidence Review Demo`
+`VERIFIED — H29 NASA Local Gate Product Binding`
+
+## H29 NASA Local Gate Product Binding — 2026-08-24
+
+- production `evaluate_nasa_snapshot()`가 caller-supplied synthetic bytes를 검증한 deterministic receipt를 생성하고, Evidence Review 1단계가 readiness JSON과 함께 실제로 읽는다.
+- 화면은 NASA control만 `CONTROL VALID · NO DECISION`으로 표시하고 SPENVIS provider reference와 승인 BOM 공백을 별도로 유지한다. receipt의 decision-use 승격·상태 손상은 `DATA_UNAVAILABLE · HOLD`로 닫힌다.
+- source adapter·Evidence Review·Product binding 직접 테스트 42개와 localhost 1280×720의 세 상태·HOLD·overflow 0을 확인했다. live NASA fetch, actual evidence, external trusted anchors와 suitability는 추가하지 않았다.
 
 ## H28 Functional Evidence Review Demo — 2026-08-24
 
