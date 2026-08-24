@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-25
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 통합 체크포인트: `HEAD=origin/main=bde7c10`. H06/H07 backend 관찰 계약은 이후 working tree에 있으며 사용자의 요청대로 아직 commit·push하지 않았다.
+- Git 통합 체크포인트: 제출 Release 구현·actual GCP 재검증·문서·발표 통합 commit `516701c`를 `origin/main`에 push했다. 아래 항목 중 “push 미수행” 문구는 각 과거 시점 기록이다.
 
 ## 현재 확인된 산출물
 

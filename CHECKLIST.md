@@ -45,7 +45,7 @@
 - [x] 전체 로컬 회귀 1회
 - [x] 비밀정보·private raw evidence·불필요한 생성물 Git 경계 확인
 - [x] `git diff --check` 및 최종 변경 검토
-- [ ] commit·push
+- [x] commit·push (`516701c`, `origin/main`)
 - [x] 제출 파일·URL 최종 확인
 
 ## 제출 후 Backlog — 오늘 Gate 아님
