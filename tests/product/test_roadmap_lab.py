@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Direct tests for the presentation-first three-step Roadmap Lab."""
+"""Direct tests for the functional three-step Evidence Review demo."""
 
 from __future__ import annotations
 
@@ -11,15 +11,7 @@ import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 HTML = ROOT / "demo" / "roadmap-lab.html"
-ROUTES = {
-    "evidence-intake.html",
-    "cots-candidate-library.html",
-    "document-review.html",
-    "ai-processing-readiness.html",
-    "change-impact.html",
-    "cad-linkage-readiness.html",
-    "security-posture.html",
-}
+DATA = ROOT / "demo" / "data"
 
 
 class RoadmapLabTests(unittest.TestCase):
@@ -30,90 +22,137 @@ class RoadmapLabTests(unittest.TestCase):
         assert len(scripts) == 1
         cls.script = scripts[0]
 
-    def stage_data(self) -> list[dict]:
+    def evaluate(self, function: str, fixture: str, mutate: str = "") -> dict:
+        payload = json.loads((DATA / fixture).read_text(encoding="utf-8"))
         command = (
             "eval(" + json.dumps(self.script) + ");"
-            "process.stdout.write(JSON.stringify(globalThis.SPECTRA_ROADMAP_DEMO.STAGES));"
+            "const payload=" + json.dumps(payload) + ";"
+            + mutate
+            + f"process.stdout.write(JSON.stringify(globalThis.SPECTRA_REVIEW_DEMO.{function}(payload)));"
         )
         completed = subprocess.run(
             ["node", "-e", command], check=True, capture_output=True, text=True
         )
         return json.loads(completed.stdout)
 
-    def test_story_is_three_steps_not_seven_equal_priority_cards(self) -> None:
-        self.assertEqual(len(re.findall(r'<button class="step(?: active)?"', self.html)), 3)
-        self.assertNotIn("7 routes", self.html)
-        self.assertNotIn('class="card"', self.html)
-        for label in ("자료 연결", "AI 보조 검토", "판단과 다음 행동"):
+    def test_main_ui_is_three_actions_not_a_second_slide_deck(self) -> None:
+        self.assertEqual(len(re.findall(r'<button class="stage(?: active)?"', self.html)), 3)
+        for label in (
+            "근거 검사 실행",
+            "추가 근거 요청",
+            "후보 거절",
+            "다음 검토로 전달",
+            "변경 영향 불러오기",
+        ):
             self.assertIn(label, self.html)
+        for presentation_artifact in ('class="card"', "Q&amp;A", "7 routes", "권장 시연"):
+            self.assertNotIn(presentation_artifact, self.html)
 
-    def test_three_stage_contract_is_exact_and_fail_closed(self) -> None:
-        stages = self.stage_data()
-        self.assertEqual(len(stages), 3)
-        self.assertEqual(
-            [stage["status"] for stage in stages],
-            ["BLOCKED_EXTERNAL", "IMPLEMENTED_BOUNDED", "IMPLEMENTED_BOUNDED"],
+    def test_bundled_data_files_are_bound_to_runtime_fetches(self) -> None:
+        expected = {
+            "evidence-source-readiness-synthetic.json",
+            "document-extraction-candidate-synthetic.json",
+            "mvp-product-result.json",
+        }
+        for name in expected:
+            self.assertTrue((DATA / name).is_file(), name)
+            self.assertIn(name, self.script)
+        self.assertIn("fetch(path,{cache:\"no-store\"})", self.script)
+
+    def test_evidence_intake_accepts_exact_fixture_but_never_passes(self) -> None:
+        result = self.evaluate(
+            "validateEvidence", "evidence-source-readiness-synthetic.json"
         )
-        self.assertTrue(all(len(stage["nodes"]) == 3 for stage in stages))
-        self.assertTrue(all(len(stage["actions"]) == 2 for stage in stages))
-        self.assertTrue(all("HOLD" in stage["answerState"] for stage in stages))
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["assurance"], "HOLD")
+        self.assertEqual(
+            result["states"],
+            {
+                "environment": "PROVIDER REF MISSING",
+                "parts": "EXACT SOURCE MISSING",
+                "rights": "RIGHTS UNRESOLVED",
+            },
+        )
 
-    def test_all_seven_detailed_tools_remain_q_and_a_only(self) -> None:
-        stages = self.stage_data()
-        links = {href for stage in stages for _label, href in stage["links"]}
-        self.assertEqual(links, ROUTES)
-        self.assertEqual([len(stage["links"]) for stage in stages], [2, 2, 3])
-        for route in links:
-            self.assertTrue((HTML.parent / route).is_file(), route)
-        self.assertIn("세부 도구는 Q&amp;A에서 연다.", self.html)
+    def test_evidence_intake_rejects_optimistic_decision(self) -> None:
+        result = self.evaluate(
+            "validateEvidence",
+            "evidence-source-readiness-synthetic.json",
+            'payload.decision.assurance_decision="PASS";',
+        )
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["assurance"], "HOLD")
+        malformed = self.evaluate(
+            "validateEvidence",
+            "evidence-source-readiness-synthetic.json",
+            "payload.sources[0]=null;",
+        )
+        self.assertFalse(malformed["ok"])
+        self.assertEqual(malformed["assurance"], "HOLD")
 
-    def test_plain_language_product_definition_is_prominent(self) -> None:
-        for text in (
-            "흩어진 근거를 연결해",
-            "판단 가능한지 먼저 확인한다.",
-            "SPECTRA는 무엇인가?",
-            "방사선 수치를 만들어 주는 AI가 아니라",
-            "부족한 다음 행동을 보여 주는 제품이다.",
-        ):
-            self.assertIn(text, self.html)
+    def test_candidate_is_review_only_and_exactly_bound(self) -> None:
+        result = self.evaluate(
+            "validateCandidate", "document-extraction-candidate-synthetic.json"
+        )
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["assurance"], "HOLD")
+        self.assertEqual(result["partNumber"], "EX-100-SRAM-64M")
+        self.assertEqual(result["process"], "28 nm CMOS")
+        self.assertEqual(result["lot"], "LOT-SYN-001")
+        self.assertEqual(result["value"], "25 krad(Si)")
 
-    def test_truth_boundary_and_demo_time_are_adjacent(self) -> None:
-        for text in (
-            "SYNTHETIC DEMO",
-            "실제 environment·part evidence 0건",
-            "FINAL ASSURANCE · HOLD",
-            "권장 시연 40초",
-        ):
-            self.assertIn(text, self.html)
+    def test_candidate_rejects_fabricated_approval_and_rights(self) -> None:
+        result = self.evaluate(
+            "validateCandidate",
+            "document-extraction-candidate-synthetic.json",
+            "payload.review_policy.authenticated_approval=true;"
+            'payload.source.rights.scope="COMMERCIAL_REUSE";',
+        )
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["assurance"], "HOLD")
 
-    def test_no_remote_dependency_api_or_storage(self) -> None:
+    def test_change_impact_reads_generated_values_and_retains_gaps(self) -> None:
+        result = self.evaluate("validateImpact", "mvp-product-result.json")
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["assurance"], "HOLD")
+        self.assertEqual(result["before"], 0.063072)
+        self.assertEqual(result["after"], 0.013072)
+        self.assertTrue(result["environmentGap"])
+        self.assertTrue(result["partGap"])
+
+    def test_change_impact_rejects_false_pass_and_value_rebinding(self) -> None:
+        result = self.evaluate(
+            "validateImpact",
+            "mvp-product-result.json",
+            'payload.mvp_decision.assurance_decision="PASS";'
+            "payload.mvp_decision.change_impact.output_changes[0].after=0;",
+        )
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["assurance"], "HOLD")
+
+    def test_no_remote_dependency_or_browser_storage(self) -> None:
         lowered = self.html.lower()
         self.assertNotRegex(
             lowered,
-            r"https?://|//cdn|<script[^>]+src=|fetch\s*\(|xmlhttprequest|websocket|sendbeacon",
+            r"https?://|//cdn|<script[^>]+src=|xmlhttprequest|websocket|sendbeacon",
         )
         self.assertNotIn("localStorage", self.html)
         self.assertNotIn("sessionStorage", self.html)
 
-    def test_presentation_visual_contract_and_fixed_viewport(self) -> None:
+    def test_large_minimal_fixed_viewport_and_javascript_syntax(self) -> None:
         for token in (
-            "--bg:#050505",
-            "letter-spacing:.22em",
-            "border-bottom:1px solid var(--line)",
             "height:100vh",
             "overflow:hidden",
-            "grid-template-columns:205px minmax(0,1fr) 280px",
-            "@media(max-height:760px)",
+            "font-size:34px",
+            "font-size:42px",
+            "grid-template-columns:minmax(0,1fr) 330px",
         ):
             self.assertIn(token, self.html)
-
-    def test_javascript_syntax_and_next_reset_loop(self) -> None:
         completed = subprocess.run(
             ["node", "--check", "-"], input=self.script, text=True, capture_output=True
         )
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertIn("index=index<2?index+1:0", self.script)
-        self.assertIn("처음부터 다시 보기 ↺", self.script)
+        self.assertIn('textContent="DATA_UNAVAILABLE · HOLD"', self.script)
 
 
 if __name__ == "__main__":

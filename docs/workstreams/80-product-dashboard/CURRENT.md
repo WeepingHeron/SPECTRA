@@ -2,7 +2,15 @@
 
 ## 상태
 
-`VERIFIED — H27 Presentation-first 3-Step Product Demo`
+`VERIFIED — H28 Functional Evidence Review Demo`
+
+## H28 Functional Evidence Review Demo — 2026-08-24
+
+- 설명 중심 H27 허브를 세 bundled JSON을 실제로 읽고 검증하는 단일 제품 동선으로 교체했다. 주 화면 조작은 `근거 검사 실행 → local review action → 변경 영향 불러오기` 세 가지뿐이다.
+- 1단계는 SPENVIS provider reference, NASA/COTS exact source와 rights 공백을 표시하고, 2단계는 합성 exact-part 후보의 PN·process·lot·TID와 세 가지 검토 action을 제공하며, 3단계는 generated MVP 결과 `0.063072 → 0.013072`와 environment/part gap을 함께 표시한다.
+- 낙관 decision, fabricated approval/rights와 change-impact value rebinding 공격은 모두 `HOLD`로 닫힌다. 검토 action도 최종 승인이나 `PASS`를 만들지 않는다.
+- 직접 테스트 10개와 Product binding 17개가 통과했다. localhost 1280×720에서 세 조작, 실제 fixture 값 표시, 최종 `FINAL ASSURANCE · HOLD`와 document/work/result x/y overflow 0을 확인했다.
+- 실제 connector/API, actual evidence, authenticated audit와 radiation assurance는 추가하지 않았다. 공용 schema·Core 변경 요청은 없다.
 
 ## H27 Presentation-first 3-Step Product Demo — 2026-08-24
 

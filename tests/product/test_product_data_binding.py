@@ -955,7 +955,7 @@ process.stdout.write(JSON.stringify(observed));
             self.assertNotIn(unsupported_comparison, cots_slide)
         self.assertEqual(len(re.findall(r'<section class="slide(?: [^"]*)?"', presentation)), 13)
         self.assertIn('href="roadmap-lab.html"', presentation)
-        self.assertIn('40초 제품 흐름 열기 ↗', presentation)
+        self.assertIn('제품 검토 시연 열기 ↗', presentation)
         self.assertIn("String(slides.length - 2).padStart(2,'0')", presentation)
         self.assertIn("@keyframes slide-enter", presentation)
         self.assertIn("animation:slide-enter", presentation)

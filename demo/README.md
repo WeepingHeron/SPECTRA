@@ -1,16 +1,16 @@
 # SPECTRA Offline HTML Demo
 
-## H27 3-Step Roadmap Demo 실행 안내
+## H28 Functional Evidence Review 실행 안내
 
-`roadmap-lab.html`은 발표 직후 40초 안에 제품을 이해시키는 세 단계 guided demo다. 기존 7개 기능 카드는 주 화면에서 제거하고 `자료 연결 → AI 보조 검토 → 판단과 다음 행동`만 남겼다. 발표 자료와 같은 검은 배경·큰 제목·얇은 구분선·흰색 선택 상태를 사용한다.
+`roadmap-lab.html`은 설명용 로드맵이 아니라 저장소의 세 JSON을 실제로 읽는 단일 로컬 제품 시연이다. 화면에는 `근거 검사 실행 → 검토 액션 선택 → 변경 영향 불러오기`만 남겼다.
 
-| 시연 단계 | 발표자가 말할 핵심 | 화면 결론 |
+| 조작 | 실제 입력 | 화면 결과 |
 |---|---|---|
-| 01 자료 연결 | 계산 전에 환경·부품·권리 identity를 확인한다. | `아직 계산하지 않음 / HOLD` |
-| 02 AI 보조 검토 | AI 값은 증거가 아니라 source-bound 검토 후보다. | `REVIEW_REQUIRED / HOLD` |
-| 03 판단과 다음 행동 | 변경 영향과 남은 근거 공백을 함께 보여 준다. | `FINAL ASSURANCE / HOLD` |
+| 근거 검사 실행 | `evidence-source-readiness-synthetic.json` | 원본·exact source·권리 공백과 `HOLD` |
+| 검토 액션 선택 | `document-extraction-candidate-synthetic.json` | PN·process·lot·TID 후보와 local review action |
+| 변경 영향 불러오기 | `mvp-product-result.json` | `0.063072 → 0.013072`, 근거 공백, 최종 `HOLD` |
 
-각 단계에서는 제목과 오른쪽 `SPECTRA ANSWER`만 설명한다. 기존 7개 상세 route는 삭제하지 않고 오른쪽 아래 `Q&A ↗` 링크로만 제공한다. 본 발표에서 열지 않는다.
+후보 검토의 어떤 선택도 최종 승인이나 `PASS`를 만들지 않는다. 입력 손상·낙관 승격·결과 결속 불일치는 값을 숨기고 `DATA_UNAVAILABLE · HOLD`로 닫는다.
 
 저장소 루트에서 localhost를 loopback에만 bind한다.
 
@@ -19,22 +19,16 @@ cd /Users/taehoon/Desktop/IAA/SPECTRA
 python3 -m http.server 8765 --bind 127.0.0.1
 ```
 
-브라우저에서 `http://127.0.0.1:8765/demo/roadmap-lab.html`을 열고 하단 `다음` 버튼을 두 번 누른다. 마지막 화면의 `처음부터 다시 보기`로 초기 상태를 복원한다.
+브라우저에서 `http://127.0.0.1:8765/demo/roadmap-lab.html`을 열고 위 세 조작을 순서대로 실행한다. 마지막 `처음부터`로 초기 상태를 복원한다.
 
 직접 테스트:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_evidence_source_intake
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_cots_candidate_library
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_document_review_workflow
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_ai_processing_readiness
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_change_impact_demo
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_cad_linkage_readiness
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_security_posture
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_roadmap_lab
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_product_data_binding
 ```
 
-이 묶음에는 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini API 호출, authenticated HITL, 실제 CAD parser·3D shielding 계산, KMS 서명 운영 또는 penetration test가 없다. guided demo와 상세 화면의 로컬 test 통과는 실제 environment/part contract, suitability 또는 방사선 assurance 완료를 뜻하지 않는다.
+이 묶음에는 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini API 호출 또는 authenticated approval이 없다. 로컬 기능과 fail-closed 검증 통과는 실제 environment/part contract, suitability 또는 방사선 assurance 완료를 뜻하지 않는다.
 
 ## H19 Readiness Receipt Integration
 
