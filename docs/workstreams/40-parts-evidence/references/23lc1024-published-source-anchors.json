@@ -1,0 +1,35 @@
+{
+  "manifest": {
+    "anchor_id": "spectra-jlupub-19623-manifest-review-20260825",
+    "record_id": "10.22029/jlupub-19623",
+    "doi": "10.22029/jlupub-19623",
+    "official_record_url": "https://jlupub.ub.uni-giessen.de/items/bacfbfc4-a5e7-46b1-b2a0-332d8231cc49",
+    "artifact_url": "https://jlupub.ub.uni-giessen.de/server/api/core/bitstreams/ecc83730-096d-4083-94a1-bff6adf67f68/content",
+    "byte_size": 33130232,
+    "content_sha256": "a6cee9eb8eaca8dab8636caf0ad4cd4248fbfccfab57c9ce9af2c7324969f373",
+    "license_id": "CC-BY-4.0"
+  },
+  "rights_review": {
+    "anchor_id": "spectra-cc-by-4.0-scope-review-20260825",
+    "record_id": "10.22029/jlupub-19623",
+    "license_id": "CC-BY-4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "allowed_actions": [
+      "LOCATOR",
+      "FETCH",
+      "PRIVATE_STORE",
+      "PROCESS_LOCAL_AI",
+      "DISPLAY_INTERNAL",
+      "DISPLAY_EXTERNAL",
+      "REDISTRIBUTE",
+      "COMMERCIAL_USE"
+    ],
+    "required_conditions": [
+      "ATTRIBUTION_REQUIRED",
+      "LICENSE_NOTICE_REQUIRED",
+      "CHANGE_NOTICE_REQUIRED_IF_MODIFIED",
+      "NO_ENDORSEMENT"
+    ],
+    "status": "REVIEWED_WITH_CONDITIONS"
+  }
+}

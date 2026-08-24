@@ -2,7 +2,16 @@
 
 ## Status
 
-`VERIFIED — H10 published-reference comparison gate / NOT_COMPARABLE / HOLD`
+`VERIFIED — H11 published source package / SOURCE_READY_COMPARISON_BLOCKED / HOLD`
+
+## H11 published source package — 2026-08-25
+
+- 실제 외부 PDF `33,130,232` bytes의 SHA-256을 검토된 artifact identity와 직접 결속하고, DOI·공식 JLU host·고정 record/artifact URL·CC BY 4.0·attribution/action 조건을 production source gate에서 재검증한다.
+- raw PDF는 Git 밖에 두고 candidate manifest와 reviewed anchor, identity-free receipt만 저장소에 둔다. candidate와 anchor를 함께 바꾸는 재결속도 코드에 고정된 reviewed identity와 달라지면 차단한다.
+- package composer가 source receipt와 H10 comparison receipt의 artifact hash를 다시 대조한다. 현재 source manifest/rights blocker 2개만 해소되고 exact identity·package·lot/die·mission·TID/destructive SEE blocker는 남는다.
+- 실제 결과: `VALID / READY_FOR_REFERENCE_REVIEW`; package 결과: `VALID / SOURCE_READY_COMPARISON_BLOCKED / NOT_COMPARABLE / HOLD`.
+- source/package 17개와 기존 comparison/evidence 22개, 총 39개 인접 테스트가 통과했다. 상세 범위와 권리 조건은 `PUBLISHED_SOURCE_PACKAGE_H11.md`에 기록했다.
+- CC BY 검토는 저작권·유사권 범위이며 특허·상표·privacy, 과학 정확성, exact-part applicability와 법률 자문을 대신하지 않는다. actual EvidencePacket은 계속 0건이다.
 
 ## H10 published-reference comparison gate — 2026-08-25
 

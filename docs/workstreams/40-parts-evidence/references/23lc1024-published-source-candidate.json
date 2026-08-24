@@ -1,0 +1,78 @@
+{
+  "contract_version": "PUBLISHED_ARTIFACT_GATE_1.0.0",
+  "source_class": "PUBLISHED_ACTUAL",
+  "provider": "JLUpub",
+  "record_id": "10.22029/jlupub-19623",
+  "doi": "10.22029/jlupub-19623",
+  "official_record_url": "https://jlupub.ub.uni-giessen.de/items/bacfbfc4-a5e7-46b1-b2a0-332d8231cc49",
+  "artifact_url": "https://jlupub.ub.uni-giessen.de/server/api/core/bitstreams/ecc83730-096d-4083-94a1-bff6adf67f68/content",
+  "file_name": "PlettenbergMona-2025-02-03.pdf",
+  "observed_at": "2026-08-25T05:19:00+09:00",
+  "byte_size": 33130232,
+  "content_sha256": "a6cee9eb8eaca8dab8636caf0ad4cd4248fbfccfab57c9ce9af2c7324969f373",
+  "license": {
+    "id": "CC-BY-4.0",
+    "canonical_url": "https://creativecommons.org/licenses/by/4.0/",
+    "declared_on_record": true
+  },
+  "attribution": {
+    "title": "Effects of Cosmic Radiation on Active Implanted Medical Devices",
+    "creator": "Mona C. Plettenberg",
+    "source_url": "https://jlupub.ub.uni-giessen.de/items/bacfbfc4-a5e7-46b1-b2a0-332d8231cc49",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "modified": false
+  },
+  "rights": {
+    "action_grants": [
+      {
+        "action": "LOCATOR",
+        "status": "ALLOWED_WITH_CONDITIONS",
+        "basis": "CC_BY_4_0_RECORD"
+      },
+      {
+        "action": "FETCH",
+        "status": "ALLOWED_WITH_CONDITIONS",
+        "basis": "CC_BY_4_0_RECORD"
+      },
+      {
+        "action": "PRIVATE_STORE",
+        "status": "ALLOWED_WITH_CONDITIONS",
+        "basis": "CC_BY_4_0_RECORD"
+      },
+      {
+        "action": "PROCESS_LOCAL_AI",
+        "status": "ALLOWED_WITH_CONDITIONS",
+        "basis": "CC_BY_4_0_RECORD"
+      },
+      {
+        "action": "DISPLAY_INTERNAL",
+        "status": "ALLOWED_WITH_CONDITIONS",
+        "basis": "CC_BY_4_0_RECORD"
+      },
+      {
+        "action": "DISPLAY_EXTERNAL",
+        "status": "ALLOWED_WITH_CONDITIONS",
+        "basis": "CC_BY_4_0_RECORD"
+      },
+      {
+        "action": "REDISTRIBUTE",
+        "status": "ALLOWED_WITH_CONDITIONS",
+        "basis": "CC_BY_4_0_RECORD"
+      },
+      {
+        "action": "COMMERCIAL_USE",
+        "status": "ALLOWED_WITH_CONDITIONS",
+        "basis": "CC_BY_4_0_RECORD"
+      }
+    ],
+    "conditions": [
+      "ATTRIBUTION_REQUIRED",
+      "LICENSE_NOTICE_REQUIRED",
+      "CHANGE_NOTICE_REQUIRED_IF_MODIFIED",
+      "NO_ENDORSEMENT"
+    ],
+    "scope_note": "Copyright and similar-rights scope only; patent, trademark, privacy, scientific accuracy and exact-part applicability are not established."
+  },
+  "claimed_use_status": "NOT_FOR_DECISION",
+  "claimed_decision": "HOLD"
+}

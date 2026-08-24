@@ -312,6 +312,8 @@ Core Evidence-to-Decision 경로를 역할이 분리된 Agent와 실제 GCP 서�
 - `HOLD`·증거 공백·미지원 범위의 명시적 표시
 - 변경 전후 영향 보고서
 - 데이터 분류와 계산 실행 ID 노출
+- 실제 GCP Workflow 실행 ID를 기준으로 Agent별 진행·실패, input/output hash, Storage generation과 최종 Core/Assurance 상태를 라이브 시각화
+- GCP 실행 성공과 evidence 검증·assurance 상태를 분리 표시하고 snapshot/fallback은 라이브로 오인되지 않게 명시
 - 라이브 실패에 대비한 검증된 고정 결과 fallback
 
 ### Exit Gate
@@ -319,6 +321,7 @@ Core Evidence-to-Decision 경로를 역할이 분리된 Agent와 실제 GCP 서�
 - 핵심 흐름을 한 화면씩 이해할 수 있다.
 - 모든 주요 수치에서 출처 또는 데이터 분류로 이동할 수 있다.
 - 실패·누락 상태가 성공 화면으로 렌더링되지 않는다.
+- live GCP와 fallback/snapshot의 출처·시각·실행 ID가 시각적으로 구분된다.
 - 대표 시나리오를 반복 재현할 수 있다.
 
 ## Stage 9 — 비즈니스 검증과 최종 시연
