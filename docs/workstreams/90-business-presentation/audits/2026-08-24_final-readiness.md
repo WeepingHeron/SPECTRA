@@ -13,7 +13,7 @@
 
 ## 결론
 
-13장 deck과 6분 45초 계산 대본의 순서·전환·Slide 10 버튼 동선은 일치한다. 발표의 강점은 Multi-Agent 책임 분리, 저장된 GCP 합성 실행 3건, 입력 무결성 공격의 fail-closed 처리, 실제 근거가 없을 때 `HOLD`하는 일관성이다.
+13장 deck과 6분 45초 계산 대본의 순서·전환은 일치한다. Slide 10 GCP 시연은 70초, Slide 11의 3단계 제품 흐름은 45초로 배정했다. 발표의 강점은 Multi-Agent 책임 분리, 저장된 GCP 합성 실행 3건, 입력 무결성 공격의 fail-closed 처리, 실제 근거가 없을 때 `HOLD`하는 일관성이다.
 
 Cover는 “방사선 판단 근거를 검증한다”로 실제 `HOLD` 경계에 맞췄고, Slide 01·03의 출처·적용 범위가 불충분한 비용·납기·성능·면역 수치를 제거했다. Slide 03은 `commercial availability → evidence gap → mission-specific verification`의 정성적 구조만 보여준다.
 
@@ -24,7 +24,7 @@ Cover는 “방사선 판단 근거를 검증한다”로 실제 `HOLD` 경계�
 | Multi-Agent 아키텍처 및 GCP 인프라 | 35 | 강함 | Mission·Parts·Assurance 책임 분리, private Cloud Run 3종, Workflows 순차 차단, Storage·IAM·Logging, 저장 실행 1–3 | Parts·Assurance 개별 차단 4–5는 실행 기록이 아닌 동작 예시이며 actual evidence traffic은 0건 |
 | 할루시네이션 방어 및 무결점 신뢰성 | 20 | 강함·범위 제한 | body hash·revision 결속, endpoint override 차단, 값 숨김·후속 호출 중단·`HOLD`, 자체 승인 차단 | 침투시험·KMS 서명·실사용 RBAC 미완료; 과학 정확성·무결점으로 확대하면 즉시 감점 |
 | 비즈니스 임팩트 및 문제 정의 | 30 | 방어 가능 | 사람이 exact identity·시험 조건·권리·승인 trace를 다시 연결하는 병목, Workspace의 gap→owner→next action | 사용자·구매자·가격·업무시간·return rate·trace completeness가 `UNSET / UNVALIDATED`; ROI 수치 금지 |
-| 팀 시너지 및 프레젠테이션 | 15 | 강함 | 1인 구현에서도 Agent 책임 분리, 독립 검증, authoritative JSON·stable code·direct test 대조 | 사람 리허설 `NOT_MEASURED`; Slide 10의 80초 조작과 Q&A 전환을 현장에서 한 번 측정해야 함 |
+| 팀 시너지 및 프레젠테이션 | 15 | 강함 | 1인 구현에서도 Agent 책임 분리, 독립 검증, authoritative JSON·stable code·direct test 대조 | 사람 리허설 `NOT_MEASURED`; Slide 10 70초와 Slide 11 45초의 탭 전환을 현장에서 한 번 측정해야 함 |
 
 ## 발표자가 수행할 1회 리허설 체크리스트
 
@@ -37,6 +37,8 @@ Cover는 “방사선 판단 근거를 검증한다”로 실제 `HOLD` 경계�
 - [ ] Slide 07에서 ECC ON을 눌러도 최종 assurance가 `HOLD`인지 확인한다.
 - [ ] Slide 10 시작 전에 “1–3 저장 기록만 시연, 4–5는 Q&A용 동작 예시, 모두 not live”를 먼저 말한다.
 - [ ] Slide 10 버튼은 `1 → 2 → 3`만 순서대로 누르고, 4–5는 본 발표에서 클릭하지 않는다.
+- [ ] Slide 11에서 `40초 제품 흐름 열기`를 누르고 `자료 연결 → AI 보조 검토 → 판단과 다음 행동`을 두 번의 다음 클릭으로 끝낸다.
+- [ ] 마지막 `FINAL ASSURANCE · HOLD`를 말한 뒤 새 탭을 닫고 Closing으로 이동한다.
 - [ ] Q&A에서 4–5를 열더라도 역할 경계 설명으로만 사용하고 GCP 실행 증거라고 부르지 않는다.
 - [ ] 보안은 네 trust boundary만 말하고 “완벽”, “무결점”, “침투시험 완료”, “KMS 완료”를 말하지 않는다.
 - [ ] 실제 environment run·승인 BOM·시험 원문 `0건`, 사용자 가치 `UNVALIDATED`, 최종 `HOLD`를 Closing 또는 Q&A에서 유지한다.

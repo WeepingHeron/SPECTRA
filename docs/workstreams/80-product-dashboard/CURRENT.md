@@ -11,6 +11,7 @@
 - 각 단계는 발표 자료와 같은 검정 배경, 큰 흰색 제목, 얇은 경계선과 단일 흰색 선택 상태를 사용한다. 사용자는 하단 `다음` 버튼을 두 번 눌러 40초 권장 시연을 완료한다.
 - 7개 상세 route는 삭제하지 않고 오른쪽 `Q&A ↗` 보조 링크로만 이동했다. 본 발표에서는 제목과 오른쪽 `SPECTRA ANSWER`만 설명하며 세부 도구를 열지 않는다.
 - 발표 Slide 11 링크 문구도 `40초 제품 흐름 열기`로 바꿔 화면 목적을 기능 개수 대신 사용자 흐름으로 표현했다.
+- Git 밖 7분 주 대본은 Slide 10 GCP 70초·Slide 11 제품 흐름 45초로 재배분해 계산 총 6분 45초와 전환 여유 15초를 유지했다. 실제 사람 낭독·탭 전환 시간은 계속 `NOT_MEASURED`다.
 - Roadmap 직접 테스트 8개와 Product binding 17개가 통과했다. localhost 1280×720에서 1→2→3→초기화 동선, 단계별 결론과 `FINAL ASSURANCE · HOLD`, document/story/answer x/y overflow 0을 확인했다.
 - 실제 connector·AI API·authenticated approval·CAD 계산·KMS·penetration test 또는 actual evidence는 추가하지 않았다. 최종 assurance는 계속 `HOLD`다.
 - `CONTRACT_CHANGE_REQUEST`: 없음. 공용 schema·Core engine과 7개 상세 기능 계약을 수정하지 않았다.
