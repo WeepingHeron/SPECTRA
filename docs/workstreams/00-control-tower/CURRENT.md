@@ -6,9 +6,9 @@
 
 ## Last verified
 
-- 날짜: 2026-08-20
+- 날짜: 2026-08-24
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 통합 체크포인트: runtime 계약·engine·Assurance·Product H09는 commit `32b6131`, Parts H04·Business H03 문서 패키지는 commit `b2c8ef6`로 분리했다. 이 Control Tower 상태·운영 정리 commit과 함께 `main`을 `origin/main`에 한 번 push한다.
+- Git 통합 체크포인트: H05 GCP·Assurance·Product·발표·루트 문서 통합 패키지는 commit `889dc94`로 검증·커밋했고, 이 Control Tower 기록 commit과 함께 `origin/main`에 반영했다. ignored `instructions/`와 Git 밖 private evidence는 포함하지 않았다.
 
 ## 현재 확인된 산출물
 
@@ -22,11 +22,26 @@
 
 ## 현재 진실
 
+- 2026-08-24 최종 통합 회귀에서 schema 14개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 23, Product 16, GCP H05 local 12 tests와 Assurance 47 attack executions/False PASS 0을 재현했다. `ASR-D02` preparation은 prepared attack 16개·control 1개·failure 0이지만 live execution 0으로 계속 `NOT_EVALUATED`다. JSON 형식, Python·shell syntax, staged diff와 비밀정보 경계도 확인한 뒤 57개 파일을 commit `889dc94`로 통합했다. 이 Git 통합은 실제 environment contract, exact-part evidence, 과학적 적합성 또는 radiation assurance 완료를 뜻하지 않는다.
+- 2026-08-24 루트 문서 정합성 감사를 수행했다. schema 14개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 23, Product 16, GCP H05 local 12 tests와 Assurance 47 attack executions/False PASS 0을 재현했다. 이 회귀는 합성·계약·표현 경로의 현재 동작만 확인하며 실제 방사선 과학·부품 suitability·권리·`ASR-D02`를 검증하지 않는다.
+- 루트 README의 Stage 2 시점 설명, ROADMAP의 `ASR-D02 진행 중`, Stage 7의 미표시 검증 항목과 초기 `현재 우선순위/다음 작업`을 현재 증거에 맞게 갱신했다. H05 합성 GCP 계약·resource·E2E·장애 격리 항목만 완료로 표시했고, 비용 기준선·전체 배포 공격·실제 evidence 경로는 미완료로 유지했다.
+- 2026-08-22 사용자 확인으로 실제 발표 경로는 `demo/product.html`이 아니라 `demo/index.html` 단독이었고, 실제 사용한 최신 원본은 Downloads의 `spectra_presentation.html`이었다. 개별 cover/01~09/COTS HTML은 발표 후 피드백을 반영한 배치·문구 청사진이다. Control Tower는 이 실제 발표본을 저장소 기준으로 동기화한 뒤 기존 흑백 deck 디자인을 유지하면서 `spectra_slide_cots_comparison.html`을 03번에 **삽입**하고, 차폐 이유·1/4/5 mm 의미·전체 흐름 설명을 추가해 `Cover + 01~11 + Closing`, 총 13장으로 통합했다.
+- 새 GCP Workflow execution `ad392071-1554-43e8-9447-5b92d4790a48`을 재인증 후 독립 조회했다. Workflow `spectra-h04-e2e` revision `000005-32c`에서 `SUCCEEDED`했고, all-zero expected SHA-256을 가진 합성 공격 입력을 Mission revision `spectra-h04-mission-00006-4f5`가 `INPUT_BODY_SHA256_MISMATCH`로 차단했다. 실제 Storage result generation `1787290937657357`과 05:42:16~17Z Cloud Run structured log가 `INVALID_INPUT / NOT_EVALUATED / HOLD`에 일치한다. Parts·Assurance가 호출되지 않은 것은 Mission 단계 fail-closed 결과다. 이 실행은 추가 공격 차단 증거로 `VERIFIED`지만, 세 Agent 정상 실행·실제 환경·부품 보증 증거로 확대하지 않고 기존 H05 snapshot과 별도 표시한다.
+- 2026-08-22 Product H17 후속 후보를 실제 diff와 실행 harness로 재검증했다. 1·4 mm는 TID만 표시하고 Residual SEU는 `—`, 2 mm는 ECC OFF `0.063072` / ON `0.013072`, 5 mm는 수치를 만들지 않고 `OUT_OF_MODEL_SCOPE / NOT_EVALUATED / HOLD`로 닫는다. 제거된 35점 badge를 계속 요구하던 stale 테스트 기대값을 Control Tower가 바로잡고 네 두께·ECC 상태 검사를 추가했으며 Product 직접 테스트 16개와 JavaScript syntax가 통과했다. 실제 `file://` 브라우저는 URL 정책으로 차단돼 viewport·console·수평 overflow·상하 4박스 정렬은 `NOT_EVALUATED`이며 H17은 아직 `VERIFIED`로 승격하지 않는다.
+- Downloads 생성 시각 기준 실제 사용 대본은 `spectra_7min_presentation_script.md`의 2026-08-21 13:55 추가본이다. 이 파일은 실제 발표 이력으로 인정하지만 AP-8/AE-8·SHIELDOSE-2 기반 실제 계산, 정확 부품 성적서, 79% 저감, 19개 평가, False PASS 0, 실시간 실행과 비행 승인 표현을 포함해 현재 증거 범위를 넘으므로 canonical assurance 대본으로는 `CHANGES_REQUESTED`다.
+- 저장소 `demo/index.html` 시각 통합은 localhost `http://127.0.0.1:8766/index.html`의 실제 1280×720 브라우저에서 13장 모두 document/inner horizontal·vertical overflow 0, console warning/error 0을 확인했다. 범위·신뢰성 화면의 상단 두 박스는 `129 px`, 하단 네 박스는 `73 px`로 각 행의 상·하 기준선이 일치했고, GCP 화면의 두 decision 박스도 `114 px`로 정렬됐다. 35점 badge는 없고 6개 node·세 Agent·H05 synthetic snapshot·`HOLD` 범위만 표시된다.
+- 같은 브라우저에서 차폐 1/2/4 mm는 각각 TID `8.0/6.0/3.5 krad(Si)`와 `VALID`, 5 mm는 `계산 안 함 / OUT_OF_MODEL_SCOPE / HOLD`로 닫혔다. ECC는 2 mm 고정 시나리오에서 OFF `0.063072`, ON `0.013072`이며 실제 효과가 아니라는 문구를 유지한다. 직접 테스트 16개, JavaScript syntax와 `git diff --check`도 통과했다. 이 판정은 **발표 deck의 시각·상호작용 통합만 `VERIFIED`**한 것이며 COTS 비교 수치·과학 정확성·실제 환경·부품 suitability는 계속 `NOT_EVALUATED / HOLD`다.
+- Google Cloud Console 버튼은 실제 발표본과 같은 stable Workflow URL `.../spectra-h04-e2e?project=iceu-686` 연결을 유지한다. 로그인된 Console이 인증 과정에서 `executions?...&rapt=...`로 이동시키는 동작을 코드에 토큰과 함께 고정하지 않는다.
+
+- 2026-08-21 범위 감사에서 SPECTRA의 Core Product를 환경 모델·정확한 부품 시험 증거·결정론적 TID/SEU·차폐/ECC·fail-closed로 고정했다. WATCHDOG·TMR·SEL protection runtime은 과거 검증 이력을 보존하는 실험 범위이며 현재 제품 판단·주 발표·Core 신뢰성 집계에서 제외한다.
+- 공식 평가 기준은 Multi-Agent·GCP 35, 신뢰성 20, 비즈니스·문제 정의 30, 팀 시너지·발표 15다. Multi-Agent·GCP는 과학적 Core와 역할은 분리하지만 Competition Demo Release의 필수 Stage다.
+- 교육용 project `iceu-686`, region `asia-northeast3`에 private Cloud Run Agent 3개, Workflows, Storage, IAM, Logging 합성 E2E가 실제 배포됐다. 사용자는 비용 제한을 두지 않았으며 resource는 계속 배포 중이다. H04 독립 공격에서 발견한 body-hash 우회·Core 미결합·runtime endpoint 교체 가능성은 H05에서 보완했고, 로컬 12 tests·실제 revision·정상/공격 result를 독립 재검증해 H05를 `VERIFIED`로 판정했다.
+
 - SPECTRA의 문제·범위·평가 기준 문서는 작성됐다.
 - Stage 1~9 로드맵과 단계별 체크리스트가 존재하며, 각 Stage 번호는 주관 Workstream 앞자리와 일치한다.
 - 결정론적 합성 TID·SEE 기준선은 Workstream 20이 프로젝트에 통합했고, 모든 결과가 `SYNTHETIC/HOLD`를 유지한다.
 - 실제 SPENVIS 원본 bundle 1세트·9개와 parser 후보는 Git 밖에서 checksum·구조 검증했지만, provider reference·권리·승인 raw manifest 부족으로 제품 contract 발행은 0건이다. 실제 부품 시험자료의 승인 ingest와 과학적 교차검산도 미완료다.
-- Multi-Agent·GCP 구현과 배포 증거는 아직 없다.
+- Multi-Agent·GCP H05 구현·배포 증거와 발표 deck의 합성 snapshot 표시는 `VERIFIED`지만 Workstream 60의 고정 revision `ASR-D02`, 비용 기준선과 최종 통합 전까지 Stage 7 완료로 승격하지 않는다.
 - 검증된 Stage 1 계약 기준선은 커밋 `303adb9`로 비공개 `origin/main`에 반영됐다. 해당 커밋 메시지의 `Stage 0` 표기는 번호 정렬 이전의 역사적 명칭이다.
 - 채팅 세션 10의 Contracts & Schema 작업은 4차 수정 후 독립 재검증과 Git 통합을 완료했다.
 - 세션은 실제 채팅방을 뜻한다. Workstream은 십 단위로 구분하고 첫 채팅도 같은 번호를 사용하며, 같은 Workstream에서 새 채팅이 필요할 때만 1단위로 증가한다.
@@ -70,6 +85,11 @@
 - Workstream 80 H09는 `Object.is()` number 비교로 `+0/-0` 양방향 본문 변조를 닫았다. Product 10개 테스트, 직접 signed-zero 공격, H08 numeric parity·stale-hash 회귀와 실제 브라우저 WATCHDOG/TMR/SEL·console warning/error 0을 독립 재현해 H09 runtime integrity 패키지를 `VERIFIED`로 판정했다. 실제 API·environment·parts evidence·GCP resource는 미통합이고 assurance는 계속 `HOLD`다.
 - commit 직전 전체 회귀에서 schema 14개·정상 5개·실패 116개, simulation 55개, environment 23개, Assurance 공격 실행 47개·False PASS 0, Product 10개와 raw-manifest preflight 2개를 통과했다. live GCP `ASR-D02` 1개는 계속 `NOT_EVALUATED`다.
 - Workstream 10 H06, 20 H03, 60 H03과 80 H09는 commit `32b6131`, Workstream 40 H04와 90 H03 문서 패키지는 commit `b2c8ef6`로 통합했다. 이 Git 통합은 실제 environment contract, 실제 parts evidence, 실제 GCP, 실제 사용자 검증 또는 radiation assurance 완료를 뜻하지 않는다.
+- Workstream 80 H10은 기존 H09 consumer를 그대로 사용한 60→999 stale-preimage 공격 데모를 구현했다. Product 11개 테스트와 실제 브라우저 1280×720·1440×900에서 정상 → 공격 입력 → 대상 record 수치·ID·hash 비노출 및 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD` → Reset, horizontal overflow 0과 console warning/error 0을 독립 재현해 `VERIFIED`로 판정했다. 사람 동선은 `PLANNED 70초`, 실제 assurance는 계속 `HOLD`다.
+- Workstream 90 H04는 `PLANNED 85초` 교체 산술과 안전 경계는 통과했지만 H10 완료 후에도 실제 control label·순서·Reset 관측 대신 `H10 대조 필요`와 `H10 미제출` 문구를 남겼다. H04는 `CHANGES_REQUESTED`이며 H05에서 문서 정합성만 보완한다.
+- Workstream 90 H05는 H04의 pre-H10 상태와 placeholder를 제거하고 검증된 H10 실제 control 5개·경고 label·정상/공격/차단/Reset 관측에 runbook을 정렬했다. stale 문구 0건, exact label 대조, `85/240/420초` 산술과 `git diff --check`를 독립 재현해 문서 정합성 패키지를 `VERIFIED`로 판정했다. 시간은 계속 `PLANNED`이며 사람 리허설과 Stage 9은 미완료다.
+- Workstream 80 H14의 Product 13 tests와 H09 문서 정합성은 재현했고 사용자는 실제 발표 장치의 기본 wheel 이동을 수용했다. 그러나 부드러운 전환 소실, Product의 범위 제한 반복, TMR·SEL 가정과 현재 비채택 상태의 설명 부족으로 H14와 Workstream 90 H09를 `CHANGES_REQUESTED`로 판정했다. 첫↔마지막 wrap은 사용자 결정으로 후속 Exit Gate에서 제외한다.
+- Workstream 80 H15는 번호 없는 표지, 고정 화면 smooth entry, Product 범위 문구 축약, ECC 채택 이유, equal metric grid, runtime 확장 예시 구분, 보증 판단 재구성을 담당한다. Workstream 90 H10은 같은 구조의 초심자 대본·용어집·Q&A를 병렬 정렬한다. 도료·코팅 차폐는 이번 데모 범위에서 제외한다.
 - 사용자가 채팅에 전달할 작업 지침과 change request는 해당 `docs/workstreams/<workstream>/instructions/`에 생성해 링크로 전달한다. 작업 채팅이 완료 후 제출하는 handoff는 같은 계층의 `handoffs/`에 저장한다. 두 폴더 모두 Git에서 제외하며, 기존 추적 handoff 6개는 로컬 파일을 보존한 채 Git index에서 제거했다. 작업 지침에는 항상 `병렬 가능 작업`을 포함하고 후보가 없으면 그 이유와 선행 의존성을 적는다.
 
 ## 알려진 한계
@@ -81,9 +101,12 @@
 
 ## 다음 권장 작업
 
-1. 정상 결과 → payload 수치 변조 → 수치·ID·hash 차단 및 HOLD 순서의 60~90초 Assurance Attack Demo를 설계한다.
-2. 발표 동선에서 H09 fail-closed가 실제 assurance 완료가 아니라 합성 Product integrity 검증임을 명시한다.
-3. 최종 통합 또는 commit 직전에만 schema·simulation·environment·assurance·product 전체 회귀를 한 번 실행한다. provider reference·권리·승인 raw manifest와 live GCP 증거가 없으면 계속 `HOLD/NOT_EVALUATED`로 둔다.
+1. Workstream 30이 확보한 SPENVIS bundle에 provider job reference, action별 권리, 승인 raw manifest와 과학적 교차검산을 연결해 environment contract 발행 가능성을 판정한다.
+2. Workstream 40이 승인 BOM exact-part 1개를 고정하고 권리 확인 원문, 시험 조건·임무 적용성, TID와 필요한 파괴성 SEE coverage를 연결한다.
+3. Workstream 60이 사용자 승인과 고정 revision 범위를 확인한 뒤 실제 GCP `ASR-D02`를 수행하고 False Accept/PASS와 관찰 증거를 제출한다. 실행 전 상태는 `NOT_EVALUATED`다.
+4. 실제 environment·part contract가 생기면 Workstream 80이 합성 fallback과 분리된 Evidence-to-Decision 경로와 원문 locator를 Product에 연결한다.
+5. Workstream 90은 실제 사용자 1명의 5분 실행·판정 이유·다음 행동 탐색을 측정하고 COTS·과학·비용 주장을 출처·범위에 맞게 정리한다.
+6. 공통 계약·Core 수정 시에만 인접 회귀를 넓히고, 전체 회귀와 commit·push는 검증 가능한 통합 단위가 정리된 뒤 한 번 수행한다. 실제 environment·parts evidence가 없으면 방사선 assurance는 계속 `HOLD`다.
 
 ## 다음 Control Tower 검증 항목
 
