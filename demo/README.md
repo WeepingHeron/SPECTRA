@@ -1,8 +1,38 @@
 # SPECTRA Offline HTML Demo
 
+## H19 Readiness Receipt Integration
+
+`workspace.html`은 공용 `readiness-receipt.schema.json` dispatcher의 v1 두 종류를 별도 upstream test module import 없이 로컬 파일 선택 경로에서 읽는다. 예시는 `data/readiness-environment-hold-v1.json`과 `data/readiness-part-contract-not-implemented-v1.json`이다.
+
+- Environment v1은 `HOLD_NOT_ISSUED`, Part v1은 `CONTRACT_NOT_IMPLEMENTED`만 표시한다.
+- source class/purpose, processing 상태, blocker code와 blocker별 담당 역할·다음 행동만 표시한다.
+- receipt ID, source record ID, 공학 수치, suitability, actual output reference와 낙관 판정은 표시·export하지 않는다.
+- unknown version·kind, cross-kind field, malformed nested type, 빈 blocker, `PASS` blocker, issuance/implementation/decision-use/assurance 상향은 식별자와 세부값을 숨긴 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`로 닫는다.
+- 이 receipt는 실제 environment/part contract 본문이나 assurance evidence가 아니다. 실제 contract와 실제 evidence는 계속 0건이다.
+
+## H18 Evidence Review Workspace
+
+`workspace.html`은 발표 deck·Product prototype과 분리된 오프라인 evidence readiness 검토 화면이다. 사용자가 `data/review-workspace-synthetic.json`처럼 H18 로컬 intake 형식에 맞는 JSON을 명시적으로 선택하면 브라우저 메모리에서만 읽고, Environment·Exact Part·TID·SEL·SEB·SEGR·Rights·Scientific Crosscheck의 coverage와 blocking gap 담당 역할·다음 행동을 표시한다.
+
+```bash
+cd /Users/taehoon/Desktop/IAA/SPECTRA
+python3 -m http.server 8765 --bind 127.0.0.1
+```
+
+브라우저에서 `http://127.0.0.1:8765/demo/workspace.html`을 연 뒤 **로컬 JSON 열기**로 sample을 선택한다. `file://`에서도 외부 요청 없이 동작하지만, viewport·console 검토에는 localhost가 편리하다. 입력은 업로드·저장하지 않으며 Reset은 식별자와 export 링크를 지운 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`로 돌아간다.
+
+이 화면의 `STRUCTURE_VALID`는 로컬 입력 형식을 읽었다는 뜻일 뿐 evidence 인증이나 assurance 결론이 아니다. 현재 실제 environment/part contract는 0건이며 `ACTUAL` 자기 선언, 인증되지 않은 issuance claim, unknown status, 중복 gap ID, 잘못된 nested type과 낙관 판정은 모두 세부값을 숨기고 `HOLD`로 닫는다. Audit export는 coverage status, stable gap code, owner role, action code와 fail-closed decision만 포함하며 case identity·설명 원문·raw evidence·로컬 경로·개인정보·실제 공학 수치는 제외한다.
+
+직접 테스트:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.product.test_evidence_review_workspace
+```
+
 ## 현재 기준선 — 2026-08-24
 
 - `index.html`은 `Cover + 01~11 + Closing`, 총 13장의 현재 발표 deck이다. localhost 1280×720에서 전 장 overflow 0, console warning/error 0과 키보드·버튼·두께·ECC·GCP snapshot 상호작용을 Control Tower가 확인했다.
+- Slide 10의 `TRUST & INTEGRITY`는 private IAM·input binding의 고정 GCP snapshot 범위와 자체 승인·낙관 승격·fail-closed의 로컬 회귀 범위를 함께 요약한다. 침투시험, KMS 서명 배포, 전체 보안 완성 또는 실제 방사선 보증을 뜻하지 않는다.
 - `product.html`은 발표본과 별도의 5단계 제품 프로토타입이다. Product 직접 테스트 16개와 JavaScript syntax는 통과했지만 최신 H17의 실제 viewport 검증은 완료되지 않아 후보 상태다.
 - 두 화면의 방사선 수치는 generated `SYNTHETIC` 결과이며 실제 환경·부품 assurance가 아니다. 5 mm와 손상·불일치 입력은 값을 만들지 않고 `NOT_EVALUATED/HOLD`로 닫는다.
 - GCP 화면은 H05 Control Tower verified snapshot을 읽기 전용으로 표시한다. 버튼은 Workflow Console을 열지만 HTML이 새 실행을 트리거하거나 live 상태를 assurance로 해석하지 않는다.

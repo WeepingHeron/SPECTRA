@@ -64,12 +64,12 @@ MVP는 부품의 비행 적합성을 인증하지 않는다. 최종 결과가 `H
 
 ## 현재 이미 확보된 기반
 
-- Stage 1: EvidencePacket과 v2 계약·공격 fixture
+- Stage 1: EvidencePacket, v2 계약·공격 fixture와 Environment·Part readiness receipt v1
 - Stage 2: 결정론적 합성 TID·SEE Vertical Slice
 - Stage 5 일부: 합성 차폐·ECC·판정 기준 Decision Engine과 Change Impact
 - Stage 6 일부: Core 공격 29회와 별도 experimental runtime 공격 18회에서 False PASS 0; 실제 GCP `ASR-D02`는 `NOT_EVALUATED`
 - Stage 7 일부: 교육용 GCP의 private Cloud Run Agent 3개·Workflows·Storage·IAM·Logging 합성 E2E H05
-- Stage 8 일부: generated 결과를 소비하는 합성 Product UI와 안전한 offline fallback
+- Stage 8 일부: generated 결과를 소비하는 합성 Product UI, 안전한 offline fallback과 fail-closed Evidence Review Workspace
 
 ## MVP 완료를 위해 남은 핵심
 

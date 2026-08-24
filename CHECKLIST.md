@@ -265,7 +265,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 > Competition Demo Release 필수 Stage. 교육용 GCP project `iceu-686`, 기본 region `asia-northeast3`을 사용하되 실제 생성된 resource·실행·로그만 완료 증거로 인정한다.
 
-> 2026-08-24 범위 정렬: H04에서 발견한 Core 중복 계산, body-hash 결합 우회, runtime endpoint 교체 가능성은 H05에서 보완했다. H05 로컬 12 tests, 실제 Cloud Run/Workflow revision, production Core parity, 본문·SHA 동시 위조와 endpoint override 차단을 독립 재확인했고 발표 deck의 합성 snapshot 표시도 검증했다. Stage 7은 Workstream 60 `ASR-D02`, 비용 기준선과 최종 통합 전까지 완료로 승격하지 않는다.
+> 2026-08-24 범위 정렬: H04에서 발견한 Core 중복 계산, body-hash 결합 우회, runtime endpoint 교체 가능성은 H05에서 보완했다. H05 로컬 12 tests, 실제 Cloud Run/Workflow revision, production Core parity, 본문·SHA 동시 위조와 endpoint override 차단을 독립 재확인했고 발표 deck의 합성 snapshot 표시도 검증했다. 최종 코드·문서 통합은 완료했지만 Stage 7은 Workstream 60 `ASR-D02`와 비용 기준선 전까지 완료로 승격하지 않는다.
 
 ### 에이전트
 
@@ -359,10 +359,10 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ### 평가 기준 최종 점검
 
-- [ ] Multi-Agent 아키텍처 및 GCP 인프라 완성도 35점 증거
-- [ ] 할루시네이션 방어 및 무결점 신뢰성 20점 증거
-- [ ] 비즈니스 임팩트 및 문제 정의 30점 증거
-- [ ] 팀 시너지 및 프레젠테이션 15점 증거
+- [x] Multi-Agent 아키텍처 및 GCP 인프라 완성도 35점 증거
+- [x] 할루시네이션 방어 및 무결점 신뢰성 20점 증거
+- [x] 비즈니스 임팩트 및 문제 정의 30점 증거
+- [x] 팀 시너지 및 프레젠테이션 15점 증거
 
 ### Exit Gate
 
@@ -378,4 +378,4 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [ ] 고정 revision 실제 GCP `ASR-D02` 수행 및 관찰 증거 검증
 - [ ] 실제 contract를 합성 fallback과 구분해 Product Evidence-to-Decision 경로에 연결
 - [ ] 사용자 1명의 5분 실행·판정 이유·다음 행동 탐색 측정
-- [ ] 최종 통합 단위 정리 후 전체 회귀, commit·push 여부 결정
+- [x] 최종 통합 단위 정리 후 전체 회귀, commit·push 완료

@@ -1,0 +1,23 @@
+{
+  "kind": "PART_TEST_EVIDENCE_READINESS_RECEIPT",
+  "contract_version": "1.0.0",
+  "receipt_id": "synthetic-part-hold-001",
+  "assessed_at": "2026-08-24T08:00:00Z",
+  "source_result": {
+    "gate_contract_version": "W40_TEST_CONTRACT_1.0.0",
+    "record_purpose": "DEMO_ONLY",
+    "source_record_id": "synthetic-control"
+  },
+  "target_contract": {
+    "kind": "PART_TEST_EVIDENCE",
+    "schema_version": "2.0.0",
+    "implementation_status": "NOT_IMPLEMENTED"
+  },
+  "readiness_status": "CONTRACT_NOT_IMPLEMENTED",
+  "processing_status": "VALID",
+  "identity_status": "PARTIAL_UNRESOLVED",
+  "applicability_status": "NOT_EVALUATED",
+  "assurance_decision": "HOLD",
+  "used_for_decision": false,
+  "blocker_codes": ["PART_TEST_EVIDENCE_V2_NOT_IMPLEMENTED", "SYNTHETIC_DEMO_ONLY"]
+}

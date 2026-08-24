@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/part-evidence-readiness-receipt.schema.json",
+  "title": "Part Test Evidence v2 Readiness Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "contract_version",
+    "receipt_id",
+    "assessed_at",
+    "source_result",
+    "target_contract",
+    "readiness_status",
+    "processing_status",
+    "identity_status",
+    "applicability_status",
+    "assurance_decision",
+    "used_for_decision",
+    "blocker_codes"
+  ],
+  "properties": {
+    "kind": {"const": "PART_TEST_EVIDENCE_READINESS_RECEIPT"},
+    "contract_version": {"const": "1.0.0"},
+    "receipt_id": {"type": "string", "minLength": 1},
+    "assessed_at": {"type": "string", "format": "date-time"},
+    "source_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_contract_version", "record_purpose"],
+      "properties": {
+        "gate_contract_version": {"const": "W40_TEST_CONTRACT_1.0.0"},
+        "record_purpose": {"type": "string", "enum": ["DISCOVERY_CANDIDATE", "DEMO_ONLY"]},
+        "source_record_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "target_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_version", "implementation_status"],
+      "properties": {
+        "kind": {"const": "PART_TEST_EVIDENCE"},
+        "schema_version": {"const": "2.0.0"},
+        "implementation_status": {"const": "NOT_IMPLEMENTED"}
+      }
+    },
+    "readiness_status": {"const": "CONTRACT_NOT_IMPLEMENTED"},
+    "processing_status": {
+      "type": "string",
+      "enum": ["VALID", "INVALID_INPUT", "STALE_EVIDENCE", "PROVENANCE_FAILURE", "CONFLICTING_EVIDENCE"]
+    },
+    "identity_status": {
+      "type": "string",
+      "enum": ["EXACT_MATCH", "FAMILY_ONLY", "PARTIAL_UNRESOLVED", "CONTRADICTED", "NOT_EVALUATED"]
+    },
+    "applicability_status": {
+      "type": "string",
+      "enum": ["APPLICABLE", "NOT_APPLICABLE", "NOT_EVALUATED"]
+    },
+    "assurance_decision": {"const": "HOLD"},
+    "used_for_decision": {"const": false},
+    "blocker_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+    }
+  }
+}

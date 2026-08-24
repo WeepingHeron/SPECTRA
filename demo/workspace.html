@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SPECTRA · Evidence Review Workspace</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090b0e;
+      --panel: #11151a;
+      --panel-2: #171c22;
+      --line: #303741;
+      --line-soft: #242a32;
+      --text: #f4f7fa;
+      --muted: #b6bec8;
+      --quiet: #8d97a4;
+      --accent: #75b9ff;
+      --hold: #d7e7f7;
+      --danger: #ffb3b3;
+      --radius: 12px;
+      font-family: "Apple SD Gothic Neo", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+
+    body {
+      min-width: 1080px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      letter-spacing: .01em;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      display: grid;
+      grid-template-rows: 58px 38px minmax(0, 1fr);
+      height: 100vh;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line);
+      background: #0c0f13;
+    }
+
+    .brand { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
+    .brand strong { font-size: 17px; font-weight: 650; letter-spacing: .1em; }
+    .brand span { color: var(--muted); font-size: 13px; white-space: nowrap; }
+
+    .file-actions { display: flex; align-items: center; gap: 8px; }
+    .file-actions input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+    .button {
+      min-height: 34px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      background: var(--panel-2);
+    }
+
+    .button:hover, .button:focus-visible { border-color: var(--accent); outline: none; }
+    .button.primary { color: #08121d; border-color: var(--accent); background: var(--accent); font-weight: 700; }
+    a.button { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+    .button[aria-disabled="true"] { cursor: not-allowed; color: var(--quiet); opacity: .65; }
+
+    .truth-strip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line-soft);
+      background: #0f1318;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .truth-strip strong { color: var(--accent); letter-spacing: .08em; }
+    .truth-strip .decision-inline { margin-left: auto; color: var(--hold); font-weight: 700; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 230px minmax(0, 1fr) 286px;
+      gap: 10px;
+      min-height: 0;
+      padding: 10px;
+    }
+
+    .panel {
+      min-width: 0;
+      min-height: 0;
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .left-rail, .decision-rail { padding: 15px; overflow: auto; }
+    .center { display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--accent);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 5px; font-size: 18px; font-weight: 650; line-height: 1.3; }
+    h2 { margin-bottom: 4px; font-size: 16px; font-weight: 650; line-height: 1.35; }
+    h3 { margin-bottom: 3px; font-size: 13px; font-weight: 650; }
+    .muted { color: var(--muted); }
+    .quiet { color: var(--quiet); }
+
+    .case-question { margin-bottom: 16px; color: var(--muted); line-height: 1.55; }
+    .case-list { display: grid; gap: 9px; margin: 0; }
+    .case-item { padding-bottom: 9px; border-bottom: 1px solid var(--line-soft); }
+    .case-item dt { margin-bottom: 3px; color: var(--quiet); font-size: 11px; }
+    .case-item dd { margin: 0; overflow-wrap: anywhere; font-size: 13px; line-height: 1.35; }
+
+    .nav-list { display: grid; gap: 6px; margin: 16px 0; }
+    .nav-item { display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: 12px; }
+    .nav-item::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+    .nav-item.active { color: var(--text); font-weight: 650; }
+    .nav-item.active::before { background: var(--accent); }
+
+    details { border-top: 1px solid var(--line-soft); padding-top: 10px; }
+    details summary { cursor: pointer; color: var(--muted); font-size: 12px; }
+    details pre { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--quiet); font: 10px/1.45 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+
+    .center-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .center-head p { margin: 0; color: var(--muted); font-size: 12px; }
+    .intake-state { flex: 0 0 auto; text-align: right; color: var(--muted); font-size: 11px; }
+    .intake-state strong { display: block; margin-bottom: 2px; color: var(--hold); font-size: 12px; }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, .88fr) minmax(340px, 1.12fr);
+      gap: 10px;
+      min-height: 0;
+      padding: 10px;
+    }
+
+    .review-section {
+      min-width: 0;
+      min-height: 0;
+      padding: 12px;
+      border: 1px solid var(--line-soft);
+      border-radius: 10px;
+      background: #0e1216;
+      overflow: auto;
+    }
+
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 9px; }
+    .section-head p { margin: 0; color: var(--quiet); font-size: 11px; }
+
+    .coverage-list { display: grid; gap: 5px; }
+    .coverage-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 39px;
+      padding: 7px 9px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .coverage-row:last-child { border-bottom: 0; }
+    .coverage-name { min-width: 0; font-size: 13px; }
+    .coverage-name small { display: block; margin-top: 1px; color: var(--quiet); font-size: 10px; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 3px 7px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font: 700 10px/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      white-space: nowrap;
+    }
+
+    .status.missing, .status.unavailable { color: var(--danger); border-color: #724646; }
+    .status.synthetic { color: var(--accent); border-color: #355e85; }
+
+    .gap-list { display: grid; gap: 7px; }
+    .gap-card { padding: 9px 10px; border-left: 2px solid var(--accent); background: var(--panel-2); }
+    .gap-code { margin-bottom: 4px; color: var(--accent); font: 700 9px/1.2 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; overflow-wrap: anywhere; }
+    .gap-summary { margin: 0 0 7px; color: var(--text); font-size: 12px; line-height: 1.4; }
+    .gap-meta { display: grid; grid-template-columns: 1fr 1.35fr; gap: 7px; }
+    .gap-meta div { min-width: 0; }
+    .gap-meta span { display: block; margin-bottom: 2px; color: var(--quiet); font-size: 9px; }
+    .gap-meta strong { display: block; color: var(--muted); font-size: 11px; font-weight: 600; line-height: 1.35; }
+
+    .decision-box {
+      padding: 13px;
+      border: 1px solid #52677b;
+      border-radius: 10px;
+      background: #121922;
+    }
+
+    .decision-box .hold { margin: 1px 0 4px; color: var(--hold); font-size: 28px; font-weight: 650; letter-spacing: .04em; }
+    .decision-box p { margin-bottom: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .decision-chain { display: grid; gap: 7px; margin: 13px 0 15px; }
+    .decision-step { display: grid; grid-template-columns: 23px minmax(0, 1fr); gap: 8px; align-items: start; }
+    .decision-step b { display: grid; place-items: center; width: 23px; height: 23px; border: 1px solid var(--line); border-radius: 50%; color: var(--accent); font-size: 10px; }
+    .decision-step span { padding-top: 2px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+
+    .next-title { margin: 0 0 8px; font-size: 13px; }
+    .next-list { display: grid; gap: 7px; margin: 0 0 14px; padding: 0; list-style: none; }
+    .next-list li { padding: 7px 8px; border-left: 2px solid var(--line); color: var(--muted); font-size: 11px; line-height: 1.35; }
+    .next-list strong { display: block; margin-bottom: 2px; color: var(--text); font-size: 10px; }
+
+    .export-note { margin: 8px 0 0; color: var(--quiet); font-size: 10px; line-height: 1.4; }
+    .fallback-note { display: none; }
+
+    @media (max-height: 760px) {
+      .app { grid-template-rows: 54px 34px minmax(0, 1fr); }
+      .workspace { padding: 8px; gap: 8px; }
+      .left-rail, .decision-rail { padding: 12px; }
+      .center-head { padding: 10px 13px 8px; }
+      .review-grid { padding: 8px; gap: 8px; }
+      .review-section { padding: 9px; }
+      .coverage-row { min-height: 34px; padding: 5px 7px; }
+      .gap-card { padding: 7px 9px; }
+      .gap-summary { margin-bottom: 5px; }
+      .decision-chain { margin: 10px 0 12px; gap: 5px; }
+      .next-list { gap: 5px; margin-bottom: 10px; }
+    }
+
+    @media (min-width: 1400px) {
+      .workspace { grid-template-columns: 244px minmax(0, 1fr) 304px; gap: 12px; padding: 12px; }
+      .review-grid { grid-template-columns: minmax(300px, .9fr) minmax(390px, 1.1fr); gap: 12px; padding: 12px; }
+    }
+
+    noscript .fallback-note {
+      display: block;
+      position: fixed;
+      inset: 96px 10px 10px;
+      z-index: 10;
+      padding: 24px;
+      border: 1px solid #724646;
+      border-radius: 12px;
+      background: #11151a;
+      color: var(--text);
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><strong>SPECTRA</strong><span>Evidence Review Workspace</span></div>
+      <div class="file-actions">
+        <input id="review-file" type="file" accept="application/json,.json">
+        <button class="button primary" id="open-file" type="button">로컬 JSON 열기</button>
+        <button class="button" id="reset" type="button">초기화</button>
+      </div>
+    </header>
+
+    <div class="truth-strip">
+      <strong>SYNTHETIC · DEMO ONLY</strong>
+      <span>선택한 파일은 브라우저 메모리에서만 읽으며 업로드하지 않는다.</span>
+      <span class="decision-inline" id="truth-decision">NOT_EVALUATED · HOLD</span>
+    </div>
+
+    <main class="workspace">
+      <aside class="panel left-rail" aria-labelledby="case-title">
+        <p class="eyebrow">Case overview</p>
+        <h1 id="case-title">무엇을 검토하는가?</h1>
+        <p class="case-question">임무·부품·근거 묶음의 연결 상태를 확인한다.</p>
+
+        <dl class="case-list">
+          <div class="case-item"><dt>검토 Case</dt><dd id="case-id">표시할 수 없음</dd></div>
+          <div class="case-item"><dt>임무 참조</dt><dd id="mission-ref">표시할 수 없음</dd></div>
+          <div class="case-item"><dt>BOM 참조</dt><dd id="bom-ref">표시할 수 없음</dd></div>
+          <div class="case-item"><dt>Evidence Package</dt><dd id="package-id">표시할 수 없음</dd></div>
+          <div class="case-item"><dt>Data class</dt><dd id="data-class">DATA_UNAVAILABLE</dd></div>
+        </dl>
+
+        <nav class="nav-list" aria-label="Workspace 영역">
+          <span class="nav-item active">Case overview</span>
+          <span class="nav-item active">Evidence coverage</span>
+          <span class="nav-item active">Blocking gaps</span>
+          <span class="nav-item active">Decision &amp; action</span>
+        </nav>
+
+        <details>
+          <summary>기술 세부정보</summary>
+          <pre id="technical-detail">입력 파일을 선택하지 않았다.</pre>
+        </details>
+      </aside>
+
+      <section class="panel center" aria-labelledby="review-title">
+        <div class="center-head">
+          <div>
+            <p class="eyebrow">Evidence readiness</p>
+            <h2 id="review-title">무엇이 연결됐고, 무엇이 부족한가?</h2>
+            <p>항목별 상태와 최종 판단을 막는 공백을 분리해 본다.</p>
+          </div>
+          <div class="intake-state"><strong id="intake-status">DATA_UNAVAILABLE</strong><span id="intake-message">로컬 JSON을 선택해 검토를 시작한다.</span></div>
+        </div>
+
+        <div class="review-grid">
+          <section class="review-section" aria-labelledby="coverage-title">
+            <div class="section-head"><h3 id="coverage-title">Evidence Coverage</h3><p id="coverage-meta">8개 독립 항목</p></div>
+            <div class="coverage-list" id="coverage-list">
+              <div class="coverage-row"><span class="coverage-name">환경 결과<small>Environment</small></span><span class="status unavailable">DATA_UNAVAILABLE</span></div>
+              <div class="coverage-row"><span class="coverage-name">정확한 부품 식별<small>Exact Part</small></span><span class="status unavailable">DATA_UNAVAILABLE</span></div>
+              <div class="coverage-row"><span class="coverage-name">누적선량 시험<small>TID</small></span><span class="status unavailable">DATA_UNAVAILABLE</span></div>
+              <div class="coverage-row"><span class="coverage-name">래치업<small>SEL</small></span><span class="status unavailable">DATA_UNAVAILABLE</span></div>
+              <div class="coverage-row"><span class="coverage-name">번아웃<small>SEB</small></span><span class="status unavailable">DATA_UNAVAILABLE</span></div>
+              <div class="coverage-row"><span class="coverage-name">게이트 파열<small>SEGR</small></span><span class="status unavailable">DATA_UNAVAILABLE</span></div>
+              <div class="coverage-row"><span class="coverage-name">원문 권리<small>Rights</small></span><span class="status unavailable">DATA_UNAVAILABLE</span></div>
+              <div class="coverage-row"><span class="coverage-name">독립 과학 검토<small>Scientific Crosscheck</small></span><span class="status unavailable">DATA_UNAVAILABLE</span></div>
+            </div>
+          </section>
+
+          <section class="review-section" aria-labelledby="gaps-title">
+            <div class="section-head"><h3 id="gaps-title">Blocking Gaps</h3><p id="gap-count">검토 전</p></div>
+            <div class="gap-list" id="gap-list">
+              <article class="gap-card">
+                <div class="gap-code">DATA_UNAVAILABLE</div>
+                <p class="gap-summary">유효한 입력이 없어 근거 상태를 사용할 수 없다.</p>
+                <div class="gap-meta"><div><span>담당 역할</span><strong>REVIEW_OWNER</strong></div><div><span>다음 행동</span><strong>검증 가능한 로컬 JSON을 선택한다.</strong></div></div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <aside class="panel decision-rail" aria-labelledby="decision-title">
+        <p class="eyebrow">Decision</p>
+        <h2 id="decision-title">지금 무엇을 결정할 수 있는가?</h2>
+        <div class="decision-box">
+          <span class="status unavailable" id="processing-status">DATA_UNAVAILABLE</span>
+          <div class="hold">HOLD</div>
+          <p id="decision-reason">인증된 실제 contract가 없어 보증 판단을 내리지 않는다.</p>
+        </div>
+
+        <div class="decision-chain" aria-label="판단 흐름">
+          <div class="decision-step"><b>1</b><span>로컬 입력 구조를 확인한다.</span></div>
+          <div class="decision-step"><b>2</b><span>근거 공백과 담당 역할을 연결한다.</span></div>
+          <div class="decision-step"><b>3</b><span>실제 contract가 없으면 <strong>NOT_EVALUATED · HOLD</strong>로 닫는다.</span></div>
+        </div>
+
+        <h3 class="next-title">우선 다음 행동</h3>
+        <ul class="next-list" id="next-list"><li><strong>REVIEW_OWNER</strong>검증 가능한 로컬 JSON을 선택한다.</li></ul>
+
+        <a class="button" id="export" role="button" aria-disabled="true">비민감 Audit JSON 내보내기</a>
+        <p class="export-note">raw evidence, 로컬 경로, 개인정보, 공학 수치와 case identity는 내보내지 않는다.</p>
+      </aside>
+    </main>
+  </div>
+
+  <noscript><div class="fallback-note"><strong>SYNTHETIC · NOT PHYSICAL EVIDENCE</strong><br><br>JavaScript가 실행되지 않아 입력을 검토할 수 없다.<br><strong>DATA_UNAVAILABLE · NOT_EVALUATED · HOLD</strong></div></noscript>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const FORMAT = "spectra-evidence-review-demo-v1";
+      const DOMAINS = Object.freeze(["ENVIRONMENT", "EXACT_PART", "TID", "SEL", "SEB", "SEGR", "RIGHTS", "SCIENTIFIC_CROSSCHECK"]);
+      const COVERAGE_STATUSES = new Set(["MISSING", "PRESENT_SYNTHETIC", "RIGHTS_UNRESOLVED", "NOT_REVIEWED"]);
+      const OWNER_ROLES = new Set(["ENVIRONMENT_EVIDENCE_OWNER", "PARTS_EVIDENCE_OWNER", "RIGHTS_REVIEWER", "INDEPENDENT_REVIEWER"]);
+      const ACTION_CODES = new Set(["OBTAIN_AUTHENTICATED_ISSUANCE_ROOT", "CONFIRM_APPROVED_BOM_IDENTITY", "RESOLVE_SOURCE_RIGHTS", "RUN_INDEPENDENT_CROSSCHECK"]);
+      const RECEIPT_VERSION = "1.0.0";
+      const PROCESSING_STATUSES = new Set(["VALID", "INVALID_INPUT", "STALE_EVIDENCE", "PROVENANCE_FAILURE", "CONFLICTING_EVIDENCE"]);
+      const PART_IDENTITY_STATUSES = new Set(["EXACT_MATCH", "FAMILY_ONLY", "PARTIAL_UNRESOLVED", "CONTRADICTED", "NOT_EVALUATED"]);
+      const PART_APPLICABILITY_STATUSES = new Set(["APPLICABLE", "NOT_APPLICABLE", "NOT_EVALUATED"]);
+      const ENVIRONMENT_SCHEMA_ID = "https:" + "//spectra.local/schemas/radiation-environment.schema.json";
+      const BLOCKER_ACTIONS = Object.freeze({
+        ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED: Object.freeze({ owner_role: "ENVIRONMENT_EVIDENCE_OWNER", next_action_code: "CONFIGURE_DEPLOYMENT_AUTHENTICATOR", next_action_ko: "배포 소유 인증기를 구성하고 발행 Gate를 다시 실행한다." }),
+        PART_TEST_EVIDENCE_V2_NOT_IMPLEMENTED: Object.freeze({ owner_role: "CONTRACT_OWNER", next_action_code: "IMPLEMENT_PART_TEST_EVIDENCE_V2", next_action_ko: "Part Test Evidence v2 계약과 validator를 구현한다." }),
+        SYNTHETIC_DEMO_ONLY: Object.freeze({ owner_role: "PARTS_EVIDENCE_OWNER", next_action_code: "SUPPLY_APPROVED_EVIDENCE_PACKET", next_action_ko: "승인 BOM exact-part의 비합성 evidence packet을 준비한다." })
+      });
+      const DOMAIN_LABELS = Object.freeze({
+        ENVIRONMENT: ["환경 결과", "Environment"],
+        EXACT_PART: ["정확한 부품 식별", "Exact Part"],
+        TID: ["누적선량 시험", "TID"],
+        SEL: ["래치업", "SEL"],
+        SEB: ["번아웃", "SEB"],
+        SEGR: ["게이트 파열", "SEGR"],
+        RIGHTS: ["원문 권리", "Rights"],
+        SCIENTIFIC_CROSSCHECK: ["독립 과학 검토", "Scientific Crosscheck"]
+      });
+
+      const SAFE_MODEL = Object.freeze({
+        ready: false,
+        reason_code: "DATA_UNAVAILABLE",
+        decision: Object.freeze({ processing_status: "DATA_UNAVAILABLE", engineering_gate: "NOT_EVALUATED", assurance_decision: "HOLD" }),
+        coverage: Object.freeze(DOMAINS.map((domain) => Object.freeze({ domain, status: "DATA_UNAVAILABLE" }))),
+        blocking_gaps: Object.freeze([])
+      });
+
+      function isObject(value) {
+        return value !== null && typeof value === "object" && !Array.isArray(value);
+      }
+
+      function hasExactKeys(value, keys) {
+        if (!isObject(value)) return false;
+        const actual = Object.keys(value).sort();
+        const expected = keys.slice().sort();
+        return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
+      }
+
+      function hasOnlyKeys(value, required, optional) {
+        if (!isObject(value)) return false;
+        const allowed = new Set(required.concat(optional || []));
+        return required.every((key) => Object.prototype.hasOwnProperty.call(value, key)) && Object.keys(value).every((key) => allowed.has(key));
+      }
+
+      function isSafeText(value, maxLength) {
+        return typeof value === "string" && value.length > 0 && value.length <= maxLength && !/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(value);
+      }
+
+      function fail(reasonCode) {
+        return Object.assign({}, SAFE_MODEL, { reason_code: reasonCode });
+      }
+
+      function isDateTime(value) {
+        return typeof value === "string" && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value) && Number.isFinite(Date.parse(value));
+      }
+
+      function resolveBlockers(blockerCodes) {
+        if (!Array.isArray(blockerCodes) || blockerCodes.length === 0 || blockerCodes.length > 24) return null;
+        const seen = new Set();
+        const blockers = [];
+        for (const stableCode of blockerCodes) {
+          if (typeof stableCode !== "string" || !/^[A-Z][A-Z0-9_]*$/.test(stableCode) || /(^|_)PASS($|_)/.test(stableCode) || seen.has(stableCode)) return null;
+          seen.add(stableCode);
+          const action = BLOCKER_ACTIONS[stableCode] || Object.freeze({ owner_role: "REVIEW_OWNER", next_action_code: "RESOLVE_REPORTED_BLOCKER", next_action_ko: "보고된 blocker의 소유자와 해소 증거를 확인한다." });
+          blockers.push({ stable_code: stableCode, owner_role: action.owner_role, next_action_code: action.next_action_code, next_action_ko: action.next_action_ko });
+        }
+        return blockers;
+      }
+
+      function readinessModel(receiptKind, sourceLabel, status, processingStatus, blockers, extra) {
+        return Object.assign({
+          ready: true,
+          input_type: "READINESS_RECEIPT",
+          receipt_kind: receiptKind,
+          contract_version: RECEIPT_VERSION,
+          source_label: sourceLabel,
+          readiness_status: status,
+          processing_status: processingStatus,
+          blockers,
+          decision: { processing_status: processingStatus, engineering_gate: "NOT_EVALUATED", assurance_decision: "HOLD" }
+        }, extra || {});
+      }
+
+      function resolveEnvironmentReceipt(payload) {
+        const required = ["kind", "contract_version", "receipt_id", "assessed_at", "source_result", "target_contract", "issuance_status", "processing_status", "assurance_decision", "used_for_decision", "blocker_codes"];
+        if (!hasExactKeys(payload, required)) return fail("ENVIRONMENT_RECEIPT_SHAPE_INVALID");
+        if (payload.contract_version !== RECEIPT_VERSION) return fail("READINESS_VERSION_UNKNOWN");
+        if (!isSafeText(payload.receipt_id, 160) || !isDateTime(payload.assessed_at)) return fail("READINESS_IDENTITY_INVALID");
+        if (!hasOnlyKeys(payload.source_result, ["gate_contract_version", "evidence_class"], ["source_record_id"])) return fail("ENVIRONMENT_SOURCE_SHAPE_INVALID");
+        if (!isSafeText(payload.source_result.gate_contract_version, 120) || !["SYNTHETIC_CONTROL", "ACTUAL_REVIEW"].includes(payload.source_result.evidence_class)) return fail("ENVIRONMENT_SOURCE_INVALID");
+        if (Object.prototype.hasOwnProperty.call(payload.source_result, "source_record_id") && !isSafeText(payload.source_result.source_record_id, 160)) return fail("ENVIRONMENT_SOURCE_INVALID");
+        if (!hasExactKeys(payload.target_contract, ["kind", "schema_id", "schema_version"]) || payload.target_contract.kind !== "RADIATION_ENVIRONMENT" || payload.target_contract.schema_id !== ENVIRONMENT_SCHEMA_ID || payload.target_contract.schema_version !== "1.1") return fail("ENVIRONMENT_TARGET_INVALID");
+        if (payload.issuance_status !== "HOLD_NOT_ISSUED" || !PROCESSING_STATUSES.has(payload.processing_status) || payload.assurance_decision !== "HOLD" || payload.used_for_decision !== false) return fail("OPTIMISTIC_READINESS_REJECTED");
+        const blockers = resolveBlockers(payload.blocker_codes);
+        if (!blockers) return fail("READINESS_BLOCKERS_INVALID");
+        return readinessModel("ENVIRONMENT", payload.source_result.evidence_class, payload.issuance_status, payload.processing_status, blockers);
+      }
+
+      function resolvePartReceipt(payload) {
+        const required = ["kind", "contract_version", "receipt_id", "assessed_at", "source_result", "target_contract", "readiness_status", "processing_status", "identity_status", "applicability_status", "assurance_decision", "used_for_decision", "blocker_codes"];
+        if (!hasExactKeys(payload, required)) return fail("PART_RECEIPT_SHAPE_INVALID");
+        if (payload.contract_version !== RECEIPT_VERSION) return fail("READINESS_VERSION_UNKNOWN");
+        if (!isSafeText(payload.receipt_id, 160) || !isDateTime(payload.assessed_at)) return fail("READINESS_IDENTITY_INVALID");
+        if (!hasOnlyKeys(payload.source_result, ["gate_contract_version", "record_purpose"], ["source_record_id"])) return fail("PART_SOURCE_SHAPE_INVALID");
+        if (payload.source_result.gate_contract_version !== "W40_TEST_CONTRACT_1.0.0" || !["DISCOVERY_CANDIDATE", "DEMO_ONLY"].includes(payload.source_result.record_purpose)) return fail("PART_SOURCE_INVALID");
+        if (Object.prototype.hasOwnProperty.call(payload.source_result, "source_record_id") && !isSafeText(payload.source_result.source_record_id, 160)) return fail("PART_SOURCE_INVALID");
+        if (!hasExactKeys(payload.target_contract, ["kind", "schema_version", "implementation_status"]) || payload.target_contract.kind !== "PART_TEST_EVIDENCE" || payload.target_contract.schema_version !== "2.0.0" || payload.target_contract.implementation_status !== "NOT_IMPLEMENTED") return fail("PART_TARGET_INVALID");
+        if (payload.readiness_status !== "CONTRACT_NOT_IMPLEMENTED" || !PROCESSING_STATUSES.has(payload.processing_status) || !PART_IDENTITY_STATUSES.has(payload.identity_status) || !PART_APPLICABILITY_STATUSES.has(payload.applicability_status) || payload.assurance_decision !== "HOLD" || payload.used_for_decision !== false) return fail("OPTIMISTIC_READINESS_REJECTED");
+        const blockers = resolveBlockers(payload.blocker_codes);
+        if (!blockers) return fail("READINESS_BLOCKERS_INVALID");
+        return readinessModel("PART", payload.source_result.record_purpose, payload.readiness_status, payload.processing_status, blockers, { identity_status: payload.identity_status, applicability_status: payload.applicability_status });
+      }
+
+      function resolveReadinessReceipt(payload) {
+        if (!isObject(payload) || typeof payload.kind !== "string") return fail("READINESS_KIND_INVALID");
+        if (payload.kind === "ENVIRONMENT_ISSUANCE_READINESS_RECEIPT") return resolveEnvironmentReceipt(payload);
+        if (payload.kind === "PART_TEST_EVIDENCE_READINESS_RECEIPT") return resolvePartReceipt(payload);
+        return fail("READINESS_KIND_UNKNOWN");
+      }
+
+      function resolveReviewPayload(payload) {
+        if (!hasExactKeys(payload, ["workspace_format", "case", "coverage", "blocking_gaps", "issuance_authentication", "decision", "technical"])) return fail("WORKSPACE_SHAPE_INVALID");
+        if (payload.workspace_format !== FORMAT) return fail("WORKSPACE_FORMAT_UNKNOWN");
+
+        if (!hasExactKeys(payload.case, ["case_id", "mission_ref", "bom_ref", "evidence_package_id", "data_class", "review_scope"])) return fail("CASE_SHAPE_INVALID");
+        if (![payload.case.case_id, payload.case.mission_ref, payload.case.bom_ref, payload.case.evidence_package_id].every((value) => isSafeText(value, 120))) return fail("CASE_IDENTITY_INVALID");
+        if (payload.case.data_class !== "SYNTHETIC" || payload.case.review_scope !== "DEMO_ONLY") return fail("UNAUTHENTICATED_ACTUAL_CLAIM");
+
+        if (!Array.isArray(payload.coverage) || payload.coverage.length !== DOMAINS.length) return fail("COVERAGE_SHAPE_INVALID");
+        const seenDomains = new Set();
+        for (const item of payload.coverage) {
+          if (!hasExactKeys(item, ["domain", "status"])) return fail("COVERAGE_ITEM_INVALID");
+          if (!DOMAINS.includes(item.domain) || seenDomains.has(item.domain)) return fail("COVERAGE_DOMAIN_INVALID");
+          if (!COVERAGE_STATUSES.has(item.status)) return fail("COVERAGE_STATUS_UNKNOWN");
+          seenDomains.add(item.domain);
+        }
+        if (!DOMAINS.every((domain) => seenDomains.has(domain))) return fail("COVERAGE_INCOMPLETE");
+
+        if (!Array.isArray(payload.blocking_gaps) || payload.blocking_gaps.length === 0 || payload.blocking_gaps.length > 12) return fail("BLOCKING_GAPS_INVALID");
+        const gapIds = new Set();
+        for (const gap of payload.blocking_gaps) {
+          if (!hasExactKeys(gap, ["gap_id", "stable_code", "summary_ko", "required_evidence_ko", "owner_role", "next_action_code", "next_action_ko"])) return fail("GAP_SHAPE_INVALID");
+          if (![gap.gap_id, gap.summary_ko, gap.required_evidence_ko, gap.next_action_ko].every((value) => isSafeText(value, 240))) return fail("GAP_TEXT_INVALID");
+          if (!/^[A-Z][A-Z0-9_]{2,79}$/.test(gap.stable_code)) return fail("GAP_CODE_INVALID");
+          if (gapIds.has(gap.gap_id)) return fail("DUPLICATE_GAP_ID");
+          if (!OWNER_ROLES.has(gap.owner_role) || !ACTION_CODES.has(gap.next_action_code)) return fail("GAP_ACTION_INVALID");
+          gapIds.add(gap.gap_id);
+        }
+
+        if (!hasExactKeys(payload.issuance_authentication, ["status", "issuance_root_ref"])) return fail("ISSUANCE_SHAPE_INVALID");
+        if (payload.issuance_authentication.status !== "MISSING" || payload.issuance_authentication.issuance_root_ref !== null) return fail("UNAUTHENTICATED_ISSUANCE_CLAIM");
+        if (!payload.blocking_gaps.some((gap) => gap.stable_code === "AUTHENTICATED_ISSUANCE_ROOT_MISSING")) return fail("AUTHENTICATED_ISSUANCE_ROOT_GAP_MISSING");
+
+        if (!hasExactKeys(payload.decision, ["processing_status", "engineering_gate", "assurance_decision"])) return fail("DECISION_SHAPE_INVALID");
+        if (payload.decision.processing_status !== "VALID" || payload.decision.engineering_gate !== "NOT_EVALUATED" || payload.decision.assurance_decision !== "HOLD") return fail("OPTIMISTIC_DECISION_REJECTED");
+        if (!hasExactKeys(payload.technical, ["fixture_id", "source_label"]) || !isSafeText(payload.technical.fixture_id, 120) || !isSafeText(payload.technical.source_label, 160)) return fail("TECHNICAL_METADATA_INVALID");
+
+        return {
+          ready: true,
+          reason_code: null,
+          case: payload.case,
+          coverage: DOMAINS.map((domain) => payload.coverage.find((item) => item.domain === domain)),
+          blocking_gaps: payload.blocking_gaps,
+          decision: payload.decision,
+          technical: payload.technical
+        };
+      }
+
+      function parseReviewText(text) {
+        if (typeof text !== "string") return fail("INPUT_TEXT_INVALID");
+        try {
+          return resolveReviewPayload(JSON.parse(text));
+        } catch (_error) {
+          return fail("MALFORMED_JSON");
+        }
+      }
+
+      function parseWorkspaceText(text) {
+        if (typeof text !== "string") return fail("INPUT_TEXT_INVALID");
+        try {
+          const payload = JSON.parse(text);
+          if (isObject(payload) && Object.prototype.hasOwnProperty.call(payload, "kind")) return resolveReadinessReceipt(payload);
+          return resolveReviewPayload(payload);
+        } catch (_error) {
+          return fail("MALFORMED_JSON");
+        }
+      }
+
+      function buildAuditSummary(model) {
+        if (!model || model.ready !== true) {
+          return {
+            export_format: "spectra-review-audit-summary-v1",
+            data_class: "DATA_UNAVAILABLE",
+            coverage: [],
+            blocking_gaps: [],
+            decision: { processing_status: "DATA_UNAVAILABLE", engineering_gate: "NOT_EVALUATED", assurance_decision: "HOLD" }
+          };
+        }
+        if (model.input_type === "READINESS_RECEIPT") {
+          return {
+            export_format: "spectra-readiness-audit-summary-v1",
+            data_class: "READINESS_RECEIPT_V1",
+            receipt_kind: model.receipt_kind,
+            source_class_or_purpose: model.source_label,
+            readiness_status: model.readiness_status,
+            blocker_codes: model.blockers.map((blocker) => blocker.stable_code),
+            next_actions: model.blockers.map((blocker) => ({ owner_role: blocker.owner_role, next_action_code: blocker.next_action_code })),
+            decision: { processing_status: model.processing_status, engineering_gate: "NOT_EVALUATED", assurance_decision: "HOLD" }
+          };
+        }
+        return {
+          export_format: "spectra-review-audit-summary-v1",
+          data_class: "SYNTHETIC",
+          coverage: model.coverage.map((item) => ({ domain: item.domain, status: item.status })),
+          blocking_gaps: model.blocking_gaps.map((gap) => ({ stable_code: gap.stable_code, owner_role: gap.owner_role, next_action_code: gap.next_action_code })),
+          decision: { processing_status: model.decision.processing_status, engineering_gate: model.decision.engineering_gate, assurance_decision: model.decision.assurance_decision }
+        };
+      }
+
+      function serializeAuditSummary(model) {
+        return JSON.stringify(buildAuditSummary(model), null, 2) + "\n";
+      }
+
+      const api = Object.freeze({ FORMAT, DOMAINS, SAFE_MODEL, parseReviewText, parseWorkspaceText, resolveReviewPayload, resolveReadinessReceipt, buildAuditSummary, serializeAuditSummary });
+      globalThis.SPECTRA_REVIEW_WORKSPACE = api;
+      if (typeof document === "undefined") return;
+
+      const nodes = {
+        input: document.getElementById("review-file"),
+        open: document.getElementById("open-file"),
+        reset: document.getElementById("reset"),
+        export: document.getElementById("export"),
+        caseId: document.getElementById("case-id"),
+        missionRef: document.getElementById("mission-ref"),
+        bomRef: document.getElementById("bom-ref"),
+        packageId: document.getElementById("package-id"),
+        dataClass: document.getElementById("data-class"),
+        technical: document.getElementById("technical-detail"),
+        intakeStatus: document.getElementById("intake-status"),
+        intakeMessage: document.getElementById("intake-message"),
+        coverage: document.getElementById("coverage-list"),
+        coverageTitle: document.getElementById("coverage-title"),
+        coverageMeta: document.getElementById("coverage-meta"),
+        gapCount: document.getElementById("gap-count"),
+        gaps: document.getElementById("gap-list"),
+        processing: document.getElementById("processing-status"),
+        reason: document.getElementById("decision-reason"),
+        next: document.getElementById("next-list"),
+        truthDecision: document.getElementById("truth-decision")
+      };
+
+      let currentModel = SAFE_MODEL;
+
+      function setText(node, value) {
+        node.textContent = value;
+      }
+
+      function statusClass(status) {
+        if (status === "PRESENT_SYNTHETIC") return "synthetic";
+        if (status === "MISSING" || status === "DATA_UNAVAILABLE") return "unavailable";
+        return "missing";
+      }
+
+      function renderCoverage(items) {
+        nodes.coverage.replaceChildren();
+        items.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "coverage-row";
+          const name = document.createElement("span");
+          name.className = "coverage-name";
+          name.append(document.createTextNode(DOMAIN_LABELS[item.domain][0]));
+          const small = document.createElement("small");
+          small.textContent = DOMAIN_LABELS[item.domain][1];
+          name.appendChild(small);
+          const status = document.createElement("span");
+          status.className = "status " + statusClass(item.status);
+          status.textContent = item.status;
+          row.append(name, status);
+          nodes.coverage.appendChild(row);
+        });
+      }
+
+      function renderSafe(model) {
+        currentModel = model;
+        [nodes.caseId, nodes.missionRef, nodes.bomRef, nodes.packageId].forEach((node) => setText(node, "표시할 수 없음"));
+        setText(nodes.dataClass, "DATA_UNAVAILABLE");
+        setText(nodes.intakeStatus, "DATA_UNAVAILABLE");
+        setText(nodes.intakeMessage, "입력을 사용할 수 없다 · " + model.reason_code);
+        setText(nodes.processing, "DATA_UNAVAILABLE");
+        nodes.processing.className = "status unavailable";
+        setText(nodes.reason, "입력 누락 또는 형식 오류로 세부값을 숨기고 판단을 보류한다.");
+        setText(nodes.truthDecision, "NOT_EVALUATED · HOLD");
+        setText(nodes.technical, "reason_code: " + model.reason_code + "\nengineering_gate: NOT_EVALUATED\nassurance_decision: HOLD");
+        setText(nodes.coverageTitle, "Evidence Coverage");
+        setText(nodes.coverageMeta, "8개 독립 항목");
+        renderCoverage(model.coverage);
+        setText(nodes.gapCount, "입력 사용 불가");
+        nodes.gaps.replaceChildren();
+        const card = document.createElement("article");
+        card.className = "gap-card";
+        const code = document.createElement("div");
+        code.className = "gap-code";
+        code.textContent = model.reason_code;
+        const summary = document.createElement("p");
+        summary.className = "gap-summary";
+        summary.textContent = "유효한 입력이 없어 근거 상태와 식별자를 사용하지 않는다.";
+        const meta = document.createElement("div");
+        meta.className = "gap-meta";
+        const owner = document.createElement("div");
+        owner.innerHTML = "<span>담당 역할</span><strong>REVIEW_OWNER</strong>";
+        const action = document.createElement("div");
+        action.innerHTML = "<span>다음 행동</span><strong>입력 형식과 출처를 확인한다.</strong>";
+        meta.append(owner, action);
+        card.append(code, summary, meta);
+        nodes.gaps.appendChild(card);
+        nodes.next.replaceChildren();
+        const item = document.createElement("li");
+        const strong = document.createElement("strong");
+        strong.textContent = "REVIEW_OWNER";
+        item.append(strong, document.createTextNode("입력 형식과 출처를 확인한다."));
+        nodes.next.appendChild(item);
+        nodes.export.removeAttribute("href");
+        nodes.export.removeAttribute("download");
+        nodes.export.setAttribute("aria-disabled", "true");
+      }
+
+      function renderReady(model) {
+        currentModel = model;
+        setText(nodes.caseId, model.case.case_id);
+        setText(nodes.missionRef, model.case.mission_ref);
+        setText(nodes.bomRef, model.case.bom_ref);
+        setText(nodes.packageId, model.case.evidence_package_id);
+        setText(nodes.dataClass, model.case.data_class + " · " + model.case.review_scope);
+        setText(nodes.intakeStatus, "STRUCTURE_VALID");
+        setText(nodes.intakeMessage, "입력 구조를 읽었다 · 보증 판단은 계속 보류한다.");
+        setText(nodes.processing, model.decision.processing_status);
+        nodes.processing.className = "status synthetic";
+        setText(nodes.reason, "구조 확인과 합성 항목 존재만으로 실제 보증을 내릴 수 없다. 인증된 실제 contract가 0건이므로 HOLD다.");
+        setText(nodes.truthDecision, model.decision.engineering_gate + " · " + model.decision.assurance_decision);
+        setText(nodes.technical, "fixture_id: " + model.technical.fixture_id + "\nsource: " + model.technical.source_label + "\nprocessing_status: " + model.decision.processing_status + "\nengineering_gate: " + model.decision.engineering_gate + "\nassurance_decision: " + model.decision.assurance_decision);
+        renderCoverage(model.coverage);
+        setText(nodes.gapCount, model.blocking_gaps.length + "개 blocking gap");
+        nodes.gaps.replaceChildren();
+        nodes.next.replaceChildren();
+        model.blocking_gaps.forEach((gap) => {
+          const card = document.createElement("article");
+          card.className = "gap-card";
+          const code = document.createElement("div");
+          code.className = "gap-code";
+          code.textContent = gap.stable_code;
+          const summary = document.createElement("p");
+          summary.className = "gap-summary";
+          summary.textContent = gap.summary_ko;
+          const meta = document.createElement("div");
+          meta.className = "gap-meta";
+          const owner = document.createElement("div");
+          const ownerLabel = document.createElement("span");
+          ownerLabel.textContent = "담당 역할";
+          const ownerValue = document.createElement("strong");
+          ownerValue.textContent = gap.owner_role;
+          owner.append(ownerLabel, ownerValue);
+          const action = document.createElement("div");
+          const actionLabel = document.createElement("span");
+          actionLabel.textContent = "필요 evidence · 다음 행동";
+          const actionValue = document.createElement("strong");
+          actionValue.textContent = gap.required_evidence_ko + " · " + gap.next_action_ko;
+          action.append(actionLabel, actionValue);
+          meta.append(owner, action);
+          card.append(code, summary, meta);
+          nodes.gaps.appendChild(card);
+
+          const nextItem = document.createElement("li");
+          const nextOwner = document.createElement("strong");
+          nextOwner.textContent = gap.owner_role;
+          nextItem.append(nextOwner, document.createTextNode(gap.next_action_ko));
+          nodes.next.appendChild(nextItem);
+        });
+        nodes.export.href = "data:application/json;charset=utf-8," + encodeURIComponent(serializeAuditSummary(model));
+        nodes.export.download = "spectra-review-audit-summary.json";
+        nodes.export.setAttribute("aria-disabled", "false");
+      }
+
+      function readinessRows(model) {
+        const rows = [
+          ["Receipt 종류", "Version-dispatched kind", model.receipt_kind],
+          ["Source class / purpose", "입력의 제한된 출처 구분", model.source_label],
+          ["현재 readiness", "v1이 허용하는 보수적 상태", model.readiness_status],
+          ["Processing", "upstream 처리 상태", model.processing_status]
+        ];
+        if (model.receipt_kind === "PART") {
+          rows.push(["Identity", "exact-part 식별 상태", model.identity_status]);
+          rows.push(["Applicability", "임무 적용성 상태", model.applicability_status]);
+        }
+        return rows;
+      }
+
+      function renderReadiness(model) {
+        currentModel = model;
+        [nodes.caseId, nodes.missionRef, nodes.bomRef, nodes.packageId].forEach((node) => setText(node, "receipt에서 사용하지 않음"));
+        setText(nodes.dataClass, "READINESS_RECEIPT_V1");
+        setText(nodes.intakeStatus, "RECEIPT_V1_VALID");
+        setText(nodes.intakeMessage, "공유 receipt 구조를 읽었다 · 실제 contract 본문이 아니다.");
+        setText(nodes.processing, model.processing_status);
+        nodes.processing.className = "status unavailable";
+        setText(nodes.reason, model.readiness_status + " 상태이며 decision input으로 사용하지 않는다.");
+        setText(nodes.truthDecision, "NOT_EVALUATED · HOLD");
+        setText(nodes.technical, "receipt_kind: " + model.receipt_kind + "\ncontract_version: " + model.contract_version + "\nsource_class_or_purpose: " + model.source_label + "\nreadiness_status: " + model.readiness_status + "\nassurance_decision: HOLD\nused_for_decision: false");
+        setText(nodes.coverageTitle, "Readiness Receipt");
+        setText(nodes.coverageMeta, "허용된 상태만 표시");
+        nodes.coverage.replaceChildren();
+        readinessRows(model).forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "coverage-row";
+          const name = document.createElement("span");
+          name.className = "coverage-name";
+          name.append(document.createTextNode(item[0]));
+          const small = document.createElement("small");
+          small.textContent = item[1];
+          name.appendChild(small);
+          const status = document.createElement("span");
+          status.className = "status unavailable";
+          status.textContent = item[2];
+          row.append(name, status);
+          nodes.coverage.appendChild(row);
+        });
+        setText(nodes.gapCount, model.blockers.length + "개 blocker");
+        nodes.gaps.replaceChildren();
+        nodes.next.replaceChildren();
+        model.blockers.forEach((blocker) => {
+          const card = document.createElement("article");
+          card.className = "gap-card";
+          const code = document.createElement("div");
+          code.className = "gap-code";
+          code.textContent = blocker.stable_code;
+          const summary = document.createElement("p");
+          summary.className = "gap-summary";
+          summary.textContent = "현재 readiness를 막는 upstream blocker다.";
+          const meta = document.createElement("div");
+          meta.className = "gap-meta";
+          const owner = document.createElement("div");
+          const ownerLabel = document.createElement("span");
+          ownerLabel.textContent = "담당 역할";
+          const ownerValue = document.createElement("strong");
+          ownerValue.textContent = blocker.owner_role;
+          owner.append(ownerLabel, ownerValue);
+          const action = document.createElement("div");
+          const actionLabel = document.createElement("span");
+          actionLabel.textContent = "다음 행동";
+          const actionValue = document.createElement("strong");
+          actionValue.textContent = blocker.next_action_ko;
+          action.append(actionLabel, actionValue);
+          meta.append(owner, action);
+          card.append(code, summary, meta);
+          nodes.gaps.appendChild(card);
+          const nextItem = document.createElement("li");
+          const nextOwner = document.createElement("strong");
+          nextOwner.textContent = blocker.owner_role;
+          nextItem.append(nextOwner, document.createTextNode(blocker.next_action_ko));
+          nodes.next.appendChild(nextItem);
+        });
+        nodes.export.href = "data:application/json;charset=utf-8," + encodeURIComponent(serializeAuditSummary(model));
+        nodes.export.download = "spectra-readiness-audit-summary.json";
+        nodes.export.setAttribute("aria-disabled", "false");
+      }
+
+      function render(model) {
+        if (model.ready && model.input_type === "READINESS_RECEIPT") renderReadiness(model);
+        else if (model.ready) renderReady(model);
+        else renderSafe(model);
+      }
+
+      async function openSelectedFile() {
+        const file = nodes.input.files && nodes.input.files[0];
+        if (!file) return;
+        try {
+          render(parseWorkspaceText(await file.text()));
+        } catch (_error) {
+          render(fail("LOCAL_FILE_READ_FAILED"));
+        } finally {
+          nodes.input.value = "";
+        }
+      }
+
+      nodes.open.addEventListener("click", () => nodes.input.click());
+      nodes.input.addEventListener("change", openSelectedFile);
+      nodes.reset.addEventListener("click", () => render(fail("DATA_UNAVAILABLE")));
+      nodes.export.addEventListener("click", (event) => {
+        if (!currentModel.ready) event.preventDefault();
+      });
+      render(fail("DATA_UNAVAILABLE"));
+    }());
+  </script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+SYNTHETIC_CONTROL / DEMO_ONLY
+section:control
+This tiny fixture contains no radiation test value, customer BOM, or real approval.

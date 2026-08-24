@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/environment-issuance-readiness-receipt.schema.json",
+  "title": "Environment Issuance Readiness Receipt v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "contract_version",
+    "receipt_id",
+    "assessed_at",
+    "source_result",
+    "target_contract",
+    "issuance_status",
+    "processing_status",
+    "assurance_decision",
+    "used_for_decision",
+    "blocker_codes"
+  ],
+  "properties": {
+    "kind": {"const": "ENVIRONMENT_ISSUANCE_READINESS_RECEIPT"},
+    "contract_version": {"const": "1.0.0"},
+    "receipt_id": {"type": "string", "minLength": 1},
+    "assessed_at": {"type": "string", "format": "date-time"},
+    "source_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_contract_version", "evidence_class"],
+      "properties": {
+        "gate_contract_version": {"type": "string", "minLength": 1},
+        "evidence_class": {"type": "string", "enum": ["SYNTHETIC_CONTROL", "ACTUAL_REVIEW"]},
+        "source_record_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "target_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema_id", "schema_version"],
+      "properties": {
+        "kind": {"const": "RADIATION_ENVIRONMENT"},
+        "schema_id": {"const": "https://spectra.local/schemas/radiation-environment.schema.json"},
+        "schema_version": {"const": "1.1"}
+      }
+    },
+    "issuance_status": {"const": "HOLD_NOT_ISSUED"},
+    "processing_status": {
+      "type": "string",
+      "enum": ["VALID", "INVALID_INPUT", "STALE_EVIDENCE", "PROVENANCE_FAILURE", "CONFLICTING_EVIDENCE"]
+    },
+    "assurance_decision": {"const": "HOLD"},
+    "used_for_decision": {"const": false},
+    "blocker_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+    }
+  }
+}

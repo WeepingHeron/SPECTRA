@@ -1,6 +1,6 @@
 # 30 Environment Model Handoff
 
-> **Current package notice (2026-08-20):** 채팅 31 H02의 invalid-path fail-closed 보완은 Control Tower 독립 재검증 후 commit `379f3ad`로 통합됐다. provider reference·권리·승인 raw manifest가 없으므로 계약 발행과 Stage 3 완료는 계속 `HOLD`다.
+> **Control Tower verification (2026-08-24):** 채팅 31 H07의 offset-naive datetime과 datetime이 아닌 평가 시각 공격이 traceback 없이 `ISSUANCE_EVALUATION_TIME_INVALID/HOLD_NOT_ISSUED`로 닫히는 것을 직접 재현했다. 최종 environment 65 tests가 통과했다. 판정은 `VERIFIED — issuance gate only`; production 기본 trust-store 미구성 경로와 실제 contract 0건은 유지된다.
 
 ## 채팅 31 H01 — Environment Intake Gate 보완
 
@@ -42,11 +42,81 @@
 - 실제 bundle 9/9 checksum과 값 비노출 parser 구조를 재검증했으며 contract emission HOLD는 유지된다.
 - 이 문단은 작업 채팅의 H02 제출 기록이다. 현재는 위 Control Tower H02 독립 재검증으로 구현 패키지 `VERIFIED`가 됐으며 Git 통합은 아직 수행하지 않았다.
 
+## 채팅 31 H03 — Environment Contract Issuance Gate
+
+- 제품 contract·UI locator·cloud/external demo를 포함한 H03 action scope를 `FETCH`, `PRIVATE_STORE`, `PROCESS_LOCAL`, `DISPLAY_INTERNAL`, `DISPLAY_EXTERNAL`, `REDISTRIBUTE`, `COMMERCIAL_USE`, `AUTOMATION`, `CLOUD_STORE` 9개로 고정했다.
+- parser 수치와 분리된 `issuance_gate.py`가 provider, rights, immutable storage, raw manifest binding, artifact identity, model conditions, scientific crosscheck와 emission authorization을 판정한다.
+- 실제 private review record는 `issuance-review-h03.json`이며 원본과 같은 Git 밖 위치에 둔다. local tracking manifest를 승인 v2로 승격하거나 이름을 바꾸지 않았다.
+- 실제 bundle은 checksum 9/9, 필수 7 role exact-one, identity/path uniqueness, set hash, parser signature와 후보 4개의 `HOLD_PENDING_PROVENANCE_AND_RIGHTS`를 값 비노출로 재확인했다.
+- 실제 issuance 결과는 `HOLD_NOT_ISSUED/PROVENANCE_FAILURE/HOLD`, `normalized_environment: null`이다.
+- 실제 blocker: `PROVIDER_JOB_REFERENCE_MISSING`, `RIGHTS_APPROVAL_MISSING`, `RIGHTS_ACTION_GRANT_MISSING`, `RIGHTS_SNAPSHOT_NOT_ACTIVE`, `APPROVED_STORAGE_UNAVAILABLE`, `RAW_ARTIFACT_MANIFEST_V2_MISSING`, `MODEL_VERSION_NOT_VERIFIED`, `MODEL_CONFIGURATION_NOT_VERIFIED`, `SCIENTIFIC_CROSSCHECK_NOT_EVALUATED`, `CONTRACT_EMISSION_NOT_APPROVED`.
+- 과학적 비교 대상·동일/상이 입력·산출물·판정 규칙은 `ISSUANCE_GATE_H03.md`에 결과 전 문서화했다. 승인 tolerance와 독립 reviewer가 없어 실제 비교 실행과 PASS는 만들지 않았다.
+- 공용 action vocabulary와 issuance evidence binding이 부족해 `CONTRACT_CHANGE_REQUEST`를 같은 문서에 남겼으며 `schemas/**`는 수정하지 않았다.
+- issuance direct tests 18개와 기존 environment 23개를 합친 environment 41개가 통과했다. schema 14개·fixture 5/116, simulation 55개, assurance 21 evaluated·1 `NOT_EVALUATED`·False PASS 0을 유지했다.
+- 이 제출은 `READY_FOR_REVIEW` 상한이며 `VERIFIED`, `INTEGRATED`, Stage 3 완료가 아니다.
+
+### Control Tower H03 독립 검토 — 2026-08-24
+
+- 판정: `CHANGES_REQUESTED — synthetic-to-actual promotion bypass`.
+- 직접 테스트: issuance gate 18/18, schema 14개·정상 fixture 5개·실패 fixture 116개, `git diff --check`는 통과했다. private review record SHA-256도 제출값 `e0c84bd9637a152012594e16f47c2fa80dfa5a6b476ecb72eef6089c2a4306e7`과 일치했다.
+- 공격 재현: 정상 합성 control에서 `evidence_class`만 `SYNTHETIC_CONTROL`에서 `ACTUAL_REVIEW`로 변경하면 `gate_status=READY_FOR_REVIEW`, `issuance_status=ISSUABLE_CANDIDATE`, `processing_status=VALID`, `error_codes=[]`가 반환된다.
+- 원인: provider·rights·storage·crosscheck·authorization의 verified 상태와 실제/합성 분류가 동일한 비신뢰 payload에서 자기 선언되며, 외부 trusted approval/anchor와의 binding이 없다.
+- H04 Exit Gate: 외부 trusted anchor가 없으면 `ACTUAL_REVIEW`를 stable code로 `HOLD_NOT_ISSUED` 처리하고, 위 한 필드 승격 공격을 회귀 fixture로 고정한다. 공통 schema 변경이 필요하면 직접 수정하지 않고 `CONTRACT_CHANGE_REQUEST`만 제출한다.
+
+## 채팅 31 H04 — Environment Issuance Trust Boundary
+
+- `assess_issuance`는 `ACTUAL_REVIEW`에 payload와 분리된 out-of-band `trusted_anchor`를 요구한다. CLI도 별도 `--trusted-anchor` 파일만 입력으로 받으며 payload 내부 anchor 복제는 승인 근거가 아니다.
+- anchor는 `evidence_class`를 포함한 canonical review payload hash, provider record/job, rights snapshot/scope, raw manifest/bundle/storage generation, scientific crosscheck result와 emission authorization target을 exact identity/hash로 결속한다.
+- anchor 누락, payload 내부 복제, 일반 target hash 불일치와 rights snapshot 불일치는 각각 stable code로 `HOLD_NOT_ISSUED`, `normalized_environment: null`을 반환한다.
+- 정상 합성 control은 계속 `SYNTHETIC_CONTROL_ONLY/HOLD_NOT_ISSUED`다. 별도 test anchor가 정확히 결속된 완전한 `ACTUAL_REVIEW`도 contract를 발행하지 않고 발행 전 후보 상태까지만 도달한다.
+- 실제 private H03 review record는 외부 anchor 없이 재평가했으며 기존 10개 blocker에 `ISSUANCE_TRUST_ANCHOR_MISSING`이 추가된 `PROVENANCE_FAILURE/HOLD_NOT_ISSUED`를 유지했다. dose 값과 contract는 출력하거나 생성하지 않았다.
+- issuance direct tests 24개만 실행해 모두 통과했다. 전체 회귀는 H04 지시대로 실행하지 않았고 공용 schema·engine은 수정하지 않았다.
+- 이 제출은 `READY_FOR_REVIEW` 상한이며 `VERIFIED`, `INTEGRATED`, Stage 3 완료가 아니다.
+
+### Control Tower H04 독립 검토 — 2026-08-24
+
+- 판정: `CHANGES_REQUESTED — unauthenticated out-of-band anchor`.
+- 제출 direct test 24/24와 `git diff --check`는 통과했다.
+- 공격 재현: 합성 control을 `ACTUAL_REVIEW`로 바꾸고 동일 공격자가 별도 anchor JSON을 생성해 전달하면 `ISSUABLE_CANDIDATE / VALID / error_codes=[]`가 반환된다.
+- 파일 분리는 인증이 아니다. 현재 구현은 signature, KMS/public-key 검증, immutable trust store 또는 deployment-owned allowlist 중 어떤 trust root도 확인하지 않는다.
+- H05 최소 안전 경계: 실제 authenticator가 구현·배포되기 전에는 plain JSON anchor로 `ISSUABLE_CANDIDATE`에 도달하지 못하게 하고 `ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED/HOLD_NOT_ISSUED` 또는 동등 stable code로 닫는다.
+
+## 채팅 31 H05 — Authenticated Issuance Root Fail-Closed
+
+- H04 JSON anchor의 exact binding은 보존하지만 별도 파일·자기 일관성만으로 인증된 trust root라고 판단하지 않는다.
+- 실제 authenticator가 없는 현재 production path는 모든 `ACTUAL_REVIEW`에 `ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED`를 추가해 `PROVENANCE_FAILURE/HOLD_NOT_ISSUED`, `normalized_environment: null`로 종료한다.
+- 공격자가 review와 exact-match anchor, anchor ID·approver·history·모든 hash를 함께 생성한 독립 공격은 다른 오류 없이도 authenticator 미구성 code로 HOLD됐다.
+- payload 내부 anchor, anchor 누락, target hash와 rights snapshot mismatch의 기존 stable code와 정상 합성 `SYNTHETIC_CONTROL_ONLY/HOLD_NOT_ISSUED`를 유지했다.
+- 실제 private H03 review는 기존 blocker 전부와 `ISSUANCE_TRUST_ANCHOR_MISSING`, `ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED`를 함께 반환했다. dose 값과 contract는 출력하거나 생성하지 않았다.
+- issuance direct tests 25개만 실행해 모두 통과했다. 전체 회귀는 실행하지 않았고 공용 schema·engine·GCP·UI는 수정하지 않았다.
+- 향후 성공 경로에는 deployment-owned KMS signature/public-key 또는 immutable trust store 검증이 필요하다. 검증하지 않는 mock verifier는 production 성공 경로로 두지 않는다.
+- 이 제출은 `READY_FOR_REVIEW` 상한이며 `VERIFIED`, `INTEGRATED`, Stage 3 완료가 아니다.
+
+## 채팅 31 H06 — Deployment-Owned Issuance Trust Store
+
+- production 기본 `assess_issuance(evidence, trusted_anchor=...)`와 CLI `--trusted-anchor` 단독 경로는 `ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED/HOLD_NOT_ISSUED`를 유지한다.
+- 별도 deployment configuration document는 canonical JSON으로 복사된 frozen `DeploymentTrustStoreSnapshot`만 gate에 전달할 수 있다. request payload의 anchor/store/path/allowlist와 raw mutable dict는 신뢰하지 않는다.
+- store schema·snapshot ID/self hash·audience/scope·immutable flag, entry의 anchor ID/canonical digest·approver·evidence class·활성 기간·revocation을 exact 검증한다.
+- unknown anchor, anchor 또는 digest 변조, stale/not-yet-active, revoked, wrong audience/scope, duplicate ID/digest, malformed/unknown field, snapshot 변경, evidence classification 변경과 replay를 stable code로 차단한다.
+- test-only synthetic-named exact-match fixture만 `ISSUABLE_CANDIDATE/VALID`에 도달하며 `assurance_decision=HOLD`, `normalized_environment: null`을 유지한다. cryptographic signature, KMS/IAM 배포, 실제 contract 또는 과학 검증이 아니다.
+- issuance direct tests 40개와 별도 exact-match self-issued anchor 공격이 통과했다. 전체 회귀와 공통 schema·engine·GCP 수정은 수행하지 않았다.
+- 실제 private H03 review는 값 비노출 재평가에서 12개 blocker, `ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED`, `PROVENANCE_FAILURE/HOLD_NOT_ISSUED`, `normalized_environment: null`을 유지했고 dose key와 contract를 만들지 않았다.
+- 이 제출은 `READY_FOR_REVIEW` 상한이며 `VERIFIED`, `INTEGRATED`, Stage 3 완료가 아니다.
+
+## 채팅 31 H07 — Evaluation Time Fail-Closed
+
+- `assess_issuance(..., now=...)`가 offset-naive datetime을 받으면 aware 권리·trust-store 시각과 비교하며 `TypeError`를 내던 결함을 재현하고 제거했다.
+- `now=None`만 UTC 현재 시각 기본값을 사용한다. caller가 전달한 naive datetime, 문자열, 숫자, boolean, dict, list에는 시간대를 추정하거나 falsy 값을 기본값으로 치환하지 않는다.
+- 잘못된 caller 시각은 traceback 없이 `ISSUANCE_EVALUATION_TIME_INVALID`, `PROVENANCE_FAILURE`, `HOLD_NOT_ISSUED`, `normalized_environment: null`을 반환한다.
+- 기존 40개와 naive·invalid-type 공격 2개를 합친 issuance direct tests 42개가 통과했다.
+- production 기본 경로의 `ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED/HOLD_NOT_ISSUED`, test-only allowlist 범위, 실제 contract 발행 0건을 유지했다.
+- 이 제출은 `READY_FOR_REVIEW` 상한이며 `VERIFIED`, `INTEGRATED`, Stage 3 완료가 아니다.
+
 ## Status
 
-`INTEGRATED — chat 31 H02 / contract emission HOLD / commit 379f3ad`
+`READY_FOR_REVIEW — chat 31 H07 evaluation-time fail-closed / HOLD_NOT_ISSUED`
 
-현재 `INTEGRATED`는 채팅 31 H02의 intake gate와 실제-format parser 안전 경계를 Git에 반영했다는 뜻이다. 실제 SPENVIS 원본은 Git 밖에서 확보했지만 승인된 공용 contract 발행, 권리 확인, 과학적 교차검산 또는 Stage 3 완료를 뜻하지 않는다. 상업 이용·자동화·재배포는 별도 `HOLD`다.
+채팅 31 H02의 intake gate와 parser 통합 이력, H03/H04의 evidence·binding blocker, H05 production fail-closed 기본값과 H06 test-only allowlist 검증 범위는 유지된다. 실제 `RADIATION_ENVIRONMENT` contract는 0건이다.
 
 ## 조사 범위와 소유 파일
 

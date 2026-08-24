@@ -1,0 +1,96 @@
+{
+  "workspace_format": "spectra-evidence-review-demo-v1",
+  "case": {
+    "case_id": "review-case-synthetic-001",
+    "mission_ref": "mission-synthetic-leo-001",
+    "bom_ref": "bom-synthetic-memory-001",
+    "evidence_package_id": "evidence-package-synthetic-001",
+    "data_class": "SYNTHETIC",
+    "review_scope": "DEMO_ONLY"
+  },
+  "coverage": [
+    {
+      "domain": "ENVIRONMENT",
+      "status": "MISSING"
+    },
+    {
+      "domain": "EXACT_PART",
+      "status": "PRESENT_SYNTHETIC"
+    },
+    {
+      "domain": "TID",
+      "status": "PRESENT_SYNTHETIC"
+    },
+    {
+      "domain": "SEL",
+      "status": "MISSING"
+    },
+    {
+      "domain": "SEB",
+      "status": "MISSING"
+    },
+    {
+      "domain": "SEGR",
+      "status": "MISSING"
+    },
+    {
+      "domain": "RIGHTS",
+      "status": "RIGHTS_UNRESOLVED"
+    },
+    {
+      "domain": "SCIENTIFIC_CROSSCHECK",
+      "status": "NOT_REVIEWED"
+    }
+  ],
+  "blocking_gaps": [
+    {
+      "gap_id": "gap-authenticated-environment-root",
+      "stable_code": "AUTHENTICATED_ISSUANCE_ROOT_MISSING",
+      "summary_ko": "실제 환경 결과의 발급 출처를 인증할 수 없다.",
+      "required_evidence_ko": "출처와 무결성이 확인된 환경 결과 발급본",
+      "owner_role": "ENVIRONMENT_EVIDENCE_OWNER",
+      "next_action_code": "OBTAIN_AUTHENTICATED_ISSUANCE_ROOT",
+      "next_action_ko": "인증된 환경 결과 발급본을 연결한다."
+    },
+    {
+      "gap_id": "gap-exact-part-identity",
+      "stable_code": "EXACT_PART_IDENTITY_MISSING",
+      "summary_ko": "승인 BOM의 exact part·process·die·lot 연결이 없다.",
+      "required_evidence_ko": "승인 BOM과 exact identity 확인 기록",
+      "owner_role": "PARTS_EVIDENCE_OWNER",
+      "next_action_code": "CONFIRM_APPROVED_BOM_IDENTITY",
+      "next_action_ko": "승인 BOM과 exact identity를 확인한다."
+    },
+    {
+      "gap_id": "gap-source-rights",
+      "stable_code": "RIGHTS_UNRESOLVED",
+      "summary_ko": "시험 원문의 보관·재사용 권리를 확인하지 못했다.",
+      "required_evidence_ko": "권리와 provenance가 확인된 시험 원문",
+      "owner_role": "RIGHTS_REVIEWER",
+      "next_action_code": "RESOLVE_SOURCE_RIGHTS",
+      "next_action_ko": "원문 권리와 provenance를 확인한다."
+    },
+    {
+      "gap_id": "gap-scientific-crosscheck",
+      "stable_code": "SCIENTIFIC_CROSSCHECK_PENDING",
+      "summary_ko": "독립적인 과학 검토 기록이 없다.",
+      "required_evidence_ko": "검토자와 기준이 기록된 독립 crosscheck",
+      "owner_role": "INDEPENDENT_REVIEWER",
+      "next_action_code": "RUN_INDEPENDENT_CROSSCHECK",
+      "next_action_ko": "독립 검토와 차이 설명을 기록한다."
+    }
+  ],
+  "issuance_authentication": {
+    "status": "MISSING",
+    "issuance_root_ref": null
+  },
+  "decision": {
+    "processing_status": "VALID",
+    "engineering_gate": "NOT_EVALUATED",
+    "assurance_decision": "HOLD"
+  },
+  "technical": {
+    "fixture_id": "review-workspace-synthetic-v1",
+    "source_label": "bundled synthetic review fixture"
+  }
+}

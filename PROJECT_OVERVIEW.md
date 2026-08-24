@@ -220,7 +220,7 @@ SPECTRA의 정체성은 새로운 물리 계산기를 만드는 것이 아니라
 - Stage 3은 사람 주도 SPENVIS 실행의 실제 원본 bundle 1세트·9개와 실제-format parser 후보를 확보했고, checksum·입력 gate의 fail-closed 동작을 검증했다. 다만 provider job reference·action별 권리·승인 raw manifest가 없어 제품 contract 발행은 0건이며 계속 `HOLD`다.
 - Stage 4의 부품 증거 출처·권리·identity·적용성 조사와 exact-part/TID 원문 후보 1건은 확보했지만, 승인 BOM·권리 manifest·임무 적용성·필요 SEE coverage를 통과한 ingest는 0건이다.
 - 실제 환경 원본은 Git 밖 private evidence bundle로만 보존하며 dose 값은 제품 입력·fixture·문서에 발행하지 않았다. 실제 부품 시험자료의 승인 ingest와 과학적 교차검산은 아직 완료하지 않았다.
-- Competition Demo Release용 합성 Multi-Agent·GCP 경로는 교육용 project에 production Core-bound Cloud Run Agent 3개, Workflows, Storage, IAM, Logging으로 실제 배포됐다. H05에서 body-hash 결합 우회와 endpoint override를 차단해 해당 수정 패키지는 `VERIFIED`다. 다만 Workstream 60의 고정 revision `ASR-D02`는 아직 `NOT_EVALUATED`이고 최종 통합도 미완료이며, 이 인프라는 실제 환경·부품 evidence 0건을 대체하지 않는다.
+- Competition Demo Release용 합성 Multi-Agent·GCP 경로는 교육용 project에 production Core-bound Cloud Run Agent 3개, Workflows, Storage, IAM, Logging으로 실제 배포됐다. H05에서 body-hash 결합 우회와 endpoint override를 차단해 해당 수정 패키지는 `VERIFIED`다. readiness receipt와 Evidence Review Workspace도 fail-closed 통합됐지만, Workstream 60의 고정 revision `ASR-D02`는 아직 `NOT_EVALUATED`이며 이 인프라와 로컬 신뢰성 검증은 실제 환경·부품 evidence 0건을 대체하지 않는다.
 - 실제 비행 적합성 또는 과학적 정확도 검증을 완료하지 않았다.
 
 상세 실행 순서는 [ROADMAP.md](ROADMAP.md), 진행 상태는 [CHECKLIST.md](CHECKLIST.md)를 따른다.

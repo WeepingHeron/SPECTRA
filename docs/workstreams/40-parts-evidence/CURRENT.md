@@ -2,6 +2,71 @@
 
 ## Status
 
+`VERIFIED — H07 artifact path fail-closed remediation / HOLD`
+
+H06 executable gate에서 재현된 embedded-NUL `relative_path` 예외 유출을 수정했다. 경로 resolve와 artifact stat/read의 예상 가능한 파일시스템 실패는 안정적인 provenance code로 `HOLD` 처리하며, 프로그래밍 오류는 숨기지 않는다. 실제 packet과 승인 BOM은 여전히 0건이다.
+
+## H07 artifact path fail-closed remediation — 2026-08-24
+
+- `relative_path`의 NUL이 시작·중간·끝에 있을 때 `Path.resolve()`의 `ValueError`가 밖으로 새지 않고 `ARTIFACT_PATH_INVALID`로 닫힌다.
+- resolve/stat/read 단계의 `OSError` 계열 접근 실패는 `ARTIFACT_ACCESS_ERROR`로 닫힌다. 누락 파일과 비정규 파일, read 시점의 삭제는 기존 artifact 무결성 의미에 맞춰 `ARTIFACT_HASH_MISMATCH`로 닫힌다.
+- catch 범위는 `ValueError`와 `OSError`로 제한했다. 합성 `RuntimeError` 공격은 그대로 전파되어 프로그래밍 결함을 fail-closed 입력 오류처럼 숨기지 않음을 확인한다.
+- 공격 fixture는 NUL prefix/middle/suffix와 missing file 4건을 추가해 총 25건이다. 별도 filesystem 공격은 resolve/stat/read `PermissionError` 3건과 unexpected `RuntimeError` 1건이다.
+- 직접 검증: `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.parts_evidence.test_evidence_gate` — 7 unittest methods, `OK`.
+- Control Tower가 NUL prefix/middle/suffix와 파일 접근 실패를 직접 재현했고 7 tests가 통과했다. 공통 schema·runtime은 변경하지 않았으며 실제 packet과 승인 BOM 0건, `HOLD`를 유지한다.
+
+## 이전 제출 상태 — H06 executable exact-part evidence gate
+
+`READY_FOR_REVIEW — H06 executable exact-part evidence gate / HOLD`
+
+H05 field map을 Workstream 40 전용 executable test contract로 전환했다. synthetic control 1개, 21 attack cases와 H05 discovery candidate를 직접 검증했으며 모든 경로가 `HOLD`, `used_for_decision=false`, recommendation 없음으로 닫힌다. 이 구현은 production `PART_TEST_EVIDENCE v2`가 아니다.
+
+## H06 executable exact-part evidence gate — 2026-08-24
+
+- 신규 test-only module: `tests/parts_evidence/evidence_gate.py`; 공통 schema/validator/runtime에서 import하지 않는다.
+- 신규 fixtures: structure-valid synthetic control, 작은 synthetic text artifact, H05 discovery candidate, 21 executable attack cases.
+- claim states `VERIFIED/NOT_REPORTED/CONFLICTING`, identity `PARTIAL_UNRESOLVED/FAMILY_ONLY/CONTRADICTED/EXACT_MATCH`의 의미를 분리했다. 실제 승인 BOM이 없는 fixture는 `EXACT_MATCH`에 도달하지 않는다.
+- BOM approval version/component pointer/target hash/history, source locator, artifact identity, action rights, review hash chain, five event coverage, applicability와 decision-use를 독립 검증한다.
+- synthetic hashes는 실제 작은 fixture bytes와 canonical synthetic projection에서 실행 시 계산한다. 실제 PDF hash, 승인자, 시험 수치·lot/date code를 만들지 않았다.
+- `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.parts_evidence.test_evidence_gate` — 5 unittest methods, 26 scenario checks, 21 attacks; 최종 `OK`.
+- 첫 실행에서 out-of-range case가 code/HOLD에도 `APPLICABLE`을 유지한 결함을 검출했고 `NOT_APPLICABLE` 강등으로 수정 후 재통과했다.
+- H05 candidate actual: `PROVENANCE_FAILURE / PARTIAL_UNRESOLVED / NOT_EVALUATED / HOLD`, decision false; BOM approval, rights, raw manifest, review, SEU·SEB·SEGR과 exact SEL identity gap 유지.
+- 상세 계약·상태 전이·attack actual: `docs/workstreams/40-parts-evidence/EXECUTABLE_EXACT_PART_GATE_H06.md`.
+- 실제 packet은 0건이며 production v2, Stage 4 완료, 추천·suitability를 주장하지 않는다.
+- 남은 `CONTRACT_CHANGE_REQUEST`: Workstream 10/Control Tower의 versioned v2 schema/semantic gate, BOM approval projection, locator/manifest/rights, event condition과 applicability, migration/rollback.
+- 공통 schema·engine, 다른 Workstream, Product와 루트 문서를 수정하지 않는다. commit·push하지 않는다.
+
+## 이전 검증 상태 — H05 scoped assessment
+
+`VERIFIED — H05 scoped assessment only / BOM_APPROVAL_MISSING / HOLD`
+
+승인 BOM과 immutable approval reference가 제공되지 않아 decision-usable packet을 만들지 않았다. TI `5962L1420901VXC`, `SLLK019`, `SLLA381`은 discovery comparison으로만 유지하며 최종 상태는 `BOM_APPROVAL_MISSING / PARTIAL_UNRESOLVED / HOLD`다. H04 문서 패키지의 기존 `INTEGRATED` 판정은 유지한다.
+
+### H05 Control Tower 독립 검토 — 2026-08-24
+
+- 판정: `VERIFIED — approved-BOM 부재 시 발행 불가라는 범위 한정 assessment`; Stage 4 완료나 evidence packet 발행 승인이 아니다.
+- 후보 자료를 승인 BOM으로 승격하지 않았고 TID 내부 conflict, SEL의 zero-event 한계, SEB·SEGR 공백, rights·mission applicability 미확인을 각각 독립 gap으로 유지했다.
+- 실행 가능한 packet·fixture·validator가 없으므로 Workstream 40 구현 검증은 0건이다. schema 14개·정상 fixture 5개·실패 fixture 116개와 `git diff --check`만 재확인했다.
+- 새 승인 BOM identity와 immutable approval reference가 들어오기 전에는 후보 검색을 반복하지 않는다. 입력이 들어오면 동일 exact-part gate에서 새 H06으로 재개한다.
+
+## H05 approved-BOM exact-part evidence packet assessment — 2026-08-24
+
+- 요청 기준 commit `d287d62`는 실제 검사 HEAD `d730ded`의 ancestor다. 현재 `main`/`origin/main`과 clean 시작 작업트리를 확인했고, 기준선 차이를 H05 문서와 handoff에 기록한다.
+- repository와 `/Users/taehoon/Downloads`의 좁은 filename/reference 검색에서 승인자·승인 시각·승인 대상 hash/version/history anchor가 연결된 BOM item을 찾지 못했다.
+- `schemas/bom.schema.json`은 형식 계약이고 합성 fixture approval/hash는 실제 BOM 또는 rights 승인이 아니다. Git 밖 private BOM/manifest 입력은 제공되지 않았다.
+- TI exact-part page, `SLLK019`, `SLLA381`을 승인 BOM item으로 자동 채택하지 않았다. catalog exact PN과 test-article exact suffix/lot identity를 분리했다.
+- TID는 `SLLK019` 내부 conflict와 BOM/rights/manifest/applicability gap 때문에 decision-ineligible다. SEL은 `REPORTED_IDENTITY_UNRESOLVED / ZERO_EVENTS_WITH_TEST_LIMITS`, SEU·SEB·SEGR은 독립 `EVIDENCE_MISSING` 상태다.
+- Stage 3 environment와 Stage 5 event policy가 제공되지 않아 applicability는 `NOT_EVALUATED`다.
+- action rights는 locator 외 `FETCH`, `PRIVATE_STORE`, `PROCESS_LOCAL/AI`, `DISPLAY_INTERNAL/EXTERNAL`, `REDISTRIBUTE`, `COMMERCIAL_USE`가 승인되지 않았다. 실제 PDF를 취득·저장·자동 처리하지 않았다.
+- 공통 v1 schema에 맞추려고 test date, numeric temperature, facility, lot, rights, locator 또는 approval을 만들지 않았다. executable packet/fixture를 만들지 않았고 Workstream 40 direct test는 0개다.
+- 현재 HEAD 회귀: `PYTHONDONTWRITEBYTECODE=1 python3 tests/schema/validate_contracts.py`에서 schema 14, enum 4축, exact-one input 7종, valid 5, invalid 116이 통과했고 `git diff --check`도 통과했다. 이는 v2 구현 검증이 아니다.
+- 시작 후 나타난 `src/spectra_env_adapter/**`, `tests/environment/test_issuance_gate.py` 병렬 변경은 수정·의존·stage하지 않았다.
+- 상세 assessment와 `CONTRACT_CHANGE_REQUEST`: `docs/workstreams/40-parts-evidence/APPROVED_BOM_EVIDENCE_PACKET_H05.md`.
+- 변경 대상은 Workstream 40 문서에 한정하며 공통 schema·validator·consumer·다른 Workstream·루트 문서를 수정하지 않는다.
+- 현재 요청 상태 상한은 `READY_FOR_REVIEW`; `VERIFIED`, `INTEGRATED`, Stage 4 완료, 추천·suitability, commit·push를 수행하지 않는다.
+
+## 이전 통합 상태 — H04 destructive SEE gap research
+
 `INTEGRATED — H04 destructive SEE gap research / commit b2c8ef6 / HOLD`
 
 `40-exact-part-destructive-see-gap-research-v1`에서 TI `SLLA381`의 SEL·SEB·SEGR coverage와 exact test-article identity를 조사했다. 제한된 SEL zero-event 결과는 확인했지만 exact suffix와 lot/date-code traceability가 없어 `PARTIAL_IDENTITY`이며, SEB·SEGR은 독립 공백이다. 최종 decision은 `HOLD`다. H03까지의 기존 `INTEGRATED` 판정은 유지한다.

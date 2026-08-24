@@ -28,6 +28,7 @@
     "trapped": {
       "model_name": "AE9/AP9",
       "model_version": "1.50",
+      "model_version_status": "OBSERVED_UI_ONLY",
       "run_mode": "MEAN",
       "energy_grid": "DEFAULT_AE9_AP9"
     },
@@ -35,10 +36,13 @@
       "model_name": "SAPPHIRE",
       "model_mode": "TOTAL_FLUENCE",
       "confidence_percent": 95,
+      "configuration_verification_status": "REPORT_PRESENT_SELECTION_NOT_INDEPENDENTLY_REVIEWED",
       "magnetic_shielding": "STORMY"
     },
     "dose": {
       "model_name": "SHIELDOSE-2",
+      "model_version": "2.10",
+      "model_version_status": "VERIFIED_REPORT",
       "geometry": "SPHERE",
       "target_material": "SILICON"
     }
@@ -52,10 +56,21 @@
     "DOSE_INPUT_REPORT",
     "DOSE_OUTPUT"
   ],
-  "required_right_actions": ["FETCH", "PRIVATE_STORE"],
+  "required_right_actions": [
+    "FETCH",
+    "PRIVATE_STORE",
+    "PROCESS_LOCAL",
+    "DISPLAY_INTERNAL",
+    "DISPLAY_EXTERNAL",
+    "REDISTRIBUTE",
+    "COMMERCIAL_USE",
+    "AUTOMATION",
+    "CLOUD_STORE"
+  ],
   "notes": [
     "Mission and solar confidence are SPECTRA product assumptions, not model validity claims.",
-    "Every model build and provider job reference must be read from the actual run; placeholders are forbidden.",
+    "Every model build and provider job reference must be independently bound to an approved provider record; project IDs and completion text are not substitutes.",
+    "UI-observed or report-present selections remain non-issuable until their selected version and configuration are independently verified.",
     "No model output or measured radiation value is contained in this profile."
   ]
 }

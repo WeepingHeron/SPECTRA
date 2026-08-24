@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spectra.local/schemas/readiness-receipt.schema.json",
+  "title": "SPECTRA Readiness Receipt Dispatcher",
+  "oneOf": [
+    {"$ref": "environment-issuance-readiness-receipt.schema.json"},
+    {"$ref": "part-evidence-readiness-receipt.schema.json"}
+  ]
+}

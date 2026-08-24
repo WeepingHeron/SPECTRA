@@ -48,3 +48,17 @@ summary:
 ```bash
 PYTHONDONTWRITEBYTECODE=1 python3 tests/assurance/gcp_d02/run_preparation.py
 ```
+
+The H06 local readiness QA is a separate, synthetic-only regression. It checks
+that WS31 malformed evaluation times, WS40 NUL/missing/unreadable artifact
+paths, and WS10 readiness-receipt promotion attempts fail closed without an
+exception or an optimistic decision:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.assurance.test_local_readiness_fail_closed
+```
+
+This three-test QA does not validate actual environment issuance, exact-part
+suitability, scientific correctness, evidence rights, deployed storage, IAM,
+or GCP behavior. A passing result only fixes the listed local mutations to
+`HOLD`-style outcomes or schema rejection; `ASR-D02` remains `NOT_EVALUATED`.

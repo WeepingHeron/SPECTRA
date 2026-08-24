@@ -1,0 +1,90 @@
+{
+  "contract_version": "W40_TEST_CONTRACT_1.0.0",
+  "kind": "PART_TEST_EVIDENCE_TEST_GATE",
+  "data_class": "SYNTHETIC_CONTROL",
+  "usage": "DEMO_ONLY",
+  "record_purpose": "DISCOVERY_CANDIDATE",
+  "component_id": "synthetic-component-control",
+  "bom": {
+    "approval": {
+      "status": "SYNTHETIC_CONTROL",
+      "version": "synthetic-v1",
+      "component_pointer": "/components/0",
+      "target_hash": "AUTO_COMPUTE_SYNTHETIC",
+      "history_anchor": "synthetic-control://bom-history/0"
+    },
+    "identity": {
+      "manufacturer": {"status": "VERIFIED", "value": {"raw": "SYNTHETIC-MFR", "canonical": "synthetic-mfr"}, "locator_ids": ["loc-synthetic-control"]},
+      "exact_part_number": {"status": "VERIFIED", "value": {"raw": "SYN-PN-A", "canonical": "SYN-PN-A"}, "locator_ids": ["loc-synthetic-control"]},
+      "package": {"status": "VERIFIED", "value": {"raw": "SYN-PKG", "canonical": "synthetic-pkg"}, "locator_ids": ["loc-synthetic-control"]},
+      "grade": {"status": "VERIFIED", "value": {"raw": "SYN-GRADE", "canonical": "synthetic-grade"}, "locator_ids": ["loc-synthetic-control"]},
+      "process": {"status": "VERIFIED", "value": {"raw": "SYN-PROCESS", "canonical": "synthetic-process"}, "locator_ids": ["loc-synthetic-control"]},
+      "die": {"status": "VERIFIED", "value": {"raw": "SYN-DIE", "canonical": "synthetic-die"}, "locator_ids": ["loc-synthetic-control"]},
+      "lot": {"status": "VERIFIED", "value": {"raw": "SYN-LOT", "canonical": "synthetic-lot"}, "locator_ids": ["loc-synthetic-control"]},
+      "generic_part_number": {"status": "NOT_REPORTED"},
+      "family_relation": {"status": "NOT_REPORTED"}
+    }
+  },
+  "tested_identity": {
+    "manufacturer": {"status": "VERIFIED", "value": {"raw": "SYNTHETIC-MFR", "canonical": "synthetic-mfr"}, "locator_ids": ["loc-synthetic-control"]},
+    "exact_part_number": {"status": "VERIFIED", "value": {"raw": "SYN-PN-A", "canonical": "SYN-PN-A"}, "locator_ids": ["loc-synthetic-control"]},
+    "package": {"status": "VERIFIED", "value": {"raw": "SYN-PKG", "canonical": "synthetic-pkg"}, "locator_ids": ["loc-synthetic-control"]},
+    "grade": {"status": "VERIFIED", "value": {"raw": "SYN-GRADE", "canonical": "synthetic-grade"}, "locator_ids": ["loc-synthetic-control"]},
+    "process": {"status": "VERIFIED", "value": {"raw": "SYN-PROCESS", "canonical": "synthetic-process"}, "locator_ids": ["loc-synthetic-control"]},
+    "die": {"status": "VERIFIED", "value": {"raw": "SYN-DIE", "canonical": "synthetic-die"}, "locator_ids": ["loc-synthetic-control"]},
+    "lot": {"status": "VERIFIED", "value": {"raw": "SYN-LOT", "canonical": "synthetic-lot"}, "locator_ids": ["loc-synthetic-control"]},
+    "generic_part_number": {"status": "NOT_REPORTED"},
+    "family_relation": {"status": "NOT_REPORTED"}
+  },
+  "sources": [
+    {
+      "source_id": "synthetic-source-control",
+      "document_id": "SYNTHETIC-CONTROL",
+      "issuer": "SYNTHETIC_FIXTURE",
+      "revision": "synthetic-v1",
+      "uri": "fixture://synthetic-source.txt",
+      "locators": [
+        {"locator_id": "loc-synthetic-control", "media_type": "TEXT", "target": "section:control", "artifact_id": "synthetic-artifact-control"}
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "synthetic-artifact-control",
+      "status": "PRESENT_SYNTHETIC",
+      "relative_path": "artifacts/synthetic-source.txt",
+      "sha256": "AUTO_COMPUTE_SYNTHETIC",
+      "source_id": "synthetic-source-control"
+    }
+  ],
+  "rights": {
+    "status": "SYNTHETIC_TEST_ONLY",
+    "scope": "DEMO_ONLY",
+    "actions": {
+      "LOCATOR": "SYNTHETIC_ONLY",
+      "FETCH": "SYNTHETIC_ONLY",
+      "PRIVATE_STORE": "SYNTHETIC_ONLY",
+      "PROCESS_LOCAL_AI": "SYNTHETIC_ONLY",
+      "DISPLAY_INTERNAL": "SYNTHETIC_ONLY",
+      "DISPLAY_EXTERNAL": "SYNTHETIC_ONLY",
+      "REDISTRIBUTE": "SYNTHETIC_ONLY",
+      "COMMERCIAL_USE": "SYNTHETIC_ONLY"
+    }
+  },
+  "review": {
+    "status": "SYNTHETIC_CONTROL",
+    "history": [
+      {"sequence": 0, "previous_entry_hash": null, "action": "CREATED_SYNTHETIC_CONTROL", "actor": "synthetic-fixture-builder", "entry_hash": "AUTO_COMPUTE_SYNTHETIC"}
+    ],
+    "history_head_hash": "AUTO_COMPUTE_SYNTHETIC"
+  },
+  "event_coverage": [
+    {"event_type": "TID", "status": "EVIDENCE_MISSING"},
+    {"event_type": "SEU", "status": "EVIDENCE_MISSING"},
+    {"event_type": "SEL", "status": "EVIDENCE_MISSING"},
+    {"event_type": "SEB", "status": "EVIDENCE_MISSING"},
+    {"event_type": "SEGR", "status": "EVIDENCE_MISSING"}
+  ],
+  "applicability": {"status": "NOT_EVALUATED", "mission_environment_ref": null, "comparisons": []},
+  "decision": {"requested_outcome": "HOLD", "used_for_decision": false, "recommendation": null}
+}

@@ -14,6 +14,7 @@ SPECTRA는 위성 임무 조건, BOM, 방사선 환경 모델과 부품 시험 �
 - **실험 범위 회귀:** WATCHDOG·TMR·SEL runtime 공격 18회에서 False PASS 0 — 현재 Core 판단·주 발표와 분리
 - **검증된 Competition 기반:** 교육용 GCP의 private Cloud Run Agent 3개, Workflows, Storage, IAM, Logging 합성 E2E와 입력 무결성 공격 차단
 - **검증된 표현 계층:** generated 결과를 소비하는 Product UI, fail-closed 결과 전달 무결성, 13장 발표 deck의 localhost 화면·상호작용
+- **검증된 readiness 계층:** 실제 발행 전 상태를 versioned receipt로 전달하고, Environment·Part의 낙관적 승격·오염 입력을 UI까지 `HOLD`로 차단하는 Evidence Review Workspace
 - **미완료 실제 근거:** 승인된 환경 contract, 승인 BOM과 exact-part 시험 원문, 임무 적용성·파괴성 SEE coverage, 과학적 교차검산
 - **미평가 배포 공격:** 실제 GCP `ASR-D02`
 
@@ -34,6 +35,10 @@ PYTHONDONTWRITEBYTECODE=1 python3 tests/environment/run_all.py
 PYTHONDONTWRITEBYTECODE=1 python3 tests/assurance/run_all.py
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s platform/gcp-e2e-h04/tests -v
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.product.test_product_data_binding
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.schema.test_readiness_receipts
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.parts_evidence.test_evidence_gate
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.assurance.test_local_readiness_fail_closed
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_evidence_review_workspace
 ```
 
 ## 핵심 원칙

@@ -2,7 +2,34 @@
 
 ## 상태
 
-`READY_FOR_REVIEW — H17 Visual Alignment, Core Value & Integrity Scope`
+`VERIFIED — H19 Readiness Receipt Integration`
+
+H19는 Control Tower가 검증한 `schemas/readiness-receipt.schema.json` dispatcher의 Environment·Part v1 receipt를 기존 Evidence Review Workspace가 직접 소비하도록 연결했다. upstream `tests/parts_evidence`나 다른 test module을 import하지 않고, WS80 내부 fixture와 브라우저 validator로 제한된 readiness 상태만 표시한다.
+
+## H19 Readiness Receipt Integration — 2026-08-24
+
+- `demo/data/readiness-environment-hold-v1.json`은 `ENVIRONMENT / SYNTHETIC_CONTROL / HOLD_NOT_ISSUED`, `demo/data/readiness-part-contract-not-implemented-v1.json`은 `PART / DEMO_ONLY / CONTRACT_NOT_IMPLEMENTED`를 보여 주는 UI용 synthetic fixture다.
+- 화면은 source class/purpose, processing·identity·applicability의 제한된 상태, blocker code와 blocker별 담당 역할·다음 행동만 표시한다. receipt/source identity, 공학 수치, suitability, actual output reference와 decision-use는 표시하거나 export하지 않는다.
+- Environment v1은 `HOLD_NOT_ISSUED`, Part v1은 `CONTRACT_NOT_IMPLEMENTED`, 모든 v1은 `used_for_decision=false / assurance_decision=HOLD`일 때만 ready model이 된다.
+- optimistic issuance candidate, implemented target, decision-use·assurance 상향, cross-kind field, unknown version/kind, malformed nested type, 빈·중복·`PASS` blocker는 identity·세부값을 숨긴 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`로 닫힌다.
+- Workspace 직접 테스트 21개와 기존 Product binding 17개가 통과했다. 공용 schema나 upstream test module import는 없다.
+- localhost 실제 브라우저 1280×720에서 두 fixture의 파일 선택, status·blocker·owner/action 표시, x/y overflow 0, console warning/error 0을 확인했다. Reset은 identity를 숨기고 export를 비활성화한 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`로 돌아간다.
+- Control Tower 직접 검증과 최종 회귀에서 Workspace 21 tests와 기존 Product 17 tests가 통과했다. 실제 environment/part contract, 승인 BOM, 시험 evidence, suitability와 assurance evidence는 계속 0건이다. H19는 receipt 상태 가시화이며 실제 Evidence-to-Decision 발행이나 Product assurance 연결이 아니다.
+- `CONTRACT_CHANGE_REQUEST`: 없음. H19는 공용 schema·engine·upstream Workstream·발표 파일을 수정하지 않았다.
+
+H18은 발표용 `demo/index.html`과 Product prototype `demo/product.html`을 결합하거나 수정하지 않고, 별도 `demo/workspace.html`에서 로컬 evidence readiness JSON을 검토한다. 8개 coverage 영역, blocking gap의 stable code·담당 역할·필요 evidence·다음 행동, 최종 `NOT_EVALUATED / HOLD`와 비민감 audit export를 한 화면에 표시한다.
+
+## H18 Evidence Review Workspace — 2026-08-24
+
+- `demo/data/review-workspace-synthetic.json`은 `SYNTHETIC / DEMO_ONLY` sample이다. 실제 environment/part contract, 승인 BOM, 시험 원문, rights 승인과 실제 dose는 0건이다.
+- 브라우저는 선택된 JSON을 메모리에서만 읽고 서버 업로드·API·telemetry·local/session storage를 사용하지 않는다. 입력 형식의 허용된 상태를 표시할 뿐 수치·identity·suitability·ROI·assurance를 계산하거나 추정하지 않는다.
+- 정상 sample은 8개 coverage와 4개 blocking gap을 표시하되 `VALID`를 입력 구조 처리 상태로만 사용하고 `engineering_gate=NOT_EVALUATED / assurance_decision=HOLD`를 유지한다.
+- malformed JSON, 잘못된 nested type, duplicate gap ID, unknown coverage status, `ACTUAL` 자기 선언, 인증되지 않은 issuance root, optimistic decision과 dose field 삽입은 identity·세부값을 숨긴 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD`로 닫는다.
+- Audit export는 allowlist 기반으로 coverage domain/status, stable gap code, owner role, next action code와 decision만 내보낸다. case ID·mission/BOM/package reference, gap 설명 원문, raw evidence, local path, 개인정보와 실제 dose 값은 제외한다.
+- H18 전용 직접 테스트 13개는 정상 intake부터 wrapper consumer, 공격별 fail-closed와 export redaction, JavaScript syntax, 원격 dependency 0을 실행 검증한다.
+- localhost 실제 브라우저에서 sample load와 Reset, 1280×720·1440×900 document overflow 0, 모든 gap owner/action·Decision·export 첫 화면 가시성, console warning/error 0을 확인했다. 인앱 브라우저에서 export 링크의 정규 data URL과 filename 활성화는 확인했지만 download event는 제공되지 않았고 연결된 Chrome이 없어 실제 파일 생성 관측은 `NOT_EVALUATED`다.
+- 작업 중 공유 dirty worktree의 `demo/index.html` 해시가 외부 병렬 변경으로 달라졌으나 H18은 해당 파일과 `demo/product.html`을 수정하거나 되돌리지 않았다. 기존 Product suite의 GCP 문구 기대값 1건도 이 외부 deck 변경 때문에 실패했으며 H18 범위에서 수정하지 않았다.
+- `CONTRACT_CHANGE_REQUEST`: 없음. H18은 공용 schema/engine이나 실제 evidence contract를 만들지 않았다.
 
 H17은 발표와 Product의 ECC residual을 generated production MVP Core `0.013072`로 통일하고, Product 05를 runtime WATCHDOG가 아닌 Core 결과 전달 무결성 시연으로 전환했다. Product 보증 판단은 상·하 exact 4열이며, 발표 07은 GCP 배포·세 Agent 책임·정상 HOLD·변조 차단 HOLD만 주 화면에 남긴다. 실제 환경 run·승인 BOM·시험 원문은 0건이고 모든 assurance는 계속 `HOLD`다.
 

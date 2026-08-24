@@ -1,0 +1,87 @@
+{
+  "contract_version": "W40_TEST_CONTRACT_1.0.0",
+  "kind": "PART_TEST_EVIDENCE_TEST_GATE",
+  "data_class": "DISCOVERY_CANDIDATE",
+  "usage": "DEMO_ONLY",
+  "record_purpose": "DISCOVERY_CANDIDATE",
+  "component_id": "NOT_REPORTED",
+  "bom": {
+    "approval": {"status": "NOT_PROVIDED"},
+    "identity": {
+      "manufacturer": {"status": "NOT_REPORTED"},
+      "exact_part_number": {"status": "NOT_REPORTED"},
+      "package": {"status": "NOT_REPORTED"},
+      "grade": {"status": "NOT_REPORTED"},
+      "process": {"status": "NOT_REPORTED"},
+      "die": {"status": "NOT_REPORTED"},
+      "lot": {"status": "NOT_REPORTED"},
+      "generic_part_number": {"status": "NOT_REPORTED"},
+      "family_relation": {"status": "NOT_REPORTED"}
+    }
+  },
+  "tested_identity": {
+    "manufacturer": {"status": "VERIFIED", "value": {"raw": "Texas Instruments", "canonical": "texas-instruments"}, "locator_ids": ["loc-ti-product", "loc-sllk019-identity"]},
+    "exact_part_number": {"status": "VERIFIED", "value": {"raw": "5962L1420901VXC", "canonical": "5962L1420901VXC"}, "locator_ids": ["loc-ti-product", "loc-sllk019-identity"]},
+    "package": {"status": "VERIFIED", "value": {"raw": "CFP HKX 8 pin", "canonical": "CFP-HKX-8"}, "locator_ids": ["loc-ti-product"]},
+    "grade": {"status": "VERIFIED", "value": {"raw": "Space/QML-V/RHA", "canonical": "SPACE-QML-V-RHA"}, "locator_ids": ["loc-ti-product"]},
+    "process": {"status": "VERIFIED", "value": {"raw": "LBC3S", "canonical": "LBC3S"}, "locator_ids": ["loc-sllk019-identity", "loc-slla381-identity"]},
+    "die": {"status": "NOT_REPORTED"},
+    "lot": {"status": "VERIFIED", "value": {"raw": "SLLK019 die lot and A/T lot/date-code claims", "canonical": "SLLK019-LOT-CLAIMS"}, "locator_ids": ["loc-sllk019-identity"]},
+    "generic_part_number": {"status": "VERIFIED", "value": {"raw": "5962L1420901VX", "canonical": "5962L1420901VX"}, "locator_ids": ["loc-slla381-identity"]},
+    "family_relation": {"status": "NOT_REPORTED"}
+  },
+  "sources": [
+    {
+      "source_id": "ti-product",
+      "document_id": "SN55HVD233-SP-product-page",
+      "issuer": "Texas Instruments",
+      "revision": "NOT_DISPLAYED",
+      "uri": "https://www.ti.com/product/SN55HVD233-SP/part-details/5962L1420901VXC",
+      "locators": [{"locator_id": "loc-ti-product", "media_type": "HTML", "target": "part-details/5962L1420901VXC"}]
+    },
+    {
+      "source_id": "sllk019",
+      "document_id": "SLLK019",
+      "issuer": "Texas Instruments",
+      "revision": "February 2018",
+      "uri": "https://www.ti.com/lit/rr/sllk019/sllk019.pdf",
+      "locators": [{"locator_id": "loc-sllk019-identity", "media_type": "PDF", "target": "p.2 Table 1"}]
+    },
+    {
+      "source_id": "slla381",
+      "document_id": "SLLA381",
+      "issuer": "Texas Instruments",
+      "revision": "March 2018",
+      "uri": "https://www.ti.com/lit/pdf/slla381",
+      "locators": [{"locator_id": "loc-slla381-identity", "media_type": "PDF", "target": "p.2 Table 1"}, {"locator_id": "loc-slla381-sel", "media_type": "PDF", "target": "p.9-10 section 7.1/Table 4"}]
+    }
+  ],
+  "artifacts": [
+    {"artifact_id": "sllk019-artifact", "status": "NOT_PROVIDED", "source_id": "sllk019"},
+    {"artifact_id": "slla381-artifact", "status": "NOT_PROVIDED", "source_id": "slla381"}
+  ],
+  "rights": {
+    "status": "UNRESOLVED",
+    "scope": "NOT_APPROVED",
+    "actions": {
+      "LOCATOR": "UNCONFIRMED",
+      "FETCH": "UNCONFIRMED",
+      "PRIVATE_STORE": "UNCONFIRMED",
+      "PROCESS_LOCAL_AI": "UNCONFIRMED",
+      "DISPLAY_INTERNAL": "UNCONFIRMED",
+      "DISPLAY_EXTERNAL": "UNCONFIRMED",
+      "REDISTRIBUTE": "UNCONFIRMED",
+      "COMMERCIAL_USE": "UNCONFIRMED"
+    }
+  },
+  "review": {"status": "DISCOVERED", "history": [], "history_head_hash": null},
+  "event_coverage": [
+    {"event_type": "TID", "status": "REPORTED_IDENTITY_UNRESOLVED", "source_event_type": "TID", "source_id": "sllk019", "locator_ids": ["loc-sllk019-identity"]},
+    {"event_type": "SEU", "status": "EVIDENCE_MISSING"},
+    {"event_type": "SEL", "status": "REPORTED_IDENTITY_UNRESOLVED", "source_event_type": "SEL", "source_id": "slla381", "locator_ids": ["loc-slla381-sel"], "observation": {"zero_events_claimed": true, "fluence_reported": true, "sample_size_reported": true, "detection_limit_reported": false, "confidence_or_upper_bound_reported": true, "immunity_claimed": false}},
+    {"event_type": "SEB", "status": "EVIDENCE_MISSING"},
+    {"event_type": "SEGR", "status": "EVIDENCE_MISSING"}
+  ],
+  "applicability": {"status": "NOT_EVALUATED", "mission_environment_ref": null, "comparisons": []},
+  "decision": {"requested_outcome": "HOLD", "used_for_decision": false, "recommendation": null}
+}

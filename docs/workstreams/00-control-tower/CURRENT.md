@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-24
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 통합 체크포인트: H05 GCP·Assurance·Product·발표·루트 문서 통합 패키지는 commit `889dc94`로 검증·커밋했고, 이 Control Tower 기록 commit과 함께 `origin/main`에 반영했다. ignored `instructions/`와 Git 밖 private evidence는 포함하지 않았다.
+- Git 통합 체크포인트: 직전 기준 `d730ded` 위 readiness contract·environment/parts gate·local Assurance QA·Product Workspace·발표 Trust & Integrity·문서 정합성 단위를 최종 검증했다. 이 문서를 포함하는 main commit으로 `origin/main`에 통합하며 ignored `instructions/`와 Git 밖 private evidence는 포함하지 않는다.
 
 ## 현재 확인된 산출물
 
@@ -22,6 +22,9 @@
 
 ## 현재 진실
 
+- 2026-08-24 readiness 최종 통합 회귀에서 schema 17개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 65, Product 17, GCP H05 local 12 tests를 재현했다. 추가 직접 회귀는 readiness schema 8, exact-part test gate 7, local readiness QA 3, Evidence Review Workspace 21 tests가 모두 통과했다. Assurance는 47 attack executions·False PASS 0을 유지하며 실제 GCP `ASR-D02`는 `NOT_EVALUATED`다.
+- Workstream 10 readiness receipt v1, Workstream 31 issuance time fail-closed, Workstream 40 artifact path fail-closed, Workstream 60 local readiness 공격, Workstream 80 H19 Workspace를 독립 검증해 각 좁은 구현 범위를 `VERIFIED`로 판정했다. actual environment contract 0건, 승인 BOM exact-part packet 0건, suitability와 실제 방사선 assurance `HOLD`는 바뀌지 않는다.
+- 발표 13장을 localhost 1280×720에서 실제 순회해 모든 화면 x/y overflow 0을 확인했다. Multi-Agent 화면의 Trust & Integrity는 private 접근·입력 결속·자체 승인 차단·fail-closed만 주장하고 `NOT PEN TEST / KMS / ASSURANCE` 경계를 인접 표시한다. 이 표현 패키지만 `VERIFIED`이며 완전한 보안 또는 보안 인증을 뜻하지 않는다.
 - 2026-08-24 최종 통합 회귀에서 schema 14개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 23, Product 16, GCP H05 local 12 tests와 Assurance 47 attack executions/False PASS 0을 재현했다. `ASR-D02` preparation은 prepared attack 16개·control 1개·failure 0이지만 live execution 0으로 계속 `NOT_EVALUATED`다. JSON 형식, Python·shell syntax, staged diff와 비밀정보 경계도 확인한 뒤 57개 파일을 commit `889dc94`로 통합했다. 이 Git 통합은 실제 environment contract, exact-part evidence, 과학적 적합성 또는 radiation assurance 완료를 뜻하지 않는다.
 - 2026-08-24 루트 문서 정합성 감사를 수행했다. schema 14개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 23, Product 16, GCP H05 local 12 tests와 Assurance 47 attack executions/False PASS 0을 재현했다. 이 회귀는 합성·계약·표현 경로의 현재 동작만 확인하며 실제 방사선 과학·부품 suitability·권리·`ASR-D02`를 검증하지 않는다.
 - 루트 README의 Stage 2 시점 설명, ROADMAP의 `ASR-D02 진행 중`, Stage 7의 미표시 검증 항목과 초기 `현재 우선순위/다음 작업`을 현재 증거에 맞게 갱신했다. H05 합성 GCP 계약·resource·E2E·장애 격리 항목만 완료로 표시했고, 비용 기준선·전체 배포 공격·실제 evidence 경로는 미완료로 유지했다.
@@ -41,7 +44,7 @@
 - Stage 1~9 로드맵과 단계별 체크리스트가 존재하며, 각 Stage 번호는 주관 Workstream 앞자리와 일치한다.
 - 결정론적 합성 TID·SEE 기준선은 Workstream 20이 프로젝트에 통합했고, 모든 결과가 `SYNTHETIC/HOLD`를 유지한다.
 - 실제 SPENVIS 원본 bundle 1세트·9개와 parser 후보는 Git 밖에서 checksum·구조 검증했지만, provider reference·권리·승인 raw manifest 부족으로 제품 contract 발행은 0건이다. 실제 부품 시험자료의 승인 ingest와 과학적 교차검산도 미완료다.
-- Multi-Agent·GCP H05 구현·배포 증거와 발표 deck의 합성 snapshot 표시는 `VERIFIED`지만 Workstream 60의 고정 revision `ASR-D02`, 비용 기준선과 최종 통합 전까지 Stage 7 완료로 승격하지 않는다.
+- Multi-Agent·GCP H05 구현·배포 증거와 발표 deck의 합성 snapshot 표시는 `VERIFIED`지만 Workstream 60의 고정 revision `ASR-D02`와 비용 기준선 전까지 Stage 7 완료로 승격하지 않는다.
 - 검증된 Stage 1 계약 기준선은 커밋 `303adb9`로 비공개 `origin/main`에 반영됐다. 해당 커밋 메시지의 `Stage 0` 표기는 번호 정렬 이전의 역사적 명칭이다.
 - 채팅 세션 10의 Contracts & Schema 작업은 4차 수정 후 독립 재검증과 Git 통합을 완료했다.
 - 세션은 실제 채팅방을 뜻한다. Workstream은 십 단위로 구분하고 첫 채팅도 같은 번호를 사용하며, 같은 Workstream에서 새 채팅이 필요할 때만 1단위로 증가한다.

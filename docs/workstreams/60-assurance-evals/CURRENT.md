@@ -2,7 +2,15 @@
 
 ## 상태
 
-`READY_FOR_REVIEW — H04 Deployed GCP ASR-D02 Preparation / H05 target locked, live stopped`
+`VERIFIED — H06 local readiness fail-closed QA / ASR-D02 remains NOT_EVALUATED`
+
+## H06 local readiness fail-closed QA — 2026-08-24
+
+- WS31 H07의 naive datetime·문자열·숫자·boolean·object·array 평가 시각이 traceback 없이 `ISSUANCE_EVALUATION_TIME_INVALID / HOLD_NOT_ISSUED / HOLD`로 닫히는지 교차 검증한다.
+- WS40 H07의 NUL prefix/middle/suffix, missing artifact, 합성 접근 거부가 예외나 승인 없이 `ARTIFACT_PATH_INVALID`, `ARTIFACT_HASH_MISMATCH`, `ARTIFACT_ACCESS_ERROR`와 `HOLD`로 닫히는지 고정한다.
+- WS10 readiness receipt v1에서 환경 `ISSUABLE_CANDIDATE`와 부품 `RECORD_VALIDATED/IMPLEMENTED`, assurance 승격, decision 사용, 빈 blocker를 함께 주장하면 version-dispatched schema가 거부하는지 검증한다.
+- 테스트는 `tests/assurance/test_local_readiness_fail_closed.py`의 합성/local fixture 3개뿐이다. 실제 environment 발행, exact-part suitability, 과학 정확성, 권리, GCP object·IAM·revision은 평가하지 않았고 `ASR-D02=NOT_EVALUATED`를 유지한다.
+- Control Tower가 세 공격 묶음을 직접 재현했고 3 tests가 통과했다. 공통 schema와 upstream 구현은 수정하지 않았다. 이 판정은 local readiness fail-closed QA에만 적용하며 실제 `ASR-D02`는 계속 `NOT_EVALUATED`다.
 
 H01 고정 공격 기준선의 `VERIFIED`, H02의 `INTEGRATED / commit 379f3ad`, H03의 `INTEGRATED / commit 32b6131` 상태는 유지한다. H05 deployed identity는 고정되었지만 시간·사용량 우선 중단 지시에 따라 `ASR-D02` live 공격은 시작하지 않았다. 따라서 False Accept/False PASS actual은 계산하지 않으며 `ASR-D02=NOT_EVALUATED`를 유지한다. 이 상태는 `VERIFIED`, `INTEGRATED` 또는 Stage 6 완료가 아니다.
 

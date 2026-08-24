@@ -4,9 +4,55 @@
 
 `IN_PROGRESS — index visual integration VERIFIED; content claims and measured rehearsal pending`
 
+## Final Trust & Integrity alignment — 2026-08-24
+
+- Multi-Agent 화면에 `Private Agent Access`, `Input Binding`, `Evidence Boundary`, `Fail-Closed Output` 네 신뢰 경계를 추가했다.
+- `공개 IAM 주체 0`, body hash·revision 결속, 자체 승인·낙관 승격 차단, 오류 시 값 숨김·후속 호출 중단·`HOLD`만 표시한다.
+- 인접 경계를 `SNAPSHOT + LOCAL REGRESSION · NOT PEN TEST / KMS / ASSURANCE`로 고정해 완전한 보안·침투시험·KMS 서명 배포·실제 방사선 assurance 완료로 확대하지 않는다.
+- 최신 v2 발표 대본에도 같은 직접 답변과 한계를 추가했다. localhost 1280×720에서 13장 실제 순회 결과 x/y overflow 0, Product 17 tests와 Workspace 21 tests가 통과했다.
+- 판정은 `VERIFIED — presentation trust boundary`; 사람 7분 리허설과 실제 보안 인증은 `NOT_EVALUATED`다.
+
 H02 7분 발표 서사 패키지의 `INTEGRATED / commit 379f3ad`, H03 Business Validation Instrument의 `INTEGRATED / commit b2c8ef6`, H05 Runtime Alignment과 H08 Plain-Language Alignment의 `VERIFIED` 기준선은 유지한다. H09 `CHANGES_REQUESTED`를 반영해 표지, ECC 선택 이유, 보증 판단과 결과 전달 무결성을 초심자 흐름으로 정렬했다. WATCHDOG·TMR·SEL과 관련 runtime 합성 수치는 현재 사용자 결정에 연결되지 않으므로 주 발표·Product 시연에서 제외하고 기술 Q&A의 `현재 주 데모 범위 밖`으로만 남겼다.
 
 2026-08-21 공식 평가 기준은 Multi-Agent·GCP 35, 신뢰성 20, 비즈니스·문제 정의 30, 팀 시너지·발표 15로 정정됐다. H11의 배점·시간 산술·Agent/Core 역할·fail-closed·발표 경계를 Control Tower가 독립 대조해 문서 계약을 `VERIFIED`로 판정했다. 이후 Workstream 70 H05는 H04 무결성 결함을 보완해 실제 revision·정상/공격 result와 함께 `VERIFIED`됐다. 다만 사람 리허설, Product H17 실제 브라우저, 실제 GCP `ASR-D02`는 각각 `NOT_MEASURED / NOT_EVALUATED / NOT_EVALUATED`이며 발표 후보가 이 범위를 넘을 수 없다.
+
+## H14 Judge Audit & GCP Provenance Remediation — 2026-08-24
+
+- package: `90-judge-audit-and-gcp-provenance-remediation-v1`
+- submission: `H14`
+- status ceiling: `READY_FOR_REVIEW`
+- 네 persona audit의 공통 P0인 deck/script 번호 불일치, 확대된 live 표현과 H05 execution provenance 오연결을 교정했다.
+- `demo/index.html`의 GCP 주 화면은 H05 authoritative snapshot의 세 기록만 전환한다.
+  - 정상 합성 실행 `ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34`: Agent 3개 `VALID`, `engineering_gate=NOT_EVALUATED`, 최종 `HOLD`
+  - body hash 위조 `3f5d9221-7b7a-4023-be3c-f933fdbaf070`: Mission `INPUT_BODY_SHA256_MISMATCH`, Core·Parts·Assurance 미호출, 최종 `HOLD`
+  - endpoint override `df49b5c1-3883-468e-bf1e-67e87ee0b6a7`: Agent 호출 0회, `ENDPOINT_OVERRIDE_FORBIDDEN`, 최종 `HOLD`
+- 주 화면에서 H04 `AGENT_TEST_FAILURE`를 GEO 범위 차단으로 바꾼 연결, body hash 위조를 Assurance 최종 PASS 위조 탐지로 바꾼 연결과 H05 snapshot 밖 실행을 제거했다.
+- 상태 label은 `검증된 고정 GCP 실행 기록 · SNAPSHOT / NOT LIVE`이며, 버튼이 저장된 H05 실행 기록만 전환하고 새 Workflow를 시작하지 않는다고 인접 표기했다.
+- Slide 01의 출처 없는 COTS 비율·조기 실패율·시험 대기기간은 제거하고, NASA의 COTS 검증 조건과 heavy-ion beam time 비용 압력만 공식 링크·접근일과 함께 남겼다. SPECTRA ROI와 시험 대체는 주장하지 않는다.
+- 원본 Downloads 대본은 보존하고 `/Users/taehoon/Downloads/spectra_7min_presentation_script_v2.md`를 새로 작성했다. v2는 `Cover + 01~11 + Closing` exact 순서, `CALCULATED 405초 + 15초 전환 여유 = 420초`이며 사람 리허설은 `NOT_MEASURED`다.
+- v2 Q&A 8개는 모두 `직접 답변 → 검증된 범위 → 안전장치 → 남은 한계` 순서로 약 20초 답변을 제공한다. 한 사람 구현의 팀 시너지는 세 Agent 책임 분리와 Control Tower 독립 재현으로만 설명한다.
+- presentation direct test 5개와 H14 정적 provenance assertion, `git diff --check`가 통과했다. localhost 1280×720에서 13장 overflow 0, GCP 세 scenario exact DOM, console warning/error 0을 직접 확인했다.
+- 실제 방사선 분석·실제 사용자 가치·사람 낭독 시간은 검증하지 않았고 전체 회귀는 실행하지 않았다.
+
+## H13 Evidence-Bound Business Impact — 2026-08-24
+
+- package: `90-evidence-bound-business-impact-v1`
+- submission: `H13`
+- status ceiling: `READY_FOR_REVIEW`
+- 13장 구조와 슬라이드 번호를 유지한 채 `demo/index.html`의 02·03·11만 좁게 보완했다.
+- Slide 02는 `환경 모델 출력 → BOM spreadsheet → 시험 PDF → 수기 조건 대조 → 검토·보완` 흐름과 exact part/process/lot·시험 조건·임무 적용성·권리/승인 trace의 수동 재연결 문제를 보여 준다. 실제 시간·반려율은 `UNSET / UNVALIDATED`다.
+- Slide 03은 기존 시험 자원의 비용 압력으로 NASA COTS Parts Phase II의 공개 heavy-ion beam time `$1,000–$5,000/hour` 범위와 공식 URL·접근일을 인접 표기한다. 이는 SPECTRA 절감액·ROI·회피 비용이 아니며, 메시지는 근거 공백을 먼저 찾아 제한된 시험 시간을 우선순위화하되 시험을 대체하지 않는다는 것이다.
+- Slide 11은 실제 데이터·AI 확장 로드맵을 유지하고 하단을 `기대 효과 → 파일럿 검증`으로 바꿨다. 화면 KPI는 `case당 active review time`, `trace completeness`, `보완 return rate` 세 개뿐이며 모두 `PILOT MEASURE · UNVALIDATED`, 현재 값은 `UNSET`이다.
+- 기대 효과는 반복 evidence 조사·재검토 부담과 제한된 시험 자원 우선순위를 개선할 가능성일 뿐이다. 절감액·절감률·ROI 산식·숫자 scenario·시험 회피·승인 자동화·방사선 적합성 보장은 표시하지 않는다.
+- presentation direct test 3개는 통과했다. localhost 1280×720에서 Slide 02·03·11의 가로·세로 overflow가 없고 Slide 03 source footnote가 화면 안에 표시되는 것을 직접 관찰했다. 전체 회귀와 사람 발표 리허설은 수행하지 않았다.
+- NASA 공식 citation URL은 2026-08-24 접근 대상으로 확인했지만, 실행 환경의 NTRS PDF 다운로드가 완료되지 않아 원문 문장 재추출은 하지 못했다. 금액 범위는 프로젝트에 이미 고정된 출처 있는 문제 근거만 사용했으며 직접 인용문은 만들지 않았다.
+
+### H13 Control Tower 독립 검토 — 2026-08-24
+
+- 판정: `VERIFIED — evidence-bound business impact presentation patch`; 실제 사용자 가치·절감 효과 검증은 아니다.
+- presentation direct test 3/3과 `git diff --check`를 재현했다.
+- localhost 1280×720 실제 브라우저에서 13장, Slide 02의 `UNSET/UNVALIDATED`, Slide 03의 `$1,000–$5,000/hour`와 NASA source link, Slide 11의 세 `PILOT MEASURE · UNVALIDATED`를 확인했다.
+- Slide 11 active content boundary 밖 overflow는 0이고 console warning/error도 0이었다. SPECTRA 절감액·ROI·시험 대체 주장은 추가되지 않았다.
 
 ## 2026-08-22 실제 발표 경로와 Antigravity 청사진 — Control Tower 최신화
 

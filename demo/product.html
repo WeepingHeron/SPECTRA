@@ -106,7 +106,7 @@
     </section>
 
     <section class="view" data-view="3" aria-labelledby="gcp-title">
-      <div class="view-head"><p class="eyebrow">04 · GCP 실행 <span lang="en">Workflow snapshot</span></p><h1 id="gcp-title">이 결과가 실제 GCP에서 어떻게 처리됐나?</h1><p class="answer">세 Agent가 근거 책임을 나누고, Workflows가 순서·격리·HOLD를 관리한다.<span class="contract-note">Control Tower 검증 snapshot · live 조회 아님</span></p></div>
+      <div class="view-head"><p class="eyebrow">04 · GCP 실행 <span lang="en">Workflow snapshot</span></p><h1 id="gcp-title">이 결과가 실제 GCP에서 어떻게 처리됐나?</h1><p class="answer">세 Agent가 근거 책임을 나누고, Workflows가 순서·격리·HOLD를 관리한다.<span class="contract-note">독립 확인된 저장 기록 · live 조회 아님</span></p></div>
       <div class="gcp-workspace" data-gcp-screen>
         <div class="gcp-workflow" aria-label="GCP workflow 6단계">
           <article><span>01 · STORAGE 입력</span><b>합성 입력 고정</b><p>generation과 SHA를 보존한다.</p></article>
@@ -687,7 +687,7 @@
 
       function renderStepFooter() {
         if (state.step === 4) setText('[data-footer-state]', '결과 불일치 시 숫자 비노출 · 판단 보류(HOLD)');
-        else if (state.step === 3) setText('[data-footer-state]', gcpModel.ready ? 'H05 GCP 검증 snapshot · 최종 HOLD' : 'GCP snapshot 사용 불가 · 최종 HOLD');
+        else if (state.step === 3) setText('[data-footer-state]', gcpModel.ready ? '검증된 GCP 저장 기록 · 최종 HOLD' : 'GCP snapshot 사용 불가 · 최종 HOLD');
         else if (state.step === 2) setText('[data-footer-state]', '보증 판단 · 근거 부족으로 판단 보류(HOLD)');
       }
 
@@ -697,7 +697,7 @@
           return;
         }
         const snapshot = gcpModel.payload;
-        setText('[data-product-gcp-revision]', `${snapshot.project_id} · ${snapshot.region} · ${snapshot.workflow.name} · ${snapshot.workflow.revision} · ${snapshot.workflow.state}`);
+        setText('[data-product-gcp-revision]', `${snapshot.project_id} · ${snapshot.region} · revision ${snapshot.workflow.revision} · ${snapshot.workflow.state}`);
         setText('[data-product-gcp-iam]', `Cloud Run 3개 분리 · public member ${snapshot.iam.public_agent_members} · Workflow SA 최소권한`);
         setText('[data-product-gcp-audit]', `canonical parity ${snapshot.core_parity.canonical_hash_equal} · structured log ${snapshot.logging.structured_log_count}건`);
         setText('[data-product-gcp-normal-state]', `${snapshot.executions.normal.workflow_state} · HOLD`);
@@ -707,7 +707,8 @@
         setText('[data-product-gcp-forgery-copy]', `${snapshot.executions.body_hash_forgery.stable_code} · 최종 HOLD`);
         setText('[data-product-gcp-endpoint-id]', snapshot.executions.endpoint_override.id);
         setText('[data-product-gcp-endpoint-copy]', `${snapshot.executions.endpoint_override.stable_code} · Agent 호출 ${snapshot.executions.endpoint_override.agent_call_count}회 · 최종 HOLD`);
-        setText('[data-product-gcp-provenance]', `${snapshot.source.classification} · ${snapshot.generated_at} · ${snapshot.snapshot_sha256} · live 조회 아님 · 비용 ${snapshot.cost_status}`);
+        const costCopy = snapshot.cost_status === 'NOT_QUERIED' ? '조회 안 함' : snapshot.cost_status;
+        setText('[data-product-gcp-provenance]', `독립 확인된 합성 snapshot · ${snapshot.generated_at} · ${snapshot.snapshot_sha256} · live 조회 아님 · 비용 ${costCopy}`);
         const link = one('[data-product-gcp-console]'); link.href = snapshot.workflow.console_url; link.target = '_blank'; link.rel = 'noopener noreferrer';
       }
 

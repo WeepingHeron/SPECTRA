@@ -829,12 +829,18 @@ process.stdout.write(JSON.stringify(observed));
         for term in ("Mission Agent", "Parts Agent", "Assurance Agent", "최소권한"):
             self.assertIn(term, combined)
         gcp_slide = re.search(r'<section class="slide" data-title="GCP Multi-Agent".*?</section>', presentation, re.S).group(0)
-        for exact_copy in ("각 Agent가 역할을 나누고", "세 Agent가 역할을 나눠 실행해도", "CONTROL TOWER VERIFIED SNAPSHOT"):
+        for exact_copy in (
+            "세 Agent가 서로 다른 증거를 검증하고",
+            "4. Parts 차단 예시",
+            "5. Assurance 차단 예시",
+            "1–3은 독립 확인된 저장 기록, 4–5는 역할을 설명하는 동작 예시입니다.",
+            "검증된 고정 GCP 실행 기록 · SNAPSHOT / NOT LIVE",
+        ):
             self.assertIn(exact_copy, gcp_slide)
         for hidden_value in (self.gcp_payload["workflow"]["revision"], *(item["id"] for item in self.gcp_payload["executions"].values())):
             self.assertNotIn(str(hidden_value), gcp_slide)
         self.assertEqual(len(re.findall(r'class="gcp-node state-valid"', gcp_slide)), 6)
-        self.assertEqual(gcp_slide.count('class="demo-btn'), 4)
+        self.assertEqual(gcp_slide.count('class="demo-btn'), 5)
         self.assertIn('class="demo-pipeline-view simplified"', gcp_slide)
         self.assertNotRegex(presentation, r"\bfetch\s*\(")
         product_flow = re.search(r'<div class="gcp-workflow".*?</div>', self.html, re.S)
@@ -842,9 +848,57 @@ process.stdout.write(JSON.stringify(observed));
         self.assertEqual(product_flow.group(0).count("<article"), 6)
         self.assertEqual(len(re.findall(r'class="step(?: active)?"', self.html)), 5)
         self.assertEqual(len(re.findall(r'<section class="view(?: active)?"', self.html)), 5)
-        self.assertIn("Control Tower 검증 snapshot · live 조회 아님", combined)
-        self.assertIn("비용 ${snapshot.cost_status}", self.html)
+        self.assertIn("독립 확인된 저장 기록 · live 조회 아님", combined)
+        self.assertIn("독립 확인된 합성 snapshot", self.html)
+        self.assertIn("비용 ${costCopy}", self.html)
         self.assertNotIn("GCP REAL-TIME VERIFIED", presentation)
+
+    def test_presentation_h05_scenarios_match_authoritative_snapshot(self) -> None:
+        presentation = (ROOT / "demo/index.html").read_text(encoding="utf-8")
+        embedded_match = re.search(
+            r"globalThis\.SPECTRA_GCP_H05_SNAPSHOT\s*=\s*(\{.*?\n\s*\});",
+            presentation,
+            re.S,
+        )
+        self.assertIsNotNone(embedded_match)
+        embedded = json.loads(embedded_match.group(1))
+        self.assertEqual(
+            embedded["executions"],
+            self.gcp_payload["executions"],
+        )
+        self.assertEqual(
+            re.findall(r'data-scenario="([^"]+)"', presentation),
+            ["normal", "body_hash_forgery", "endpoint_override"],
+        )
+        self.assertEqual(
+            re.findall(r'data-design-scenario="([^"]+)"', presentation),
+            ["parts_block", "assurance_block"],
+        )
+        for exact_copy in (
+            "INPUT_BODY_SHA256_MISMATCH",
+            "Core / Parts / Assurance 미호출",
+            "ENDPOINT_OVERRIDE_FORBIDDEN",
+            "Agent 호출 0회",
+            "1–3은 독립 확인된 저장 기록, 4–5는 역할을 설명하는 동작 예시입니다.",
+            "모든 버튼은 새 Workflow를 시작하지 않습니다.",
+        ):
+            self.assertIn(exact_copy, presentation)
+        for stale_copy in (
+            "8677c107-84c7-4f09-9f94-2ac061db798f",
+            "mission_fail",
+            "parts_fail",
+            "assurance_fail",
+            "VERIFIED GCP EXECUTION",
+            "HOLD → PASS 강제 위조 시도",
+        ):
+            self.assertNotIn(stale_copy, presentation)
+
+        audience_html = presentation + self.html
+        audience_html = re.sub(r"<(?:script|style)\b.*?</(?:script|style)>", " ", audience_html, flags=re.S | re.I)
+        audience_text = re.sub(r"<[^>]+>", " ", audience_html)
+        self.assertNotRegex(audience_text, r"\bH\d{1,2}\b")
+        for internal_label in ("Control Tower", "READY_FOR_REVIEW", "Workstream"):
+            self.assertNotIn(internal_label, audience_text)
 
     def test_presentation_feedback_structure_and_scope_contract(self) -> None:
         presentation = (ROOT / "demo/index.html").read_text(encoding="utf-8")

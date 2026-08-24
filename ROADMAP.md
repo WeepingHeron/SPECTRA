@@ -22,13 +22,13 @@
 |---:|---|---|---:|---|---|---|
 | 1 | 프로젝트 계약과 기준선 | 10 Contracts & Schema | `10` | 00 Control Tower | 없음 | **IN_PROGRESS** — 계약·스키마는 통합, 팀 범위 검토 등 잔여 |
 | 2 | 재현 가능한 합성 Vertical Slice | 20 Simulation Core | `20` | 10 Contracts, 00 Control Tower | 검증된 Stage 1 데이터 계약 | **COMPLETE** — 결정론적 합성 기준선과 Exit Gate 통합; 제품 UI는 Stage 8 범위 |
-| 3 | 실제 환경·TID 모델 경로 | 30 Environment Model | `30` | 10 Contracts, 20 Simulation, 60 Assurance | 안정된 합성 입출력 경로 | **IN_PROGRESS** — 실제 SPENVIS 원본 9개·parser와 intake fail-closed H02 통합; provider job ref·rights·raw manifest·과학 교차검산 미완료 |
-| 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | **IN_PROGRESS** — TI exact-part/TID discovery H03 통합; BOM·rights manifest·v2 fixture·임무 적용성·SEE coverage 미완료 |
+| 3 | 실제 환경·TID 모델 경로 | 30 Environment Model | `30` | 10 Contracts, 20 Simulation, 60 Assurance | 안정된 합성 입출력 경로 | **IN_PROGRESS / GATE VERIFIED** — intake·issuance 공격 65 tests와 readiness receipt는 통합; provider job ref·rights·승인 raw manifest·과학 교차검산이 없어 실제 contract 0건 |
+| 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | **IN_PROGRESS / TEST GATE VERIFIED** — exact-part test-only gate 7 tests와 readiness receipt는 통합; 승인 BOM·rights·임무 적용성·필요 SEE coverage가 없어 실제 packet 0건 |
 | 5 | 제한된 설계 가정·판정 엔진 | 50 Mitigation & Policy | `50` | 20 Simulation, 40 Parts, 60 Assurance | 환경·부품 증거 인터페이스 | **IN_PROGRESS** — 차폐·ECC·판정 기준의 합성 Decision Engine 검증; 실제 ECC 효과·실제 evidence 연결 미구현. WATCHDOG·TMR·SEL runtime은 실험 보존 |
 | 6 | 독립 보증·평가 기준선 | 60 Assurance & Evals | `60` | 20~50 구현 Workstream | 결정론적 계산·증거·판정 경로 | **IN_PROGRESS** — Core 공격 29개 False PASS 0 기준선 검증, runtime 18개는 별도 experimental profile; 실제 GCP D02는 `NOT_EVALUATED` |
 | 7 | Multi-Agent·GCP 실행 경로 | 70 Platform & GCP | `70` | 30~60 전문 Workstream | 안정된 Core API·감사 계약 | **IN_PROGRESS / H05 VERIFIED / COMPETITION REQUIRED** — 교육용 GCP에 production Core-bound Cloud Run Agent 3개·Workflows·Storage·IAM·Logging 합성 E2E를 배포했고 body-hash·endpoint 공격을 차단했다. Workstream 60의 고정 revision `ASR-D02` 독립 공격은 아직 `NOT_EVALUATED`다. |
-| 8 | 제품·대시보드 통합 | 80 Product & Dashboard | `80` | 60 Assurance, 70 Platform | 검증된 통합 API와 EvidencePacket | `IN_PROGRESS` — generated 합성 결과·무결성 fail-closed와 H05 GCP snapshot 표시 검증; 실제 contract·원문 locator·live API 미통합 |
-| 9 | 비즈니스·발표·최종 시연 | 90 Business & Presentation | `90` | 60 Assurance, 80 Product | Stage 8 제품 기준선 | `IN_PROGRESS` — `demo/index.html` 13장 시각·상호작용 localhost 1280×720 검증, 추가 GCP body-hash 공격 차단 execution 검증; 실제 발표 이력은 있으나 COTS·과학 주장 검산과 사용자·비즈니스 측정 미완료 |
+| 8 | 제품·대시보드 통합 | 80 Product & Dashboard | `80` | 60 Assurance, 70 Platform | 검증된 통합 API와 EvidencePacket | `IN_PROGRESS / READINESS UI VERIFIED` — generated 합성 결과, H05 snapshot과 versioned readiness receipt의 fail-closed Workspace 검증; 실제 contract·원문 locator·live API 미통합 |
+| 9 | 비즈니스·발표·최종 시연 | 90 Business & Presentation | `90` | 60 Assurance, 80 Product | Stage 8 제품 기준선 | `IN_PROGRESS / DECK VERIFIED` — `demo/index.html` 13장 localhost 검증, 근거 기반 문제·비즈니스 영향과 Trust & Integrity 경계 반영; 사람 7분 리허설과 사용자·비즈니스 측정 미완료 |
 
 `주관 Workstream`은 해당 Stage의 완료 증거를 만드는 책임 영역이다. `주요 협업 Workstream`은 입력이나 독립 검증을 제공하지만 그 Stage의 소유 채팅을 대신하지 않는다.
 
@@ -44,7 +44,7 @@
 - Stage 7은 Core MVP의 과학적 성립 조건과 분리하지만, 대회용 **Competition Demo Release**와 35점 아키텍처 평가에는 필수다.
 - Stage 9는 실제 사용자·비즈니스 검증과 발표 완성도를 별도로 평가한다.
 
-현재 상태는 `CORE MVP IN_PROGRESS / COMPETITION DEMO RELEASE IN_PROGRESS`다. 합성 계산·결정 엔진·공격 기준선과 build-time Product 결과 연결은 존재한다. 실제 Multi-Agent·GCP 합성 E2E는 H04 독립 공격에서 발견된 입력 무결성·Core 결합 결함을 H05에서 보완했고 Control Tower 독립 재검증을 통과했다. 다만 실제 GCP `ASR-D02` 공격은 계속 `NOT_EVALUATED`이며, 실제 환경·부품 근거 경로도 미완료다. runtime 완화 계산은 실험적 확장이지 Release 선행 조건이 아니다.
+현재 상태는 `CORE MVP IN_PROGRESS / COMPETITION DEMO RELEASE IN_PROGRESS / ASSURANCE HOLD`다. 합성 계산·결정 엔진·공격 기준선, readiness receipt와 fail-closed Product Workspace가 통합됐다. 실제 Multi-Agent·GCP 합성 E2E는 H04 독립 공격에서 발견된 입력 무결성·Core 결합 결함을 H05에서 보완했고 Control Tower 독립 재검증을 통과했다. 다만 실제 GCP `ASR-D02` 공격은 계속 `NOT_EVALUATED`이며, 실제 환경·부품 contract도 0건이다. runtime 완화 계산은 실험적 확장이지 Release 선행 조건이 아니다.
 
 ### 병렬 진행 해석
 

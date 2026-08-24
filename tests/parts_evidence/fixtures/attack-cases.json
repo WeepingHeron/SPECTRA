@@ -1,0 +1,144 @@
+[
+  {
+    "attack_id": "W40-H06-01-suffix-stripped-false-exact",
+    "operations": [{"op": "set", "path": "/tested_identity/exact_part_number/value/raw", "value": "SYN-PN"}],
+    "expected_codes": ["IDENTITY_NORMALIZATION_LOSSY", "PART_NUMBER_CONFLICT"],
+    "expected_identity": "CONTRADICTED"
+  },
+  {
+    "attack_id": "W40-H06-02-manufacturer-alias-mismap",
+    "operations": [{"op": "set", "path": "/tested_identity/manufacturer/value/raw", "value": "UNAPPROVED-SYNTHETIC-ALIAS"}],
+    "expected_codes": ["MANUFACTURER_ALIAS_UNAPPROVED"],
+    "expected_identity": "PARTIAL_UNRESOLVED"
+  },
+  {
+    "attack_id": "W40-H06-03-package-grade-mismatch",
+    "operations": [
+      {"op": "set", "path": "/tested_identity/package/value/canonical", "value": "other-synthetic-package"},
+      {"op": "set", "path": "/tested_identity/grade/value/canonical", "value": "other-synthetic-grade"}
+    ],
+    "expected_codes": ["PACKAGE_CONFLICT", "QUALITY_GRADE_CONFLICT"],
+    "expected_identity": "CONTRADICTED"
+  },
+  {
+    "attack_id": "W40-H06-04-process-die-lot-mismatch",
+    "operations": [
+      {"op": "set", "path": "/tested_identity/process/value/canonical", "value": "other-synthetic-process"},
+      {"op": "set", "path": "/tested_identity/die/value/canonical", "value": "other-synthetic-die"},
+      {"op": "set", "path": "/tested_identity/lot/value/canonical", "value": "other-synthetic-lot"}
+    ],
+    "expected_codes": ["PROCESS_CONFLICT", "DIE_CONFLICT", "LOT_CONFLICT"],
+    "expected_identity": "CONTRADICTED"
+  },
+  {
+    "attack_id": "W40-H06-05-bom-approval-missing",
+    "operations": [{"op": "set", "path": "/bom/approval", "value": {"status": "NOT_PROVIDED"}}],
+    "expected_codes": ["BOM_APPROVAL_MISSING", "BOM_APPROVAL_TARGET_MISSING", "BOM_APPROVAL_HISTORY_INVALID"],
+    "expected_identity": "PARTIAL_UNRESOLVED"
+  },
+  {
+    "attack_id": "W40-H06-06-bom-approval-stale-target",
+    "operations": [{"op": "set", "path": "/bom/approval/target_hash", "value": "sha256:stale-synthetic-target"}],
+    "expected_codes": ["BOM_APPROVAL_TARGET_MISMATCH"]
+  },
+  {
+    "attack_id": "W40-H06-07a-claim-locator-missing",
+    "operations": [{"op": "remove", "path": "/tested_identity/exact_part_number/locator_ids"}],
+    "expected_codes": ["SOURCE_LOCATOR_MISSING"]
+  },
+  {
+    "attack_id": "W40-H06-07b-claim-locator-mismatch",
+    "operations": [{"op": "set", "path": "/tested_identity/exact_part_number/locator_ids/0", "value": "loc-does-not-exist"}],
+    "expected_codes": ["INVALID_SOURCE_LOCATOR"]
+  },
+  {
+    "attack_id": "W40-H06-08a-artifact-hash-missing",
+    "operations": [{"op": "remove", "path": "/artifacts/0/sha256"}],
+    "expected_codes": ["ARTIFACT_HASH_MISSING"]
+  },
+  {
+    "attack_id": "W40-H06-08b-artifact-hash-mismatch",
+    "operations": [{"op": "set", "path": "/artifacts/0/sha256", "value": "sha256:not-the-synthetic-file-hash"}],
+    "expected_codes": ["ARTIFACT_HASH_MISMATCH"]
+  },
+  {
+    "attack_id": "W40-H06-09a-rights-action-missing",
+    "operations": [{"op": "remove", "path": "/rights/actions/PROCESS_LOCAL_AI"}],
+    "expected_codes": ["RIGHTS_ACTION_MISSING", "RIGHTS_UNRESOLVED"]
+  },
+  {
+    "attack_id": "W40-H06-09b-rights-scope-mismatch",
+    "operations": [{"op": "set", "path": "/rights/scope", "value": "PRODUCTION"}],
+    "expected_codes": ["RIGHTS_SCOPE_VIOLATION"]
+  },
+  {
+    "attack_id": "W40-H06-10a-conflict-alternative-lost",
+    "operations": [{"op": "set", "path": "/tested_identity/lot", "value": {"status": "CONFLICTING", "alternatives": [{"alternative_id": "alt-1", "value": "synthetic-lot-a", "source_claim_id": "synthetic-claim-a", "locator_ids": ["loc-synthetic-control"]}]}}],
+    "expected_codes": ["CONFLICTING_ALTERNATIVES_INSUFFICIENT"]
+  },
+  {
+    "attack_id": "W40-H06-10b-conflict-alternative-duplicate",
+    "operations": [{"op": "set", "path": "/tested_identity/lot", "value": {"status": "CONFLICTING", "alternatives": [{"alternative_id": "alt-1", "value": "synthetic-lot-a", "source_claim_id": "synthetic-claim-a", "locator_ids": ["loc-synthetic-control"]}, {"alternative_id": "alt-2", "value": "synthetic-lot-a", "source_claim_id": "synthetic-claim-b", "locator_ids": ["loc-synthetic-control"]}]}}],
+    "expected_codes": ["CONFLICTING_ALTERNATIVE_DUPLICATE"],
+    "expected_identity": "CONTRADICTED"
+  },
+  {
+    "attack_id": "W40-H06-11-seu-substituted-for-sel",
+    "operations": [{"op": "set", "path": "/event_coverage/2", "value": {"event_type": "SEL", "status": "REPORTED", "source_event_type": "SEU", "source_id": "synthetic-source-control", "locator_ids": ["loc-synthetic-control"]}}],
+    "expected_codes": ["EVIDENCE_TYPE_SUBSTITUTION", "DESTRUCTIVE_SEE_MODE_MISSING"]
+  },
+  {
+    "attack_id": "W40-H06-12-zero-event-promoted-to-immunity",
+    "operations": [{"op": "set", "path": "/event_coverage/2", "value": {"event_type": "SEL", "status": "REPORTED", "source_event_type": "SEL", "source_id": "synthetic-source-control", "locator_ids": ["loc-synthetic-control"], "observation": {"zero_events_claimed": true, "fluence_reported": false, "sample_size_reported": false, "detection_limit_reported": false, "confidence_or_upper_bound_reported": false, "immunity_claimed": true}}}],
+    "expected_codes": ["ZERO_EVENT_BOUND_MISSING", "IMMUNITY_CLAIM_UNSUPPORTED"]
+  },
+  {
+    "attack_id": "W40-H06-13-sel-substituted-for-seb-segr",
+    "operations": [
+      {"op": "set", "path": "/event_coverage/3", "value": {"event_type": "SEB", "status": "REPORTED", "source_event_type": "SEL", "source_id": "synthetic-source-control", "locator_ids": ["loc-synthetic-control"]}},
+      {"op": "set", "path": "/event_coverage/4", "value": {"event_type": "SEGR", "status": "REPORTED", "source_event_type": "SEL", "source_id": "synthetic-source-control", "locator_ids": ["loc-synthetic-control"]}}
+    ],
+    "expected_codes": ["EVIDENCE_TYPE_SUBSTITUTION", "DESTRUCTIVE_SEE_MODE_MISSING"]
+  },
+  {
+    "attack_id": "W40-H06-14-test-range-extrapolated",
+    "operations": [{"op": "set", "path": "/applicability", "value": {"status": "APPLICABLE", "mission_environment_ref": "synthetic-env-control", "comparisons": [{"event_type": "SEL", "within_test_range": false}]}}],
+    "expected_codes": ["OUT_OF_TEST_SCOPE", "DECISION_TRACE_NOT_APPLICABLE"]
+  },
+  {
+    "attack_id": "W40-H06-15-applicability-unknown-pass",
+    "operations": [{"op": "set", "path": "/decision/requested_outcome", "value": "PASS"}],
+    "expected_codes": ["MISSION_APPLICABILITY_NOT_EVALUATED", "DECISION_USE_FORBIDDEN"]
+  },
+  {
+    "attack_id": "W40-H06-16-unknown-top-field",
+    "operations": [{"op": "set", "path": "/unexpected_field", "value": true}],
+    "expected_codes": ["UNKNOWN_FIELD"]
+  },
+  {
+    "attack_id": "W40-H06-17-malformed-nested-rights",
+    "operations": [{"op": "set", "path": "/rights/actions", "value": ["not", "an", "object"]}],
+    "expected_codes": ["MALFORMED_FIELD_TYPE"]
+  }
+  ,
+  {
+    "attack_id": "artifact-path-nul-prefix",
+    "operations": [{"op": "set", "path": "/artifacts/0/relative_path", "value": "\u0000artifacts/synthetic-source.txt"}],
+    "expected_codes": ["ARTIFACT_PATH_INVALID"]
+  },
+  {
+    "attack_id": "artifact-path-nul-middle",
+    "operations": [{"op": "set", "path": "/artifacts/0/relative_path", "value": "artifacts/\u0000synthetic-source.txt"}],
+    "expected_codes": ["ARTIFACT_PATH_INVALID"]
+  },
+  {
+    "attack_id": "artifact-path-nul-suffix",
+    "operations": [{"op": "set", "path": "/artifacts/0/relative_path", "value": "artifacts/synthetic-source.txt\u0000"}],
+    "expected_codes": ["ARTIFACT_PATH_INVALID"]
+  },
+  {
+    "attack_id": "artifact-file-missing",
+    "operations": [{"op": "set", "path": "/artifacts/0/relative_path", "value": "artifacts/missing-source.txt"}],
+    "expected_codes": ["ARTIFACT_HASH_MISMATCH"]
+  }
+]

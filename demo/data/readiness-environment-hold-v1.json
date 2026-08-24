@@ -1,0 +1,23 @@
+{
+  "kind": "ENVIRONMENT_ISSUANCE_READINESS_RECEIPT",
+  "contract_version": "1.0.0",
+  "receipt_id": "synthetic-environment-hold-ui-001",
+  "assessed_at": "2026-08-24T08:00:00Z",
+  "source_result": {
+    "gate_contract_version": "W31_ISSUANCE_GATE_1.0.0",
+    "evidence_class": "SYNTHETIC_CONTROL",
+    "source_record_id": "synthetic-review-ui-001"
+  },
+  "target_contract": {
+    "kind": "RADIATION_ENVIRONMENT",
+    "schema_id": "https://spectra.local/schemas/radiation-environment.schema.json",
+    "schema_version": "1.1"
+  },
+  "issuance_status": "HOLD_NOT_ISSUED",
+  "processing_status": "PROVENANCE_FAILURE",
+  "assurance_decision": "HOLD",
+  "used_for_decision": false,
+  "blocker_codes": [
+    "ISSUANCE_AUTHENTICATOR_NOT_CONFIGURED"
+  ]
+}
