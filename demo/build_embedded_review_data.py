@@ -16,6 +16,7 @@ FILES = (
     "demo-case-wrong-part.json",
     "actual-environment-bundle-receipt.json",
     "actual-part-bundle-receipt.json",
+    "local-document-extraction-receipt.json",
     "evidence-source-readiness-synthetic.json",
     "nasa-snapshot-gate-receipt.json",
     "readiness-environment-hold-v1.json",

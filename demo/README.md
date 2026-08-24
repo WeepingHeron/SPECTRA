@@ -1,5 +1,24 @@
 # SPECTRA Offline HTML Demo
 
+## Raw Evidence Console
+
+`evidence-console.html`은 선택한 PDF/TXT를 loopback 서버에서 실제로 파싱하고, 편집하지 않은 JSONL 이벤트를 발생 순서대로 보여준다. 오른쪽에는 같은 실행의 중단 위치·확인 사실·중단 이유·다음 행동을 자연어로 표시한다.
+
+```bash
+cd /Users/taehoon/Desktop/IAA/SPECTRA
+python3 scripts/run_evidence_console.py --port 8765
+```
+
+브라우저에서 `http://127.0.0.1:8765/demo/evidence-console.html`을 연다. 로컬 탭은 실제 deterministic parser 실행이며 OCR·LLM·GCP 호출을 하지 않는다. GCP 탭은 H05에서 이미 저장하고 검증한 구조화 로그 13건을 읽기 전용으로 표시하며 현재 Cloud Logging을 조회하거나 새 실행을 만들지 않는다. 파일 원문과 임시 경로는 이벤트에 노출하지 않고 실행 후 임시 파일을 제거한다.
+
+승인 BOM target과 실제 environment/part contract가 없으므로 정상 파싱도 최종 판단은 `HOLD`다. 콘솔 성공은 실제 방사선 적합성이나 assurance 완료를 뜻하지 않는다.
+
+직접 테스트:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_evidence_console tests.product.test_local_document_candidate
+```
+
 ## H28 Functional Evidence Review 실행 안내
 
 `roadmap-lab.html`은 설명용 로드맵이 아니라 저장소의 세 JSON을 실제로 읽는 단일 로컬 제품 시연이다. 화면에는 `근거 검사 실행 → 검토 액션 선택 → 변경 영향 불러오기`만 남겼다.

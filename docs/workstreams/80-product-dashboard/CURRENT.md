@@ -2,7 +2,16 @@
 
 ## 상태
 
-`VERIFIED — H29 NASA Local Gate Product Binding`
+`VERIFIED — H30 Raw Evidence Console`
+
+## H30 Raw Evidence Console — 2026-08-24
+
+- `scripts/run_evidence_console.py`는 `127.0.0.1`에만 bind해 선택한 PDF/TXT를 기존 deterministic intake로 실제 처리하고, 수신·파싱·후보·승인 대상 대조·Assurance 미호출·최종 판단을 JSONL 이벤트 순서로 내보낸다.
+- `demo/evidence-console.html`은 원시 JSONL과 같은 실행의 중단 위치·확인 사실·이유·다음 행동을 함께 표시한다. 원문과 임시 경로는 이벤트에 노출하지 않으며 임시 파일은 실행 후 제거한다.
+- GCP 탭은 H05 Control Tower verified snapshot의 구조화 로그 13건만 읽기 전용으로 표시한다. 현재 Cloud Logging 조회, 새 Workflow 실행과 GCP 상태 변경은 없다.
+- 직접 테스트 23개와 loopback HTTP 통합에서 정상 합성 TXT의 7개 이벤트·최종 `HOLD`, 저장 로그 `live=false / 13건 / HOLD`를 확인했다. 실제 브라우저 viewport는 도구 URL 정책으로 `NOT_EVALUATED`다.
+- 승인 BOM target과 실제 environment/part contract가 없으므로 정상 파싱도 `NOT_FOR_DECISION / HOLD`다. OCR·LLM·live GCP·실제 방사선 assurance는 추가하지 않았다.
+- `CONTRACT_CHANGE_REQUEST`: 없음. 공용 schema·Core engine을 수정하지 않았다.
 
 ## H29 NASA Local Gate Product Binding — 2026-08-24
 
