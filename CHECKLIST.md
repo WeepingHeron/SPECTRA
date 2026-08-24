@@ -334,6 +334,8 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [x] 합성·실제 데이터 분류 표시
 - [x] 로컬 파일·묶음의 hash·경로·권리·대상·적용 범위 fail-closed 검사
 - [x] 차폐·ECC·부품 변경에 따른 영향 gate 재검사
+- [x] 4쪽 합성 비정형 PDF의 고정 정답 7개와 parser source span 대조
+- [x] 로컬 실행 타임라인·GCP Agent 로그 표와 동일 응답 원본 JSONL 전환
 
 ### 제품 신뢰성
 

@@ -1,0 +1,53 @@
+{
+  "contract_version": "SYNTHETIC_UNSTRUCTURED_GROUND_TRUTH_1.0.0",
+  "source_classification": "SYNTHETIC_CONTROL",
+  "filename": "spectra_synthetic_unstructured_radiation_report.pdf",
+  "expected_part": "5962L1420901VXC",
+  "manufacturer": "Texas Instruments",
+  "expected_candidates": [
+    {
+      "field": "ORDERABLE_PART_NUMBER",
+      "value": "5962L1420901VXC",
+      "page": 1
+    },
+    {
+      "field": "MANUFACTURER",
+      "value": "Texas Instruments",
+      "page": 1
+    },
+    {
+      "field": "EVIDENCE_EVENT_MENTION",
+      "value": "TID",
+      "page": 1
+    },
+    {
+      "field": "EVIDENCE_EVENT_MENTION",
+      "value": "SEU",
+      "page": 2
+    },
+    {
+      "field": "EVIDENCE_EVENT_MENTION",
+      "value": "SEL",
+      "page": 3
+    },
+    {
+      "field": "EVIDENCE_EVENT_MENTION",
+      "value": "SEB",
+      "page": 3
+    },
+    {
+      "field": "EVIDENCE_EVENT_MENTION",
+      "value": "SEGR",
+      "page": 3
+    }
+  ],
+  "expected_decision": "HOLD",
+  "expected_blocker": "APPROVED_BOM_TARGET_MISSING",
+  "comparison_scope": "EXACT_EXPECTED_CANDIDATE_SET_ONLY",
+  "not_claimed": [
+    "SCIENTIFIC_ACCURACY",
+    "OCR_ACCURACY",
+    "REAL_DOCUMENT_GENERALIZATION",
+    "RADIATION_ASSURANCE"
+  ]
+}

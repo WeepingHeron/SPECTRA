@@ -2,7 +2,16 @@
 
 ## 상태
 
-`VERIFIED — H30 Raw Evidence Console`
+`VERIFIED — H31 Human-readable Console & Synthetic Unstructured PDF`
+
+## H31 Human-readable Console & Synthetic Unstructured PDF — 2026-08-24
+
+- Raw Evidence Console의 기본 출력을 JSON wall에서 단계별 실행 타임라인과 GCP Agent 로그 표로 바꿨다. 원본 JSONL은 `원본 JSONL 보기` 토글에서 동일 응답 그대로 보존한다.
+- `output/pdf/spectra_synthetic_unstructured_radiation_report.pdf`는 표지·메타데이터 표·다단 본문·합성 차트·SEE coverage 표·각주·회전 스탬프를 가진 4쪽 synthetic training artifact다. 모든 페이지가 실제 시험 보고서가 아님을 명시한다.
+- 고정 ground truth 7개는 주문형번·제조사·TID·SEU·SEL·SEB·SEGR exact candidate만 대조한다. 실제 parser가 7개를 모두 source span과 함께 찾았고 `7 / 7 · 100%`를 표시하지만 실제 문서 일반화·OCR·과학 정확성·radiation assurance로 확대하지 않는다.
+- 기본 macOS Python에 `pypdf`가 없을 때 서버는 장치에 이미 설치된 bundled PDF runtime으로 재실행한다. runtime 부재 시 PDF는 `PDF_EXTRACTOR_UNAVAILABLE / HOLD`로 닫힌다.
+- 직접 테스트 24개, Product 전체 회귀 153개와 loopback PDF 통합에서 13개 순차 이벤트·후보 7개·`APPROVED_BOM_TARGET_MISSING / HOLD`를 확인했다. 실제 브라우저에서 합성 PDF 버튼, 7/7 reference, GCP 표 13행, raw toggle과 console warning/error 0을 확인했다.
+- `CONTRACT_CHANGE_REQUEST`: 없음. 공용 schema·Core engine과 실제 evidence contract는 수정하지 않았다.
 
 ## H30 Raw Evidence Console — 2026-08-24
 

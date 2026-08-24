@@ -4,6 +4,8 @@
 
 `evidence-console.html`은 선택한 PDF/TXT를 loopback 서버에서 실제로 파싱하고, 편집하지 않은 JSONL 이벤트를 발생 순서대로 보여준다. 오른쪽에는 같은 실행의 중단 위치·확인 사실·중단 이유·다음 행동을 자연어로 표시한다.
 
+기본 화면은 발표자가 읽기 쉬운 단계별 타임라인과 Agent 로그 표다. `원본 JSONL 보기`로 전환하면 같은 응답의 편집하지 않은 JSONL을 확인할 수 있다. `합성 비정형 PDF 예시 실행`은 표·다단 본문·차트·각주가 섞인 4쪽 synthetic report를 실제 PDF parser에 전달하고, 고정 정답 7개와 exact candidate set을 대조한다.
+
 ```bash
 cd /Users/taehoon/Desktop/IAA/SPECTRA
 python3 scripts/run_evidence_console.py --port 8765
@@ -11,7 +13,9 @@ python3 scripts/run_evidence_console.py --port 8765
 
 브라우저에서 `http://127.0.0.1:8765/demo/evidence-console.html`을 연다. 로컬 탭은 실제 deterministic parser 실행이며 OCR·LLM·GCP 호출을 하지 않는다. GCP 탭은 H05에서 이미 저장하고 검증한 구조화 로그 13건을 읽기 전용으로 표시하며 현재 Cloud Logging을 조회하거나 새 실행을 만들지 않는다. 파일 원문과 임시 경로는 이벤트에 노출하지 않고 실행 후 임시 파일을 제거한다.
 
-승인 BOM target과 실제 environment/part contract가 없으므로 정상 파싱도 최종 판단은 `HOLD`다. 콘솔 성공은 실제 방사선 적합성이나 assurance 완료를 뜻하지 않는다.
+기본 macOS `python3`에 `pypdf`가 없으면 서버는 이 장치에 이미 설치된 Codex bundled Python을 자동 선택한다. 해당 runtime도 없으면 PDF는 `PDF_EXTRACTOR_UNAVAILABLE / HOLD`로 닫히며 TXT 경로만 유지된다.
+
+승인 BOM target과 실제 environment/part contract가 없으므로 정상 파싱도 최종 판단은 `HOLD`다. 합성 예시의 `7 / 7 · 100%`는 공개된 고정 정답의 exact candidate set에만 적용되며 실제 PDF 일반화, OCR, 과학 정확성이나 assurance 완료를 뜻하지 않는다.
 
 직접 테스트:
 

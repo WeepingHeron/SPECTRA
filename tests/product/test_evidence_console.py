@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import pathlib
+import json
 import re
 import subprocess
 import sys
+import tempfile
 import unittest
 
 
@@ -105,6 +107,51 @@ class EvidenceConsoleTests(unittest.TestCase):
             self.assertIsInstance(log["stable_codes"], list)
         self.assertNotIn("gcloud", self.server_source)
         self.assertIn('ThreadingHTTPServer(("127.0.0.1", args.port)', self.server_source)
+        self.assertIn("ensure_pdf_runtime()", self.server_source)
+
+    def test_synthetic_unstructured_pdf_matches_fixed_candidate_truth(self) -> None:
+        pdf = ROOT / "output/pdf/spectra_synthetic_unstructured_radiation_report.pdf"
+        truth_path = ROOT / "demo/data/synthetic-unstructured-ground-truth.json"
+        truth = json.loads(truth_path.read_text(encoding="utf-8"))
+        bundled = (
+            pathlib.Path.home()
+            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+        )
+        python = bundled if bundled.is_file() else pathlib.Path(sys.executable)
+        self.assertTrue(pdf.read_bytes().startswith(b"%PDF-"))
+        with tempfile.TemporaryDirectory() as directory:
+            receipt_path = pathlib.Path(directory) / "receipt.json"
+            completed = subprocess.run(
+                [
+                    str(python),
+                    str(ROOT / "scripts/intake_local_document_candidate.py"),
+                    str(pdf),
+                    "--expected-part",
+                    truth["expected_part"],
+                    "--manufacturer",
+                    truth["manufacturer"],
+                    "--confirm-local-review-rights",
+                    "--output",
+                    str(receipt_path),
+                ],
+                text=True,
+                capture_output=True,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        expected = {
+            (item["field"], item["value"].lower())
+            for item in truth["expected_candidates"]
+        }
+        found = {
+            (item["field"], item["value"].lower())
+            for item in receipt["candidates"]
+        }
+        self.assertEqual(found, expected)
+        self.assertEqual(receipt["candidate_count"], 7)
+        self.assertEqual(receipt["source"]["page_count"], 4)
+        self.assertEqual(receipt["assurance_decision"], "HOLD")
+        self.assertFalse(receipt["used_for_decision"])
 
     def test_console_html_streams_raw_lines_safely(self) -> None:
         for required in (
@@ -115,6 +162,13 @@ class EvidenceConsoleTests(unittest.TestCase):
             "response.body.getReader()",
             'document.createTextNode(rawLine+"\\n")',
             "NO OCR · NO LLM · NO GCP CALL",
+            "합성 비정형 PDF 예시 실행",
+            "합성 PDF 원문 4쪽 보기 ↗",
+            "원본 JSONL 보기",
+            "SYNTHETIC REFERENCE CHECK",
+            "spectra_synthetic_unstructured_radiation_report.pdf",
+            "gcp-table",
+            "event-card",
         ):
             self.assertIn(required, self.html)
         self.assertNotRegex(self.html.lower(), r"https?://|//cdn|websocket")

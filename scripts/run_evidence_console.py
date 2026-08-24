@@ -10,7 +10,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
+import os
+import sys
 import tempfile
 import urllib.parse
 from functools import partial
@@ -27,6 +30,19 @@ GCP_LOG_EVIDENCE = (
     / "docs/workstreams/70-platform-gcp/evidence/h05-gcp-inventory-and-logs.json"
 )
 ALLOWED_SUFFIXES = frozenset({".pdf", ".txt"})
+
+
+def ensure_pdf_runtime() -> None:
+    """Re-exec with the bundled local runtime when system Python lacks pypdf."""
+    if importlib.util.find_spec("pypdf") is not None:
+        return
+    bundled = (
+        Path.home()
+        / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
+    )
+    if bundled.is_file() and Path(sys.executable).resolve() != bundled.resolve():
+        print("SPECTRA Evidence Console: switching to bundled PDF runtime")
+        os.execv(str(bundled), [str(bundled), str(Path(__file__).resolve()), *sys.argv[1:]])
 
 
 def _json(value: Any) -> bytes:
@@ -336,6 +352,7 @@ class EvidenceConsoleHandler(SimpleHTTPRequestHandler):
 
 
 def main() -> int:
+    ensure_pdf_runtime()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
