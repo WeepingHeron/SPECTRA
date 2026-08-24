@@ -4,6 +4,32 @@
 
 `IN_PROGRESS — index visual integration VERIFIED; content claims and measured rehearsal pending`
 
+## Radiation-first Opening & Simplified Flow — 2026-08-25
+
+- Slide 05·06의 가상 `EX-100` BOM을 현재 양산 COTS SRAM `Microchip 23LC1024-I/SN` catalog 검토 대상으로 교체했다. ESA가 base product `23LC1024`를 GOMX-4B/CHIMERA 방사선 실험용 메모리로 탑재한 사실만 표시하고, 비행 exact suffix·lot/die와 적합성은 `HOLD`로 남겼다. Core의 `Example Semi / EX-100` 합성 계산 fixture는 실제 부품 수치로 오인되지 않도록 별도 경계로 유지한다.
+- 기존 05 차폐 설명을 발표 첫 본문으로 이동하고 `01 · WHY RADIATION SHIELDING`으로 재구성했다. 비전문가가 먼저 `우주 방사선 → 알루미늄 차폐 → 전자부품`을 이해한 뒤 문제 정의로 들어간다. TID 감소와 SEE 잔여 위험은 화면 문장에서 제거하고 대본에서만 설명한다.
+- 기존 문제 정의는 02로 이동했다. 전체 Evidence-to-Decision 흐름은 03으로 이동하고 제목·현재 로컬/GCP 경계·결과표 연결·source safety line과 다섯 단계 그림을 유지했다. 그림 아래의 Document AI future rail만 제거했다.
+- 전체 장수는 `Cover + 01~09 + Closing`, 총 11장을 유지한다. localhost 1280×720에서 새 01과 복원된 03의 가로·세로 overflow 0을 직접 확인했다.
+- Document AI·Gemini는 로드맵에만 남아 있으며 현재 API 호출은 0건이다. 사람 발표 리허설과 전체 회귀는 실행하지 않았다.
+- 현재 11장 순서와 두 Product Demo에 맞춘 Git 밖 Downloads의 `spectra_7min_presentation_script_v4.md`를 새로 작성했다. 계산 시간은 400초 + 전환 여유 20초이며 사람 낭독·클릭 시간은 `NOT_MEASURED`다.
+- 주 발표 운영은 Presentation과 named `spectra-demo` 두 브라우저 탭만 사용한다. Slide 03·09는 동일한 loopback Console 탭을 재사용하고, Console 내부의 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표` 세 모드로 시연한다. Roadmap Lab은 주 발표에서 열지 않는다.
+- UI 컨펌 뒤 Control Tower가 변경 범위 Product 테스트 21개를 통과시켰고, localhost 1280×720에서 전환 애니메이션 종료 후 11장 전체 document·active slide x/y overflow 0과 console warning/error 0을 확인했다. Slide 03·09 링크는 새 탭을 늘리지 않고 동일 제품 탭 ID를 재사용했다.
+- v4 대본의 `Cover + 01~09 + Closing` 순서, Product Demo 두 동선과 `CALCULATED 400초 + 전환 여유 20초 = 420초` 산술을 현재 deck·UI와 대조했다. 사람 낭독·클릭 리허설은 계속 `NOT_MEASURED`다. Product 전체 157개와 저장소 로컬 runbook 회귀가 통과했으며 Git 통합은 아직 수행하지 않았다.
+
+## Compact 11-slide Main Deck — 2026-08-25
+
+- 제품 시연과 겹치던 기존 Slide 07 차폐 계산, Slide 08 ECC·시험 공백 상세를 주 발표에서 제거했다. 기능·합성 snapshot·Q&A 근거는 코드에 유지하며 본문은 `Cover + 01~09 + Closing`, 총 11장이다.
+- 당시 Slide 02를 다섯 개 큰 기호로 재구성했고, 최신 기준선에서는 이를 03으로 이동했다. 제목과 현재 경계·결과표 연결·source safety line은 유지하고 미래 연결만 제거했다.
+- 후속 번호는 범위·신뢰성 07, GCP Multi-Agent 08, 로드맵 09를 유지한다. 최신 시각 확인은 Slide 01과 03의 가로·세로 overflow 0이다.
+- 변경 범위 Presentation/Product 결속 테스트 21개가 통과했다. 전체 회귀와 사람 7분 리허설은 실행하지 않았다.
+
+## Early Evidence-to-Decision Architecture — 2026-08-24
+
+- 멘토링 피드백을 반영해 전체 흐름을 초반으로 이동했고, 최신 기준선에서는 차폐 기초 01·문제 02 다음인 Slide 03에 현재 경계와 함께 다섯 단계 그림을 배치했다.
+- `비정형 자료 → pypdf·SHA-256 intake → decision-ineligible 후보 → Mission·Parts·Assurance → 결정론적 gate → HOLD·근거·다음 행동`을 한 줄로 도식화했다.
+- 현재 로컬 PDF 경로와 별도 검증된 GCP H05 합성 Agent 경로를 하나의 live pipeline으로 오인하지 않도록 분리 표기했다. Document AI·Gemini 미래 rail은 이 화면에서 제거했으며 API 호출은 0건이다.
+- 다중 문서 결과표 링크는 주 발표 흐름과 Raw Evidence Console에 유지한다. 사람 7분 리허설은 계속 `NOT_MEASURED`다.
+
 ## Final Trust & Integrity alignment — 2026-08-24
 
 - Multi-Agent 화면에 `Private Agent Access`, `Input Binding`, `Evidence Boundary`, `Fail-Closed Output` 네 신뢰 경계를 추가했다.

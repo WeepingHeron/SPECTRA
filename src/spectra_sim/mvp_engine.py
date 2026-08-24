@@ -268,7 +268,7 @@ def _scenario_result(packet: dict, case: dict, model: dict, scenario_name: str) 
         ) from exc
     try:
         see = calculate_see(
-            environment["particle_flux"], evidence["cross_section"], component["quantity"],
+            environment["particle_flux"], evidence["cross_section"], case["analysis_device_count"],
             mission["duration"], 1.0, model["see_exposure_scale"],
         )
     except ValueError as exc:

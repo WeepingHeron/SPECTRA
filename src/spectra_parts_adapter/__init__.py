@@ -8,4 +8,13 @@ def assess_exact_part_readiness(*args, **kwargs):
 
     return _assess(*args, **kwargs)
 
-__all__ = ["assess_exact_part_readiness"]
+
+def assess_reference_comparison(*args, **kwargs):
+    """Load the published-reference comparison gate lazily."""
+
+    from .reference_comparison import assess_reference_comparison as _assess
+
+    return _assess(*args, **kwargs)
+
+
+__all__ = ["assess_exact_part_readiness", "assess_reference_comparison"]

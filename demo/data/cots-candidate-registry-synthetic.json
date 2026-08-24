@@ -4,40 +4,15 @@
   "usage": "DEMO_ONLY",
   "records": [
     {
-      "record_id": "TI_CATALOG_5962L1420901VXC",
+      "record_id": "MICROCHIP_CATALOG_23LC1024_I_SN",
       "record_kind": "CATALOG_IDENTITY",
       "record_purpose": "DISCOVERY_CANDIDATE",
-      "manufacturer": "Texas Instruments",
-      "part_number": "5962L1420901VXC",
-      "source_identity": "SN55HVD233-SP product page",
+      "manufacturer": "Microchip Technology",
+      "part_number": "23LC1024-I/SN",
+      "source_identity": "Microchip 23LC1024 product page and DS20005142C",
       "identity_status": "PARTIAL_UNRESOLVED",
       "coverage": [
-        {"event_type": "TID", "status": "DOCUMENT_NOT_SELECTED"},
-        {"event_type": "SEU", "status": "EVIDENCE_MISSING"},
-        {"event_type": "SEL", "status": "DOCUMENT_NOT_SELECTED"},
-        {"event_type": "SEB", "status": "EVIDENCE_MISSING"},
-        {"event_type": "SEGR", "status": "EVIDENCE_MISSING"}
-      ],
-      "rights_status": "UNRESOLVED",
-      "applicability_status": "NOT_EVALUATED",
-      "blockers": [
-        {"stable_code": "BOM_APPROVAL_MISSING", "owner_role": "BOM_OWNER", "next_action_code": "SUPPLY_APPROVED_BOM", "next_action_ko": "승인 BOM의 immutable component identity를 제공한다."},
-        {"stable_code": "RIGHTS_SNAPSHOT_NOT_ACTIVE", "owner_role": "RIGHTS_REVIEWER", "next_action_code": "APPROVE_SOURCE_ACTION_RIGHTS", "next_action_ko": "사용 action별 권리 snapshot을 승인한다."}
-      ],
-      "used_for_decision": false,
-      "engineering_gate": "NOT_EVALUATED",
-      "assurance_decision": "HOLD"
-    },
-    {
-      "record_id": "TI_TID_SLLK019",
-      "record_kind": "TEST_DOCUMENT",
-      "record_purpose": "DISCOVERY_CANDIDATE",
-      "manufacturer": "Texas Instruments",
-      "part_number": "5962L1420901VXC",
-      "source_identity": "SLLK019",
-      "identity_status": "PARTIAL_UNRESOLVED",
-      "coverage": [
-        {"event_type": "TID", "status": "REPORTED_WITH_CONFLICTS", "source_event_type": "TID"},
+        {"event_type": "TID", "status": "EVIDENCE_MISSING"},
         {"event_type": "SEU", "status": "EVIDENCE_MISSING"},
         {"event_type": "SEL", "status": "EVIDENCE_MISSING"},
         {"event_type": "SEB", "status": "EVIDENCE_MISSING"},
@@ -46,33 +21,33 @@
       "rights_status": "UNRESOLVED",
       "applicability_status": "NOT_EVALUATED",
       "blockers": [
-        {"stable_code": "DOCUMENT_INTERNAL_CONFLICT", "owner_role": "PARTS_EVIDENCE_OWNER", "next_action_code": "RESOLVE_TID_DOCUMENT_CONFLICT", "next_action_ko": "TID 조건 충돌을 원문 locator별로 해소한다."},
-        {"stable_code": "DESTRUCTIVE_SEE_EVIDENCE_MISSING", "owner_role": "PARTS_EVIDENCE_OWNER", "next_action_code": "SUPPLY_INDEPENDENT_DESTRUCTIVE_SEE", "next_action_ko": "SEL·SEB·SEGR을 event별 독립 원문으로 준비한다."}
+        {"stable_code": "EXACT_TEST_ARTICLE_IDENTITY_UNRESOLVED", "owner_role": "PARTS_EVIDENCE_OWNER", "next_action_code": "RESOLVE_TEST_ARTICLE_IDENTITY", "next_action_ko": "ESA 비행·시험 article의 exact suffix와 lot/die traceability를 연결한다."},
+        {"stable_code": "RIGHTS_SNAPSHOT_NOT_ACTIVE", "owner_role": "RIGHTS_REVIEWER", "next_action_code": "APPROVE_SOURCE_ACTION_RIGHTS", "next_action_ko": "사용 action별 권리 snapshot을 승인한다."}
       ],
       "used_for_decision": false,
       "engineering_gate": "NOT_EVALUATED",
       "assurance_decision": "HOLD"
     },
     {
-      "record_id": "TI_SEL_SLLA381",
+      "record_id": "ESA_CHIMERA_23LC1024",
       "record_kind": "TEST_DOCUMENT",
       "record_purpose": "DISCOVERY_CANDIDATE",
-      "manufacturer": "Texas Instruments",
-      "part_number": "5962L1420901VX",
-      "source_identity": "SLLA381",
+      "manufacturer": "Microchip Technology",
+      "part_number": "23LC1024",
+      "source_identity": "ESA GOMX-4B CHIMERA Board",
       "identity_status": "PARTIAL_UNRESOLVED",
       "coverage": [
-        {"event_type": "TID", "status": "DOCUMENT_NOT_SELECTED"},
-        {"event_type": "SEU", "status": "EVIDENCE_MISSING"},
-        {"event_type": "SEL", "status": "ZERO_EVENTS_WITH_TEST_LIMITS", "source_event_type": "SEL"},
+        {"event_type": "TID", "status": "EVIDENCE_MISSING"},
+        {"event_type": "SEU", "status": "DOCUMENT_NOT_SELECTED"},
+        {"event_type": "SEL", "status": "DOCUMENT_NOT_SELECTED"},
         {"event_type": "SEB", "status": "EVIDENCE_MISSING"},
         {"event_type": "SEGR", "status": "EVIDENCE_MISSING"}
       ],
       "rights_status": "UNRESOLVED",
       "applicability_status": "NOT_EVALUATED",
       "blockers": [
-        {"stable_code": "EXACT_TEST_ARTICLE_IDENTITY_UNRESOLVED", "owner_role": "PARTS_EVIDENCE_OWNER", "next_action_code": "RESOLVE_TEST_ARTICLE_IDENTITY", "next_action_ko": "exact suffix와 lot traceability를 원문으로 연결한다."},
-        {"stable_code": "SEB_SEGR_EVIDENCE_MISSING", "owner_role": "PARTS_EVIDENCE_OWNER", "next_action_code": "SUPPLY_SEB_SEGR_EVIDENCE", "next_action_ko": "SEB와 SEGR을 SEL 결과와 분리해 준비한다."}
+        {"stable_code": "EXACT_TEST_ARTICLE_IDENTITY_UNRESOLVED", "owner_role": "PARTS_EVIDENCE_OWNER", "next_action_code": "RESOLVE_TEST_ARTICLE_IDENTITY", "next_action_ko": "ESA가 공개하지 않은 비행 suffix·package·lot/date code·die revision을 확인한다."},
+        {"stable_code": "DESTRUCTIVE_SEE_EVIDENCE_MISSING", "owner_role": "PARTS_EVIDENCE_OWNER", "next_action_code": "SUPPLY_INDEPENDENT_DESTRUCTIVE_SEE", "next_action_ko": "관측 계획이 아니라 조건과 결과가 있는 event별 시험 원문을 준비한다."}
       ],
       "used_for_decision": false,
       "engineering_gate": "NOT_EVALUATED",

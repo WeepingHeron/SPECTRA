@@ -1,0 +1,5 @@
+SYNTHETIC RIGHTS CONTROL - NOT ENGINEERING EVIDENCE
+Document ref: BATCH-RIGHTS-01
+Candidate part: 5962L1420901VXC
+Manufacturer: Texas Instruments
+The source mentions TID and SEL, but local processing rights are intentionally unresolved.

@@ -1,0 +1,109 @@
+{
+  "contract_version": "SPECTRA_REFERENCE_COMPARISON_1.0.0",
+  "comparison_id": "23lc1024-am-be-vs-synthetic-see-v1",
+  "created_at": "2026-08-25T00:00:00Z",
+  "processing_status": "VALID",
+  "comparison_status": "NOT_COMPARABLE",
+  "assurance_decision": "HOLD",
+  "used_for_decision": false,
+  "approved_catalog_target": {
+    "manufacturer": "Microchip Technology",
+    "orderable_part_number": "23LC1024-I/SN",
+    "package": "8-lead SOIC",
+    "identity_status": "EXACT_CATALOG_TARGET"
+  },
+  "published_observation": {
+    "data_class": "PUBLISHED",
+    "source": {
+      "title": "Effects of Cosmic Radiation on Active Implanted Medical Devices",
+      "author": "Mona C. Plettenberg",
+      "publication_type": "doctoral dissertation",
+      "doi": "10.22029/jlupub-19623",
+      "record_url": "https://jlupub.ub.uni-giessen.de/items/bacfbfc4-a5e7-46b1-b2a0-332d8231cc49",
+      "artifact_url": "https://jlupub.ub.uni-giessen.de/server/api/core/bitstreams/ecc83730-096d-4083-94a1-bff6adf67f68/content",
+      "license": "CC-BY-4.0",
+      "observed_artifact_sha256": "a6cee9eb8eaca8dab8636caf0ad4cd4248fbfccfab57c9ce9af2c7324969f373"
+    },
+    "locator": {
+      "chapter": "5.2 Qualification Tests at the Am-Be Neutron Source",
+      "figure": "5.5(a)",
+      "printed_page": 66,
+      "physical_pdf_page": 86
+    },
+    "tested_identity": {
+      "manufacturer": "Microchip Technology",
+      "part_family": "23LC1024",
+      "orderable_part_number": null,
+      "package": "8-lead PDIP",
+      "lot_id": null,
+      "die_revision": null,
+      "process_nm_stated": 130,
+      "identity_status": "PARTIAL_UNRESOLVED"
+    },
+    "test_conditions": {
+      "radiation_source": "Am-Be neutron source",
+      "readout_modes": [
+        "STATIC",
+        "DYNAMIC"
+      ],
+      "supply_voltage_v": 3.3,
+      "exposure_duration_h": 24,
+      "reference_distance_mm": 1,
+      "simulated_spectrum_mean_energy_mev": 2.55,
+      "simulated_cumulative_flux_cm2_s": 690000,
+      "simulated_fast_neutron_flux_above_0_1_mev_cm2_s": 500000,
+      "simulated_thermal_neutron_flux_below_0_5_ev_cm2_s": 140000
+    },
+    "result": {
+      "event_type": "SEU",
+      "cross_section": {
+        "value": 4.1e-9,
+        "uncertainty": 4e-11,
+        "unit": "cm2/device"
+      },
+      "mcu_observed": false
+    },
+    "additional_screening_observation": {
+      "radiation_source": "X-ray",
+      "reported_dose": {
+        "value": 100,
+        "unit": "kGy"
+      },
+      "reported_outcome": "NO_BIT_FLIPS_OR_FUNCTIONAL_DEGRADATION_OBSERVED",
+      "direct_tid_comparison_allowed": false,
+      "reason": "Dose material basis, dosimetry, parametric limits, exact suffix, lot and die revision are not aligned with the SPECTRA krad(Si) mission comparison."
+    }
+  },
+  "spectra_synthetic_reference": {
+    "data_class": "SYNTHETIC",
+    "case_file": "simulation/fixtures/mvp-ecc-policy-v2.json",
+    "part_evidence_file": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+    "tested_identity": {
+      "manufacturer": "Example Semi",
+      "part_number": "EX-100"
+    },
+    "cross_section": {
+      "value": 1e-6,
+      "unit": "cm2/device"
+    },
+    "see_exposure_scale": 1e-6,
+    "raw_seu_events_per_mission": 0.063072,
+    "physical_model_status": "SYNTHETIC_NOT_PHYSICAL"
+  },
+  "numeric_comparison": {
+    "metric": "CROSS_SECTION_INPUT_RATIO_ONLY",
+    "synthetic_divided_by_published": 243.90243902439022,
+    "interpretation": "The synthetic input is about 244 times the published screening value; this is not an accuracy, error, validation or suitability metric.",
+    "direct_validation_allowed": false
+  },
+  "blocking_codes": [
+    "PART_IDENTITY_PARTIAL",
+    "PACKAGE_MISMATCH",
+    "LOT_DIE_UNRESOLVED",
+    "PARTICLE_SPECTRUM_MISMATCH",
+    "SYNTHETIC_PART_MISMATCH",
+    "SYNTHETIC_EXPOSURE_SCALE",
+    "MISSION_ENVIRONMENT_UNAVAILABLE",
+    "DESTRUCTIVE_SEE_EVIDENCE_MISSING"
+  ]
+}

@@ -6,9 +6,9 @@
 
 ## Last verified
 
-- 날짜: 2026-08-24
+- 날짜: 2026-08-25
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 통합 체크포인트: 직전 기준 `56297b2` 위 3단계 Evidence Review·로컬 bundle/document/part/review/CAD/change adapter와 실제 후보 receipt 표시를 최종 검증 중이다. 이 문서를 포함하는 main commit으로 `origin/main`에 통합하며 ignored `instructions/`와 Git 밖 private evidence는 포함하지 않는다.
+- Git 통합 체크포인트: `HEAD=origin/main=841ffd7` 위 단일 Console 3모드·11장 발표 통합 후보를 최종 검증했다. commit·push 전 사용자 통합 시점 확인이 남아 있으며 ignored `instructions/`, Git 밖 대본과 private evidence는 포함하지 않는다.
 
 ## 현재 확인된 산출물
 
@@ -22,6 +22,12 @@
 
 ## 현재 진실
 
+- 2026-08-25 공개 `23LC1024` 시험값과 SPECTRA 합성 입력을 검토하는 deterministic comparison gate를 구현했다. 게이트는 저장된 blocker를 신뢰하지 않고 exact identity·package·lot/die·source manifest·단위·합성 조건을 재평가하며, 현재 결과를 `VALID / NOT_COMPARABLE / HOLD`, 숫자 비율을 `CALCULATED_REFERENCE_ONLY`로 제한한다. optimistic PASS/direct validation, ratio 1 ULP, boolean·비유한수·단위·identity·hash 공격을 포함한 신규 10개와 기존 binding 5개, 총 15개 테스트가 통과했다. exact-part 데이터 불완전성은 발표·직접 검증 리스크로 명시했으며 실제 Evidence Packet은 계속 0건이다. 사용자 요청에 따른 다음 통합 시점에서 전체 회귀를 통과해 누적 integration unit의 commit·push 대상에 포함했다.
+- 2026-08-25 `evidence-console.html` 하나에서 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표`를 전환하는 H38 통합을 독립 검증했다. Local 합성 PDF는 13 events·후보 7개·최종 `HOLD`, GCP는 저장 로그 13건·`SNAPSHOT ONLY · HOLD`, 고정 합성 Batch는 문서 3·후보 7·HOLD 3·reference `3 / 3`으로 종료했다. Slide 03·09는 동일 named `spectra-demo` 탭을 재사용한다.
+- 변경 범위 직접 테스트 21개와 Product 전체 157개, schema 17개·정상 fixture 5개·실패 fixture 116개, simulation 55개, environment·Assurance·GCP H05 local runbook, 인접 readiness·parts·source·local assurance 32개가 통과했다. 두 stale UI 문구 assertion은 현재 화면 계약에 맞춰 보완한 뒤 해당 범위 전체를 재검증했다.
+- 현재 11장 발표 deck은 전환 애니메이션 종료 후 localhost 1280×720에서 전 장 document·active slide x/y overflow 0, console warning/error 0이다. Git 밖 v4 대본은 `Cover + 01~09 + Closing`, 두 Product Demo와 `CALCULATED 400초 + 전환 여유 20초 = 420초`에 정렬됐지만 사람 낭독·클릭 리허설은 `NOT_MEASURED`다.
+- 이 통합은 로컬 합성 Product·고정 GCP snapshot·발표 운영만 `VERIFIED`한다. 실제 environment contract 0건, 승인 exact-part Evidence Packet 0건, Document AI·Gemini 호출 0건과 실제 GCP `ASR-D02 NOT_EVALUATED`는 바뀌지 않으며 최종 assurance는 `HOLD`다.
+- 2026-08-25 발표의 COTS SRAM 범위에 맞춰 사용자가 Microchip `23LC1024-I/SN`을 SPECTRA MVP exact-part 검토 대상으로 승인하고 기존 Space/QML-V/RHA TI CAN transceiver 선택을 대체했다. Microchip 공식 자료에서 현재 양산되는 1 Mbit SPI/SDI/SQI SRAM임을 확인했고, ESA는 base product `23LC1024`를 GOMX-4B/CHIMERA의 COTS memory radiation experiment 탑재품으로 명시한다. 공개 Am-Be neutron screening의 PDIP `23LC1024` SEU cross section `(4.10 ± 0.04) × 10^-9 cm²/device`를 별도 reference로 결속했지만 승인 `/I/SN`은 SOIC이고 exact suffix·lot/die가 없어 직접 검증에는 사용하지 않는다. 현재 합성 cross section과의 약 `243.9×`는 입력값 차이일 뿐 정확도·적합성 지표가 아니다. CHIMERA 나머지 memory와 공개 radiation database 재검색에서도 flight identity와 numerical test article을 함께 닫는 더 강한 memory 사례는 찾지 못했다. Φsat-1의 Intel Movidius `Myriad 2`는 실제 비행·TID/SEE 데이터가 있는 강한 COTS 사례지만 복합 AI SoC라 현재 SRAM 모델의 대체품으로 사용하지 않는다. BOM identity·차폐·TID·per-device evidence에서 구매 수량을 제거하고, 총 SEU 집계에만 별도 `analysis_device_count`를 사용한다. COTS library·Product binding·Evidence Console 35개와 reference comparison 5개, 합계 직접 테스트 40개 및 diff check가 통과했으며 브라우저 재점검은 보류했다. 이는 catalog target과 비교 reference를 고정한 것이며 decision-usable exact-part packet은 계속 0건, assurance는 `HOLD`다.
 - 2026-08-24 `Roadmap Lab`을 비전문가가 따라갈 수 있는 `자료 선택 → 6개 gate 검사 → 변경 후 재검사` 3단계로 통합했다. 합성 정상은 6개 gate를 통과하되 승인으로 승격되지 않고, 변조는 hash gate 2, 오부품은 identity gate 4에서 멈춘다. ECC·차폐·부품 변경은 각각 gate 6·5·4를 다시 연다. 브라우저 로컬 JSON/PDF/TXT는 최대 10 MB를 메모리에서만 읽고 provenance가 없으면 gate 3에서 닫는다.
 - Git 밖 실제 SPENVIS 9개와 TI 후보 5개를 새 local bundle gate로 직접 결속했다. 두 묶음 모두 파일 hash 결속은 재현됐지만 action별 권리와 외부 승인 anchor가 없어 `PROVENANCE_FAILURE / HOLD_NOT_ISSUED / HOLD`다. UI에는 raw bytes·경로·식별자·hash 없이 source class·개수·blocker code만 담은 receipt를 연결했다. SPENVIS 내부 일관성 11개는 재현됐으나 독립 comparator·승인 tolerance·독립 reviewer가 없어 과학 교차검산은 `NOT_EVALUATED`다.
 - local bundle, document intake, exact-part readiness, review audit, CAD change와 HW-SW change impact adapter를 정상·변조·경로 탈출·prompt injection·낙관 PASS·자기검토·hash rebinding 공격으로 독립 검증했다. 이 구현은 후보를 구조화하고 재검토 범위를 만드는 로컬 기능만 `VERIFIED`하며, 실제 environment contract·exact-part Evidence Packet·suitability·radiation assurance를 발행하지 않는다.
@@ -114,7 +120,7 @@
 ## 다음 권장 작업
 
 1. Workstream 30이 확보한 SPENVIS bundle에 provider job reference, action별 권리, 승인 raw manifest와 과학적 교차검산을 연결해 environment contract 발행 가능성을 판정한다.
-2. Workstream 40이 승인 BOM exact-part 1개를 고정하고 권리 확인 원문, 시험 조건·임무 적용성, TID와 필요한 파괴성 SEE coverage를 연결한다.
+2. Workstream 40이 고정된 COTS 승인 검토 대상 `23LC1024-I/SN`에 권리 확인 원문, ESA 비행·시험 article의 exact suffix/lot/die identity, 시험 조건·임무 적용성, TID와 필요한 SEE coverage를 연결한다.
 3. Workstream 60이 사용자 승인과 고정 revision 범위를 확인한 뒤 실제 GCP `ASR-D02`를 수행하고 False Accept/PASS와 관찰 증거를 제출한다. 실행 전 상태는 `NOT_EVALUATED`다.
 4. 실제 environment·part contract가 생기면 Workstream 80이 합성 fallback과 분리된 Evidence-to-Decision 경로와 원문 locator를 Product에 연결한다.
 5. Workstream 90은 실제 사용자 1명의 5분 실행·판정 이유·다음 행동 탐색을 측정하고 COTS·과학·비용 주장을 출처·범위에 맞게 정리한다.

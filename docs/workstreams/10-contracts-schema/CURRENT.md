@@ -2,7 +2,15 @@
 
 ## Status
 
-`INTEGRATED — H06 mitigation runtime contract / commit 32b6131`
+`VERIFIED — H07 BOM quantity separation / HOLD`
+
+## H07 BOM quantity separation — 2026-08-25
+
+- `schemas/bom.schema.json`의 component required/property에서 구매 `quantity`를 제거했다. 추가 필드는 금지되므로 기존 `quantity`를 다시 넣으면 schema가 거부한다.
+- BOM은 exact identity와 function만 표현한다. 동일 장치 여러 개의 총 SEE event 계산은 BOM 밖 simulation-only `analysis_device_count`로 분리했다.
+- 유효 fixture에서 BOM quantity를 제거하고 schema 17개·valid 5개·invalid 116개가 통과했다.
+- 이 계약 변경은 부품 개수가 차폐나 per-device TID/SEE evidence를 바꾼다는 의미를 만들지 않는다.
+- H06 integrated 기준선은 보존하며 새 변경은 아직 commit·push하지 않았다.
 
 ## 구현한 계약
 

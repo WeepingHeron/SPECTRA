@@ -8,7 +8,17 @@
 
 ## Status
 
-`INTEGRATED — H03 Mitigation Runtime Calculator / commit 32b6131`
+`VERIFIED — H04 analysis device count separation / HOLD`
+
+## H04 analysis device count separation — 2026-08-25
+
+- generic synthetic engine의 SEE aggregation operand를 BOM `component.quantity`에서 `SimulationOptions.analysis_device_count`로 이동했다.
+- MVP input schema는 positive integer `analysis_device_count`를 명시적으로 요구하며 고정 합성 scenario는 기존 비교 의미를 보존하도록 `2`를 선언한다.
+- 1→3 device 공격에서 shielded/required TID는 불변이고 raw SEE만 정확히 3배가 됨을 확인했다.
+- 0·음수·소수·boolean은 `INVALID_INPUT / HOLD`로 닫힌다.
+- 전체 simulation 58 tests, Product binding 17 tests, schema validation과 `git diff --check`가 통과했다.
+- generated Product JSON/JS는 production exporter로 재생성했으며 모든 assurance는 계속 `HOLD`다.
+- H03 integrated 기준선은 보존하며 새 변경은 아직 commit·push하지 않았다.
 
 현재 작업 패키지: `20-mitigation-runtime-calculator-v1` H03 검증 보완. Workstream 10 H06의 WATCHDOG·TMR·SEL_PROTECTION runtime 계약을 production-side에서 독립 계산하는 API, CLI와 결과 schema를 구현했다. 정상 control은 `processing_status=VALID`, `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`다. malformed·계약 위반·계산 eligibility 부족·projection/policy 변조는 `processing_status=INVALID_INPUT`, `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`로 닫힌다. Runtime `processing_status`는 공통 enum을 직접 참조하며 어떤 분기에서도 `NOT_EVALUATED`를 사용하지 않는다. H02 MVP Decision Engine의 `INTEGRATED` 기준선은 그대로 보존한다.
 

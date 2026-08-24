@@ -56,6 +56,28 @@ class MvpDecisionEngineTests(unittest.TestCase):
         self.assertEqual("NOT_EVALUATED", self.rule(baseline, "ECC_TRANSITION_V2"))
         self.assertEqual("PASS", self.rule(variant, "ECC_TRANSITION_V2"))
 
+    def test_analysis_device_count_is_separate_from_bom_identity(self):
+        attacked = copy.deepcopy(self.case)
+        attacked["analysis_device_count"] = 1
+        attacked["ecc_fault_distribution"]["patterns"] = [
+            {
+                "multiplicity_bits": 1,
+                "incident_events": 0.031536,
+                "transition": {
+                    "corrected": 1,
+                    "detected_uncorrectable": 0,
+                    "silent_uncorrected": 0,
+                },
+            }
+        ]
+        result = self.result(attacked)
+        self.assertAlmostEqual(0.031536, result["baseline"]["metrics"]["raw_seu"]["value"])
+        bom = next(
+            item for item in result["baseline"]["evidence_packet"]["inputs"]
+            if item["kind"] == "BOM"
+        )
+        self.assertNotIn("quantity", bom["components"][0])
+
     def test_draft_and_approved_policy_states_are_deterministic(self):
         result = self.result()
         baseline = result["baseline"]

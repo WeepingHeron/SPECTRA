@@ -2,9 +2,32 @@
 
 ## Status
 
-`VERIFIED — H07 artifact path fail-closed remediation / HOLD`
+`VERIFIED — H10 published-reference comparison gate / NOT_COMPARABLE / HOLD`
 
-H06 executable gate에서 재현된 embedded-NUL `relative_path` 예외 유출을 수정했다. 경로 resolve와 artifact stat/read의 예상 가능한 파일시스템 실패는 안정적인 provenance code로 `HOLD` 처리하며, 프로그래밍 오류는 숨기지 않는다. 실제 packet과 승인 BOM은 여전히 0건이다.
+## H10 published-reference comparison gate — 2026-08-25
+
+- 공개 시험값과 현재 합성 입력의 비율을 production adapter가 직접 재계산하고, identity·package·lot/die·source manifest·단위·합성 조건·mission/destructive coverage blocker를 stable code로 다시 만든다.
+- 현재 23LC reference는 `VALID / NOT_COMPARABLE / HOLD`; 약 `243.9×`는 `CALCULATED_REFERENCE_ONLY`이며 decision과 direct validation에는 사용하지 않는다.
+- blocker 삭제, ratio 1 ULP 변조, optimistic PASS/direct validation, boolean·0·음수·NaN·Infinity, 단위·identity·hash·금지 필드 공격을 fail-closed 처리한다.
+- H10 gate 10개와 기존 reference binding 5개, 총 15개 직접 테스트가 통과했다. 상세 계약과 경계는 `PUBLISHED_REFERENCE_COMPARISON_GATE_H10.md`에 기록했다.
+- exact suffix/package/lot/die, 승인 raw manifest와 rights, mission applicability, TID 및 필요한 SEE coverage는 여전히 불완전하다. 실제 Evidence Packet은 0건이고 이 데이터 공백은 발표·직접 검증 신뢰도 리스크로 유지한다.
+- 사용자 요청에 따른 다음 통합 시점에서 전체 회귀를 통과해 누적 integration unit의 commit·push 대상에 포함했다.
+
+## H08 approved COTS BOM review target — 2026-08-25
+
+- 발표의 COTS SRAM 범위에 맞춰 사용자가 기존 Space/QML-V/RHA TI CAN transceiver 선택을 철회하고 `Microchip Technology 23LC1024-I/SN`을 `SPECTRA_MVP_EXACT_PART_REVIEW_TARGET` 범위로 승인했다.
+- Microchip 제품 페이지와 datasheet에서 현재 양산, 1 Mbit volatile SPI/SDI/SQI SRAM, industrial temperature, 8-lead SOIC exact catalog identity를 확인했다.
+- ESA는 base product `23LC1024`가 GOMX-4B CubeSat의 CHIMERA COTS memory radiation experiment에 탑재되어 SEU·MBU·SEFI·latch-up을 관측한다고 밝힌다. BOM function은 이 실제 역할에 맞춰 `COTS_SPI_SRAM_RADIATION_EXPERIMENT_TARGET`으로 고정했다.
+- ESA 페이지는 비행 exact suffix·lot/date code·die revision과 결과 artifact를 공개하지 않으므로 catalog exact identity와 flight-experiment family identity를 합치지 않는다.
+- BOM component 계약에서 구매 수량을 제거했다. exact-part 승인·차폐·TID·per-device SEE evidence에는 수량을 쓰지 않는다.
+- 총 SEE event 계산에만 별도 simulation input `analysis_device_count`를 사용한다. 이 값은 TID/차폐 결과에 영향을 주지 않으며 0·음수·소수·boolean은 `INVALID_INPUT / HOLD`다.
+- 상세 결정과 source locator: `APPROVED_BOM_TARGET_H08.md`.
+- 승인 대상 고정은 catalog comparison blocker만 닫는다. rights/raw manifest, exact test lot, event coverage, mission applicability와 independent packet review가 남아 assurance는 `HOLD`다.
+- `23LC1024` PDIP의 공개 Am-Be neutron screening에서 SEU cross section `(4.10 ± 0.04) × 10^-9 cm²/device`를 확인해 reference comparison을 추가했다. 승인 `/I/SN`은 SOIC이고 공개 시험 suffix·lot·die가 없어 `PARTIAL_UNRESOLVED`; 현재 합성 `1.0 × 10^-6`과의 약 `243.9×`는 입력 수치 비교일 뿐 정확도·검증·적합성 지표가 아니다. 상태는 `REFERENCE_COMPARISON_AVAILABLE / NOT_COMPARABLE / HOLD`다.
+- CHIMERA의 다른 세 COTS memory와 공개 radiation database를 재검색했지만 flight identity와 numerical test article을 함께 묶는 더 강한 exact memory 사례는 찾지 못했다. 더 넓은 COTS 사례로는 Φsat-1에서 실제 AI 처리를 수행하고 Co-60·proton·heavy-ion 시험이 발표된 Intel Movidius `Myriad 2`가 있으나, 복합 AI SoC라 현재 SRAM 모델의 대체품으로 사용하지 않는다. 조사 기록은 `COTS_FLIGHT_TEST_DATA_RECHECK_H09.md`에 보존했다.
+- COTS candidate library, Product presentation binding, Evidence Console 35개와 published-reference comparison 5개, 합계 직접 테스트 40개 및 `git diff --check`가 통과했다. 브라우저 시각 재점검은 사용자의 UI 재검토 시점까지 보류했다.
+
+H06 executable gate에서 재현된 embedded-NUL `relative_path` 예외 유출을 수정했다. 경로 resolve와 artifact stat/read의 예상 가능한 파일시스템 실패는 안정적인 provenance code로 `HOLD` 처리하며, 프로그래밍 오류는 숨기지 않는다. H08에서 catalog-level 승인 검토 대상 1개를 고정했지만 실제 decision-usable packet은 여전히 0건이다.
 
 ## H07 artifact path fail-closed remediation — 2026-08-24
 

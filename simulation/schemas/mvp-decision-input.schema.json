@@ -4,13 +4,14 @@
   "title": "SPECTRA MVP Decision Engine Input v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "case_id", "created_at", "base_packet_fixture", "particle_flux", "ecc_fault_distribution", "baseline", "variant"],
+  "required": ["schema_version", "case_id", "created_at", "base_packet_fixture", "particle_flux", "analysis_device_count", "ecc_fault_distribution", "baseline", "variant"],
   "properties": {
     "schema_version": {"const": "1.0.0"},
     "case_id": {"type": "string", "minLength": 1},
     "created_at": {"type": "string", "format": "date-time"},
     "base_packet_fixture": {"const": "tests/schema/fixtures/valid/synthetic-v2-hold.json"},
     "particle_flux": {"allOf": [{"$ref": "https://spectra.local/schemas/common.schema.json#/$defs/quantity"}, {"properties": {"value": {"minimum": 0}, "quantity_kind": {"const": "PARTICLE_FLUX"}, "unit": {"const": "particles/cm2/s"}}}]},
+    "analysis_device_count": {"type": "integer", "minimum": 1},
     "ecc_fault_distribution": {
       "type": "object", "additionalProperties": false,
       "required": ["distribution_id", "patterns", "metadata"],

@@ -3,6 +3,7 @@
   "case_id": "mvp-synthetic-ecc-policy-001",
   "created_at": "2026-08-20T00:00:00Z",
   "base_packet_fixture": "tests/schema/fixtures/valid/synthetic-v2-hold.json",
+  "analysis_device_count": 2,
   "particle_flux": {
     "value": 1000,
     "quantity_kind": "PARTICLE_FLUX",

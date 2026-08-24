@@ -163,7 +163,7 @@ class EvidenceConsoleTests(unittest.TestCase):
             'document.createTextNode(rawLine+"\\n")',
             "NO OCR · NO LLM · NO GCP CALL",
             "합성 비정형 PDF 예시 실행",
-            "합성 PDF 원문 4쪽 보기 ↗",
+            "합성 PDF 원문 4쪽 보기 →",
             "원본 JSONL 보기",
             "SYNTHETIC REFERENCE CHECK",
             "spectra_synthetic_unstructured_radiation_report.pdf",

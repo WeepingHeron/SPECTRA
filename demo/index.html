@@ -171,20 +171,21 @@
     .trust-integrity-bar .trust-title small{margin-left:6px;color:#555;font-size:7.5px;letter-spacing:.04em}
     .trust-integrity-bar b{display:block;color:#bbb;font-weight:650}
 
-    /* Slide 07: Tech Stack & Implementation Tools */
-    .tech-stack-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:20px;background:var(--line)}
-    .tech-stack-card{padding:16px 14px;background:#090909;display:flex;flex-direction:column}
-    .tech-layer-tag{font-size:9.5px;letter-spacing:.15em;font-weight:700;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
-    .tech-layer-tag.l1{color:#86efac}
-    .tech-layer-tag.l2{color:#93c5fd}
-    .tech-layer-tag.l3{color:#c4b5fd}
-    .tech-layer-tag.l4{color:#fde047}
-    .tech-layer-title{font-size:14px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:8px}
-    .tech-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
-    .tech-chip{font-size:9.5px;font-family:"SFMono-Regular",Menlo,monospace;padding:2px 5px;background:#141414;border:1px solid #282828;color:#bbb}
-    .tech-stack-card ul{margin:0;padding:0 0 0 14px;list-style-type:square}
-    .tech-stack-card li{font-size:11.5px;color:var(--muted);line-height:1.55;margin-bottom:6px}
-    .tech-stack-card li strong{color:#eee;font-weight:600}
+    /* Slide 02: visual Evidence-to-Decision map */
+    .system-map{margin-top:30px}
+    .system-flow{display:grid;grid-template-columns:1fr 54px 1fr 54px 1.18fr 54px 1fr 54px 1fr;align-items:center}
+    .system-arrow{color:#777;text-align:center;font:500 36px/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif}
+    .system-node{min-height:176px;display:grid;place-items:center;align-content:center;text-align:center;border:1px solid #333;background:#070707}
+    .system-node.output{border-color:#8a772d;background:#0d0b04}
+    .system-icon{display:grid;place-items:center;width:72px;height:72px;margin-bottom:16px;border:2px solid #eee;border-radius:50%;color:#fff;font:650 36px/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif}
+    .system-node.agents .system-icon{border:0;width:112px;font-size:24px;letter-spacing:8px}
+    .system-node.gate .system-icon{border-radius:12px;transform:rotate(45deg)}
+    .system-node.gate .system-icon span{transform:rotate(-45deg)}
+    .system-node.output .system-icon{border-color:#f4d35e;color:#f4d35e;font-size:19px;letter-spacing:.05em}
+    .system-node b{display:block;color:#fff;font-size:18px;line-height:1.2}
+    .system-node small{display:block;margin-top:6px;color:#777;font-size:12px;line-height:1.35}
+    .system-truth{display:flex;align-items:center;justify-content:center;gap:26px;margin-top:13px;color:#777;font-size:11px}
+    .system-truth b{color:#ddd}.system-truth a{color:#fff;text-underline-offset:3px}
 
     /* Slide 09: Roadmap & Future Expansion */
     .roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:20px;background:var(--line)}
@@ -213,7 +214,7 @@
       :root{--top:72px;--bottom:68px}
       .grid-2,.grid-3,.metric-stage,.evidence-lanes,.identity-grid,.industry-stats,.demo-pipeline-view{grid-template-columns:1fr}
       .broken-flow{grid-template-columns:1fr;gap:9px}.break{width:2px;height:20px;margin:auto}.compare{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}
-      .reliability-grid,.tech-stack-grid{grid-template-columns:1fr 1fr}.roadmap-grid,.gcp-flow{grid-template-columns:1fr}
+      .reliability-grid{grid-template-columns:1fr 1fr}.roadmap-grid,.gcp-flow{grid-template-columns:1fr}.system-flow{grid-template-columns:repeat(5,1fr);gap:8px}.system-arrow{display:none}
       .slide{align-content:start}.facts{grid-template-columns:1fr 1fr}.slide2-note,.slide4-note{white-space:normal}
     }
     @media(max-height:760px) and (min-width:901px){
@@ -225,8 +226,8 @@
       .industry-stats{margin-top:12px}.stat-card{padding:10px 14px}
       .identity-grid{margin-top:14px}.identity-box{padding:12px 16px}
       .identity-box li{font-size:12px;margin-bottom:5px}
-      .tech-stack-grid,.roadmap-grid{margin-top:12px}.tech-stack-card,.roadmap-card{padding:10px 12px}
-      .tech-stack-card li,.roadmap-card li{font-size:11px;margin-bottom:4px}
+      .roadmap-grid{margin-top:12px}.roadmap-card{padding:10px 12px}
+      .roadmap-card li{font-size:11px;margin-bottom:4px}
       .demo-console{margin-top:10px;padding:10px 14px}
       .demo-pipeline-view{margin-top:8px}
       .reliability-grid{margin-top:8px}.reliability-card{min-height:76px;padding:8px 10px}
@@ -278,19 +279,19 @@
 
     .comparison-table{width:100%;border-collapse:collapse}.comparison-table td{padding:7px 4px;border-bottom:1px solid #1d1d1d;font-size:10.5px;line-height:1.35;vertical-align:top}.comparison-table td:first-child{width:92px;color:#777;font-family:"SFMono-Regular",Menlo,monospace}.comparison-table td:last-child{color:#ddd}
     .bridge-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:10px;background:#252525}.bridge-item{padding:10px 12px;background:#080808}.bridge-item b{display:block;margin-bottom:4px;font-size:11px}.bridge-item span{color:#777;font-size:9.5px;line-height:1.35}
-    .shield-primer{display:grid;grid-template-columns:1fr 74px 1fr 74px 1fr;align-items:center;margin-top:24px}.primer-stage{min-height:178px;padding:20px;border-top:1px solid #fff;border-bottom:1px solid #292929;background:#080808}.primer-stage .primer-num{font:650 10px/1.2 "SFMono-Regular",Menlo,monospace;color:#777;letter-spacing:.14em}.primer-stage b{display:block;margin:16px 0 8px;font-size:21px}.primer-stage p{margin:0;color:#888;font-size:12px;line-height:1.5}.primer-arrow{text-align:center;color:#777;font-size:25px}.thickness-key{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:14px;background:#292929}.thickness-key div{padding:10px 12px;background:#080808}.thickness-key b{display:block;font-size:12px}.thickness-key span{color:#777;font-size:9.5px}
+    .shield-primer{display:grid;grid-template-columns:1fr 90px 1fr 90px 1fr;align-items:center;margin-top:30px}.primer-stage{text-align:center}.primer-visual{display:grid;place-items:center;width:112px;height:112px;margin:0 auto 18px;border:2px solid #eee;border-radius:50%;color:#fff;font:700 30px/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif}.primer-stage.radiation .primer-visual{border-style:dashed;font-size:25px;letter-spacing:8px}.primer-stage.shield .primer-visual{border-width:12px;border-color:#bbb;font-size:26px}.primer-stage.component .primer-visual{border-radius:12px;font-size:46px}.primer-stage b{display:block;font-size:23px}.primer-stage p{max-width:260px;margin:8px auto 0;color:#888;font-size:13px;line-height:1.5}.primer-arrow{text-align:center;color:#777;font-size:42px}.shield-rule{display:grid;grid-template-columns:auto 1fr auto 1fr auto;gap:12px;align-items:center;margin:26px auto 0;width:min(900px,100%);color:#999;font-size:13px}.shield-bar{height:18px;background:#555}.shield-bar.thin{width:34%}.shield-bar.thick{width:100%;background:#ddd}.shield-rule strong{color:#fff}.shield-takeaway{text-align:center;margin-top:14px;color:#ddd;font-size:15px}.shield-takeaway b{color:#fff}.shield-takeaway span{color:#888;margin-left:18px}
     .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.spec-table{width:100%;border-collapse:collapse}.spec-table td{padding:9px 0;border-bottom:1px solid #1d1d1d;font-size:11.5px}.spec-table td:first-child{color:#777}.spec-table td:last-child{text-align:right;color:#eee;font-family:"SFMono-Regular",Menlo,monospace;font-weight:650}
     .context-strip{display:flex;gap:10px;margin-top:12px;color:#777;font-size:10px}.context-strip span{padding-right:10px;border-right:1px solid #292929}.context-strip span:last-child{border:0}
     .metric-stage{margin-top:0}.metric-stage .card{padding:18px}.big-metric{min-height:178px}.metric-number{font-size:clamp(54px,7vw,92px)}.segmented{margin:16px 0 12px}.segmented button{padding:8px 13px;font-size:11px}
     .parts-mitigation{display:grid;grid-template-columns:.95fr 1.05fr;gap:14px;margin-top:18px}.parts-mitigation .event-row{padding:9px 0;font-size:11px;grid-template-columns:54px 1fr auto}.parts-mitigation .compare{margin-top:0;grid-template-columns:1fr 30px 1fr}.parts-mitigation .compare-card{padding:12px 8px}.parts-mitigation .compare-card .value{font-size:38px}
     .identity-grid{gap:14px;background:transparent}.identity-box{border:1px solid #292929;padding:14px 16px}.identity-box li{font-size:11px;line-height:1.45;margin-bottom:5px}.reliability-grid{margin-top:10px}.reliability-card{min-height:72px;padding:9px 11px}
-    .tech-stack-grid{margin-top:18px}.tech-stack-card{padding:13px 12px}.tech-stack-card li{font-size:10px;line-height:1.42;margin-bottom:4px}
+    .system-map{margin-top:18px}.system-node{min-height:146px}.system-icon{width:60px;height:60px;margin-bottom:12px;font-size:30px}.system-node b{font-size:16px}.system-node small{font-size:10px}
     .gcp-flow{margin-top:4px}.gcp-node{min-height:78px}.demo-console{padding:6px 12px;margin-top:10px}.demo-controls{border-bottom:0;padding-bottom:0}.demo-controls-title{display:none}.demo-buttons{display:grid;grid-template-columns:repeat(3,1fr);width:100%}.demo-btn{justify-content:center;padding:7px 6px;font-size:9.5px}.demo-pipeline-view{grid-template-columns:1fr 1fr 1fr;margin-top:8px;gap:8px}.demo-stage-box{min-height:82px;padding:8px 10px}.live-telemetry-bar{margin-top:7px}.failclosed-alert{margin-top:7px;min-height:46px;padding:7px 9px;font-size:10px}.gcp-actions{margin-top:7px}.gcp-link-btn{padding:6px 10px;font-size:10px}
     .demo-pipeline-view.simplified{grid-template-columns:1.25fr .75fr}
     .roadmap-grid{margin-top:18px}.roadmap-card{padding:13px}.roadmap-card li{font-size:10px;line-height:1.42;margin-bottom:4px}
     .footer{height:var(--bottom);padding:0 var(--side);background:rgba(5,5,5,.9)}.nav button{width:30px;height:30px}.dot{width:17px}
     @media(max-height:760px){.slide{padding-top:52px;padding-bottom:50px}.slide-inner{max-height:618px}.slide:not(.cover) h1,.slide:not(.cover) h2{font-size:40px}.evidence-overview{grid-template-columns:minmax(390px,.9fr) minmax(0,1.1fr);gap:28px}.evidence-ring{width:360px}.evidence-ring .ring-center{width:112px;height:112px}.evidence-ring .ring-node{width:150px}.evidence-ring .ring-node.n2{right:-38px}.evidence-ring .ring-node.n4{left:-38px}.slide[data-title="문제"] .slide-inner{height:calc(100vh - 102px)}.slide[data-title="문제"] .kicker{margin-bottom:16px}.slide[data-title="문제"] #s1-title{font-size:40px}.slide[data-title="문제"] .lead{margin-top:6px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:500px minmax(0,1fr);gap:40px;margin-top:52px}.slide[data-title="문제"] .evidence-ring{width:296px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-75px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-75px}.slide[data-title="문제"] .stat-lines{gap:16px}.slide[data-title="문제"] .stat-line{grid-template-columns:132px 1fr;gap:36px;min-height:96px;padding:16px 0 16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:auto}.slide[data-title="문제"] .source-line{margin-top:16px}.cover-manifesto-grid{margin-top:28px}.glossary-bar{font-size:9.5px}.source-line,.slide-src{font-size:8.5px}}
-    @media(max-width:900px){.evidence-overview,.two-up,.spec-grid,.parts-mitigation{grid-template-columns:1fr}.evidence-ring{width:340px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:1fr;gap:24px;margin-top:24px}.slide[data-title="문제"] .evidence-ring{width:286px}.slide[data-title="문제"] .evidence-ring .ring-node{width:132px;padding-inline:9px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-66px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-66px}.slide[data-title="문제"] .stat-line{grid-template-columns:126px 1fr;gap:32px;min-height:90px;padding:16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:24px}.shield-primer{grid-template-columns:1fr}.primer-arrow{transform:rotate(90deg)}.tech-stack-grid,.reliability-grid,.roadmap-grid{grid-template-columns:1fr 1fr}.demo-buttons{grid-template-columns:1fr 1fr}}
+    @media(max-width:900px){.evidence-overview,.two-up,.spec-grid,.parts-mitigation{grid-template-columns:1fr}.evidence-ring{width:340px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:1fr;gap:24px;margin-top:24px}.slide[data-title="문제"] .evidence-ring{width:286px}.slide[data-title="문제"] .evidence-ring .ring-node{width:132px;padding-inline:9px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-66px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-66px}.slide[data-title="문제"] .stat-line{grid-template-columns:126px 1fr;gap:32px;min-height:90px;padding:16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:24px}.shield-primer{grid-template-columns:1fr 36px 1fr 36px 1fr}.primer-visual{width:86px;height:86px}.primer-stage p{font-size:10px}.primer-arrow{font-size:28px}.reliability-grid,.roadmap-grid{grid-template-columns:1fr 1fr}.system-flow{grid-template-columns:repeat(5,1fr);gap:5px}.system-node{min-height:130px}.system-node small{display:none}.system-truth{flex-wrap:wrap}.demo-buttons{grid-template-columns:1fr 1fr}}
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
   </style>
 </head>
@@ -310,12 +311,28 @@
       </div>
     </section>
 
-    <section class="slide" data-title="문제" aria-labelledby="s1-title">
+    <section class="slide" data-title="차폐 기초" aria-labelledby="s1-title">
+      <div class="slide-inner">
+        <p class="kicker">01 · WHY RADIATION SHIELDING</p>
+        <h2 id="s1-title">우주 방사선은 전자부품에 영향을 주고,<br><span class="accent">알루미늄 차폐는 누적선량을 줄인다.</span></h2>
+        <div class="shield-primer" aria-label="우주 방사선이 알루미늄 차폐를 지나 전자부품에 도달하는 흐름">
+          <article class="primer-stage radiation"><span class="primer-visual">✦··</span><b>우주 방사선</b><p>궤도와 임무 기간에 따라 누적선량(TID)과 단일사건 영향(SEE)이 달라진다.</p></article>
+          <div class="primer-arrow" aria-hidden="true">→</div>
+          <article class="primer-stage shield"><span class="primer-visual">AL</span><b>알루미늄 차폐</b><p>위성 구조에 쓰이는 알루미늄의 등가 두께로 입자 에너지 감쇠를 비교한다.</p></article>
+          <div class="primer-arrow" aria-hidden="true">→</div>
+          <article class="primer-stage component"><span class="primer-visual">▦</span><b>전자부품</b><p>남은 TID·SEE가 정확한 부품의 시험 근거 안에 있는지 확인한다.</p></article>
+        </div>
+        <div class="shield-rule" aria-label="알루미늄 차폐 두께 비교"><strong>1 mm</strong><span class="shield-bar thin"></span><strong>4 mm</strong><span class="shield-bar thick"></span><strong>TID ↓</strong></div>
+        <div class="source-line">※ Al 등가 차폐의 기본 개념 · <a href="https://ntrs.nasa.gov/citations/20210018053" target="_blank" rel="noopener noreferrer">NASA Avionics Radiation Hardness Assurance Guidelines</a> · 실제 임무 환경·부품 근거는 아직 0건</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="문제" aria-labelledby="s2-title">
       <div class="slide-inner">
         <div class="slide-main">
           <div class="slide-heading">
-            <p class="kicker">01 · THE BROKEN EVIDENCE CHAIN &amp; REALITY</p>
-            <h1 id="s1-title">계산은 끝났는데,<br><span class="danger">근거는 연결되지 않았다.</span></h1>
+            <p class="kicker">02 · THE BROKEN EVIDENCE CHAIN &amp; REALITY</p>
+            <h1 id="s2-title">계산은 끝났는데,<br><span class="danger">근거는 연결되지 않았다.</span></h1>
             <p class="lead">임무·부품·시험·완화 정보가 서로 다른 파일에 흩어지면, 계산 결과의 근거를 끝까지 추적할 수 없다.</p>
           </div>
           <div class="evidence-overview">
@@ -340,10 +357,32 @@
       </div>
     </section>
 
-    <section class="slide" data-title="기존 한계" aria-labelledby="s2-title">
+    <section class="slide" data-title="전체 흐름" aria-labelledby="s3-title">
       <div class="slide-inner">
-        <p class="kicker">02 · CONVENTIONAL APPROACHES VS SPECTRA</p>
-        <h2 id="s2-title">기존 DB와 엑셀 취합은<br><span class="warn">왜 근거 체인을 보증하지 못하는가.</span></h2>
+        <p class="kicker">03 · EVIDENCE-TO-DECISION</p>
+        <h2 id="s3-title">흩어진 문서가,<br><span class="accent">검증 가능한 판단으로 이어진다.</span></h2>
+        <div class="system-map" aria-label="SPECTRA 전체 Evidence-to-Decision 흐름">
+          <div class="system-flow">
+            <article class="system-node"><span class="system-icon">▤</span><b>문서</b><small>PDF · BOM · 임무</small></article>
+            <div class="system-arrow" aria-hidden="true">→</div>
+            <article class="system-node"><span class="system-icon">⌕</span><b>근거 후보</b><small>원문 위치와 함께 추출</small></article>
+            <div class="system-arrow" aria-hidden="true">→</div>
+            <article class="system-node agents"><span class="system-icon">●●●</span><b>3개 Agent</b><small>Mission · Parts · Assurance</small></article>
+            <div class="system-arrow" aria-hidden="true">→</div>
+            <article class="system-node gate"><span class="system-icon"><span>✓</span></span><b>검증 Gate</b><small>Identity · Hash · 적용성</small></article>
+            <div class="system-arrow" aria-hidden="true">→</div>
+            <article class="system-node output"><span class="system-icon">HOLD</span><b>판단과 행동</b><small>문제 위치 · 이유 · 다음 조치</small></article>
+          </div>
+          <div class="system-truth"><span><b>NOW</b> pypdf 로컬 파싱</span><span><b>GCP</b> 저장된 합성 Agent 경로</span><a href="http://127.0.0.1:8765/demo/evidence-console.html" target="spectra-demo">통합 제품 시연 →</a></div>
+        </div>
+        <div class="source-line">※ Document AI·Gemini API 호출 0건 · 현재 로컬 파서와 GCP 저장 경로는 별도 · ACTUAL EVIDENCE 0 / ASSURANCE HOLD</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="기존 한계" aria-labelledby="s4-title">
+      <div class="slide-inner">
+        <p class="kicker">04 · CONVENTIONAL APPROACHES VS SPECTRA</p>
+        <h2 id="s4-title">기존 DB와 엑셀 취합은<br><span class="warn">왜 근거 체인을 보증하지 못하는가.</span></h2>
         <p class="lead">환경 모델 출력 → BOM spreadsheet → 시험 PDF → 수기 조건 대조 → 검토·보완으로 이어지는 동안, 사람이 끊어진 근거를 다시 연결해야 한다.</p>
         <div class="two-up">
           <article class="panel-flat"><span class="panel-tag">현재 취합 workflow · 서로 다른 파일과 승인 단계</span><ul class="compact-list"><li><strong>정확한 부품 식별:</strong> 제조사·공정·다이·로트가 시험 원문과 같은지 다시 대조</li><li><strong>시험 조건:</strong> 조사 조건과 event coverage가 이번 임무 판단에 맞는지 다시 확인</li><li><strong>임무 적용성:</strong> 환경·차폐·수명 변경이 기존 가정을 깨는지 다시 추적</li><li><strong>권리·승인 trace:</strong> 원문 접근 권리와 검토·보완 이력을 별도로 연결</li></ul></article>
@@ -354,14 +393,14 @@
       </div>
     </section>
 
-    <section class="slide" data-title="COTS 비교" aria-labelledby="s3-title">
+    <section class="slide" data-title="COTS 비교" aria-labelledby="s5-title">
       <div class="slide-inner">
-        <p class="kicker">03 · COTS ADOPTION &amp; RADIATION UNCERTAINTY</p>
-        <h2 id="s3-title">왜 COTS인가, 그리고 왜 검증인가.<br><span class="accent">조달 가능성과 임무별 검증 사이의 간극.</span></h2>
+        <p class="kicker">05 · COTS ADOPTION &amp; RADIATION UNCERTAINTY</p>
+        <h2 id="s5-title">왜 COTS인가, 그리고 왜 검증인가.<br><span class="accent">조달 가능성과 임무별 검증 사이의 간극.</span></h2>
         <p class="lead">COTS는 상용 조달 선택지를 넓히지만, 조달 가능성이 곧 우주 임무 적합성을 뜻하지 않는다. exact identity와 시험 근거를 임무 조건에 맞춰 다시 검증해야 한다.</p>
         <div class="two-up">
           <article class="panel-flat"><span class="panel-tag">우주급 부품 (Rad-Hard)</span><table class="comparison-table"><tr><td>Commercial availability</td><td>임무·조달 조건에 맞는 공급 가능성을 개별 확인</td></tr><tr><td>Evidence package</td><td>제공된 qualification·시험 근거의 정확한 부품 적용성을 대조</td></tr><tr><td>Decision rule</td><td>우주급 분류만으로 자동 승인하지 않고 임무 조건과 함께 판단</td></tr></table></article>
-          <article class="panel-flat" style="border-color:#777"><span class="panel-tag">상용 기성 부품 (COTS · EX-100)</span><table class="comparison-table"><tr><td>Commercial availability</td><td>상용 조달 선택지는 넓지만 우주 임무 적합성과는 별개</td></tr><tr><td>Evidence gap</td><td>공정·다이·로트 또는 방사선 event별 시험 근거가 없거나 다를 수 있음</td></tr><tr><td>Mission-specific verification</td><td>exact identity·TID·destructive SEE·권리·적용성을 임무별 확인</td></tr></table></article>
+          <article class="panel-flat" style="border-color:#777"><span class="panel-tag">상용 기성 부품 (COTS · Microchip 23LC1024)</span><table class="comparison-table"><tr><td>Commercial availability</td><td>현재 양산되는 산업용 SRAM이지만 우주 임무 적합성과는 별개</td></tr><tr><td>Space use</td><td>GOMX-4B CHIMERA에서 방사선 실험용 COTS 메모리로 탑재</td></tr><tr><td>Mission-specific verification</td><td>exact 비행 suffix·lot·TID·SEE·권리·적용성을 임무별 확인</td></tr></table></article>
         </div>
         <div class="bridge-row"><div class="bridge-item"><b>부품 식별 정합성 (Exact Identity)</b><span>제조사·공정·다이·로트와 시험 대상의 일치를 검증</span></div><div class="bridge-item"><b>임무 적용성 (Mission Applicability)</b><span>환경·차폐·수명과 시험 조건의 적용 범위를 대조</span></div><div class="bridge-item"><b>Fail-Closed 보증 (HOLD)</b><span>필수 event 근거·권리·승인이 부족하면 판단을 보류</span></div></div>
         <div class="glossary-bar"><span><b>COTS</b> 상용 기성 부품</span><span><b>Rad-Hard</b> 방사선 경화 특수 소자</span><span><b>QML-V</b> 미국 우주 규격 최고 등급 인증</span></div>
@@ -369,69 +408,24 @@
       </div>
     </section>
 
-    <section class="slide" data-title="차폐 이해" aria-labelledby="s4-title">
+    <section class="slide" data-title="임무·부품" aria-labelledby="s6-title">
       <div class="slide-inner">
-        <p class="kicker">04 · WHY SHIELDING MATTERS</p>
-        <h2 id="s4-title">왜 방사선을 차폐하고,<br><span class="accent">1·4·5 mm는 무엇을 의미하는가.</span></h2>
-        <div class="shield-primer" aria-label="방사선에서 부품 판단까지의 흐름">
-          <article class="primer-stage"><span class="primer-num">01 · ORBIT</span><b>궤도 방사선에 노출</b><p>임무 궤도와 기간에 따라 전자부품이 받는 입자 환경과 누적 선량이 달라진다.</p></article><div class="primer-arrow">→</div>
-          <article class="primer-stage"><span class="primer-num">02 · AL SHIELD</span><b>알루미늄이 에너지를 감쇠</b><p>차폐 두께는 부품 위치에서 흡수되는 총 이온화 선량(TID)을 바꾸는 설계 입력이다.</p></article><div class="primer-arrow">→</div>
-          <article class="primer-stage"><span class="primer-num">03 · EVIDENCE</span><b>부품 시험 근거와 대조</b><p>줄어든 TID만으로 충분하지 않다. 정확한 부품의 TID·SEU·SEL 근거와 함께 판단한다.</p></article>
-        </div>
-        <div class="thickness-key"><div><b>1 mm Al</b><span>상대적으로 얇은 차폐 · 합성 table의 높은 TID 지점</span></div><div><b>4 mm Al</b><span>상대적으로 두꺼운 차폐 · 합성 table의 낮은 TID 지점</span></div><div><b>5 mm Al</b><span>물리적으로 불가능한 값이 아니라 현재 합성 table 범위 밖 · 숫자 생성 안 함</span></div></div>
-        <div class="glossary-bar"><span><b>TID</b> 누적 총 이온화 선량</span><span><b>Al</b> 알루미늄 등가 차폐 두께</span><span><b>RDM</b> 방사선 설계 마진 계수</span></div>
-        <div class="source-line">전체 흐름 · 임무 조건 → 환경 → 차폐 → 부품 시험 근거 → 완화 → HOLD 또는 재검토</div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="임무·부품" aria-labelledby="s5-title">
-      <div class="slide-inner">
-        <p class="kicker">05 · TARGET MISSION &amp; COMPONENT EVIDENCE</p>
-        <h2 id="s5-title">단 1바이트의 차이가,<br><span class="accent">전체 궤도 해석을 무효화한다.</span></h2>
+        <p class="kicker">06 · TARGET MISSION &amp; COMPONENT EVIDENCE</p>
+        <h2 id="s6-title">단 1바이트의 차이가,<br><span class="accent">전체 궤도 해석을 무효화한다.</span></h2>
         <p class="lead">LEO SSO 550 km 궤도 조건과 COTS SRAM 부품을 정의하고, 제조사·로트 번호 기반으로 방사선 시험 증거의 일치성을 검증합니다.</p>
         <div class="spec-grid">
           <article class="panel-flat"><span class="panel-tag">01 · TARGET MISSION PROFILE</span><div class="panel-title">LEO SSO 550 km</div><table class="spec-table"><tr><td>궤도 형태 (Orbit)</td><td>태양동기궤도 (SSO)</td></tr><tr><td>운용 고도 (Altitude)</td><td>550 km</td></tr><tr><td>궤도 경사각 (Inc.)</td><td>97.6°</td></tr><tr><td>임무 수명 (Duration)</td><td>1년 (365일)</td></tr></table><div class="source-line">※ 궤도 고도·경사각 파라미터가 다음 차폐 해석으로 전달됨</div></article>
-          <article class="panel-flat"><span class="panel-tag">02 · TARGET COMPONENT BOM</span><div class="panel-title">COTS SRAM (EX-100)</div><table class="spec-table"><tr><td>제조사 (Vendor)</td><td>COTS Semiconductor</td></tr><tr><td>부품 식별 번호</td><td>EX-100-SRAM-64M</td></tr><tr><td>제조 공정 노드</td><td>28 nm CMOS</td></tr><tr><td>생산 로트 (Lot ID)</td><td>LOT-2024-Q3-0881</td></tr></table><div class="context-strip"><span>✓ COTS 채택 이점</span><span>⚠ TID·SEL 증거 필요</span></div></article>
+          <article class="panel-flat"><span class="panel-tag">02 · TARGET COMPONENT BOM</span><div class="panel-title">COTS SPI SRAM (23LC1024)</div><table class="spec-table"><tr><td>제조사 (Vendor)</td><td>Microchip Technology</td></tr><tr><td>승인 검토 부품번호</td><td>23LC1024-I/SN</td></tr><tr><td>실제 우주 사용 역할</td><td>CHIMERA 방사선 실험용 SRAM</td></tr><tr><td>남은 identity 공백</td><td>비행 suffix·lot·die revision 미공개</td></tr></table><div class="context-strip"><span>✓ 현재 양산 COTS</span><span>⚠ 비행 적합성은 HOLD</span></div></article>
         </div>
         <div class="glossary-bar"><span><b>SSO</b> 태양동기궤도</span><span><b>COTS</b> 우주 전용이 아닌 상용 기성 부품</span><span><b>Lot ID</b> 동일 제조 공정 배치의 생산 로트 식별 번호</span></div>
         <div class="source-line">※ 데이터 규격: JSON Schema Draft 2020-12 · IETF RFC 8785 (JCS) · SYNTHETIC DEMO</div>
       </div>
     </section>
 
-    <section class="slide" data-title="환경·차폐" aria-labelledby="s6-title">
+    <section class="slide" data-title="범위·신뢰성" aria-labelledby="s7-title">
       <div class="slide-inner">
-        <p class="kicker">06 · DETERMINISTIC SHIELDING &amp; TID ASSURANCE</p>
-        <h2 id="s6-title">두께를 고르면, 엔진이 검증한<br><span class="accent">결정론적 방사선 해석만 실행한다.</span></h2>
-        <p class="lead">임의의 수학적 외삽(보간)을 배제하고, 사전 검증된 알루미늄 차폐 모델 범위 내에서만 총 이온화 선량(TID)을 결정론적으로 산출합니다.</p>
-        <div class="context-strip"><span>기준 궤도: LEO SSO 550 km (1년 운용)</span><span>등록된 합성 이산 table</span></div>
-        <div class="segmented" id="shield-controls" role="group" aria-label="차폐 시나리오 선택"><button type="button" data-shield="1">1 mm Al</button><button type="button" data-shield="2">2 mm Al</button><button type="button" data-shield="4" class="selected">4 mm Al</button><button type="button" data-shield="5">5 mm Al · 범위 밖</button></div>
-        <div class="metric-stage">
-          <article class="card big-metric" id="tid-card"><p class="card-label">01 · SHIELDED TID OUTPUT · SYNTHETIC</p><div><span class="metric-number" id="tid-value">3.5</span><span class="metric-unit" id="tid-unit">krad(Si)</span></div><p class="metric-note" id="tid-note">요구 검증 선량 7.0 krad(Si) = 차폐 후 TID 3.5 × RDM 2.0</p></article>
-          <article class="card"><p class="card-label">02 · DETERMINISTIC SCOPE GUARD</p><h3 id="scope-status">VALID</h3><ul class="compact-list"><li>이산 검증 범위: 1 / 2 / 3 / 4 mm Al</li><li>5 mm 등 미등록 두께: 외삽·보간 없이 HOLD</li><li>동일 입력: 동일한 합성 결과</li></ul><p class="micro" id="scope-detail">run sim-ddf29f8ab807196d · model v1.0.0</p></article>
-        </div>
-        <div class="glossary-bar"><span><b>TID</b> 누적 총 이온화 선량</span><span><b>RDM</b> 방사선 설계 안전 마진 계수</span><span><b>krad</b> 방사선 흡수선량 단위</span></div>
-        <div class="source-line">※ 합성 고정 table · 실제 SPENVIS environment contract 및 과학 교차검산 전 · HOLD</div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="부품·완화" aria-labelledby="s7-title">
-      <div class="slide-inner">
-        <p class="kicker">07 · PARTS EVIDENCE &amp; MITIGATION ANALYSIS</p>
-        <h2 id="s7-title">ECC 완화로 오류를 줄여도,<br><span class="warn">시험 증거 없는 신뢰성 보증은 없다.</span></h2>
-        <p class="lead">SEU 잔여 오류를 줄이는 합성 비교가 있어도, 소자를 영구 파괴할 수 있는 SEL 시험 성적서가 없으면 최종 보증 판단을 HOLD로 격리합니다.</p>
-        <div class="parts-mitigation">
-          <article class="panel-flat"><span class="panel-tag">01 · PART EVIDENCE VERIFICATION</span><div class="panel-title">부품 방사선 시험 증거 대조 · EX-100</div><div class="event-row"><b>TID</b><span>내선량 한계 25 krad(Si) · 합성 fixture</span><span class="state synthetic-ok">SYNTHETIC</span></div><div class="event-row"><b>SEU</b><span>단면적 1×10⁻⁴ cm²/device · 합성 fixture</span><span class="state synthetic-ok">SYNTHETIC</span></div><div class="event-row"><b>SEL</b><span>실제 래치업 시험 성적서 결측</span><span class="state missing">0건 · HOLD</span></div><div class="source-line">※ 실제 TID·SEU·SEL 원문·조건·권리·적용성 검토 전</div></article>
-          <article class="panel-flat"><span class="panel-tag">02 · SEU MITIGATION MODEL · 2 mm Al FIXED</span><div class="panel-title">SEU 소프트웨어 완화 시뮬레이션</div><div class="segmented" id="ecc-controls" role="group" aria-label="ECC 시나리오 선택"><button type="button" data-ecc="off" class="selected">ECC OFF</button><button type="button" data-ecc="on">ECC ON</button></div><div class="compare"><div class="compare-card"><p class="card-label">Raw Incident</p><div class="value" id="raw-value">—</div></div><div class="arrow">→</div><div class="compare-card"><p class="card-label">Residual SEU</p><div class="value" id="residual-value">—</div><div class="bar"><i id="residual-bar" style="width:0"></i></div></div></div><p class="micro" id="ecc-run">Production MVP Core 결과 확인 전 · DATA_UNAVAILABLE · HOLD</p></article>
-        </div>
-        <div class="glossary-bar"><span><b>SEU</b> 일시적 비트 반전 오류</span><span><b>SEL</b> 소자에 손상을 줄 수 있는 래치업</span><span><b>ECC</b> 오류 검출 및 정정 부호</span></div>
-        <div class="source-line">※ 합성 완화 비교 · 실제 ECC 성능 또는 부품 적합성 보증 아님</div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="범위·신뢰성" aria-labelledby="s8-title">
-      <div class="slide-inner">
-        <p class="kicker">08 · SCOPE &amp; RELIABILITY</p>
-        <h2 id="s8-title">SPECTRA가 지원하는 범위와,<br><span class="accent">지원하지 않는 범위를 함께 보여준다.</span></h2>
+        <p class="kicker">07 · SCOPE &amp; RELIABILITY</p>
+        <h2 id="s7-title">SPECTRA가 지원하는 범위와,<br><span class="accent">지원하지 않는 범위를 함께 보여준다.</span></h2>
         <div class="identity-grid">
           <article class="identity-box is-box"><span class="identity-tag is">지원하는 범위</span><ul><li><strong>방사선 근거 체인 &amp; 감사:</strong> 궤도 환경·부품 시험 성적서·완화 가정을 추적 가능한 증거 패킷으로 결합</li><li><strong>Fail-Closed 판단:</strong> 근거가 0건이거나 모델 지원 범위 밖이면 HOLD로 판단 보류</li><li><strong>결정론적 Multi-Agent 실행:</strong> 환경·부품·판정 역할이 데이터 무결성을 독립 대조</li></ul></article>
           <article class="identity-box isnot-box"><span class="identity-tag isnot">지원하지 않는 범위</span><ul><li><strong>임무 적합성 자동 인증 도구가 아님:</strong> AI가 부품 적합성을 임의로 보증하거나 단독 승인하지 않음</li><li><strong>생성형 AI 추측에 의존하지 않음:</strong> 물리 규칙과 불변 데이터 검증 경로를 사용</li><li><strong>가속기 빔 시험의 대체가 아님:</strong> 시험 성적서 없이 숫자를 지어내지 않음</li></ul></article>
@@ -442,25 +436,10 @@
       </div>
     </section>
 
-    <section class="slide" data-title="구현 도구" aria-labelledby="s9-title">
+    <section class="slide" data-title="GCP Multi-Agent" aria-labelledby="s8-title">
       <div class="slide-inner">
-        <p class="kicker">09 · IMPLEMENTATION TOOLS &amp; TECH STACK</p>
-        <h2 id="s9-title">이 원칙을 실현하기 위해,<br><span class="accent">4개 계층의 핵심 구현 도구를 구축했다.</span></h2>
-        <div class="tech-stack-grid">
-          <article class="tech-stack-card"><span class="tech-layer-tag l1">Layer 01 · Physics Core</span><div class="tech-layer-title">결정론적 방사선 물리 엔진</div><div class="tech-chips"><span class="tech-chip">Python 3.11</span><span class="tech-chip">NumPy</span><span class="tech-chip">SciPy</span></div><ul><li>궤도·차폐 결합</li><li>단일사건(SEE) 적분</li><li>지원 범위 밖 외삽 거부</li></ul></article>
-          <article class="tech-stack-card"><span class="tech-layer-tag l2">Layer 02 · Data Rules &amp; Hash</span><div class="tech-layer-title">불변 데이터 규칙 &amp; 증거 체인</div><div class="tech-chips"><span class="tech-chip">JSON Schema</span><span class="tech-chip">RFC 8785 JCS</span><span class="tech-chip">SHA-256</span></div><ul><li>EvidencePacket 결속</li><li>정규화 직렬화</li><li>1바이트 변조 감지</li></ul></article>
-          <article class="tech-stack-card"><span class="tech-layer-tag l3">Layer 03 · GCP Serverless</span><div class="tech-layer-title">최소권한 멀티 에이전트 인프라</div><div class="tech-chips"><span class="tech-chip">GCP Workflows</span><span class="tech-chip">Cloud Run × 3</span><span class="tech-chip">Cloud Storage</span></div><ul><li>3개 독립 Agent</li><li>상태 격리·오류 트랩</li><li>create-only 결과 저장</li></ul></article>
-          <article class="tech-stack-card"><span class="tech-layer-tag l4">Layer 04 · Assurance Evals</span><div class="tech-layer-title">적대적 공격 검증 &amp; 신뢰성 평가</div><div class="tech-chips"><span class="tech-chip">PyTest</span><span class="tech-chip">E2E Runner</span><span class="tech-chip">Parity Verify</span></div><ul><li>결측·위조 공격 평가</li><li>False PASS 추적</li><li>로컬·클라우드 결과 대조</li></ul></article>
-        </div>
-        <div class="glossary-bar"><span><b>RFC 8785 (JCS)</b> JSON 키·표현을 표준화하는 직렬화 규격</span><span><b>False PASS</b> 결측·위조 위험을 통과로 오판하는 오류</span><span><b>Parity</b> 서로 다른 실행 경로의 결과 일치성</span></div>
-        <div class="source-line">※ 구현·합성 회귀 범위 · 실제 과학 정확성과 방사선 assurance 전체를 뜻하지 않음</div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="GCP Multi-Agent" aria-labelledby="s10-title">
-      <div class="slide-inner">
-        <p class="kicker">10 · MULTI-AGENT ON GCP &amp; FAIL-CLOSED PIPELINE</p>
-        <h2 id="s10-title">세 Agent가 서로 다른 증거를 검증하고,<br><span class="accent">오류는 발견된 경계에서 멈춘다.</span></h2>
+        <p class="kicker">08 · MULTI-AGENT ON GCP &amp; FAIL-CLOSED PIPELINE</p>
+        <h2 id="s8-title">세 Agent가 서로 다른 증거를 검증하고,<br><span class="accent">오류는 발견된 경계에서 멈춘다.</span></h2>
         <div class="gcp-section-label"><strong>역할 분담</strong> · 검증 구조</div>
         <div class="gcp-flow" id="workflow-flowchart" aria-label="GCP Multi-Agent Workflow 6단계">
           <div class="gcp-node state-valid" id="node-01"><div class="gcp-node-header"><span>01 STORAGE</span><span class="node-pill">OK</span></div><b>샘플 입력</b></div>
@@ -486,10 +465,10 @@
       </div>
     </section>
 
-    <section class="slide" data-title="향후 로드맵" aria-labelledby="s11-title">
+    <section class="slide" data-title="향후 로드맵" aria-labelledby="s9-title">
       <div class="slide-inner">
-        <p class="kicker">11 · ROADMAP &amp; FUTURE EXPANSION TOOLS</p>
-        <h2 id="s11-title">검증된 기반 위에서,<br><span class="accent">실제 데이터와 AI 파이프라인으로 확장한다.</span></h2>
+        <p class="kicker">09 · ROADMAP &amp; FUTURE EXPANSION TOOLS</p>
+        <h2 id="s9-title">검증된 기반 위에서,<br><span class="accent">실제 데이터와 AI 파이프라인으로 확장한다.</span></h2>
         <div class="roadmap-grid">
           <article class="roadmap-card"><span class="roadmap-phase-tag p1">Phase 01 · 단기 확장</span><div class="roadmap-title">공인 우주환경 DB 및 상용 부품 성적서 연동</div><div class="roadmap-tools"><span class="roadmap-tool-badge">ESA SPENVIS 연동</span><span class="roadmap-tool-badge">NASA 공인 DB</span><span class="roadmap-tool-badge">COTS 성적서 라이브러리</span></div><ul><li>우주 환경 연동</li><li>부품 증거 라이브러리</li><li>국제 표준 교차검산</li></ul></article>
           <article class="roadmap-card"><span class="roadmap-phase-tag p2">Phase 02 · 중기 확장</span><div class="roadmap-title">AI 성적서 자동 분석 &amp; 엔지니어 검토 체계</div><div class="roadmap-tools"><span class="roadmap-tool-badge">Document AI</span><span class="roadmap-tool-badge">Gemini 멀티모달</span><span class="roadmap-tool-badge">Human-in-the-Loop</span></div><ul><li>PDF 성적서 자동 분석</li><li>AI 추출값 후보 격리</li><li>생산 로트 추적</li></ul></article>
@@ -504,7 +483,7 @@
             <div class="pilot-measure"><b>보완 return rate</b><small>PILOT MEASURE · UNVALIDATED</small></div>
           </div>
         </div>
-        <div class="source-line">※ 실제 연동·권리·과학 교차검산·일정 및 파일럿 KPI는 향후 검증 대상 · 현재 값 UNSET <a class="roadmap-lab-link" href="roadmap-lab.html" target="_blank" rel="noopener">제품 검토 시연 열기 ↗</a></div>
+        <div class="source-line">※ 실제 연동·권리·과학 교차검산·일정 및 파일럿 KPI는 향후 검증 대상 · 현재 값 UNSET <a class="roadmap-lab-link" href="http://127.0.0.1:8765/demo/evidence-console.html" target="spectra-demo">통합 제품 시연 열기 ↗</a></div>
       </div>
     </section>
 
@@ -702,7 +681,7 @@
           {id:'node-05', state:'state-valid', pill:'VALID', label:'정책 독립대조'},
           {id:'node-06', state:'state-valid', pill:'SAVED', label:'결과·로그 기록'}
         ],
-        input: `<b>Mission:</b> LEO 550km · 97.6°<br><b>BOM:</b> EX-100 Memory × 2<br><b>Hash:</b> <span style="font-size:10px;color:var(--dim)">sha256:11bf821d...</span>`,
+        input: `<b>Mission:</b> LEO 550km · 97.6°<br><b>BOM review target:</b> 23LC1024-I/SN · COTS SPI SRAM<br><b>Hash:</b> <span style="font-size:10px;color:var(--dim)">sha256:11bf821d...</span>`,
         agents: {
           mission: {badge:'valid', text:'VALID'},
           parts: {badge:'valid', text:'VALID'},
@@ -908,7 +887,8 @@
     });
 
     // Shielding Scenario Toggle
-    document.getElementById('shield-controls').addEventListener('click',e=>{
+    const shieldControls=document.getElementById('shield-controls');
+    if(shieldControls)shieldControls.addEventListener('click',e=>{
       const b=e.target.closest('button[data-shield]');if(!b)return;
       const v=snapshots.shield[b.dataset.shield],card=document.getElementById('tid-card');
       [...b.parentElement.children].forEach(x=>x.classList.toggle('selected',x===b));
@@ -922,6 +902,7 @@
 
     // ECC Scenario Toggle
     function renderCoreEcc(key='off'){
+      if(!document.getElementById('raw-value'))return;
       const v=coreEcc&&coreEcc[key];
       document.getElementById('raw-value').textContent=coreEcc?String(coreEcc.raw):'—';
       document.getElementById('residual-value').textContent=v?v.residual:'—';
@@ -929,14 +910,15 @@
       document.getElementById('ecc-run').textContent=v?`ECC ${key.toUpperCase()} · Production MVP Core ${v.run} · 실제 완화 효과가 아님 · assurance HOLD`:'Production MVP Core 결과 사용 불가 · DATA_UNAVAILABLE · assurance HOLD';
     }
 
-    document.getElementById('ecc-controls').addEventListener('click',e=>{
+    const eccControls=document.getElementById('ecc-controls');
+    if(eccControls)eccControls.addEventListener('click',e=>{
       const b=e.target.closest('button[data-ecc]');if(!b)return;
       const k=b.dataset.ecc;
       [...b.parentElement.children].forEach(x=>x.classList.toggle('selected',x===b));
       renderCoreEcc(k);
     });
 
-    renderCoreEcc('off');
+    if(eccControls)renderCoreEcc('off');
     renderGcpSnapshot();
     applyScenario('normal');
     show(0);

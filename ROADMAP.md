@@ -23,12 +23,12 @@
 | 1 | 프로젝트 계약과 기준선 | 10 Contracts & Schema | `10` | 00 Control Tower | 없음 | **IN_PROGRESS** — 계약·스키마는 통합, 팀 범위 검토 등 잔여 |
 | 2 | 재현 가능한 합성 Vertical Slice | 20 Simulation Core | `20` | 10 Contracts, 00 Control Tower | 검증된 Stage 1 데이터 계약 | **COMPLETE** — 결정론적 합성 기준선과 Exit Gate 통합; 제품 UI는 Stage 8 범위 |
 | 3 | 실제 환경·TID 모델 경로 | 30 Environment Model | `30` | 10 Contracts, 20 Simulation, 60 Assurance | 안정된 합성 입출력 경로 | **IN_PROGRESS / GATE VERIFIED** — intake·issuance 공격 65 tests와 readiness receipt는 통합; provider job ref·rights·승인 raw manifest·과학 교차검산이 없어 실제 contract 0건 |
-| 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | **IN_PROGRESS / TEST GATE VERIFIED** — exact-part test-only gate 7 tests와 readiness receipt는 통합; 승인 BOM·rights·임무 적용성·필요 SEE coverage가 없어 실제 packet 0건 |
+| 4 | 실제 부품 TID·SEE 증거 경로 | 40 Parts Evidence | `40` | 10 Contracts, 60 Assurance | EvidencePacket 계약 | **IN_PROGRESS / REFERENCE GATE VERIFIED** — Microchip `23LC1024-I/SN` catalog target과 quantity 분리를 고정하고 published comparison을 `NOT_COMPARABLE / HOLD`로 실행 검증; rights·exact flight/test article·임무 적용성·필요 TID/SEE coverage가 없어 실제 packet 0건 |
 | 5 | 제한된 설계 가정·판정 엔진 | 50 Mitigation & Policy | `50` | 20 Simulation, 40 Parts, 60 Assurance | 환경·부품 증거 인터페이스 | **IN_PROGRESS** — 차폐·ECC·판정 기준의 합성 Decision Engine 검증; 실제 ECC 효과·실제 evidence 연결 미구현. WATCHDOG·TMR·SEL runtime은 실험 보존 |
 | 6 | 독립 보증·평가 기준선 | 60 Assurance & Evals | `60` | 20~50 구현 Workstream | 결정론적 계산·증거·판정 경로 | **IN_PROGRESS** — Core 공격 29개 False PASS 0 기준선 검증, runtime 18개는 별도 experimental profile; 실제 GCP D02는 `NOT_EVALUATED` |
 | 7 | Multi-Agent·GCP 실행 경로 | 70 Platform & GCP | `70` | 30~60 전문 Workstream | 안정된 Core API·감사 계약 | **IN_PROGRESS / H05 VERIFIED / COMPETITION REQUIRED** — 교육용 GCP에 production Core-bound Cloud Run Agent 3개·Workflows·Storage·IAM·Logging 합성 E2E를 배포했고 body-hash·endpoint 공격을 차단했다. Workstream 60의 고정 revision `ASR-D02` 독립 공격은 아직 `NOT_EVALUATED`다. |
-| 8 | 제품·대시보드 통합 | 80 Product & Dashboard | `80` | 60 Assurance, 70 Platform | 검증된 통합 API와 EvidencePacket | `IN_PROGRESS / LOCAL REVIEW VERIFIED` — 3단계 Evidence Review, 6개 gate, human-readable/raw console과 4쪽 합성 비정형 PDF 고정 정답 대조 검증; 실제 contract·승인 원문 locator·live connector/API·CAD 계산 미통합 |
-| 9 | 비즈니스·발표·최종 시연 | 90 Business & Presentation | `90` | 60 Assurance, 80 Product | Stage 8 제품 기준선 | `IN_PROGRESS / DECK VERIFIED` — `demo/index.html` 13장 localhost 검증, 근거 기반 문제·비즈니스 영향과 Trust & Integrity 경계 반영; 사람 7분 리허설과 사용자·비즈니스 측정 미완료 |
+| 8 | 제품·대시보드 통합 | 80 Product & Dashboard | `80` | 60 Assurance, 70 Platform | 검증된 통합 API와 EvidencePacket | `IN_PROGRESS / LOCAL REVIEW VERIFIED` — 단일 Console에서 local PDF/TXT·저장 GCP 로그·여러 문서 표를 전환하고, 4쪽 합성 PDF 후보 7개와 고정 합성 3종의 fail-closed 결과를 검증; 실제 contract·승인 원문 locator·live connector/API·CAD 계산 미통합 |
+| 9 | 비즈니스·발표·최종 시연 | 90 Business & Presentation | `90` | 60 Assurance, 80 Product | Stage 8 제품 기준선 | `IN_PROGRESS / DECK VERIFIED` — `demo/index.html` 11장과 동일 제품 탭 재사용을 localhost 1280×720에서 검증하고 근거 기반 문제·비즈니스 영향과 Trust & Integrity 경계를 반영; 사람 7분 리허설과 사용자·비즈니스 측정 미완료 |
 
 `주관 Workstream`은 해당 Stage의 완료 증거를 만드는 책임 영역이다. `주요 협업 Workstream`은 입력이나 독립 검증을 제공하지만 그 Stage의 소유 채팅을 대신하지 않는다.
 
@@ -361,7 +361,7 @@ BOM·임무 입력
 ## 현재 우선순위
 
 1. **Stage 3:** 확보된 SPENVIS bundle에 provider job reference, action별 권리, 승인 raw manifest와 과학적 교차검산을 연결해 실제 environment contract 1개를 발행할 수 있는지 판정한다.
-2. **Stage 4:** 승인 BOM의 exact orderable part 1개를 고정하고 권리 확인 원문, 시험 조건·임무 적용성, TID와 필요한 파괴성 SEE coverage를 연결한다.
+2. **Stage 4:** 고정된 COTS 승인 검토 대상 `23LC1024-I/SN`에 권리 확인 원문, ESA 비행·시험 article의 exact suffix/lot/die identity, 시험 조건·임무 적용성, TID와 필요한 SEE coverage를 연결한다.
 3. **Stage 6·7:** 사용자 승인과 고정 revision 범위를 확보한 뒤 실제 GCP `ASR-D02`를 수행한다. 실행 전까지 상태는 `NOT_EVALUATED`다.
 4. **Stage 8:** 실제 environment·part contract가 생기면 현재 generated 합성 payload와 분리된 실제 Evidence-to-Decision 입력 경로를 Product에 연결한다.
 5. **Stage 9:** 실제 사용자 1명으로 5분 실행·판정 이유·다음 행동 탐색을 측정하고, 검증되지 않은 COTS·과학·비용 주장은 삭제하거나 출처·범위와 함께 제한한다.

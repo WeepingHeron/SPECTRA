@@ -83,6 +83,33 @@ class SyntheticVerticalSliceTests(unittest.TestCase):
         self.assert_packet_contract(short)
         self.assert_packet_contract(long)
 
+    def test_analysis_device_count_scales_see_but_not_tid(self):
+        one = run_simulation(
+            self.packet, self.model, SimulationOptions(analysis_device_count=1)
+        )
+        three = run_simulation(
+            self.packet, self.model, SimulationOptions(analysis_device_count=3)
+        )
+        self.assertEqual(
+            one["metrics"]["shielded_tid"]["value"],
+            three["metrics"]["shielded_tid"]["value"],
+        )
+        self.assertAlmostEqual(
+            3 * one["metrics"]["raw_seu"]["value"],
+            three["metrics"]["raw_seu"]["value"],
+        )
+
+    def test_analysis_device_count_rejects_missing_semantics(self):
+        for value in (0, -1, 1.5, True):
+            with self.subTest(value=value):
+                result = run_simulation(
+                    self.packet,
+                    self.model,
+                    SimulationOptions(analysis_device_count=value),
+                )
+                self.assertEqual("INVALID_INPUT", result["processing_status"])
+                self.assertEqual("HOLD", result["assurance_decision"])
+
     def test_ecc_reduces_residual_without_changing_raw_events(self):
         enabled = run_simulation(self.packet, self.model, SimulationOptions(ecc_enabled=True))
         disabled = run_simulation(self.packet, self.model, SimulationOptions(ecc_enabled=False))

@@ -13,15 +13,15 @@ SPECTRA는 위성 임무 조건, BOM, 방사선 환경 모델과 부품 시험 �
 - **검증된 합성 Core:** TID·SEE, 차폐·ECC·판정 기준, EvidencePacket·Change Impact, Core 공격 29회에서 False PASS 0
 - **실험 범위 회귀:** WATCHDOG·TMR·SEL runtime 공격 18회에서 False PASS 0 — 현재 Core 판단·주 발표와 분리
 - **검증된 Competition 기반:** 교육용 GCP의 private Cloud Run Agent 3개, Workflows, Storage, IAM, Logging 합성 E2E와 입력 무결성 공격 차단
-- **검증된 표현 계층:** generated 결과를 소비하는 Product UI, fail-closed 결과 전달 무결성, 13장 발표 deck의 localhost 화면·상호작용
+- **검증된 표현 계층:** generated 결과를 소비하는 Product UI, fail-closed 결과 전달 무결성, 단일 Console 3모드와 11장 발표 deck의 localhost 화면·상호작용
 - **검증된 readiness 계층:** 실제 발행 전 상태를 versioned receipt로 전달하고, Environment·Part의 낙관적 승격·오염 입력을 UI까지 `HOLD`로 차단하는 Evidence Review Workspace
 - **검증된 로컬 Evidence Review:** `Roadmap Lab`의 3단계 흐름에서 합성 정상·변조·오부품 입력과 실제 SPENVIS·TI 후보의 무결성·권리·대상·적용 범위를 순서대로 검사하고, 차폐·ECC·부품 변경 시 필요한 이전 gate를 다시 연다.
-- **미완료 실제 근거:** 승인된 환경 contract, 승인 BOM과 exact-part 시험 원문, 임무 적용성·파괴성 SEE coverage, 과학적 교차검산
+- **미완료 실제 근거:** 승인된 환경 contract, 고정된 BOM 검토 대상과 연결할 exact-part 시험 원문·권리·test-article identity, 임무 적용성·파괴성 SEE coverage, 과학적 교차검산
 - **미평가 배포 공격:** 실제 GCP `ASR-D02`
 
 GCP 실행 성공과 합성 회귀 통과는 실제 환경·부품 증거 또는 방사선 적합성의 증명이 아니다. 누락·손상·범위 밖·무결성 실패는 `DATA_UNAVAILABLE`, `NOT_EVALUATED` 또는 `HOLD`로 닫는다.
 
-Stage 3에는 Git 밖 실제 SPENVIS 원본 bundle과 parser 후보가, Stage 4에는 exact-part 후보 조사가 존재한다. 그러나 provider reference·권리·승인 raw manifest·승인 BOM·원문 적용성·필요 SEE 증거가 부족해 둘 다 제품 판단 입력으로 발행되지 않았고 `IN_PROGRESS/HOLD`다.
+Stage 3에는 Git 밖 실제 SPENVIS 원본 bundle과 parser 후보가 있다. Stage 4는 현재 양산 COTS SRAM `Microchip 23LC1024-I/SN`을 catalog-level 승인 검토 대상으로 고정하고 ESA GOMX-4B/CHIMERA의 base-family 실험 탑재를 확인했지만, 비행 exact suffix·lot/die identity, 권리·승인 raw manifest·원문 적용성·필요 TID/SEE 증거가 부족하다. 둘 다 아직 제품 판단 입력으로 발행되지 않았고 `IN_PROGRESS/HOLD`다.
 
 ## 빠른 시작
 

@@ -903,29 +903,38 @@ process.stdout.write(JSON.stringify(observed));
     def test_presentation_feedback_structure_and_scope_contract(self) -> None:
         presentation = (ROOT / "demo/index.html").read_text(encoding="utf-8")
         for inserted_copy in (
-            '03 · COTS ADOPTION &amp; RADIATION UNCERTAINTY',
+            '01 · WHY RADIATION SHIELDING',
+            '알루미늄 차폐는 누적선량을 줄인다.',
+            '우주 방사선',
+            '알루미늄 차폐',
+            '전자부품',
+            '05 · COTS ADOPTION &amp; RADIATION UNCERTAINTY',
             '우주급 부품 (Rad-Hard)',
-            '상용 기성 부품 (COTS · EX-100)',
+            '상용 기성 부품 (COTS · Microchip 23LC1024)',
             'Commercial availability',
-            'Evidence gap',
+            'Space use',
             'Mission-specific verification',
             '정성적 검토 구조 · 외부 가격·납기·성능 수치를 사용하지 않음',
             'NOT_EVALUATED / HOLD',
-            '04 · WHY SHIELDING MATTERS',
-            '왜 방사선을 차폐하고,<br><span class="accent">1·4·5 mm는 무엇을 의미하는가.',
-            '05 · TARGET MISSION &amp; COMPONENT EVIDENCE',
+            '06 · TARGET MISSION &amp; COMPONENT EVIDENCE',
             'LEO SSO 550 km 궤도 조건과 COTS SRAM 부품을 정의하고',
         ):
             self.assertIn(inserted_copy, presentation)
-        cots_at = presentation.index('03 · COTS ADOPTION')
-        primer_at = presentation.index('04 · WHY SHIELDING')
-        mission_at = presentation.index('05 · TARGET MISSION')
-        self.assertLess(cots_at, primer_at)
+        primer_at = presentation.index('01 · WHY RADIATION SHIELDING')
+        problem_at = presentation.index('02 · THE BROKEN EVIDENCE CHAIN')
+        architecture_at = presentation.index('<section class="slide" data-title="전체 흐름"')
+        cots_at = presentation.index('05 · COTS ADOPTION')
+        mission_at = presentation.index('06 · TARGET MISSION')
+        self.assertLess(primer_at, problem_at)
+        self.assertLess(problem_at, architecture_at)
+        self.assertLess(architecture_at, cots_at)
         self.assertLess(primer_at, mission_at)
         self.assertIn('class="evidence-ring"', presentation)
         self.assertIn('class="glossary-bar"', presentation)
         self.assertIn('기계 검증형 데이터 규칙', presentation)
-        self.assertIn('SEU MITIGATION MODEL · 2 mm Al FIXED', presentation)
+        self.assertNotIn('SEU MITIGATION MODEL · 2 mm Al FIXED', presentation)
+        self.assertNotIn('07 · DETERMINISTIC SHIELDING &amp; TID ASSURANCE', presentation)
+        self.assertNotIn('08 · PARTS EVIDENCE &amp; MITIGATION ANALYSIS', presentation)
         self.assertNotIn('시뮬레이션의 계산된 낙관주의보다', presentation)
         self.assertNotIn('시험 성적서로 검증된 확실한 판단', presentation)
         self.assertNotIn('비행 승인', presentation)
@@ -953,9 +962,13 @@ process.stdout.write(JSON.stringify(observed));
             "100 krad", "5~25 krad", "$1,000", "$1k",
         ):
             self.assertNotIn(unsupported_comparison, cots_slide)
-        self.assertEqual(len(re.findall(r'<section class="slide(?: [^"]*)?"', presentation)), 13)
-        self.assertIn('href="roadmap-lab.html"', presentation)
-        self.assertIn('제품 검토 시연 열기 ↗', presentation)
+        self.assertEqual(len(re.findall(r'<section class="slide(?: [^"]*)?"', presentation)), 11)
+        self.assertIn(
+            'href="http://127.0.0.1:8765/demo/evidence-console.html"',
+            presentation,
+        )
+        self.assertIn('target="spectra-demo"', presentation)
+        self.assertIn('통합 제품 시연 열기 ↗', presentation)
         self.assertIn("String(slides.length - 2).padStart(2,'0')", presentation)
         self.assertIn("@keyframes slide-enter", presentation)
         self.assertIn("animation:slide-enter", presentation)

@@ -1,0 +1,54 @@
+{
+  "contract_version": "SYNTHETIC_BATCH_MANIFEST_1.0.0",
+  "source_classification": "SYNTHETIC_CONTROL",
+  "expected_part": "5962L1420901VXC",
+  "manufacturer": "Texas Instruments",
+  "samples": [
+    {
+      "id": "report-candidate",
+      "label": "4쪽 비정형 시험 보고서",
+      "path": "/output/pdf/spectra_synthetic_unstructured_radiation_report.pdf",
+      "filename": "radiation-report-candidate.pdf",
+      "rights": true,
+      "expected_processing_status": "VALID",
+      "expected_blocker": "APPROVED_BOM_TARGET_MISSING",
+      "expected_candidate_values": [
+        "5962L1420901VXC",
+        "Texas Instruments",
+        "TID",
+        "SEU",
+        "SEL",
+        "SEB",
+        "SEGR"
+      ]
+    },
+    {
+      "id": "prompt-injection",
+      "label": "지시문 공격이 섞인 메모",
+      "path": "/demo/data/batch-synthetic-injection.txt",
+      "filename": "prompt-injection-control.txt",
+      "rights": true,
+      "expected_processing_status": "CONTENT_REJECTED",
+      "expected_blocker": "PROMPT_INJECTION_PATTERN_DETECTED",
+      "expected_candidate_values": []
+    },
+    {
+      "id": "rights-unresolved",
+      "label": "처리 권리가 미확인된 자료",
+      "path": "/demo/data/batch-synthetic-rights-unresolved.txt",
+      "filename": "rights-unresolved-control.txt",
+      "rights": false,
+      "expected_processing_status": "PROVENANCE_FAILURE",
+      "expected_blocker": "RIGHTS_DISPLAY_INTERNAL_UNRESOLVED",
+      "expected_candidate_values": []
+    }
+  ],
+  "expected_decision": "HOLD",
+  "comparison_scope": "FIXED_SYNTHETIC_SCENARIOS_ONLY",
+  "not_claimed": [
+    "REAL_DOCUMENT_ACCURACY",
+    "SCIENTIFIC_ACCURACY",
+    "DOCUMENT_AI_EXECUTION",
+    "RADIATION_ASSURANCE"
+  ]
+}

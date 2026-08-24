@@ -336,6 +336,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [x] 차폐·ECC·부품 변경에 따른 영향 gate 재검사
 - [x] 4쪽 합성 비정형 PDF의 고정 정답 7개와 parser source span 대조
 - [x] 로컬 실행 타임라인·GCP Agent 로그 표와 동일 응답 원본 JSONL 전환
+- [x] 단일 Console URL에서 local PDF/TXT·저장 GCP 로그·여러 문서 표 전환
 
 ### 제품 신뢰성
 
@@ -352,7 +353,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## Stage 9 — 비즈니스·발표·최종 시연
 
-> 2026-08-24 범위 정렬: 실제 발표 이력과 13장 deck의 시각·상호작용 검증은 존재한다. 다만 별도 시간 측정 리허설, 실제 인터뷰·pilot·가격·기준선은 각각 `NOT_MEASURED`, 0건 또는 `UNSET`이고 COTS·과학 주장의 출처·적용 범위도 미완료이므로 Stage 9 완료로 승격하지 않는다.
+> 2026-08-25 범위 정렬: 현재 11장 deck의 1280×720 시각·상호작용과 동일 제품 탭 재사용을 검증했다. 다만 별도 시간 측정 리허설, 실제 인터뷰·pilot·가격·기준선은 각각 `NOT_MEASURED`, 0건 또는 `UNSET`이고 COTS·과학 주장의 출처·적용 범위도 미완료이므로 Stage 9 완료로 승격하지 않는다.
 
 ### 비즈니스 검증
 
@@ -394,7 +395,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 ## 현재 다음 작업
 
 - [ ] SPENVIS provider reference·권리·승인 raw manifest·과학 교차검산을 갖춘 environment contract 1개
-- [ ] 승인 BOM exact-part 1개와 권리 확인 원문·임무 적용성·필요 SEE coverage 연결
+- [ ] COTS 승인 BOM 검토 대상 `23LC1024-I/SN` 고정 완료; ESA 비행 exact suffix·lot/die identity, 권리 확인 원문·임무 적용성·필요 TID/SEE coverage 연결 남음
 - [ ] 고정 revision 실제 GCP `ASR-D02` 수행 및 관찰 증거 검증
 - [ ] 실제 contract를 합성 fallback과 구분해 Product Evidence-to-Decision 경로에 연결
 - [ ] 사용자 1명의 5분 실행·판정 이유·다음 행동 탐색 측정

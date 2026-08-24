@@ -23,6 +23,7 @@ class SimulationOptions:
     ecc_enabled: bool = True
     maximum_residual_seu: float | None = None
     tid_design_factor: float | None = None
+    analysis_device_count: int = 2
 
 
 def canonical_bytes(value) -> bytes:
@@ -85,6 +86,12 @@ def options_errors(options: SimulationOptions) -> list[str]:
         return ["options must be a SimulationOptions instance"]
     if not isinstance(options.ecc_enabled, bool):
         return ["ecc_enabled must be boolean"]
+    if (
+        isinstance(options.analysis_device_count, bool)
+        or not isinstance(options.analysis_device_count, int)
+        or options.analysis_device_count < 1
+    ):
+        return ["analysis_device_count must be a positive integer"]
     errors = []
     for field in ("shielding_mm", "duration_value", "maximum_residual_seu", "tid_design_factor"):
         value = getattr(options, field)
@@ -303,7 +310,7 @@ def run_simulation(packet: dict, model: dict, options: SimulationOptions = Simul
         mitigation_factor = float(mitigation.get("effectiveness_factor", 1.0)) if options.ecc_enabled else 1.0
         see = calculate_see(
             environment["particle_flux"], evidence["cross_section"],
-            component["quantity"], mission["duration"], mitigation_factor,
+            options.analysis_device_count, mission["duration"], mitigation_factor,
             model["see_exposure_scale"],
         )
         tested_limit = tid_krad_si(evidence["tid_test_limit"]["value"], evidence["tid_test_limit"]["unit"])

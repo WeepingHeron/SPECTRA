@@ -82,7 +82,7 @@ NASA의 RHA 지침은 shielding을 TID/TNID, EDAC·scrubbing을 SEU, watchdog/re
 
 ### 5.3 부품 대체
 
-- 입력: old/new BOM identity, quantity, application conditions, 모든 event evidence/applicability, manufacturing-change state.
+- 입력: old/new BOM identity, 별도 분석 범위 장치 수, application conditions, 모든 event evidence/applicability, manufacturing-change state.
 - 출력: old/new evidence coverage와 각 계산을 별도 run으로 생성한 change impact. 완화 계수 출력 금지.
 - 계산: `re_evaluate(new_component, same_mission, same_policy)` 후 판정 차이를 비교한다.
 - 계산 불가: exact PN 또는 required process/die/lot, event evidence가 없으면 `REPLACEMENT_IDENTITY_UNRESOLVED`/`REPLACEMENT_EVIDENCE_MISSING`.

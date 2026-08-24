@@ -2,7 +2,45 @@
 
 ## 상태
 
-`VERIFIED — H31 Human-readable Console & Synthetic Unstructured PDF`
+`VERIFIED — H38 Consolidated Two-Tab Demo; actual evidence and assurance remain HOLD`
+
+## H38 Consolidated Two-Tab Demo — 2026-08-25
+
+- 발표 운영을 `Presentation + spectra-demo`, 총 2개 탭으로 축소했다. Slide 03·09의 제품 링크는 `http://127.0.0.1:8765/demo/evidence-console.html`과 named target `spectra-demo`를 공유한다.
+- Raw Console 안에 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표` 세 모드를 두고, Batch 결과표를 동일 URL의 내부 패널로 내장했다. 합성 PDF 원문 링크도 새 창을 열지 않는다. `Roadmap Lab`은 유지하지만 주 발표 링크에서 제거했다.
+- 사용자 환경의 8765에는 `/api/intake`가 없는 정적 Python server가 떠 있어 합성 3종이 빈 실패 행으로 끝나는 것을 재현했다. 해당 정적 server를 종료하고 `scripts/run_evidence_console.py --port 8765` 통합 server로 교체했다.
+- Batch는 `/api/intake` 실패를 더 이상 조용히 삼키지 않고, 통합 server 실행 명령을 인접 오류 메시지로 표시한다. `file://` 실행도 같은 안내로 fail-closed한다.
+- 교체 후 사용자 확인에서 기존 Local/GCP 두 탭은 원래부터 한 Console 안에 있었고, 별도 Batch 링크만으로는 실제 통합 화면이 아니라는 문제를 확인했다. H38에서 Batch를 Console의 세 번째 `여러 문서 표` 모드로 내장했다. 8765 실제 브라우저에서 URL이 `evidence-console.html`로 유지된 채 기존 terminal·summary가 숨겨지고 내장 결과표가 표시되는 것을 확인했으며, 합성 3종은 `documents 3 / candidates 7 / HOLD 3 / reference 3 / 3`, 3행, alert hidden으로 완료됐다.
+- UI 컨펌 뒤 Control Tower가 변경 범위 직접 테스트 `tests.product.test_evidence_batch`와 `tests.product.test_product_data_binding`을 실행했다. 첫 실행은 화면의 최신 열 제목과 맞지 않는 stale assertion 1건만 실패했고, 기대값을 실제 UI 계약에 맞춘 뒤 21 tests가 모두 통과했다.
+- 1280×720 실제 브라우저에서 Local 합성 PDF 13 events·후보 7개·최종 `HOLD`, GCP 저장 로그 13건·`SNAPSHOT ONLY · HOLD`, 여러 문서 표 `documents 3 / candidates 7 / HOLD 3 / reference 3 / 3`과 결과 3행을 독립 재현했다. 세 모드는 같은 `evidence-console.html` URL을 유지했고 Slide 03·09는 동일 `spectra-demo` 탭을 재사용했다.
+- 이 검증은 로컬 합성 Product 통합과 저장 snapshot 표시에 한정한다. 실제 문서 정확도·OCR·Document AI·Gemini·live GCP·radiation assurance는 계속 `NOT_EVALUATED / HOLD`다. Product 전체 157개와 저장소 로컬 runbook 회귀가 통과했으며 Git 통합은 아직 수행하지 않았다.
+
+## H37 Batch Evidence Provenance Table — 2026-08-25
+
+- `Roadmap Lab`은 H36 상태로 동결하고 주 발표 시연 동선을 `Raw Evidence Console → Batch Evidence Review`로 고정했다.
+- `demo/evidence-batch.html`의 단순 후보값 열을 `field · value · 원문 문자 위치` 카드로 바꾸고, 문서 열에 extraction engine과 PDF page count를 함께 표시한다.
+- 정상 합성 PDF는 주문형번·제조사·TID·SEU·SEL·SEB·SEGR 7개 후보와 각 source span을 표시한다. 지시문 공격과 권리 미확인 문서는 후보를 노출하지 않고 최초 차단 관문·자연어 이유·stable code를 표시한다.
+- 실제 사용자 파일은 reference가 없으므로 계속 `NOT_EVALUATED`이며 정확도·일치율을 생성하지 않는다. `3 / 3`은 고정 합성 control의 processing status·blocker·candidate set 대조에만 적용된다.
+- localhost 실제 브라우저에서 합성 3종, 후보 카드 7개, HOLD 3건, reference `3 / 3`, 원문 span과 pypdf 4쪽 표시, x/y overflow 0과 console 오류 0을 관찰했다.
+- 사용자 지시에 따라 정식 unit/attack test와 전체 회귀는 UI 컨펌 전까지 실행하지 않았다. 실제 문서 일반화·OCR·과학 정확성·actual evidence·radiation assurance는 계속 `NOT_EVALUATED / HOLD`다.
+- 상태 상한은 `READY_FOR_REVIEW`다.
+
+## H36 Local File to Receipt — 2026-08-25
+
+- `demo/roadmap-lab.html`의 임의 로컬 파일 선택 경로를 단순 hash 표시에서 `LOCAL_BUNDLE_BINDING_RECEIPT_1.0.0` 생성까지 확장했다.
+- 10 MB 이하 파일을 브라우저 메모리에서만 읽고 file SHA-256과 내부 canonical manifest SHA-256을 결속한다. 원문 bytes·로컬 절대경로·파일명·artifact identity·file/manifest hash는 다운로드 receipt에 포함하지 않는다.
+- 자동 draft의 action rights 8종은 모두 `UNRESOLVED`이고 외부 승인 anchor가 없으므로 `PROVENANCE_FAILURE / HOLD_NOT_ISSUED / NOT_FOR_DECISION / HOLD`다.
+- Step 01은 영수증 생성과 다운로드를 보여주고, Step 02는 원본 결속 통과 후 3번 `출처·권리`에서 멈춰 권리 manifest와 승인 anchor를 다음 행동으로 반환한다.
+- localhost 실제 브라우저에서 임의 TXT 1건의 영수증 생성, 3번 관문 차단, x/y overflow 0과 console warning/error 0을 관찰했다. 사용자 지시에 따라 정식 unit/attack test와 전체 회귀는 UI 컨펌 전까지 실행하지 않았다.
+- 실제 evidence ingest·권리 승인·provider 검증·과학적 적용성·assurance는 추가하지 않았다. 상태 상한은 `READY_FOR_REVIEW`다.
+
+## H32 Batch Evidence Table & Early Architecture Link — 2026-08-24
+
+- `demo/evidence-batch.html`은 기존 loopback `/api/intake`를 재사용해 PDF/TXT 여러 개를 순차 처리하고, 문서별 후보·최초 중단 위치·자연어 이유·stable code·최종 `HOLD`를 단일 표에 표시한다.
+- 고정 합성 3종은 정상 PDF의 승인 BOM 공백, 지시문 공격, 내부 표시 권리 미확인을 서로 다른 차단 경계로 재현한다. 세 scenario의 처리 상태·최초 blocker·exact candidate set이 고정 정답과 `3 / 3` 일치했다. 실제 사용자 파일에는 정답률을 표시하지 않는다.
+- Raw Evidence Console과 발표 Slide 03에서 batch 표로 직접 이동한다. 발표 흐름은 현재 구현 경계와 제품 링크를 유지하고 그림 아래의 미래 기술 rail만 제거했으며 Document AI·Gemini API 호출은 0건이다.
+- 변경 범위 직접 테스트 10개와 localhost 1280×720에서 합성 3종, 후보 7개, HOLD 3건, reference `3 / 3`, 가로 overflow 0을 확인했다. 공용 schema·Core·GCP 상태는 변경하지 않았다.
+- 실제 document 일반화, OCR, 과학 정확성, actual evidence와 radiation assurance는 계속 `NOT_EVALUATED / HOLD`다.
 
 ## H31 Human-readable Console & Synthetic Unstructured PDF — 2026-08-24
 

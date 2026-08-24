@@ -1,5 +1,22 @@
 # SPECTRA Offline HTML Demo
 
+## 발표 운영 — 2개 탭
+
+발표 중에는 `demo/index.html`과 `demo/evidence-console.html` 두 브라우저 탭만 사용한다. Slide 03과 09의 `통합 제품 시연` 링크는 같은 이름의 `spectra-demo` 탭을 재사용한다. 제품 콘솔 한 URL 안에서 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표` 세 모드를 전환하며, Batch 결과표는 콘솔 내부 패널에 내장된다. `Roadmap Lab`은 보조 구현으로 유지하지만 주 발표에서 열지 않는다.
+
+단순 `python3 -m http.server`는 `/api/intake`가 없어 합성 3종이 작동하지 않는다. 반드시 다음 통합 서버를 사용한다.
+
+```bash
+# 저장소 루트에서 실행
+python3 scripts/run_evidence_console.py --port 8765
+```
+
+## H36 Local File to Receipt
+
+`roadmap-lab.html`의 `내 파일 선택`은 10 MB 이하 로컬 파일을 브라우저 메모리에서만 읽는다. 파일 SHA-256과 내부 manifest canonical SHA-256을 결속해 `LOCAL_BUNDLE_BINDING_RECEIPT_1.0.0`을 만들고, action별 권리 8종과 외부 승인 anchor가 없으므로 `PROVENANCE_FAILURE / HOLD_NOT_ISSUED`로 닫는다.
+
+생성 영수증에는 raw bytes, 로컬 경로, 파일명, artifact identity, 파일 hash나 manifest hash를 포함하지 않는다. `HOLD 영수증 저장`으로 fail-closed 결과만 내려받을 수 있으며, 다음 단계에서는 `출처·권리` 관문에서 중단 이유와 필요한 다음 행동을 보여준다. 파일은 서버나 Git으로 전송·복사하지 않는다.
+
 ## Raw Evidence Console
 
 `evidence-console.html`은 선택한 PDF/TXT를 loopback 서버에서 실제로 파싱하고, 편집하지 않은 JSONL 이벤트를 발생 순서대로 보여준다. 오른쪽에는 같은 실행의 중단 위치·확인 사실·중단 이유·다음 행동을 자연어로 표시한다.
@@ -17,10 +34,14 @@ python3 scripts/run_evidence_console.py --port 8765
 
 승인 BOM target과 실제 environment/part contract가 없으므로 정상 파싱도 최종 판단은 `HOLD`다. 합성 예시의 `7 / 7 · 100%`는 공개된 고정 정답의 exact candidate set에만 적용되며 실제 PDF 일반화, OCR, 과학 정확성이나 assurance 완료를 뜻하지 않는다.
 
+`evidence-batch.html`은 같은 `/api/intake` 경로로 PDF/TXT 여러 개를 순차 검사해 문서별 파서·페이지 수, 후보 field/value, 원문 문자 위치, 최초 중단 관문, 자연어 이유, stable code와 `HOLD`를 한 표에 표시한다. `합성 3종 실행`은 정상 파싱 후 승인 BOM 공백, 지시문 공격 차단, 처리 권리 미확인 차단을 고정 정답과 대조한다. 실제 사용자가 올린 파일에는 정답률을 만들지 않는다.
+
+발표 자료 `index.html`은 01번에서 `우주 방사선 → 알루미늄 차폐 → 전자부품`의 기본 개념을 먼저 설명한다. 03번은 제목과 현재 구현 경계·결과표 연결·출처 안전 문구를 유지한 채 `문서 → 근거 후보 → 3개 Agent → 검증 Gate → 판단과 행동`을 도식화하며, 그림 아래의 Document AI·Gemini 미래 연결만 제거했다. 현재 후보 추출은 `pypdf`이고 Document AI·Gemini API 호출은 0건이다.
+
 직접 테스트:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_evidence_console tests.product.test_local_document_candidate
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_evidence_batch tests.product.test_evidence_console tests.product.test_local_document_candidate
 ```
 
 ## H28 Functional Evidence Review 실행 안내
@@ -85,14 +106,16 @@ python3 -m http.server 8765 --bind 127.0.0.1
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.product.test_evidence_review_workspace
 ```
 
-## 현재 기준선 — 2026-08-24
+## 현재 기준선 — 2026-08-25
 
-- `index.html`은 `Cover + 01~11 + Closing`, 총 13장의 현재 발표 deck이다. localhost 1280×720에서 전 장 overflow 0, console warning/error 0과 키보드·버튼·두께·ECC·GCP snapshot 상호작용을 Control Tower가 확인했다.
-- Slide 10의 `TRUST & INTEGRITY`는 private IAM·input binding의 고정 GCP snapshot 범위와 자체 승인·낙관 승격·fail-closed의 로컬 회귀 범위를 함께 요약한다. 침투시험, KMS 서명 배포, 전체 보안 완성 또는 실제 방사선 보증을 뜻하지 않는다.
+- `index.html`은 `Cover + 01~09 + Closing`, 총 11장의 현재 발표 deck이다. 기존 07 차폐 계산과 08 ECC·시험 공백 상세는 제품 시연과 중복되어 주 발표에서 제외했다. 구현과 합성 결과 데이터는 삭제하지 않았다.
+- Slide 01은 비전문가가 먼저 차폐 목적을 이해하도록 우주 방사선·알루미늄 등가 차폐·전자부품의 관계를 시각적으로 설명한다. TID 감소와 SEE 잔여 위험은 화면 문장 대신 발표 대본에서 말한다.
+- Slide 03은 제목·현재 구현 경계·결과표 연결·출처 안전 문구와 다섯 단계 흐름을 유지한다. 그림 아래의 Document AI·Gemini 미래 연결만 제거했으며 localhost 1280×720에서 `01 / 09`, `03 / 09`, x/y overflow 0을 확인했다.
+- Slide 08의 `TRUST & INTEGRITY`는 private IAM·input binding의 고정 GCP snapshot 범위와 자체 승인·낙관 승격·fail-closed의 로컬 회귀 범위를 함께 요약한다. 침투시험, KMS 서명 배포, 전체 보안 완성 또는 실제 방사선 보증을 뜻하지 않는다.
 - `product.html`은 발표본과 별도의 5단계 제품 프로토타입이다. Product 직접 테스트 16개와 JavaScript syntax는 통과했지만 최신 H17의 실제 viewport 검증은 완료되지 않아 후보 상태다.
 - 두 화면의 방사선 수치는 generated `SYNTHETIC` 결과이며 실제 환경·부품 assurance가 아니다. 5 mm와 손상·불일치 입력은 값을 만들지 않고 `NOT_EVALUATED/HOLD`로 닫는다.
 - GCP 화면은 H05 Control Tower verified snapshot을 읽기 전용으로 표시한다. 버튼은 Workflow Console을 열지만 HTML이 새 실행을 트리거하거나 live 상태를 assurance로 해석하지 않는다.
-- 아래 H02~H17 절은 구현 이력이다. 현재 동작이나 상태가 충돌하면 이 기준선, Control Tower `CURRENT.md`, generated payload 순서로 판단한다.
+- 아래 H02~H17 절은 구현 이력이다. 과거 13장·Slide 10/11 번호가 현재 11장 기준선과 충돌하면 이 기준선을 우선한다.
 
 Workstream 80 오프라인 데모는 서버, 외부 폰트·asset 없이 로컬 snapshot wrapper로 동작한다. 발표 deck은 localhost 사용을 권장한다.
 
