@@ -6,6 +6,10 @@
 
 > SPECTRA는 부품의 비행 적합성을 AI가 추측하거나 인증하는 시스템이 아니다. 어떤 계산과 시험 증거로 현재 판단에 도달했으며 무엇이 부족한지를 추적하고 감사한다.
 
+현재 제품 정의와 장기 과학 MVP는 유지하되, 2026-08-25 제출은 별도 **Competition Submission Release**로 관리한다. 제출 Release의 진행 상태와 완료 Gate는 각각 [`ROADMAP.md`](ROADMAP.md), [`CHECKLIST.md`](CHECKLIST.md)에만 둔다.
+
+Competition Submission Release의 실제 GCP 보완 검증은 locked Workflow `000006-d2a`에서 정상 control 1건과 공격 4건으로 수행했다. control의 deterministic Core parity가 일치했고 네 공격은 모두 fail-closed했지만, 이는 합성 데이터의 제한된 공격 세트일 뿐 침투시험·exact-part 적합성·방사선 보증 완료가 아니다.
+
 ## 2. 해결하려는 문제 — 계산보다 어려운 것은 근거를 연결하는 일
 
 **소형위성 팀은 성능·가격·조달성 때문에 COTS 전자부품을 사용하지만, 임무별 방사선 환경과 정확한 부품 identity·시험 조건·완화 설계·승인 정책은 서로 다른 도구와 문서에 흩어져 있다. 그 결과 “이 시험 결과가 이 부품과 이 임무에 실제로 적용되는가”를 일관되고 재현 가능하게 검증하기 어렵다.**
@@ -57,7 +61,7 @@
 ### 초기 범위
 
 - LEO 대표 임무 시나리오
-- MVP exact-part 1종의 증거 패킷과 이후 5~10종 확장 경로
+- COTS catalog 검토 대상 `23LC1024-I/SN` 1종과 exact-part evidence가 확보된 뒤의 확장 경로
 - 차폐·임무 기간에 따른 TID 계산과 마진 비교
 - 시험 단면적이 존재하는 부품의 SEU 발생률 추정
 - ECC 미적용·적용의 잔여 SEU 비교와 가정 provenance
@@ -81,7 +85,7 @@
 
 - 임무: 궤도, 고도, 경사각, 시작 시점, 기간
 - 설계: 차폐 재료·등가 두께, 적용 기준, TID 설계 계수
-- BOM: 부품번호, 제조사, 기능, 수량, 공정·다이·로트 정보
+- BOM: 부품번호, 제조사, 기능, 공정·다이·로트 정보
 - 제한된 설계 가정: 차폐 조건, ECC 적용 여부와 근거·분류
 - 판정 기준: TID 설계 계수, 허용 잔여 SEU, 파괴성 SEE 증거 요구
 - 증거: 환경 모델 출력, 시험 보고서, 데이터시트, 내부 검토 문서
@@ -115,11 +119,13 @@ TID 요구량 = 예상 임무 TID × 사용자 설계 계수
 ### SEU
 
 ```text
-완화 전 SEU = 환경 입자 스펙트럼 × 부품 시험 단면적 × 수량 × 기간
+완화 전 총 SEU = 환경 입자 스펙트럼 × 부품 시험 단면적 × analysis_device_count × 기간
 잔여 SEU = 완화 전 SEU × 검증된 완화 모델
 ```
 
 사용자는 허용 잔여 오류 기준을 정한다. ECC는 실제 하드웨어 구현이 아니라, 명시된 효과 모델이 수정 가능한 오류에만 적용되는 제한된 계산 가정이다. 근거가 합성 또는 가정이면 실제 적합성 판단에 사용하지 않는다.
+
+구매 수량은 부품 identity·차폐·TID 적용성 판단에서 제외한다. 장치 수에 따라 총 SEU를 집계할 때만 별도 분석 입력 `analysis_device_count`를 사용하며, 이 값이 exact-part 증거 적용성을 바꾸지는 않는다.
 
 SEU가 낮더라도 SEL·SEB·SEGR과 같은 파괴성 SEE 증거가 없으면 최종 판단을 보류한다.
 
@@ -220,8 +226,8 @@ SPECTRA의 정체성은 새로운 물리 계산기를 만드는 것이 아니라
 - Stage 3은 사람 주도 SPENVIS 실행의 실제 원본 bundle 1세트·9개와 실제-format parser 후보를 확보했고, checksum·입력 gate의 fail-closed 동작을 검증했다. 다만 provider job reference·action별 권리·승인 raw manifest가 없어 제품 contract 발행은 0건이며 계속 `HOLD`다.
 - Stage 4의 부품 증거 출처·권리·identity·적용성 조사와 exact-part/TID 원문 후보 1건은 확보했지만, 승인 BOM·권리 manifest·임무 적용성·필요 SEE coverage를 통과한 ingest는 0건이다.
 - 실제 환경 원본은 Git 밖 private evidence bundle로만 보존하며 dose 값은 제품 입력·fixture·문서에 발행하지 않았다. 실제 부품 시험자료의 승인 ingest와 과학적 교차검산은 아직 완료하지 않았다.
-- Competition Demo Release용 합성 Multi-Agent·GCP 경로는 교육용 project에 production Core-bound Cloud Run Agent 3개, Workflows, Storage, IAM, Logging으로 실제 배포됐다. H05에서 body-hash 결합 우회와 endpoint override를 차단해 해당 수정 패키지는 `VERIFIED`다. readiness receipt와 Evidence Review Workspace도 fail-closed 통합됐지만, Workstream 60의 고정 revision `ASR-D02`는 아직 `NOT_EVALUATED`이며 이 인프라와 로컬 신뢰성 검증은 실제 환경·부품 evidence 0건을 대체하지 않는다.
-- 발표의 Phase 01~03 확장 항목은 `Roadmap Lab`의 7개 local 화면으로 구현했다. 실제로 동작하는 bounded workflow, 외부 실행 전 readiness gate와 승인 입력이 없어 막힌 항목을 분리해 보여 주며, live connector·AI API·CAD 계산·KMS·침투시험 완료로 확대하지 않는다.
+- Competition Submission Release용 합성 Multi-Agent·GCP 경로는 교육용 project에 production Core-bound Cloud Run Agent 3개, Workflows, Storage, IAM, Logging으로 실제 배포됐다. Phase 1에서 발견한 exact-part `FALSE_ACCEPT`와 generation `UNEXPECTED_RESULT`를 보완한 새 revision을 배포했고, control 1건과 네 공격의 actual 재검증은 `CONTROL_PASS 1 / SAFE_FAILURE 4 / False Accept·False PASS·unexpected 0`이다. H06~H08 read-only receipt와 Product timeline도 새 정상 execution으로 갱신했다.
+- 발표의 Phase 01~03 확장 항목은 source intake·document review·Change Impact/CAD readiness를 bounded workflow로 구현했다. 현재 주 시연은 발표와 단일 Evidence Console을 사용하며, 실제 connector·AI API·CAD 계산·KMS·침투시험 완료로 확대하지 않는다.
 - 실제 비행 적합성 또는 과학적 정확도 검증을 완료하지 않았다.
 
-상세 실행 순서는 [ROADMAP.md](ROADMAP.md), 진행 상태는 [CHECKLIST.md](CHECKLIST.md)를 따른다.
+장기 과학 MVP와 제출 Release 경계는 [docs/MVP.md](docs/MVP.md), 오늘 실행 순서는 [ROADMAP.md](ROADMAP.md), 제출 승인 상태는 [CHECKLIST.md](CHECKLIST.md)를 따른다.

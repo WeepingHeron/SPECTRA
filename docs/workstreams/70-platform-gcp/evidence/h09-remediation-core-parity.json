@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "data_class": "SYNTHETIC",
+  "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/819d4189-4c3f-4197-b4a3-ab7e38370a97",
+  "result_object": "results/819d4189-4c3f-4197-b4a3-ab7e38370a97.json",
+  "result_generation": "1787609225022370",
+  "local_core_sha256": "sha256:15c3d505ee805203c1ffa028b82395f0950f372bec1d99575129a5d49e65b1e2",
+  "deployed_core_sha256": "sha256:15c3d505ee805203c1ffa028b82395f0950f372bec1d99575129a5d49e65b1e2",
+  "full_semantic_object_equal": true,
+  "canonical_hash_equal": true,
+  "semantic_payload_equal": true,
+  "semantic_payload": {
+    "run_id": "mvp-9573bc0eafa5c975",
+    "case_id": "mvp-synthetic-ecc-policy-001",
+    "data_class": "SYNTHETIC",
+    "input_hash": "sha256:9573bc0eafa5c97556b35c907996b54a9a17c99c85525f0233dbcab6df76ea8b",
+    "output_hash": "sha256:210f03c60292a4028a02abb2111ba97074ff284c4d777bb87f0a36c21fdf453a",
+    "processing_status": "VALID",
+    "engineering_gate": "NOT_EVALUATED",
+    "assurance_decision": "HOLD"
+  },
+  "assurance_decision": "HOLD"
+}

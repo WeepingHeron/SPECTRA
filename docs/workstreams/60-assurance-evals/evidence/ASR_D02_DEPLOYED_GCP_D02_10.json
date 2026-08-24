@@ -1,0 +1,91 @@
+{
+  "assurance_boundary": "HOLD",
+  "boundary_notes": [
+    "Only the explicitly approved non-IAM Phase 1 subset was executed.",
+    "No deployment, IAM policy, service account, or production endpoint was changed.",
+    "Create-only synthetic inputs and immutable result generations are retained for review."
+  ],
+  "case_observations": [
+    {
+      "attack_id": "ASR-D02-10",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": false,
+      "execution_attempted": true,
+      "gcp_observations": {
+        "agent_results": {},
+        "agent_revisions": {
+          "assurance": "spectra-h04-assurance-00006-zfx",
+          "mission": "spectra-h04-mission-00006-4f5",
+          "parts": "spectra-h04-parts-00006-p6c"
+        },
+        "correlation_id": "spectra-h05-3b943a10-1665-4c4a-8cca-df2c764feb13",
+        "downloaded_body_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "downloaded_result_sha256": "sha256:464fa2747c49e298b0ca8b329cbda277072647b6a2e5b3a7387a4eb6c832f7f1",
+        "expected_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "external_endpoint_request_count": 0,
+        "input_generation_observed": "1787606709495284",
+        "input_generation_requested": "1787606709495284",
+        "input_object": "inputs/asr-d02/20260824T212507Z-b423bf34-asr-d02-10.json",
+        "invoked_service_revisions": [],
+        "metadata_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "resolved_agent_endpoints": {
+          "ASSURANCE_URL": "https://spectra-h04-assurance-mwmfe3da5q-du.a.run.app",
+          "MISSION_URL": "https://spectra-h04-mission-mwmfe3da5q-du.a.run.app",
+          "PARTS_URL": "https://spectra-h04-parts-mwmfe3da5q-du.a.run.app"
+        },
+        "result_generation": "1787606711285849",
+        "result_object": "results/3b943a10-1665-4c4a-8cca-df2c764feb13.json",
+        "structured_log_refs": [
+          "NO_AGENT_LOG_EXPECTED_OR_WORKFLOW_FAILED"
+        ],
+        "submitted_workflow_args": {
+          "assurance_url": "https://attacker.invalid/assurance",
+          "mission_url": "https://attacker.invalid/mission",
+          "parts_url": "https://attacker.invalid/parts"
+        },
+        "target_identity": {
+          "assurance_revision": "spectra-h04-assurance-00006-zfx",
+          "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+          "locked_at": "2026-08-20T16:42:38Z",
+          "mission_revision": "spectra-h04-mission-00006-4f5",
+          "parts_revision": "spectra-h04-parts-00006-p6c",
+          "project_id": "iceu-686",
+          "region": "asia-northeast3",
+          "state": "LOCKED",
+          "workflow_name": "spectra-h04-e2e",
+          "workflow_revision": "000005-32c",
+          "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+        },
+        "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/3b943a10-1665-4c4a-8cca-df2c764feb13",
+        "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e",
+        "workflow_state": "SUCCEEDED"
+      },
+      "observed_decision": "HOLD",
+      "observed_engineering_gate": "NOT_EVALUATED",
+      "observed_stable_codes": [
+        "ENDPOINT_OVERRIDE_FORBIDDEN"
+      ],
+      "observed_status": "INVALID_INPUT",
+      "raw_workflow_error": null,
+      "recommendation_present": false
+    }
+  ],
+  "data_class": "SYNTHETIC",
+  "schema_version": "spectra.assurance.asr-d02.phase1-live.v1",
+  "scope": [
+    "ASR-D02-10"
+  ],
+  "target_lock": {
+    "assurance_revision": "spectra-h04-assurance-00006-zfx",
+    "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+    "locked_at": "2026-08-20T16:42:38Z",
+    "mission_revision": "spectra-h04-mission-00006-4f5",
+    "parts_revision": "spectra-h04-parts-00006-p6c",
+    "project_id": "iceu-686",
+    "region": "asia-northeast3",
+    "state": "LOCKED",
+    "workflow_name": "spectra-h04-e2e",
+    "workflow_revision": "000005-32c",
+    "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+  }
+}

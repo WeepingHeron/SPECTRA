@@ -1,0 +1,357 @@
+{
+  "assurance_boundary": "HOLD",
+  "boundary_notes": [
+    "Only the explicitly approved non-IAM Phase 1 subset was executed.",
+    "No deployment, IAM policy, service account, or production endpoint was changed.",
+    "Create-only synthetic inputs and immutable result generations are retained for review."
+  ],
+  "case_observations": [
+    {
+      "attack_id": "ASR-D02-02",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": false,
+      "execution_attempted": true,
+      "gcp_observations": {
+        "agent_results": {},
+        "agent_revisions": {
+          "assurance": "spectra-h04-assurance-00006-zfx",
+          "mission": "spectra-h04-mission-00006-4f5",
+          "parts": "spectra-h04-parts-00006-p6c"
+        },
+        "body_forwarded_to_agents": false,
+        "correlation_id": "spectra-h05-e1a73100-1db2-4602-b86b-46e6b3b49551",
+        "downloaded_body_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "downloaded_result_sha256": "NOT_CREATED",
+        "expected_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "input_generation_observed": "OBJECT_NOT_FOUND_AT_REQUESTED_GENERATION",
+        "input_generation_requested": "1787606543772649",
+        "input_object": "inputs/asr-d02/20260824T212222Z-8fb71b98-asr-d02-02.json",
+        "locked_generation": "1787606543772648",
+        "metadata_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "observed_generation": "OBJECT_NOT_FOUND_AT_REQUESTED_GENERATION",
+        "requested_generation": "1787606543772649",
+        "resolved_agent_endpoints": {
+          "ASSURANCE_URL": "https://spectra-h04-assurance-mwmfe3da5q-du.a.run.app",
+          "MISSION_URL": "https://spectra-h04-mission-mwmfe3da5q-du.a.run.app",
+          "PARTS_URL": "https://spectra-h04-parts-mwmfe3da5q-du.a.run.app"
+        },
+        "result_generation": "NOT_CREATED",
+        "result_object": "NOT_CREATED",
+        "structured_log_refs": [
+          "NO_AGENT_LOG_EXPECTED_OR_WORKFLOW_FAILED"
+        ],
+        "target_identity": {
+          "assurance_revision": "spectra-h04-assurance-00006-zfx",
+          "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+          "locked_at": "2026-08-20T16:42:38Z",
+          "mission_revision": "spectra-h04-mission-00006-4f5",
+          "parts_revision": "spectra-h04-parts-00006-p6c",
+          "project_id": "iceu-686",
+          "region": "asia-northeast3",
+          "state": "LOCKED",
+          "workflow_name": "spectra-h04-e2e",
+          "workflow_revision": "000005-32c",
+          "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+        },
+        "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/e1a73100-1db2-4602-b86b-46e6b3b49551",
+        "workflow_state": "FAILED"
+      },
+      "observed_decision": "HOLD",
+      "observed_engineering_gate": "NOT_EVALUATED",
+      "observed_stable_codes": [
+        "WORKFLOW_STORAGE_LOOKUP_FAILED"
+      ],
+      "observed_status": "WORKFLOW_FAILED",
+      "raw_workflow_error": {
+        "context": "HTTP server responded with error code 404\nin step \"getInputMetadata\", routine \"main\", line: 37",
+        "payload": "{\"body\":{\"error\":{\"code\":404,\"errors\":[{\"domain\":\"global\",\"message\":\"No such object: spectra-h04-iceu-686/inputs/asr-d02/20260824T212222Z-8fb71b98-asr-d02-02.json\",\"reason\":\"notFound\"}],\"message\":\"No such object: spectra-h04-iceu-686/inputs/asr-d02/20260824T212222Z-8fb71b98-asr-d02-02.json\"}},\"code\":404,\"headers\":{\"Alt-Svc\":\"h3=\\\":443\\\"; ma=2592000,h3-29=\\\":443\\\"; ma=2592000\",\"Cache-Control\":\"no-cache, no-store, max-age=0, must-revalidate\",\"Content-Length\":\"361\",\"Content-Type\":\"application/json; charset=UTF-8\",\"Date\":\"Mon, 24 Aug 2026 21:22:25 GMT\",\"Expires\":\"Mon, 01 Jan 1990 00:00:00 GMT\",\"Pragma\":\"no-cache\",\"Server\":\"UploadServer\",\"Vary\":\"Origin, X-Origin\",\"X-Guploader-Uploadid\":\"AJjja9Zy5X5H9vxG4c_LgB9BORSuJbd6cIckPn05u3wgc1YEdvyxCyljvCQr9IqthOO4B0Sndi5_znw\"},\"message\":\"HTTP server responded with error code 404\",\"tags\":[\"HttpError\"]}",
+        "stackTrace": {
+          "elements": [
+            {
+              "position": {
+                "column": "9",
+                "length": "4",
+                "line": "37"
+              },
+              "routine": "main",
+              "step": "getInputMetadata"
+            }
+          ]
+        }
+      },
+      "recommendation_present": false
+    },
+    {
+      "attack_id": "ASR-D02-04",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": false,
+      "execution_attempted": true,
+      "gcp_observations": {
+        "agent_results": {
+          "mission": {
+            "agent": "mission",
+            "assurance_decision": "HOLD",
+            "body_hash_verified": false,
+            "body_sha256": "sha256:3d4e35d7981289e17d3228662cfe1d8e9d6bdc4a72cf4ca2bd0a44a3c40e502c",
+            "correlation_id": "spectra-h05-a880c3c0-5f19-4a7a-b7b3-5bf58dddfbec",
+            "data_class": "SYNTHETIC",
+            "engineering_gate": "NOT_EVALUATED",
+            "input_sha256": "sha256:f751989127b7b50243fd01ba5642d9181b34c404fbadfb79e89d687fb1f744dd",
+            "latency_ms": 0,
+            "message": "downloaded canonical body SHA-256 does not match metadata and expected receipt",
+            "processing_status": "INVALID_INPUT",
+            "response_sha256": "sha256:c8b1b5c8386f8162a76bc22ac9da452282154140694e9529890f2262cbcdaad1",
+            "run_id": "a880c3c0-5f19-4a7a-b7b3-5bf58dddfbec",
+            "schema_version": "1.0.0",
+            "stable_codes": [
+              "INPUT_BODY_SHA256_MISMATCH"
+            ]
+          }
+        },
+        "agent_revisions": {
+          "assurance": "spectra-h04-assurance-00006-zfx",
+          "mission": "spectra-h04-mission-00006-4f5",
+          "parts": "spectra-h04-parts-00006-p6c"
+        },
+        "assurance_agent_result": {},
+        "correlation_id": "spectra-h05-a880c3c0-5f19-4a7a-b7b3-5bf58dddfbec",
+        "declared_evidence_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "downloaded_body_sha256": "sha256:f751989127b7b50243fd01ba5642d9181b34c404fbadfb79e89d687fb1f744dd",
+        "downloaded_result_sha256": "sha256:c0cd2566aec4bbd75b7aaab52af5d2f3a40297d9db29755fa7582ec19aa3696b",
+        "expected_evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "expected_sha256": "sha256:f751989127b7b50243fd01ba5642d9181b34c404fbadfb79e89d687fb1f744dd",
+        "input_generation_observed": "1787606587398966",
+        "input_generation_requested": "1787606587398966",
+        "input_object": "inputs/asr-d02/20260824T212305Z-0b5d097a-asr-d02-04.json",
+        "metadata_sha256": "sha256:f751989127b7b50243fd01ba5642d9181b34c404fbadfb79e89d687fb1f744dd",
+        "parts_agent_result": {},
+        "resolved_agent_endpoints": {
+          "ASSURANCE_URL": "https://spectra-h04-assurance-mwmfe3da5q-du.a.run.app",
+          "MISSION_URL": "https://spectra-h04-mission-mwmfe3da5q-du.a.run.app",
+          "PARTS_URL": "https://spectra-h04-parts-mwmfe3da5q-du.a.run.app"
+        },
+        "result_generation": "1787606591101996",
+        "result_object": "results/a880c3c0-5f19-4a7a-b7b3-5bf58dddfbec.json",
+        "structured_log_refs": [
+          "6a8cb63e000d5e634951a68c"
+        ],
+        "target_identity": {
+          "assurance_revision": "spectra-h04-assurance-00006-zfx",
+          "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+          "locked_at": "2026-08-20T16:42:38Z",
+          "mission_revision": "spectra-h04-mission-00006-4f5",
+          "parts_revision": "spectra-h04-parts-00006-p6c",
+          "project_id": "iceu-686",
+          "region": "asia-northeast3",
+          "state": "LOCKED",
+          "workflow_name": "spectra-h04-e2e",
+          "workflow_revision": "000005-32c",
+          "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+        },
+        "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/a880c3c0-5f19-4a7a-b7b3-5bf58dddfbec",
+        "workflow_state": "SUCCEEDED"
+      },
+      "observed_decision": "HOLD",
+      "observed_engineering_gate": "NOT_EVALUATED",
+      "observed_stable_codes": [
+        "INPUT_BODY_SHA256_MISMATCH"
+      ],
+      "observed_status": "INVALID_INPUT",
+      "raw_workflow_error": null,
+      "recommendation_present": false
+    },
+    {
+      "attack_id": "ASR-D02-05",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": false,
+      "execution_attempted": true,
+      "gcp_observations": {
+        "agent_results": {
+          "mission": {
+            "agent": "mission",
+            "assurance_decision": "HOLD",
+            "body_hash_verified": false,
+            "body_sha256": "sha256:51c2a7ac23f96c9c2b7802272965ac46f73624d6db2071bba22e6c19b075b461",
+            "correlation_id": "spectra-h05-c5ab938e-bf4e-451f-98e1-d04e69a48268",
+            "data_class": "SYNTHETIC",
+            "engineering_gate": "NOT_EVALUATED",
+            "input_sha256": "sha256:b40f61dff4c6cbeb7f8ad7f5027d40169ef2fb58ffd8ad90afeb2066112533d8",
+            "latency_ms": 0,
+            "message": "downloaded canonical body SHA-256 does not match metadata and expected receipt",
+            "processing_status": "INVALID_INPUT",
+            "response_sha256": "sha256:520bd9880abe87456aea5dc7056e5ee3fd890fe726c0f6ce0f16d4c3edac8de8",
+            "run_id": "c5ab938e-bf4e-451f-98e1-d04e69a48268",
+            "schema_version": "1.0.0",
+            "stable_codes": [
+              "INPUT_BODY_SHA256_MISMATCH"
+            ]
+          }
+        },
+        "agent_revisions": {
+          "assurance": "spectra-h04-assurance-00006-zfx",
+          "mission": "spectra-h04-mission-00006-4f5",
+          "parts": "spectra-h04-parts-00006-p6c"
+        },
+        "assurance_agent_result": {},
+        "correlation_id": "spectra-h05-c5ab938e-bf4e-451f-98e1-d04e69a48268",
+        "downloaded_body_sha256": "sha256:b40f61dff4c6cbeb7f8ad7f5027d40169ef2fb58ffd8ad90afeb2066112533d8",
+        "downloaded_result_sha256": "sha256:70321de4f92aed7b8f935fc5188f94d404b31a24d9bf6b00b98605ea9ac7d717",
+        "expected_identity": {
+          "artifact_id": "assurance-d02-synthetic-part-001",
+          "die_revision": "SYNTHETIC-DIE-A",
+          "event_types": [
+            "TID",
+            "SEU",
+            "SEL"
+          ],
+          "evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "exact_orderable_part_number": "SYNTHETIC-PART-001",
+          "expected_evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "lot_code": "SYNTHETIC-LOT-001",
+          "manufacturer": "SYNTHETIC-MANUFACTURER",
+          "process": "SYNTHETIC-PROCESS",
+          "rights_status": "SYNTHETIC_FIXTURE_ONLY"
+        },
+        "expected_sha256": "sha256:b40f61dff4c6cbeb7f8ad7f5027d40169ef2fb58ffd8ad90afeb2066112533d8",
+        "input_generation_observed": "1787606619660284",
+        "input_generation_requested": "1787606619660284",
+        "input_object": "inputs/asr-d02/20260824T212338Z-b4f0a2c5-asr-d02-05.json",
+        "metadata_sha256": "sha256:b40f61dff4c6cbeb7f8ad7f5027d40169ef2fb58ffd8ad90afeb2066112533d8",
+        "observed_identity": {
+          "artifact_id": "assurance-d02-synthetic-part-001",
+          "die_revision": "SYNTHETIC-DIE-A",
+          "event_types": [
+            "TID",
+            "SEU",
+            "SEL"
+          ],
+          "evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "exact_orderable_part_number": "SYNTHETIC-PART-999",
+          "expected_evidence_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "lot_code": "SYNTHETIC-LOT-001",
+          "manufacturer": "SYNTHETIC-MANUFACTURER",
+          "process": "SYNTHETIC-PROCESS",
+          "rights_status": "SYNTHETIC_FIXTURE_ONLY"
+        },
+        "parts_agent_result": {},
+        "resolved_agent_endpoints": {
+          "ASSURANCE_URL": "https://spectra-h04-assurance-mwmfe3da5q-du.a.run.app",
+          "MISSION_URL": "https://spectra-h04-mission-mwmfe3da5q-du.a.run.app",
+          "PARTS_URL": "https://spectra-h04-parts-mwmfe3da5q-du.a.run.app"
+        },
+        "result_generation": "1787606621885668",
+        "result_object": "results/c5ab938e-bf4e-451f-98e1-d04e69a48268.json",
+        "structured_log_refs": [
+          "6a8cb65d000b36f6c5086826"
+        ],
+        "target_identity": {
+          "assurance_revision": "spectra-h04-assurance-00006-zfx",
+          "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+          "locked_at": "2026-08-20T16:42:38Z",
+          "mission_revision": "spectra-h04-mission-00006-4f5",
+          "parts_revision": "spectra-h04-parts-00006-p6c",
+          "project_id": "iceu-686",
+          "region": "asia-northeast3",
+          "state": "LOCKED",
+          "workflow_name": "spectra-h04-e2e",
+          "workflow_revision": "000005-32c",
+          "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+        },
+        "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/c5ab938e-bf4e-451f-98e1-d04e69a48268",
+        "workflow_state": "SUCCEEDED"
+      },
+      "observed_decision": "HOLD",
+      "observed_engineering_gate": "NOT_EVALUATED",
+      "observed_stable_codes": [
+        "INPUT_BODY_SHA256_MISMATCH"
+      ],
+      "observed_status": "INVALID_INPUT",
+      "raw_workflow_error": null,
+      "recommendation_present": false
+    },
+    {
+      "attack_id": "ASR-D02-10",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": false,
+      "execution_attempted": true,
+      "gcp_observations": {
+        "agent_results": {},
+        "agent_revisions": {
+          "assurance": "spectra-h04-assurance-00006-zfx",
+          "mission": "spectra-h04-mission-00006-4f5",
+          "parts": "spectra-h04-parts-00006-p6c"
+        },
+        "correlation_id": "spectra-h05-5c7c95e2-3e65-45c3-9245-3605dd6234d5",
+        "downloaded_body_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "downloaded_result_sha256": "sha256:28e067b4c282100916e72e79163ce2ebd597d0d3196fc37de56044d73bcbec42",
+        "expected_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "external_endpoint_request_count": 0,
+        "input_generation_observed": "1787606652431066",
+        "input_generation_requested": "1787606652431066",
+        "input_object": "inputs/asr-d02/20260824T212410Z-57535b65-asr-d02-10.json",
+        "invoked_service_revisions": [],
+        "metadata_sha256": "sha256:8a66d71a7428e705c467d4fb8cada589d9d5d2698c3978951529fbf320e118c1",
+        "resolved_agent_endpoints": {
+          "ASSURANCE_URL": "https://spectra-h04-assurance-mwmfe3da5q-du.a.run.app",
+          "MISSION_URL": "https://spectra-h04-mission-mwmfe3da5q-du.a.run.app",
+          "PARTS_URL": "https://spectra-h04-parts-mwmfe3da5q-du.a.run.app"
+        },
+        "result_generation": "1787606654149231",
+        "result_object": "results/5c7c95e2-3e65-45c3-9245-3605dd6234d5.json",
+        "structured_log_refs": [
+          "NO_AGENT_LOG_EXPECTED_OR_WORKFLOW_FAILED"
+        ],
+        "submitted_workflow_args": {
+          "assurance_url": "https://attacker.invalid/assurance",
+          "mission_url": "https://attacker.invalid/mission",
+          "parts_url": "https://attacker.invalid/parts"
+        },
+        "target_identity": {
+          "assurance_revision": "spectra-h04-assurance-00006-zfx",
+          "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+          "locked_at": "2026-08-20T16:42:38Z",
+          "mission_revision": "spectra-h04-mission-00006-4f5",
+          "parts_revision": "spectra-h04-parts-00006-p6c",
+          "project_id": "iceu-686",
+          "region": "asia-northeast3",
+          "state": "LOCKED",
+          "workflow_name": "spectra-h04-e2e",
+          "workflow_revision": "000005-32c",
+          "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+        },
+        "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/5c7c95e2-3e65-45c3-9245-3605dd6234d5",
+        "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e",
+        "workflow_state": "SUCCEEDED"
+      },
+      "observed_decision": "HOLD",
+      "observed_engineering_gate": "NOT_EVALUATED",
+      "observed_stable_codes": [
+        "ENDPOINT_OVERRIDE_FORBIDDEN"
+      ],
+      "observed_status": "INVALID_INPUT",
+      "raw_workflow_error": null,
+      "recommendation_present": false
+    }
+  ],
+  "data_class": "SYNTHETIC",
+  "schema_version": "spectra.assurance.asr-d02.phase1-live.v1",
+  "scope": [
+    "ASR-D02-02",
+    "ASR-D02-04",
+    "ASR-D02-05",
+    "ASR-D02-10"
+  ],
+  "target_lock": {
+    "assurance_revision": "spectra-h04-assurance-00006-zfx",
+    "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+    "locked_at": "2026-08-20T16:42:38Z",
+    "mission_revision": "spectra-h04-mission-00006-4f5",
+    "parts_revision": "spectra-h04-parts-00006-p6c",
+    "project_id": "iceu-686",
+    "region": "asia-northeast3",
+    "state": "LOCKED",
+    "workflow_name": "spectra-h04-e2e",
+    "workflow_revision": "000005-32c",
+    "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+  }
+}

@@ -2,13 +2,13 @@
 
 ## Status
 
-`IN_PROGRESS`
+`ACTIVE_TODAY — SUBMISSION RELEASE; CORE ASSURANCE HOLD`
 
 ## Last verified
 
 - 날짜: 2026-08-25
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 통합 체크포인트: `HEAD=origin/main=841ffd7` 위 단일 Console 3모드·11장 발표 통합 후보를 최종 검증했다. commit·push 전 사용자 통합 시점 확인이 남아 있으며 ignored `instructions/`, Git 밖 대본과 private evidence는 포함하지 않는다.
+- Git 통합 체크포인트: `HEAD=origin/main=bde7c10`. H06/H07 backend 관찰 계약은 이후 working tree에 있으며 사용자의 요청대로 아직 commit·push하지 않았다.
 
 ## 현재 확인된 산출물
 
@@ -22,13 +22,20 @@
 
 ## 현재 진실
 
+- 2026-08-25 승인된 최소 배포로 image digest `sha256:cb2193...04bb`, Workflow `000006-d2a`, Mission `00007-s86`, Parts `00007-44k`, Assurance `00007-dk9`를 새 target으로 잠갔다. 정상 control은 local/deployed Core canonical hash와 semantic object가 일치해 `CONTROL_PASS`, `D02-02/04/05/10`은 모두 기대 stable code의 `SAFE_FAILURE`다. 이 5-execution batch의 False Accept·False PASS·unexpected는 0, 나머지 12건은 `NOT_EVALUATED`, 최종 assurance는 `HOLD`다. 새 control의 H07 receipt와 Product timeline은 `VALID / OBSERVED / LIVE_API / HOLD`로 갱신했다. 아래 Phase 1 실패 문장은 결함 발견 이력이다.
+- 2026-08-25 사용자 승인 범위의 actual GCP `ASR-D02` Phase 1 공격 `02/04/05/10`을 locked Workflow `000005-32c`에서 실행했다. 정상 control은 `CONTROL_PASS`, 공격 4건은 `SAFE_FAILURE` 2, `FALSE_ACCEPT` 1(exact part number 변조 수용), `UNEXPECTED_RESULT` 1(generation 404로 Workflow 실패), False PASS 0이다. 나머지 12건은 `NOT_EVALUATED`이며 Stage 6·7은 계속 `IN_PROGRESS`; H05 경로는 두 결함 보완 전 `CHANGES_REQUESTED`다. 배포·IAM 변경과 push는 수행하지 않았다.
+- 2026-08-25 H06 event contract와 H07 fixed-resource read-only connector를 구현했다. Workflow/Storage/세 Agent/Core를 동일 execution/correlation에 결속하고 sequence·timestamp·SHA-256 chain·deployment revision·Storage generation·Agent/log/Core hash를 검증한다. H05 실제 구조에 맞춰 execution object hash와 Core canonical input hash를 분리했으며 H06/H07 직접 테스트 28개가 통과했다. connector는 execution describe·logging read·object describe/cat만 허용하고 GCP mutation 경로가 없다.
+- 2026-08-25 첫 H07 조회는 credential 재인증 만료로 안전하게 닫혔다. 재인증 후 Logging을 execution 시간 범위로 제한해 동일 정상 execution의 API·세 Agent log·Storage generation/body를 actual read-only 수집했고 `VALID / COMPLETE / SUCCEEDED / SYNTHETIC_ONLY / HOLD` receipt를 발행했다. H08 data는 `LIVE_API / live_api_observed=true / fallback_used=false`와 실제 8-event timestamp/hash chain으로 재생성됐다. actual live·fallback·낙관 승격·non-finite·snapshot 변조·결정성 H08 테스트 7개가 통과했으며 Product HTML 시각 연결은 보류했다.
+- 2026-08-25 Phase 1 실행 전에는 기존 H05 evidence만 reconciliation했다. exact locked target·generation/hash·세 Agent log·Core parity가 완전한 정상 control 1건만 `CONTROL_PASS`로 평가했고, 관련 H05 공격 사례는 exact mutation/필수 관찰값 차이로 소급하지 않았다. 당시 공격 16건은 평가 0·`NOT_EVALUATED`, False Accept/PASS는 `NOT_COMPUTED`였으며 이후 상태는 위 Phase 1 문장이 대체한다.
 - 2026-08-25 `23LC1024` 공개 시험의 실제 외부 PDF를 JLU DOI/고정 locator, `33,130,232` bytes, SHA-256, CC BY 4.0 attribution/action 조건에 결속하는 production source gate와 reference package composer를 구현했다. candidate+anchor 동시 재결속, content/URL/license/action/optimistic decision 공격을 포함한 source/package 17개와 기존 인접 22개, 총 39개 테스트가 통과했다. source manifest/rights blocker만 해소됐고 exact suffix/package/lot/die·mission·TID/destructive SEE 공백은 남아 `SOURCE_READY_COMPARISON_BLOCKED / NOT_COMPARABLE / HOLD`, actual EvidencePacket 0건이다.
 - 최종 Competition Demo Release에서는 실제 GCP Workflow 요청, Agent별 진행·실패 상태, immutable input/output hash, Storage generation, 최종 Core/Assurance 판정을 같은 실행 ID로 시각화한다. `GCP 실행 성공`과 `evidence 검증/assurance`를 별도 축으로 표시하고, live 연결 실패 시 검증된 고정 결과 fallback으로 전환하되 라이브처럼 표시하지 않는다.
 - 2026-08-25 공개 `23LC1024` 시험값과 SPECTRA 합성 입력을 검토하는 deterministic comparison gate를 구현했다. 게이트는 저장된 blocker를 신뢰하지 않고 exact identity·package·lot/die·source manifest·단위·합성 조건을 재평가하며, 현재 결과를 `VALID / NOT_COMPARABLE / HOLD`, 숫자 비율을 `CALCULATED_REFERENCE_ONLY`로 제한한다. optimistic PASS/direct validation, ratio 1 ULP, boolean·비유한수·단위·identity·hash 공격을 포함한 신규 10개와 기존 binding 5개, 총 15개 테스트가 통과했다. exact-part 데이터 불완전성은 발표·직접 검증 리스크로 명시했으며 실제 Evidence Packet은 계속 0건이다. 사용자 요청에 따른 다음 통합 시점에서 전체 회귀를 통과해 누적 integration unit의 commit·push 대상에 포함했다.
 - 2026-08-25 `evidence-console.html` 하나에서 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표`를 전환하는 H38 통합을 독립 검증했다. Local 합성 PDF는 13 events·후보 7개·최종 `HOLD`, GCP는 저장 로그 13건·`SNAPSHOT ONLY · HOLD`, 고정 합성 Batch는 문서 3·후보 7·HOLD 3·reference `3 / 3`으로 종료했다. Slide 03·09는 동일 named `spectra-demo` 탭을 재사용한다.
 - 변경 범위 직접 테스트 21개와 Product 전체 157개, schema 17개·정상 fixture 5개·실패 fixture 116개, simulation 55개, environment·Assurance·GCP H05 local runbook, 인접 readiness·parts·source·local assurance 32개가 통과했다. 두 stale UI 문구 assertion은 현재 화면 계약에 맞춰 보완한 뒤 해당 범위 전체를 재검증했다.
-- 현재 11장 발표 deck은 전환 애니메이션 종료 후 localhost 1280×720에서 전 장 document·active slide x/y overflow 0, console warning/error 0이다. Git 밖 v4 대본은 `Cover + 01~09 + Closing`, 두 Product Demo와 `CALCULATED 400초 + 전환 여유 20초 = 420초`에 정렬됐지만 사람 낭독·클릭 리허설은 `NOT_MEASURED`다.
-- 이 통합은 로컬 합성 Product·고정 GCP snapshot·발표 운영만 `VERIFIED`한다. 실제 environment contract 0건, 승인 exact-part Evidence Packet 0건, Document AI·Gemini 호출 0건과 실제 GCP `ASR-D02 NOT_EVALUATED`는 바뀌지 않으며 최종 assurance는 `HOLD`다.
+- 현재 발표 deck은 `Cover + 01~10 + Closing`, 총 12장이다. 새 09에는 `CONTROL PASS 1 / SAFE FAILURE 4 / False Accept·PASS·unexpected 0`과 나머지 12건 `NOT_EVALUATED / HOLD`를 인접 표시했다. Product 전체 157개가 통과했고 localhost 1280×720에서 12장 전체 document·active slide x/y overflow 0, console warning/error 0이다. Git 밖 v4 대본은 이전 11장 기준이라 사람 낭독·클릭 리허설과 함께 갱신이 필요하며 현재 `NOT_MEASURED`다.
+- 최종 제출 회귀에서 schema 17개·valid fixture 5개·invalid fixture 116개, simulation 58, environment 65, Assurance 47 attack executions/False PASS 0, GCP platform 13, GCP live adapter 35, Product 157 tests가 통과했다. `git diff --check`도 통과했고 변경 파일 secret scan의 유일한 두 hit는 토큰 저장을 금지하는 문서 속 literal `rapt=...` 예시였다.
+- 같은 localhost에서 Evidence Console의 합성 비정형 PDF는 실제 parser `13 events`, 고정 정답 `7 / 7`, 최종 `HOLD`로 종료했다. Batch 화면은 합성 3문서·후보 7·HOLD 3·reference `3 / 3`을 재현했고 가로 overflow가 없었다. 브라우저 자동화가 부모 화면 로드 시 주입한 `MutationObserver` 오류는 앱 코드에 해당 API가 없고 batch 직접 탭 오류 0으로 분리됐으므로 제품 결함 수치에 포함하지 않는다.
+- 이 통합은 로컬 합성 Product·고정 GCP snapshot·발표 운영만 `VERIFIED`한다. 실제 environment contract 0건, 승인 exact-part Evidence Packet 0건, Document AI·Gemini 호출 0건은 바뀌지 않는다. 실제 GCP `ASR-D02`는 이제 Phase 1 네 공격만 평가됐고 나머지 12건은 `NOT_EVALUATED`; 최종 assurance는 `HOLD`다.
 - 2026-08-25 발표의 COTS SRAM 범위에 맞춰 사용자가 Microchip `23LC1024-I/SN`을 SPECTRA MVP exact-part 검토 대상으로 승인하고 기존 Space/QML-V/RHA TI CAN transceiver 선택을 대체했다. Microchip 공식 자료에서 현재 양산되는 1 Mbit SPI/SDI/SQI SRAM임을 확인했고, ESA는 base product `23LC1024`를 GOMX-4B/CHIMERA의 COTS memory radiation experiment 탑재품으로 명시한다. 공개 Am-Be neutron screening의 PDIP `23LC1024` SEU cross section `(4.10 ± 0.04) × 10^-9 cm²/device`를 별도 reference로 결속했지만 승인 `/I/SN`은 SOIC이고 exact suffix·lot/die가 없어 직접 검증에는 사용하지 않는다. 현재 합성 cross section과의 약 `243.9×`는 입력값 차이일 뿐 정확도·적합성 지표가 아니다. CHIMERA 나머지 memory와 공개 radiation database 재검색에서도 flight identity와 numerical test article을 함께 닫는 더 강한 memory 사례는 찾지 못했다. Φsat-1의 Intel Movidius `Myriad 2`는 실제 비행·TID/SEE 데이터가 있는 강한 COTS 사례지만 복합 AI SoC라 현재 SRAM 모델의 대체품으로 사용하지 않는다. BOM identity·차폐·TID·per-device evidence에서 구매 수량을 제거하고, 총 SEU 집계에만 별도 `analysis_device_count`를 사용한다. COTS library·Product binding·Evidence Console 35개와 reference comparison 5개, 합계 직접 테스트 40개 및 diff check가 통과했으며 브라우저 재점검은 보류했다. 이는 catalog target과 비교 reference를 고정한 것이며 decision-usable exact-part packet은 계속 0건, assurance는 `HOLD`다.
 - 2026-08-24 `Roadmap Lab`을 비전문가가 따라갈 수 있는 `자료 선택 → 6개 gate 검사 → 변경 후 재검사` 3단계로 통합했다. 합성 정상은 6개 gate를 통과하되 승인으로 승격되지 않고, 변조는 hash gate 2, 오부품은 identity gate 4에서 멈춘다. ECC·차폐·부품 변경은 각각 gate 6·5·4를 다시 연다. 브라우저 로컬 JSON/PDF/TXT는 최대 10 MB를 메모리에서만 읽고 provenance가 없으면 gate 3에서 닫는다.
 - Git 밖 실제 SPENVIS 9개와 TI 후보 5개를 새 local bundle gate로 직접 결속했다. 두 묶음 모두 파일 hash 결속은 재현됐지만 action별 권리와 외부 승인 anchor가 없어 `PROVENANCE_FAILURE / HOLD_NOT_ISSUED / HOLD`다. UI에는 raw bytes·경로·식별자·hash 없이 source class·개수·blocker code만 담은 receipt를 연결했다. SPENVIS 내부 일관성 11개는 재현됐으나 독립 comparator·승인 tolerance·독립 reviewer가 없어 과학 교차검산은 `NOT_EVALUATED`다.
@@ -123,7 +130,7 @@
 
 1. Workstream 30이 확보한 SPENVIS bundle에 provider job reference, action별 권리, 승인 raw manifest와 과학적 교차검산을 연결해 environment contract 발행 가능성을 판정한다.
 2. Workstream 40이 고정된 COTS 승인 검토 대상 `23LC1024-I/SN`에 권리 확인 원문, ESA 비행·시험 article의 exact suffix/lot/die identity, 시험 조건·임무 적용성, TID와 필요한 SEE coverage를 연결한다.
-3. Workstream 60이 사용자 승인과 고정 revision 범위를 확인한 뒤 실제 GCP `ASR-D02`를 수행하고 False Accept/PASS와 관찰 증거를 제출한다. 실행 전 상태는 `NOT_EVALUATED`다.
+3. Workstream 70이 `D02-02` generation 404를 구조화된 fail-closed result로 정규화하고 `D02-05` expected exact-part identity binding을 구현한다. 새 revision 배포 후 Workstream 60이 동일 두 공격을 재실행하되, 현재 실패 증거와 target lock은 보존한다. 나머지 12개 `ASR-D02` 공격은 test endpoint/IAM 범위를 별도 승인받기 전 `NOT_EVALUATED`다.
 4. 실제 environment·part contract가 생기면 Workstream 80이 합성 fallback과 분리된 Evidence-to-Decision 경로와 원문 locator를 Product에 연결한다.
 5. Workstream 90은 실제 사용자 1명의 5분 실행·판정 이유·다음 행동 탐색을 측정하고 COTS·과학·비용 주장을 출처·범위에 맞게 정리한다.
 6. 공통 계약·Core 수정 시에만 인접 회귀를 넓히고, 전체 회귀와 commit·push는 검증 가능한 통합 단위가 정리된 뒤 한 번 수행한다. 실제 environment·parts evidence가 없으면 방사선 assurance는 계속 `HOLD`다.

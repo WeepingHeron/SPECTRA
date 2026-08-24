@@ -2,7 +2,51 @@
 
 ## 상태
 
-`VERIFIED — H05 Core Binding & Input Integrity Remediation`
+`COMPLETE — SYNTHETIC_BOUNDED; remediation deployed and live receipt refreshed`
+
+## ASR-D02 remediation deployment — 2026-08-25
+
+- 고유 image `h09-20260825-remediation`을 빌드하고 digest `sha256:cb2193...04bb`로 기존 Cloud Run Agent 3개의 revision만 갱신했다. 새 revision은 Mission `00007-s86`, Parts `00007-44k`, Assurance `00007-dk9`다.
+- 보완 Workflow source SHA-256 `d745ad...65e9`를 revision `000006-d2a`로 배포했다. API 활성화·service account 생성·bucket lifecycle·project/bucket IAM binding은 수행하지 않았다.
+- 새 control execution `819d4189-4c3f-4197-b4a3-ab7e38370a97`은 production Core parity를 통과했다. H07 read-only receipt를 이 execution으로 다시 수집해 `VALID / OBSERVED / LIVE_API / HOLD`로 Product timeline data를 갱신했다.
+- 실제 재공격 `D02-02/04/05/10`은 모두 기대 stable code로 fail-closed했다. False Accept·False PASS·unexpected는 이 네 공격 범위에서 0이다.
+- 아래 Phase 1 remediation 요구는 결함 발견 이력이며, 현재 deployed 경로에서는 해소됐다. 나머지 ASR-D02 12건과 IAM/OIDC·격리 endpoint 공격은 제출 후 범위다.
+
+## ASR-D02 Phase 1에서 확인된 H05 remediation 요구 — 2026-08-25
+
+- Workstream 60의 승인된 actual 공격 4건 중 `D02-04`와 `D02-10`은 locked revision에서 안전 차단됐다.
+- `D02-02`는 잘못된 generation 조회의 Storage 404를 잡지 않아 구조화된 `INPUT_GENERATION_MISMATCH / HOLD` result를 저장하지 못하고 Workflow 자체가 `FAILED`가 됐다.
+- `D02-05`는 입력 identity의 필수 필드 존재 여부만 검사하고 independently fixed expected identity와 비교하지 않아, exact part number 단독 변조를 `EXACT_PART_IDENTITY_MATCHED`로 수용했다. 최종 합성 decision은 `HOLD`였지만 downstream False Accept다.
+- 당시 H05 배포 경로는 `CHANGES_REQUESTED`였고, 기존 Phase 1 증거를 덮어쓰지 않은 채 위 remediation revision과 별도 evidence로 해소했다.
+- 로컬 working tree에는 두 보완을 구현했다. Workflow는 metadata lookup 404를 `INPUT_GENERATION_MISMATCH`, 그 밖의 조회 오류를 `INPUT_STORAGE_READ_FAILURE` result로 저장하며, Parts는 다섯 identity 필드의 canonical hash를 `expected_identity_sha256`과 대조한다.
+- 당시 Agent/Workflow 계약 테스트 13개와 ASR-D02 runner/reconciliation 6개는 로컬 보완 기준선이었다. 현재 deployed 결함 해소 증거는 위 새 target의 control·공격 batch다.
+
+## H08 Product Timeline Adapter — 2026-08-25
+
+- H07 live receipt를 우선 사용하고, 유효하지 않을 때만 canonical hash가 검증된 H05 snapshot을 사용하는 Product timeline adapter를 구현했다.
+- 첫 read-only 호출은 credential 재인증 만료로 안전하게 닫혔고, 재인증 후 동일 정상 execution을 actual API·Logging·Storage에서 읽어 `VALID / OBSERVED / HOLD` receipt를 발행했다. GCP mutation은 없었다.
+- 현재 Product data는 `LIVE_API`, `live_api_observed=true`, `fallback_used=false`이며 실제 8개 event timestamp와 stream hash를 포함한다. caller identity는 별도 attestation하지 않는다.
+- live/actual/optimistic receipt, non-finite timeline과 snapshot 변조를 포함한 H08 테스트 7개가 통과했고 H06~H08 합계는 35개다.
+- adapter와 data layer만 구현했으며 Product HTML 시각 연결은 UI 재점검 회차로 남긴다. 상세 계약: `PRODUCT_TIMELINE_ADAPTER_H08.md`.
+
+## H07 Authenticated Read-only Connector — 2026-08-25
+
+- trusted anchor의 project/region/workflow/bucket/Agent revision만 사용하는 read-only connector를 구현했다.
+- 허용 명령은 execution describe, logging read, object describe, object cat뿐이며 Workflow 실행·GCP write/delete/deploy/IAM 경로는 없다.
+- result body read 전후 generation, Workflow 반환 result와 Storage body, Agent response hash와 exact correlation/revision log, Mission Core result hash를 대조한다.
+- H05 실제 구조에 맞춰 Storage execution input hash와 Core canonical input hash를 별도 필드로 분리했다.
+- H06 19개와 H07 9개, 직접 테스트 28개가 통과했다. actual 정상 execution receipt도 `VALID / COMPLETE / SUCCEEDED / SYNTHETIC_ONLY / HOLD`로 발행했다.
+- 정상 receipt도 `SYNTHETIC / HOLD / used_for_decision=false`; 상세 계약은 `READ_ONLY_LIVE_CONNECTOR_H07.md`다.
+
+## H06 Live Execution Event Contract — 2026-08-25
+
+- Workflow/Storage/Mission/Parts/Core/Assurance를 한 execution ID와 correlation ID로 묶는 `SPECTRA_LIVE_EXECUTION_EVENT_1.0.0`과 Product-safe receipt reducer를 구현했다.
+- sequence·timezone timestamp·event SHA-256 predecessor chain, 고정 H05 Workflow/Agent revision, Storage generation, Core version과 input hash lineage를 검증한다.
+- `LIVE_API`와 `SNAPSHOT_REPLAY`, stream 상태와 GCP execution 상태, evidence 상태와 assurance decision을 별도 필드로 유지한다.
+- Workflow `SUCCEEDED`도 `workflow_success_is_business_pass=false`; 현재 synthetic deployment는 `SYNTHETIC_ONLY / HOLD`를 벗어나지 않는다.
+- completion 선행, mixed execution, Agent revision·input hash·hash-chain 변조, terminal 누락, synthetic PASS와 anchor 자기 승격 등 직접 공격 19개가 통과했다.
+- reducer 자체는 Google API를 호출하지 않고 hash chain도 source authenticity를 증명하지 않는다. H07 connector가 read-only API 관찰 경계를 추가했지만 actual live receipt와 Product timeline은 다음 구현이다.
+- 상세 계약: `LIVE_EXECUTION_EVENT_CONTRACT_H06.md`.
 
 이 상태는 H04에서 발견된 production Core 미결합, body-hash 결합 우회, runtime endpoint 교체 가능성과 production test control을 H05가 보완했고 Control Tower가 로컬 테스, 실제 revision·Workflow, 정상·공격 execution과 저장 result를 독립 재검증해 H05 패키지를 `VERIFIED`로 판정했다는 뜻이다. 실제 environment·BOM·시험 evidence와 Workstream 60 `ASR-D02`는 아직 완료되지 않았으므로 Stage 7은 `IN_PROGRESS`다.
 

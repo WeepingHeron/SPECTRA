@@ -187,7 +187,24 @@
     .system-truth{display:flex;align-items:center;justify-content:center;gap:26px;margin-top:13px;color:#777;font-size:11px}
     .system-truth b{color:#ddd}.system-truth a{color:#fff;text-underline-offset:3px}
 
-    /* Slide 09: Roadmap & Future Expansion */
+    /* Slide 09: Actual adversarial reliability evidence */
+    .attack-intro{margin:16px 0 0;color:var(--muted);font-size:14px;line-height:1.5;max-width:960px}
+    .attack-proof{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(250px,.55fr);gap:36px;margin-top:22px;padding-top:18px;border-top:1px solid #555}
+    .attack-list{display:grid;gap:0}
+    .attack-row{display:grid;grid-template-columns:minmax(180px,.9fr) minmax(260px,1.2fr) auto;align-items:center;gap:18px;min-height:60px;border-bottom:1px solid var(--line)}
+    .attack-row:first-child{border-top:1px solid var(--line)}
+    .attack-name{font-size:14px;font-weight:600;color:#fff;line-height:1.3}
+    .attack-code{font:500 10.5px/1.4 "SFMono-Regular",Menlo,monospace;color:var(--muted)}
+    .attack-state{min-width:108px;padding:5px 8px;border:1px solid #555;text-align:center;font-size:9.5px;font-weight:750;letter-spacing:.08em;color:#ddd;white-space:nowrap}
+    .attack-state.detected{border-style:dashed;color:#fff}
+    .attack-summary{display:grid;align-content:start;border-left:1px solid var(--line);padding-left:28px}
+    .attack-metric{display:grid;grid-template-columns:58px 1fr;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+    .attack-metric b{font:650 42px/.9 "SF Pro Display","Helvetica Neue",Arial,sans-serif;letter-spacing:-.05em;color:#fff}
+    .attack-metric span{font-size:12px;color:var(--muted);line-height:1.35}.attack-metric span strong{display:block;color:#fff;font-weight:600}
+    .attack-boundary{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px;padding:10px 12px;border:1px solid #555;color:var(--muted);font:600 10px/1.4 "SFMono-Regular",Menlo,monospace;letter-spacing:.05em}
+    .attack-boundary strong{color:#fff;font-weight:750;white-space:nowrap}
+
+    /* Slide 10: Roadmap & Future Expansion */
     .roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:20px;background:var(--line)}
     .roadmap-card{padding:18px 16px;background:#090909;display:flex;flex-direction:column}
     .roadmap-phase-tag{font-size:9.5px;letter-spacing:.15em;font-weight:700;text-transform:uppercase;margin-bottom:6px}
@@ -215,6 +232,7 @@
       .grid-2,.grid-3,.metric-stage,.evidence-lanes,.identity-grid,.industry-stats,.demo-pipeline-view{grid-template-columns:1fr}
       .broken-flow{grid-template-columns:1fr;gap:9px}.break{width:2px;height:20px;margin:auto}.compare{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}
       .reliability-grid{grid-template-columns:1fr 1fr}.roadmap-grid,.gcp-flow{grid-template-columns:1fr}.system-flow{grid-template-columns:repeat(5,1fr);gap:8px}.system-arrow{display:none}
+      .attack-proof{grid-template-columns:1fr;gap:16px}.attack-summary{border-left:0;border-top:1px solid var(--line);padding:12px 0 0}.attack-row{grid-template-columns:1fr}.attack-state{justify-self:start}
       .slide{align-content:start}.facts{grid-template-columns:1fr 1fr}.slide2-note,.slide4-note{white-space:normal}
     }
     @media(max-height:760px) and (min-width:901px){
@@ -231,6 +249,7 @@
       .demo-console{margin-top:10px;padding:10px 14px}
       .demo-pipeline-view{margin-top:8px}
       .reliability-grid{margin-top:8px}.reliability-card{min-height:76px;padding:8px 10px}
+      .attack-intro{margin-top:10px;font-size:12px}.attack-proof{margin-top:12px;padding-top:10px;gap:24px}.attack-row{min-height:48px}.attack-metric{padding:7px 0}.attack-metric b{font-size:34px}.attack-boundary{margin-top:9px;padding:7px 10px}
     }
 
     /* 2026-08-22 post-presentation visual integration: original monochrome language, wider canvas, lower density */
@@ -465,10 +484,33 @@
       </div>
     </section>
 
-    <section class="slide" data-title="향후 로드맵" aria-labelledby="s9-title">
+    <section class="slide" data-title="공격 검증" aria-labelledby="s9-title">
       <div class="slide-inner">
-        <p class="kicker">09 · ROADMAP &amp; FUTURE EXPANSION TOOLS</p>
-        <h2 id="s9-title">검증된 기반 위에서,<br><span class="accent">실제 데이터와 AI 파이프라인으로 확장한다.</span></h2>
+        <p class="kicker">09 · ADVERSARIAL RELIABILITY ON ACTUAL GCP</p>
+        <h2 id="s9-title">무결점이라 주장하지 않는다.<br><span class="accent">결함을 발견하면, 승인하지 않는다.</span></h2>
+        <p class="attack-intro">실제 GCP에서 정상 control과 합성 무결성 공격 4건을 재실행했다. 발견했던 두 결함까지 배포 경로에서 기대한 경계로 차단됐다.</p>
+        <div class="attack-proof">
+          <div class="attack-list" aria-label="ASR-D02 Phase 1 공격 결과">
+            <div class="attack-row"><span class="attack-name">부품 증거 hash 변조</span><span class="attack-code">PART_EVIDENCE_HASH_MISMATCH</span><span class="attack-state">경계 차단 확인</span></div>
+            <div class="attack-row"><span class="attack-name">Agent endpoint override</span><span class="attack-code">ENDPOINT_OVERRIDE_FORBIDDEN</span><span class="attack-state">경계 차단 확인</span></div>
+            <div class="attack-row"><span class="attack-name">exact part number 변조</span><span class="attack-code">PART_IDENTITY_MISMATCH</span><span class="attack-state">재검증 차단</span></div>
+            <div class="attack-row"><span class="attack-name">존재하지 않는 generation</span><span class="attack-code">INPUT_GENERATION_MISMATCH</span><span class="attack-state">재검증 차단</span></div>
+          </div>
+          <div class="attack-summary" aria-label="공격 검증 요약">
+            <div class="attack-metric"><b>4</b><span><strong>SAFE FAILURE</strong>평가한 공격 전부</span></div>
+            <div class="attack-metric"><b>1</b><span><strong>CONTROL PASS</strong>Core hash·semantic 일치</span></div>
+            <div class="attack-metric"><b>0</b><span><strong>False Accept / PASS</strong>평가한 공격 4건 범위</span></div>
+          </div>
+        </div>
+        <div class="attack-boundary"><strong>DEPLOYED RETEST VERIFIED</strong><span>나머지 12건 NOT_EVALUATED → FINAL ASSURANCE HOLD</span></div>
+        <div class="source-line">※ locked actual GCP 5 executions: control 1 + 합성 공격 4 · False Accept/PASS/unexpected 0 · 전체 침투시험·KMS·방사선 보증 아님</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="향후 로드맵" aria-labelledby="s10-title">
+      <div class="slide-inner">
+        <p class="kicker">10 · ROADMAP &amp; FUTURE EXPANSION TOOLS</p>
+        <h2 id="s10-title">검증된 기반 위에서,<br><span class="accent">실제 데이터와 AI 파이프라인으로 확장한다.</span></h2>
         <div class="roadmap-grid">
           <article class="roadmap-card"><span class="roadmap-phase-tag p1">Phase 01 · 단기 확장</span><div class="roadmap-title">공인 우주환경 DB 및 상용 부품 성적서 연동</div><div class="roadmap-tools"><span class="roadmap-tool-badge">ESA SPENVIS 연동</span><span class="roadmap-tool-badge">NASA 공인 DB</span><span class="roadmap-tool-badge">COTS 성적서 라이브러리</span></div><ul><li>우주 환경 연동</li><li>부품 증거 라이브러리</li><li>국제 표준 교차검산</li></ul></article>
           <article class="roadmap-card"><span class="roadmap-phase-tag p2">Phase 02 · 중기 확장</span><div class="roadmap-title">AI 성적서 자동 분석 &amp; 엔지니어 검토 체계</div><div class="roadmap-tools"><span class="roadmap-tool-badge">Document AI</span><span class="roadmap-tool-badge">Gemini 멀티모달</span><span class="roadmap-tool-badge">Human-in-the-Loop</span></div><ul><li>PDF 성적서 자동 분석</li><li>AI 추출값 후보 격리</li><li>생산 로트 추적</li></ul></article>

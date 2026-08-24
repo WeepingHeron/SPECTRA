@@ -1,0 +1,424 @@
+{
+  "aggregate": {
+    "evaluated_attacks": 0,
+    "evaluated_controls": 1,
+    "false_accepts": "NOT_COMPUTED",
+    "false_passes": "NOT_COMPUTED",
+    "live_executions": 1,
+    "result": "NOT_EVALUATED",
+    "safe_failures": "NOT_COMPUTED",
+    "unexpected_results": 0
+  },
+  "boundary_notes": [
+    "The evaluated control reuses an existing H05 normal execution; this script starts no Workflow.",
+    "Related H05 attack cases are not relabeled as ASR-D02 results when mutation or required observations differ.",
+    "False Accept and False PASS remain NOT_COMPUTED because zero ASR-D02 attacks are evaluated.",
+    "Every input is SYNTHETIC and the final assurance boundary remains HOLD."
+  ],
+  "case_observations": [
+    {
+      "attack_id": "ASR-D02-C01",
+      "classification": "CONTROL_PASS",
+      "core_semantic_parity": true,
+      "downstream_payload_accepted": true,
+      "execution_attempted": true,
+      "gcp_observations": {
+        "agent_results": {
+          "assurance": "VALID",
+          "mission": "VALID",
+          "parts": "VALID"
+        },
+        "agent_revisions": {
+          "assurance": "spectra-h04-assurance-00006-zfx",
+          "mission": "spectra-h04-mission-00006-4f5",
+          "parts": "spectra-h04-parts-00006-p6c"
+        },
+        "core_semantic_parity": true,
+        "correlation_id": "spectra-h05-ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+        "deployed_core_result_sha256": "sha256:a7e7de0d71e9ec5f94574ae5bd2244a94ef70169304b190c2126b1698d701a27",
+        "downloaded_body_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "downloaded_result_sha256": "sha256:68d66ef0578ddb4d2e3078a01baac3679333fb6c2cae39a3eaafc8cf670939e2",
+        "expected_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "input_generation_observed": "1787243596527806",
+        "input_generation_requested": "1787243596527806",
+        "input_object": "inputs/20260820T163312Z-11bf821d-normal-production-core.json",
+        "local_core_result_sha256": "sha256:a7e7de0d71e9ec5f94574ae5bd2244a94ef70169304b190c2126b1698d701a27",
+        "metadata_sha256": "sha256:ec1f4636a4d3bb2596dd443957a839d368cd99c49b20b0af193fff633a1a3b3b",
+        "resolved_agent_endpoints": {
+          "ASSURANCE_URL": "https://spectra-h04-assurance-mwmfe3da5q-du.a.run.app",
+          "MISSION_URL": "https://spectra-h04-mission-mwmfe3da5q-du.a.run.app",
+          "PARTS_URL": "https://spectra-h04-parts-mwmfe3da5q-du.a.run.app"
+        },
+        "result_generation": "1787243600145935",
+        "result_object": "results/ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34.json",
+        "structured_log_refs": [
+          "6a872c4f000a3fa894716843",
+          "6a872c4f000315bb1d7638dd",
+          "6a872c4f00068b976b276126"
+        ],
+        "target_identity": {
+          "assurance_revision": "spectra-h04-assurance-00006-zfx",
+          "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+          "locked_at": "2026-08-20T16:42:38Z",
+          "mission_revision": "spectra-h04-mission-00006-4f5",
+          "parts_revision": "spectra-h04-parts-00006-p6c",
+          "project_id": "iceu-686",
+          "region": "asia-northeast3",
+          "state": "LOCKED",
+          "workflow_name": "spectra-h04-e2e",
+          "workflow_revision": "000005-32c",
+          "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+        },
+        "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34",
+        "workflow_state": "SUCCEEDED"
+      },
+      "observed_decision": "HOLD",
+      "observed_engineering_gate": "NOT_EVALUATED",
+      "observed_stable_codes": [
+        "SYNTHETIC_ONLY"
+      ],
+      "observed_status": "VALID",
+      "recommendation_present": false
+    },
+    {
+      "attack_id": "ASR-D02-01",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "RELATED_H05_CASE_MUTATION_DIFFERS_FROM_D02_01",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-02",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "NEW_EXACT_MUTATION_EXECUTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-03",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "FRESHNESS_OR_SUPERSESSION_PRECONDITION_NOT_IMPLEMENTED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-04",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "RELATED_H05_CASE_REQUIRED_OBSERVATIONS_INCOMPLETE",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-05",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "RELATED_H05_CASE_EXPECTED_CODE_AND_MUTATION_DIFFER",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-06",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "ISOLATED_TEST_ENDPOINT_OR_RESULT_INJECTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-07",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "ISOLATED_TEST_ENDPOINT_OR_RESULT_INJECTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-08",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "ISOLATED_TEST_ENDPOINT_OR_RESULT_INJECTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-09",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "ISOLATED_TEST_ENDPOINT_OR_RESULT_INJECTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-10",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "RELATED_H05_CASE_REQUIRED_OBSERVATIONS_INCOMPLETE",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-11",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "ISOLATED_TEST_ENDPOINT_OR_RESULT_INJECTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-12",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "ISOLATED_TEST_ENDPOINT_OR_RESULT_INJECTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-13",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "ISOLATED_TEST_ENDPOINT_OR_RESULT_INJECTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-14",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "ISOLATED_TEST_ENDPOINT_OR_RESULT_INJECTION_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-15",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "SEPARATELY_AUTHORIZED_IAM_OR_OIDC_PROBE_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    },
+    {
+      "attack_id": "ASR-D02-16",
+      "classification": "NOT_EVALUATED",
+      "core_semantic_parity": null,
+      "downstream_payload_accepted": null,
+      "execution_attempted": false,
+      "gcp_observations": null,
+      "not_evaluated_reason": "SEPARATELY_AUTHORIZED_IAM_OR_OIDC_PROBE_REQUIRED",
+      "observed_decision": null,
+      "observed_engineering_gate": null,
+      "observed_stable_codes": null,
+      "observed_status": null,
+      "recommendation_present": null
+    }
+  ],
+  "evidence_status": "CONTROL_EVALUATED_ATTACKS_NOT_EVALUATED",
+  "existing_evidence_coverage": [
+    {
+      "attack_id": "ASR-D02-C01",
+      "coverage": "COMPLETE_EXISTING_CONTROL_EVIDENCE",
+      "existing_case": "normal-production-core"
+    },
+    {
+      "attack_id": "ASR-D02-01",
+      "coverage": "RELATED_ONLY_NOT_ASR_EVIDENCE",
+      "existing_case": "body-metadata-expected-forgery"
+    },
+    {
+      "attack_id": "ASR-D02-02",
+      "coverage": "NEW_SYNTHETIC_EXECUTION_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-03",
+      "coverage": "PRECONDITION_MISSING",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-04",
+      "coverage": "RELATED_ONLY_NOT_ASR_EVIDENCE",
+      "existing_case": "parts-evidence-hash-corruption"
+    },
+    {
+      "attack_id": "ASR-D02-05",
+      "coverage": "RELATED_ONLY_NOT_ASR_EVIDENCE",
+      "existing_case": "malformed-agent-input"
+    },
+    {
+      "attack_id": "ASR-D02-06",
+      "coverage": "SEPARATE_TEST_INFRA_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-07",
+      "coverage": "SEPARATE_TEST_INFRA_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-08",
+      "coverage": "SEPARATE_TEST_INFRA_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-09",
+      "coverage": "SEPARATE_TEST_INFRA_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-10",
+      "coverage": "RELATED_ONLY_NOT_ASR_EVIDENCE",
+      "existing_case": "endpoint-override"
+    },
+    {
+      "attack_id": "ASR-D02-11",
+      "coverage": "SEPARATE_TEST_INFRA_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-12",
+      "coverage": "SEPARATE_TEST_INFRA_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-13",
+      "coverage": "SEPARATE_TEST_INFRA_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-14",
+      "coverage": "SEPARATE_TEST_INFRA_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-15",
+      "coverage": "SEPARATE_IAM_PROBE_REQUIRED",
+      "existing_case": null
+    },
+    {
+      "attack_id": "ASR-D02-16",
+      "coverage": "SEPARATE_IAM_PROBE_REQUIRED",
+      "existing_case": null
+    }
+  ],
+  "package_id": "60-deployed-gcp-asr-d02-preparation-h04",
+  "required_permissions_observed": {
+    "cloud_run_revision_get": true,
+    "credential_material_recorded": false,
+    "iam_policy_read": false,
+    "logging_read_scoped_by_correlation": true,
+    "storage_object_create": false,
+    "storage_object_get_exact_generation": true,
+    "storage_object_metadata_get": true,
+    "workflow_execute": false,
+    "workflow_execution_get": true,
+    "workflow_revision_get": true
+  },
+  "schema_version": "spectra.assurance.asr-d02.existing-evidence.v1",
+  "target_lock": {
+    "assurance_revision": "spectra-h04-assurance-00006-zfx",
+    "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
+    "locked_at": "2026-08-20T16:42:38Z",
+    "locked_by": "CONTROL_TOWER_EXISTING_EVIDENCE_RECONCILIATION",
+    "mission_revision": "spectra-h04-mission-00006-4f5",
+    "parts_revision": "spectra-h04-parts-00006-p6c",
+    "project_id": "iceu-686",
+    "region": "asia-northeast3",
+    "state": "LOCKED",
+    "workflow_name": "spectra-h04-e2e",
+    "workflow_revision": "000005-32c",
+    "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e"
+  }
+}

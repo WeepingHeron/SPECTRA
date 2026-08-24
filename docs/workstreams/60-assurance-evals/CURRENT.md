@@ -2,7 +2,35 @@
 
 ## 상태
 
-`VERIFIED — H06 local readiness fail-closed QA / ASR-D02 remains NOT_EVALUATED`
+`SUBMISSION_COMPLETE_WITH_LIMITS — ASR-D02 remediation batch PARTIAL_SAFE`
+
+## ASR-D02 deployed remediation 재검증 — 2026-08-25
+
+- 승인된 최소 배포 뒤 target을 Workflow `000006-d2a`, Mission `00007-s86`, Parts `00007-44k`, Assurance `00007-dk9`, image digest `sha256:cb2193...04bb`, Workflow source `sha256:d745ad...65e9`로 잠갔다.
+- 정상 synthetic control은 `SUCCEEDED / VALID / NOT_EVALUATED / HOLD`였고, 로컬·배포 Core의 canonical SHA-256과 semantic object가 일치해 `CONTROL_PASS`다.
+- `D02-02/04/05/10`은 각각 `INPUT_GENERATION_MISMATCH`, `PART_EVIDENCE_HASH_MISMATCH`, `PART_IDENTITY_MISMATCH`, `ENDPOINT_OVERRIDE_FORBIDDEN`으로 닫혀 모두 `SAFE_FAILURE`다.
+- 집계는 live executions 5, control pass 1, evaluated attacks 4, safe failures 4, False Accept 0, False PASS 0, unexpected 0, not evaluated 12, overall `PARTIAL_SAFE`다.
+- 증거는 `evidence/ASR_D02_DEPLOYED_GCP_REMEDIATION_BATCH_H09.json`과 `evidence/ASR_D02_DEPLOYED_GCP_REMEDIATION_EVALUATED_H09.json`에 보존했다. 아래 Phase 1 실패 기록은 결함 발견 이력이며 이 재검증이 현재 상태를 대체한다.
+- 나머지 12건과 IAM/OIDC·격리 test endpoint 공격은 제출 후 범위다. 따라서 전체 penetration test나 방사선 assurance가 아니라 `HOLD`다.
+
+## ASR-D02 Phase 1 actual GCP 평가 — 2026-08-25
+
+- 사용자가 명시적으로 승인한 production-safe subset `D02-02/04/05/10`만 locked target `spectra-h04-e2e@000005-32c`에서 실행했다. deployment·IAM·service account·endpoint 설정은 변경하지 않았고 합성 create-only object만 사용했다.
+- 기존 정상 control은 `CONTROL_PASS`; 네 공격 중 `D02-04` parts evidence hash와 `D02-10` endpoint override는 기대 경계에서 `SAFE_FAILURE`였다.
+- `D02-05`는 exact orderable part number만 `SYNTHETIC-PART-999`로 바꿨는데 Parts가 `EXACT_PART_IDENTITY_MATCHED`, Assurance가 `VALID`로 소비했다. 최종은 합성 경계 `HOLD`라 False PASS는 아니지만 `FALSE_ACCEPT`다.
+- `D02-02`는 Agent에 전달되지 않았으나 Storage exact-generation 404가 구조화된 `INPUT_GENERATION_MISMATCH` result로 변환되지 않고 Workflow `FAILED`로 끝나 `UNEXPECTED_RESULT`다.
+- 집계는 evaluated attacks 4, safe failures 2, false accepts 1, false passes 0, unexpected results 1, not evaluated 12, overall `FAIL`이다. `ASR-D02` 전체 통과나 Stage 6 완료를 주장하지 않는다.
+- 최초 `D02-04/05` 두 실행은 runner canonical integer-float 정규화 누락으로 Mission body-hash에서 먼저 닫혀 공격 결과에서 제외했다. 배포와 같은 canonicalization으로 수정한 재실행만 평가했다.
+- 통합 증거: `evidence/ASR_D02_DEPLOYED_GCP_PHASE1_EVALUATED_H09.json`; offline evaluator는 필수 관찰 누락 0건으로 위 분류를 재현했다.
+
+## ASR-D02 기존 H05 증거 reconciliation — 2026-08-25 (Phase 1 이전 기준선)
+
+- 새 Workflow·Storage object·endpoint·IAM probe 없이 기존 H05 evidence와 locked revision을 deterministic script로 대조했다.
+- 정상 production Core control 1건은 exact Workflow/Agent revision, Workflow source hash, input/result generation·SHA, correlation-scoped 세 Agent log와 local/deployed Core parity가 완전해 `CONTROL_PASS`로 오프라인 평가했다.
+- H05 body-hash, parts-hash, malformed identity, endpoint override 사례는 관련성이 있어도 ASR-D02 exact mutation 또는 필수 관찰 필드가 달라 공격 결과로 소급하지 않았다.
+- 공격 16건은 모두 `NOT_EVALUATED`; evaluated attacks 0이므로 False Accept/False PASS actual은 evidence aggregate에서 계속 `NOT_COMPUTED`다.
+- isolated Agent transport/result 공격 8건, IAM/OIDC 2건, freshness precondition 1건, exact mutation 신규 실행 항목을 분리했다.
+- reconciliation 전용 테스트 1개와 기존 offline evaluator가 통과했다. 산출물: `evidence/ASR_D02_EXISTING_EVIDENCE_RECONCILIATION.json`.
 
 ## H06 local readiness fail-closed QA — 2026-08-24
 
@@ -12,20 +40,20 @@
 - 테스트는 `tests/assurance/test_local_readiness_fail_closed.py`의 합성/local fixture 3개뿐이다. 실제 environment 발행, exact-part suitability, 과학 정확성, 권리, GCP object·IAM·revision은 평가하지 않았고 `ASR-D02=NOT_EVALUATED`를 유지한다.
 - Control Tower가 세 공격 묶음을 직접 재현했고 3 tests가 통과했다. 공통 schema와 upstream 구현은 수정하지 않았다. 이 판정은 local readiness fail-closed QA에만 적용하며 실제 `ASR-D02`는 계속 `NOT_EVALUATED`다.
 
-H01 고정 공격 기준선의 `VERIFIED`, H02의 `INTEGRATED / commit 379f3ad`, H03의 `INTEGRATED / commit 32b6131` 상태는 유지한다. H05 deployed identity는 고정되었지만 시간·사용량 우선 중단 지시에 따라 `ASR-D02` live 공격은 시작하지 않았다. 따라서 False Accept/False PASS actual은 계산하지 않으며 `ASR-D02=NOT_EVALUATED`를 유지한다. 이 상태는 `VERIFIED`, `INTEGRATED` 또는 Stage 6 완료가 아니다.
+H01 고정 공격 기준선의 `VERIFIED`, H02의 `INTEGRATED / commit 379f3ad`, H03의 `INTEGRATED / commit 32b6131` 상태는 유지한다. 아래 H06/local-readiness 및 H04 preparation 문단의 `ASR-D02=NOT_EVALUATED` 표현은 Phase 1 실행 전 역사적 기준선이다. 현재 deployed profile의 정확한 상태는 위 Phase 1 집계이며, main `tests/assurance/manifest.json`의 단일 dependency case는 아직 partial-live 결과를 흡수하지 않아 `NOT_EVALUATED`로 남아 있다. 어느 쪽도 Stage 6 완료를 뜻하지 않는다.
 
 ## 2026-08-21 현재 profile 결정
 
 - Core profile은 기존 공격 18개와 MVP/ECC 공격 11개, 총 29개 공격이다. 이 값은 고정 합성 세트의 과거 검증 범위이며 실제 과학 정확도나 GCP 보안 검증이 아니다.
 - ASR-D03의 WATCHDOG·TMR·SEL protection 공격 18개는 `EXPERIMENTAL_RUNTIME` profile로 분리한다. 과거 `VERIFIED`는 유지하지만 Core·발표 집계에 합산하지 않는다.
-- ASR-D02는 실제 GCP 배포 후 Cloud Storage object·generation·hash·IAM과 Agent 경계를 대상으로 재설계·실행하며, 그 전까지 `NOT_EVALUATED`다.
+- ASR-D02는 별도 deployed profile에서 Phase 1 네 공격을 평가했고 나머지 12개만 `NOT_EVALUATED`다. main manifest의 상위 dependency case는 partial-live aggregate 반영 전까지 기존 값을 유지한다.
 
 ## 범위 경계
 
 - 현재 EvidencePacket v1/v1.1 schema·semantic gate, Stage 2 합성 계산, MVP Decision Engine v1과 Mitigation Runtime Calculator v1을 실행 대상으로 삼는다.
 - 실제 부품 증거, 실제 환경 출력, 실제 정책 승인과 실제 GCP object/IAM 상태는 생성하지 않는다.
 - `ASR-D01`은 MVP의 ECC·policy·Change Impact 범위, `ASR-D03`은 합성 WATCHDOG·TMR·SEL_PROTECTION runtime 계산과 fail-closed 경계에 한정한다.
-- 실제 GCP 의존성 `ASR-D02`만 `NOT_EVALUATED`로 유지하며 통과나 False PASS 0 분모로 계산하지 않는다.
+- 실제 GCP 의존성 `ASR-D02`는 main baseline 분모에는 아직 합산하지 않는다. 별도 deployed profile의 Phase 1 False PASS 0은 네 공격에만 적용하며 전체 통과를 뜻하지 않는다.
 
 ## 변경 파일
 

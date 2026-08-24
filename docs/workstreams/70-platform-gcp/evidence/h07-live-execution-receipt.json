@@ -1,0 +1,116 @@
+{
+  "contract_version": "SPECTRA_READ_ONLY_GCP_CONNECTOR_RECEIPT_1.0.0",
+  "processing_status": "VALID",
+  "connector_status": "OBSERVED",
+  "observation_mode": "LIVE_API",
+  "execution_id": "819d4189-4c3f-4197-b4a3-ab7e38370a97",
+  "mutation_attempted": false,
+  "api_transport_authentication": "GCLOUD_CREDENTIAL_REQUIRED_IDENTITY_NOT_ATTESTED",
+  "event_receipt": {
+    "contract_version": "SPECTRA_LIVE_EXECUTION_RECEIPT_1.0.0",
+    "processing_status": "VALID",
+    "observation_mode": "LIVE_API",
+    "stream_status": "COMPLETE",
+    "execution_status": "SUCCEEDED",
+    "workflow_succeeded": true,
+    "workflow_success_is_business_pass": false,
+    "event_chain_authenticity": "INTEGRITY_ONLY_NOT_AUTHENTICATED",
+    "evidence_status": "SYNTHETIC_ONLY",
+    "assurance_decision": "HOLD",
+    "used_for_decision": false,
+    "execution_ref": {
+      "project_id": "iceu-686",
+      "region": "asia-northeast3",
+      "workflow_name": "spectra-h04-e2e",
+      "execution_id": "819d4189-4c3f-4197-b4a3-ab7e38370a97",
+      "correlation_id": "spectra-h05-819d4189-4c3f-4197-b4a3-ab7e38370a97"
+    },
+    "timeline": [
+      {
+        "sequence": 0,
+        "occurred_at": "2026-08-24T22:07:03.088616059Z",
+        "event_type": "WORKFLOW_STARTED",
+        "source_kind": "WORKFLOW",
+        "source_id": "spectra-h04-e2e",
+        "state": "RUNNING"
+      },
+      {
+        "sequence": 1,
+        "occurred_at": "2026-08-24T22:07:03.088616059Z",
+        "event_type": "STORAGE_INPUT_BOUND",
+        "source_kind": "CLOUD_STORAGE",
+        "source_id": "spectra-h04-iceu-686",
+        "state": "BOUND"
+      },
+      {
+        "sequence": 2,
+        "occurred_at": "2026-08-24T22:07:04.236468Z",
+        "event_type": "AGENT_COMPLETED",
+        "source_kind": "CLOUD_RUN_AGENT",
+        "source_id": "spectra-h04-mission",
+        "state": "VALID"
+      },
+      {
+        "sequence": 3,
+        "occurred_at": "2026-08-24T22:07:04.236468Z",
+        "event_type": "CORE_COMPLETED",
+        "source_kind": "DETERMINISTIC_CORE",
+        "source_id": "SPECTRA_MVP_DECISION_ENGINE_SYNTHETIC",
+        "state": "VALID"
+      },
+      {
+        "sequence": 4,
+        "occurred_at": "2026-08-24T22:07:04.498148Z",
+        "event_type": "AGENT_COMPLETED",
+        "source_kind": "CLOUD_RUN_AGENT",
+        "source_id": "spectra-h04-parts",
+        "state": "VALID"
+      },
+      {
+        "sequence": 5,
+        "occurred_at": "2026-08-24T22:07:04.782695Z",
+        "event_type": "AGENT_COMPLETED",
+        "source_kind": "CLOUD_RUN_AGENT",
+        "source_id": "spectra-h04-assurance",
+        "state": "VALID"
+      },
+      {
+        "sequence": 6,
+        "occurred_at": "2026-08-24T22:07:05.077170545Z",
+        "event_type": "STORAGE_RESULT_BOUND",
+        "source_kind": "CLOUD_STORAGE",
+        "source_id": "spectra-h04-iceu-686",
+        "state": "BOUND"
+      },
+      {
+        "sequence": 7,
+        "occurred_at": "2026-08-24T22:07:05.077170545Z",
+        "event_type": "WORKFLOW_COMPLETED",
+        "source_kind": "WORKFLOW",
+        "source_id": "spectra-h04-e2e",
+        "state": "SUCCEEDED"
+      }
+    ],
+    "stream_sha256": "sha256:0971c8276b384fd2a0f1117c78078122ddfbbfd395ba17f509cb8adc06023251",
+    "reported_codes": [
+      "EXACT_PART_IDENTITY_MATCHED",
+      "PRODUCTION_CORE_BOUND",
+      "REAL_ENVIRONMENT_EVIDENCE_MISSING",
+      "REAL_PART_TEST_EVIDENCE_MISSING",
+      "SYNTHETIC_EVIDENCE_ONLY",
+      "SYNTHETIC_ONLY"
+    ],
+    "limitations": [
+      "GCP_API_NOT_CALLED_BY_REDUCER",
+      "LIVE_TRANSPORT_AUTHENTICITY_NOT_ESTABLISHED",
+      "SCIENTIFIC_EVIDENCE_NOT_VALIDATED"
+    ],
+    "stable_codes": []
+  },
+  "assurance_decision": "HOLD",
+  "used_for_decision": false,
+  "limitations": [
+    "SCIENTIFIC_EVIDENCE_NOT_VALIDATED"
+  ],
+  "stable_codes": []
+}

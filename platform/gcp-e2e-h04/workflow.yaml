@@ -34,12 +34,21 @@ main:
               agent_results: {}
         next: writeResultCreateOnly
     - getInputMetadata:
-        call: http.get
-        args:
-          url: ${"https://storage.googleapis.com/storage/v1/b/" + args.bucket + "/o/" + text.url_encode(args.input_object) + "?generation=" + string(args.input_generation)}
-          auth:
-            type: OAuth2
-        result: inputMetadataResponse
+        try:
+          call: http.get
+          args:
+            url: ${"https://storage.googleapis.com/storage/v1/b/" + args.bucket + "/o/" + text.url_encode(args.input_object) + "?generation=" + string(args.input_generation)}
+            auth:
+              type: OAuth2
+          result: inputMetadataResponse
+        except:
+          as: error
+          steps:
+            - classifyInputMetadataFailure:
+                switch:
+                  - condition: ${error.code == 404}
+                    next: makeGenerationHold
+                next: makeStorageReadHold
     - validateInputReceipt:
         switch:
           - condition: ${string(inputMetadataResponse.body.generation) != string(args.input_generation)}
@@ -54,6 +63,10 @@ main:
     - makeMetadataHold:
         assign:
           - receiptFailureCode: INPUT_SHA256_METADATA_MISMATCH
+        next: makeReceiptHold
+    - makeStorageReadHold:
+        assign:
+          - receiptFailureCode: INPUT_STORAGE_READ_FAILURE
         next: makeReceiptHold
     - makeReceiptHold:
         assign:

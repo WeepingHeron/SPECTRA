@@ -21,6 +21,16 @@ sys.path.insert(0, str(ROOT))
 from shared.integrity import canonical_json_bytes, canonical_sha256  # noqa: E402
 
 
+CASE_NAMES = (
+    "normal-production-core",
+    "body-metadata-expected-forgery",
+    "parts-evidence-hash-corruption",
+    "malformed-agent-input",
+    "endpoint-override",
+    "production-test-control",
+)
+
+
 def run(command: list[str]) -> str:
     completed = subprocess.run(command, check=True, text=True, capture_output=True)
     return completed.stdout.strip()
@@ -128,16 +138,35 @@ def main() -> int:
     parser.add_argument("--region", default="asia-northeast3")
     parser.add_argument("--bucket", default=None)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--case", choices=CASE_NAMES, action="append")
     args = parser.parse_args()
     bucket = args.bucket or f"spectra-h04-{args.project}"
     forged_sha = "sha256:" + ("0" * 64)
+    case_specs = {
+        "normal-production-core": {"fixture": ROOT / "fixtures/normal.json"},
+        "body-metadata-expected-forgery": {
+            "fixture": ROOT / "fixtures/normal.json",
+            "metadata_sha256": forged_sha,
+            "expected_sha256": forged_sha,
+        },
+        "parts-evidence-hash-corruption": {"fixture": ROOT / "fixtures/corrupted-evidence-hash.json"},
+        "malformed-agent-input": {"fixture": ROOT / "fixtures/malformed-part.json"},
+        "endpoint-override": {
+            "fixture": ROOT / "fixtures/normal.json",
+            "extra_args": {"mission_url": "https://example.invalid"},
+        },
+        "production-test-control": {
+            "fixture": ROOT / "fixtures/normal.json",
+            "extra_args": {"test_mode": "STRUCTURED_FAILURE", "failure_role": "parts"},
+        },
+    }
+    selected = args.case or list(CASE_NAMES)
     cases = [
-        execute_case(project=args.project, region=args.region, bucket=bucket, case_name="normal-production-core", fixture=ROOT / "fixtures/normal.json"),
-        execute_case(project=args.project, region=args.region, bucket=bucket, case_name="body-metadata-expected-forgery", fixture=ROOT / "fixtures/normal.json", metadata_sha256=forged_sha, expected_sha256=forged_sha),
-        execute_case(project=args.project, region=args.region, bucket=bucket, case_name="parts-evidence-hash-corruption", fixture=ROOT / "fixtures/corrupted-evidence-hash.json"),
-        execute_case(project=args.project, region=args.region, bucket=bucket, case_name="malformed-agent-input", fixture=ROOT / "fixtures/malformed-part.json"),
-        execute_case(project=args.project, region=args.region, bucket=bucket, case_name="endpoint-override", fixture=ROOT / "fixtures/normal.json", extra_args={"mission_url": "https://example.invalid"}),
-        execute_case(project=args.project, region=args.region, bucket=bucket, case_name="production-test-control", fixture=ROOT / "fixtures/normal.json", extra_args={"test_mode": "STRUCTURED_FAILURE", "failure_role": "parts"}),
+        execute_case(
+            project=args.project, region=args.region, bucket=bucket,
+            case_name=case_name, **case_specs[case_name],
+        )
+        for case_name in selected
     ]
     evidence = {
         "schema_version": "1.0.0",

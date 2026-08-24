@@ -9,13 +9,13 @@
     "project_id": "iceu-686",
     "region": "asia-northeast3",
     "workflow_name": "spectra-h04-e2e",
-    "workflow_revision": "000005-32c",
-    "workflow_source_sha256": "sha256:59c0144347eebd99844a5d31403b8498648eaa1006e1b5ef8e96ad1103a1469e",
-    "mission_revision": "spectra-h04-mission-00006-4f5",
-    "parts_revision": "spectra-h04-parts-00006-p6c",
-    "assurance_revision": "spectra-h04-assurance-00006-zfx",
-    "image_digest": "sha256:27096755b16cf1129e7d48da6b2573e5d86c8a885613e64dc590652527650569",
-    "locked_at": "2026-08-20T16:42:38Z"
+    "workflow_revision": "000006-d2a",
+    "workflow_source_sha256": "sha256:d745ad01f43266df882268cab28e0cb23387f1378a6ee5a8edff36e990be65e9",
+    "mission_revision": "spectra-h04-mission-00007-s86",
+    "parts_revision": "spectra-h04-parts-00007-44k",
+    "assurance_revision": "spectra-h04-assurance-00007-dk9",
+    "image_digest": "sha256:cb2193d90294bfb8d0e9b97e92141df94cba63c6d3bc8a5491b9bf9c641604bb",
+    "locked_at": "2026-08-24T22:05:47Z"
   },
   "fixed_rules": {
     "optimistic_decisions": ["PASS", "SUPPORTED_WITH_MITIGATION", "CONDITIONAL", "RECOMMENDED"],

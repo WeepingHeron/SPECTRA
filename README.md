@@ -2,68 +2,51 @@
 
 > **Space Parts Evidence, Component Traceability, Radiation Assurance**
 
-SPECTRA는 위성 임무 조건, BOM, 방사선 환경 모델과 부품 시험 증거를 연결해 TID·SEE 위험과 증거 공백을 추적하는 방사선 보증 플랫폼이다. AI가 비행 적합성이나 인증을 대신 판정하지 않으며, 근거가 부족하거나 적용 범위를 벗어나면 안전하게 `HOLD`한다.
+SPECTRA는 위성 임무 조건, COTS 부품 증거, 방사선 계산과 완화 가정을 하나의 추적 가능한 Evidence Chain으로 연결하는 검증 플랫폼이다. 근거가 누락되거나 identity·hash·지원 범위가 맞지 않으면 적합성을 추측하지 않고 `HOLD`한다.
 
-## 현재 통합 상태
+## 현재 제출 상태
 
-현재 상태는 **`CORE MVP IN_PROGRESS / COMPETITION DEMO RELEASE IN_PROGRESS / ASSURANCE HOLD`**다.
+**`SUBMISSION RELEASE ACTIVE / CORE ASSURANCE HOLD`**
 
-제품 MVP의 정확한 입력·기능·완료 조건은 [`docs/MVP.md`](docs/MVP.md)에 정의한다. 현재 합성 Vertical Slice와 Product UI는 검증된 프로토타입이며, 실제 환경 산출물과 exact-part 시험 증거가 연결되기 전에는 MVP 완료로 부르지 않는다.
+오늘 18:00 제출의 기준은 장기 과학 MVP 완성이 아니라, 이미 구현한 확장 기능과 GCP Multi-Agent 데모를 사실에 맞게 고정하고 검증 가능한 제출물로 만드는 것이다.
 
-- **검증된 합성 Core:** TID·SEE, 차폐·ECC·판정 기준, EvidencePacket·Change Impact, Core 공격 29회에서 False PASS 0
-- **실험 범위 회귀:** WATCHDOG·TMR·SEL runtime 공격 18회에서 False PASS 0 — 현재 Core 판단·주 발표와 분리
-- **검증된 Competition 기반:** 교육용 GCP의 private Cloud Run Agent 3개, Workflows, Storage, IAM, Logging 합성 E2E와 입력 무결성 공격 차단
-- **검증된 표현 계층:** generated 결과를 소비하는 Product UI, fail-closed 결과 전달 무결성, 단일 Console 3모드와 11장 발표 deck의 localhost 화면·상호작용
-- **검증된 readiness 계층:** 실제 발행 전 상태를 versioned receipt로 전달하고, Environment·Part의 낙관적 승격·오염 입력을 UI까지 `HOLD`로 차단하는 Evidence Review Workspace
-- **검증된 로컬 Evidence Review:** `Roadmap Lab`의 3단계 흐름에서 합성 정상·변조·오부품 입력과 실제 SPENVIS·TI 후보의 무결성·권리·대상·적용 범위를 순서대로 검사하고, 차폐·ECC·부품 변경 시 필요한 이전 gate를 다시 연다.
-- **미완료 실제 근거:** 승인된 환경 contract, 고정된 BOM 검토 대상과 연결할 exact-part 시험 원문·권리·test-article identity, 임무 적용성·파괴성 SEE coverage, 과학적 교차검산
-- **미평가 배포 공격:** 실제 GCP `ASR-D02`
+| 상태 | 범위 |
+|---|---|
+| `COMPLETE` | 프로젝트 계약, 결정론적 합성 Core, 제한된 차폐·ECC·정책 엔진 |
+| `SUBMISSION_COMPLETE_WITH_LIMITS` | 환경 intake gate, COTS reference gate, Product/Evidence Console, 발표 Phase 01~03 bounded workflow |
+| `ACTIVE_TODAY` | 사람 리허설, 최종 전체 회귀, 변경 검토, commit·push·제출 |
+| `DEFERRED_EXTERNAL` | 실제 SPENVIS contract, exact flight/test lot evidence, Document AI/Gemini, 실제 CAD/3D, KMS·침투시험, 사용자·가격 검증 |
 
-GCP 실행 성공과 합성 회귀 통과는 실제 환경·부품 증거 또는 방사선 적합성의 증명이 아니다. 누락·손상·범위 밖·무결성 실패는 `DATA_UNAVAILABLE`, `NOT_EVALUATED` 또는 `HOLD`로 닫는다.
+실제 GCP `ASR-D02` 보완 배치는 새 locked Workflow `000006-d2a`에서 control 1건과 공격 4건을 평가했다. control은 로컬 Core와 canonical hash·semantic object가 일치했고, 네 공격은 모두 기대 stable code로 `SAFE_FAILURE`였다. 이 범위의 False Accept·False PASS·unexpected는 0이며, 나머지 12건은 제출 후 `NOT_EVALUATED`로 남는다.
 
-Stage 3에는 Git 밖 실제 SPENVIS 원본 bundle과 parser 후보가 있다. Stage 4는 현재 양산 COTS SRAM `Microchip 23LC1024-I/SN`을 catalog-level 승인 검토 대상으로 고정하고 ESA GOMX-4B/CHIMERA의 base-family 실험 탑재를 확인했지만, 비행 exact suffix·lot/die identity, 권리·승인 raw manifest·원문 적용성·필요 TID/SEE 증거가 부족하다. 둘 다 아직 제품 판단 입력으로 발행되지 않았고 `IN_PROGRESS/HOLD`다.
+## 제출 데모
 
-## 빠른 시작
+- 발표: `http://127.0.0.1:8765/demo/index.html`
+- 통합 Evidence Console: `http://127.0.0.1:8765/demo/evidence-console.html`
+- 상태 기준: [`ROADMAP.md`](ROADMAP.md)
+- 제출 승인 Gate: [`CHECKLIST.md`](CHECKLIST.md)
+- 제품·MVP 경계: [`docs/MVP.md`](docs/MVP.md)
+
+## 주요 검증 명령
+
+개발 중에는 변경 범위 테스트만 실행하고, 전체 회귀는 제출 직전에 한 번 실행한다.
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 python3 tests/simulation/run_all.py
-```
-
-이 명령은 합성 Core와 비교 시나리오를 재현한다. 현재 주요 경로를 각각 확인하려면 다음 명령을 사용한다.
-
-```bash
-PYTHONDONTWRITEBYTECODE=1 python3 tests/environment/run_all.py
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s platform/gcp-e2e-h04/tests -p 'test_*.py'
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest tests.assurance.gcp_d02.test_run_live_phase1 tests.assurance.gcp_d02.test_reconcile_existing_evidence
 PYTHONDONTWRITEBYTECODE=1 python3 tests/assurance/run_all.py
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s platform/gcp-e2e-h04/tests -v
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.product.test_product_data_binding
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.schema.test_readiness_receipts
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.parts_evidence.test_evidence_gate
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.assurance.test_local_readiness_fail_closed
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_evidence_review_workspace
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_roadmap_lab
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_local_evidence_pipeline
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.source_adapters.test_nasa_snapshot_gate
+PYTHONDONTWRITEBYTECODE=1 python3 tests/simulation/run_all.py
+PYTHONDONTWRITEBYTECODE=1 python3 tests/environment/run_all.py
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_product_data_binding tests.product.test_evidence_review_workspace
 ```
 
-발표 로드맵의 로컬 기능 묶음은 loopback server에서 `http://127.0.0.1:8765/demo/roadmap-lab.html`로 연다. `자료 선택 → 6개 gate 검사 → 변경 후 재검사`의 3단계이며, 실제 후보는 Git 밖 원본을 복사하지 않고 값이 제거된 receipt만 표시한다. 현재 구현은 실제 connector·AI API·CAD 계산·KMS·침투시험 완료가 아니라, 외부 권리·승인·과학 검증이 없으면 `HOLD`로 닫히는 로컬 경로다.
+## 신뢰성 경계
 
-## 핵심 원칙
-
-- 모든 값에 `PUBLISHED`, `CALCULATED`, `ASSUMED`, `SYNTHETIC`, `CUSTOMER_VERIFIED` 분류를 남긴다.
-- 계산·단위 변환·정책 판정은 결정론적 코드가 담당한다.
+- 계산·단위 변환·정책·최종 Gate는 결정론적 코드가 담당한다.
 - LLM은 증거 후보 탐색·구조화·설명에만 사용한다.
-- 정확한 부품번호·공정·로트·시험 조건이 맞지 않거나 파괴성 SEE 증거가 없으면 자동 PASS하지 않는다.
-- 합성값이나 가정값은 실제 증거나 지원 판정으로 사용할 수 없다.
+- `PUBLISHED`, `CALCULATED`, `ASSUMED`, `SYNTHETIC`, `CUSTOMER_VERIFIED`를 구분한다.
+- COTS catalog identity나 유사 부품 시험은 exact-part 비행 적합성 증거가 아니다.
+- BOM 구매 수량은 identity·차폐·TID 적용성에서 제외한다. 장치 수가 필요한 총 SEU 분석에서만 별도 `analysis_device_count`를 사용한다.
+- False PASS 0은 명시된 평가 세트에만 적용하며 전체 침투시험이나 방사선 보증을 뜻하지 않는다.
 
-## 문서 안내
-
-- [프로젝트 소개](PROJECT_OVERVIEW.md)
-- [로드맵](ROADMAP.md)
-- [검증 체크리스트](CHECKLIST.md)
-- [합성 Vertical Slice 실행·제한](simulation/README.md)
-- [Workstream 운영 현황](docs/workstreams/README.md)
-- [Control Tower 현재 상태](docs/workstreams/00-control-tower/CURRENT.md)
-
-## 상태 표기
-
-`READY_FOR_REVIEW`는 작업 세션의 제출 상태이고, `INTEGRATED`는 Control Tower가 독립 검증·통합한 상태다. 완료 표시는 실행 근거와 검증 기록이 있을 때만 변경한다.
+상세 역사와 개별 증거는 `docs/workstreams/*/CURRENT.md`와 `docs/workstreams/*/evidence/`에 보존한다. 현재 실행은 이 채팅에서 통합 관리하며, 과거 채팅 번호는 더 이상 로드맵 진행 단위로 사용하지 않는다.

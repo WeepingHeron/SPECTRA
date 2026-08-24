@@ -1,0 +1,32 @@
+{
+  "contract_version": "SPECTRA_LIVE_DEPLOYMENT_ANCHOR_1.0.0",
+  "project_id": "iceu-686",
+  "region": "asia-northeast3",
+  "workflow": {
+    "name": "spectra-h04-e2e",
+    "revision": "000006-d2a"
+  },
+  "agents": {
+    "mission": {
+      "service": "spectra-h04-mission",
+      "revision": "spectra-h04-mission-00007-s86"
+    },
+    "parts": {
+      "service": "spectra-h04-parts",
+      "revision": "spectra-h04-parts-00007-44k"
+    },
+    "assurance": {
+      "service": "spectra-h04-assurance",
+      "revision": "spectra-h04-assurance-00007-dk9"
+    }
+  },
+  "storage": {
+    "bucket": "spectra-h04-iceu-686"
+  },
+  "core": {
+    "id": "SPECTRA_MVP_DECISION_ENGINE_SYNTHETIC",
+    "revision": "1.0.0"
+  },
+  "data_class": "SYNTHETIC",
+  "max_assurance_decision": "HOLD"
+}

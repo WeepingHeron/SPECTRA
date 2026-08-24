@@ -45,6 +45,14 @@ REQUIRED_PART_FIELDS = (
     "lot_code",
     "evidence_hash",
     "expected_evidence_hash",
+    "expected_identity_sha256",
+)
+PART_IDENTITY_FIELDS = (
+    "manufacturer",
+    "exact_orderable_part_number",
+    "process",
+    "die_revision",
+    "lot_code",
 )
 
 
@@ -214,7 +222,12 @@ def parts_agent(envelope: dict[str, Any], started: float) -> dict[str, Any]:
     if part.get("rights_status") != "SYNTHETIC_FIXTURE_ONLY":
         return _failure(envelope, "parts", started, "PART_EVIDENCE_RIGHTS_INVALID", "H04 requires synthetic fixture rights status")
 
-    identity = {field: part[field] for field in REQUIRED_PART_FIELDS if field not in {"evidence_hash", "expected_evidence_hash"}}
+    identity = {field: part[field] for field in PART_IDENTITY_FIELDS}
+    if sha256_uri(identity) != part["expected_identity_sha256"]:
+        return _failure(
+            envelope, "parts", started, "PART_IDENTITY_MISMATCH",
+            "observed exact-part identity does not match the fixed expected identity",
+        )
     result = _base(envelope, "parts", started)
     result.update(
         {

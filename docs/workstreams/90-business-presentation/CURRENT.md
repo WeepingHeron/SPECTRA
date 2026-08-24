@@ -2,19 +2,19 @@
 
 ## 상태
 
-`IN_PROGRESS — index visual integration VERIFIED; content claims and measured rehearsal pending`
+`ACTIVE_TODAY — 12-slide deployed attack evidence integrated; measured rehearsal pending`
 
 ## Radiation-first Opening & Simplified Flow — 2026-08-25
 
 - Slide 05·06의 가상 `EX-100` BOM을 현재 양산 COTS SRAM `Microchip 23LC1024-I/SN` catalog 검토 대상으로 교체했다. ESA가 base product `23LC1024`를 GOMX-4B/CHIMERA 방사선 실험용 메모리로 탑재한 사실만 표시하고, 비행 exact suffix·lot/die와 적합성은 `HOLD`로 남겼다. Core의 `Example Semi / EX-100` 합성 계산 fixture는 실제 부품 수치로 오인되지 않도록 별도 경계로 유지한다.
 - 기존 05 차폐 설명을 발표 첫 본문으로 이동하고 `01 · WHY RADIATION SHIELDING`으로 재구성했다. 비전문가가 먼저 `우주 방사선 → 알루미늄 차폐 → 전자부품`을 이해한 뒤 문제 정의로 들어간다. TID 감소와 SEE 잔여 위험은 화면 문장에서 제거하고 대본에서만 설명한다.
 - 기존 문제 정의는 02로 이동했다. 전체 Evidence-to-Decision 흐름은 03으로 이동하고 제목·현재 로컬/GCP 경계·결과표 연결·source safety line과 다섯 단계 그림을 유지했다. 그림 아래의 Document AI future rail만 제거했다.
-- 전체 장수는 `Cover + 01~09 + Closing`, 총 11장을 유지한다. localhost 1280×720에서 새 01과 복원된 03의 가로·세로 overflow 0을 직접 확인했다.
+- 전체 장수는 `Cover + 01~10 + Closing`, 총 12장이다. GCP 구조 뒤 새 09에 새 locked target의 `CONTROL PASS 1 / SAFE FAILURE 4 / False Accept·PASS·unexpected 0`과 나머지 12건 `NOT_EVALUATED / HOLD` 경계를 함께 표시했다.
 - Document AI·Gemini는 로드맵에만 남아 있으며 현재 API 호출은 0건이다. 사람 발표 리허설과 전체 회귀는 실행하지 않았다.
-- 현재 11장 순서와 두 Product Demo에 맞춘 Git 밖 Downloads의 `spectra_7min_presentation_script_v4.md`를 새로 작성했다. 계산 시간은 400초 + 전환 여유 20초이며 사람 낭독·클릭 시간은 `NOT_MEASURED`다.
-- 주 발표 운영은 Presentation과 named `spectra-demo` 두 브라우저 탭만 사용한다. Slide 03·09는 동일한 loopback Console 탭을 재사용하고, Console 내부의 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표` 세 모드로 시연한다. Roadmap Lab은 주 발표에서 열지 않는다.
-- UI 컨펌 뒤 Control Tower가 변경 범위 Product 테스트 21개를 통과시켰고, localhost 1280×720에서 전환 애니메이션 종료 후 11장 전체 document·active slide x/y overflow 0과 console warning/error 0을 확인했다. Slide 03·09 링크는 새 탭을 늘리지 않고 동일 제품 탭 ID를 재사용했다.
-- v4 대본의 `Cover + 01~09 + Closing` 순서, Product Demo 두 동선과 `CALCULATED 400초 + 전환 여유 20초 = 420초` 산술을 현재 deck·UI와 대조했다. 사람 낭독·클릭 리허설은 계속 `NOT_MEASURED`다. Product 전체 157개와 저장소 로컬 runbook 회귀가 통과했으며 Git 통합은 아직 수행하지 않았다.
+- Git 밖 Downloads의 `spectra_7min_presentation_script_v4.md`는 이전 11장 기준이므로 새 09를 포함한 사람 낭독·클릭 리허설 전까지 참고본이다. 사람 측정은 `NOT_MEASURED`다.
+- 주 발표 운영은 Presentation과 named `spectra-demo` 두 브라우저 탭만 사용한다. Slide 03·10은 동일한 loopback Console 탭을 재사용하고, Console 내부의 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표` 세 모드로 시연한다. Roadmap Lab은 주 발표에서 열지 않는다.
+- 신뢰성 슬라이드 결속을 포함한 Product 직접 테스트 17개가 통과했고, localhost 1280×720에서 12장 전체 document·active slide x/y overflow 0과 console warning/error 0을 확인했다. Slide 03·10 링크는 새 탭을 늘리지 않고 동일 제품 탭 ID를 재사용한다.
+- 이전 v4 대본의 `Cover + 01~09 + Closing` 시간 산술은 새 09 삽입 뒤 더 이상 현재 deck의 측정값이 아니다. 사람 낭독·클릭 리허설은 계속 `NOT_MEASURED`이며 전체 회귀와 Git 통합은 아직 수행하지 않았다.
 
 ## Compact 11-slide Main Deck — 2026-08-25
 

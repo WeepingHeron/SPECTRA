@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "project_id": "iceu-686",
+  "region": "asia-northeast3",
+  "data_class": "SYNTHETIC",
+  "assurance_decision": "HOLD",
+  "cases": [
+    {
+      "case": "normal-production-core",
+      "workflow_execution": "projects/841895608290/locations/asia-northeast3/workflows/spectra-h04-e2e/executions/819d4189-4c3f-4197-b4a3-ab7e38370a97",
+      "workflow_state": "SUCCEEDED",
+      "correlation_id": "spectra-h05-819d4189-4c3f-4197-b4a3-ab7e38370a97",
+      "input_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "object_name": "inputs/20260824T220659Z-4262b61a-normal-production-core.json",
+        "generation": "1787609221360359",
+        "canonical_body_sha256": "sha256:4aeec2f2e3944011ea9105296ede527edb34bde582a7fca2ef653358727db383",
+        "metadata_sha256": "sha256:4aeec2f2e3944011ea9105296ede527edb34bde582a7fca2ef653358727db383",
+        "expected_sha256": "sha256:4aeec2f2e3944011ea9105296ede527edb34bde582a7fca2ef653358727db383"
+      },
+      "result_storage": {
+        "bucket_id": "spectra-h04-iceu-686",
+        "generation": "1787609225022370",
+        "object_name": "results/819d4189-4c3f-4197-b4a3-ab7e38370a97.json",
+        "sha256": "sha256:4b14145b27186b6e1b262b0e9cd8090026c7c97a0ce55d82059c7686b05225be"
+      },
+      "result_summary": {
+        "processing_status": "VALID",
+        "engineering_gate": "NOT_EVALUATED",
+        "assurance_decision": "HOLD",
+        "stable_codes": [
+          "SYNTHETIC_ONLY"
+        ],
+        "agent_statuses": {
+          "assurance": "VALID",
+          "mission": "VALID",
+          "parts": "VALID"
+        },
+        "agent_codes": {
+          "assurance": [
+            "SYNTHETIC_ONLY"
+          ],
+          "mission": [
+            "PRODUCTION_CORE_BOUND",
+            "REAL_ENVIRONMENT_EVIDENCE_MISSING"
+          ],
+          "parts": [
+            "EXACT_PART_IDENTITY_MATCHED",
+            "REAL_PART_TEST_EVIDENCE_MISSING",
+            "SYNTHETIC_EVIDENCE_ONLY"
+          ]
+        },
+        "mission_body_hash_verified": true,
+        "production_core_run_id": "mvp-9573bc0eafa5c975",
+        "production_core_output_hash": "sha256:210f03c60292a4028a02abb2111ba97074ff284c4d777bb87f0a36c21fdf453a",
+        "production_core_result_sha256": "sha256:15c3d505ee805203c1ffa028b82395f0950f372bec1d99575129a5d49e65b1e2"
+      }
+    }
+  ]
+}

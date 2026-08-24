@@ -962,7 +962,18 @@ process.stdout.write(JSON.stringify(observed));
             "100 krad", "5~25 krad", "$1,000", "$1k",
         ):
             self.assertNotIn(unsupported_comparison, cots_slide)
-        self.assertEqual(len(re.findall(r'<section class="slide(?: [^"]*)?"', presentation)), 11)
+        self.assertEqual(len(re.findall(r'<section class="slide(?: [^"]*)?"', presentation)), 12)
+        for reliability_claim in (
+            "09 · ADVERSARIAL RELIABILITY ON ACTUAL GCP",
+            "무결점이라 주장하지 않는다",
+            "PART_EVIDENCE_HASH_MISMATCH",
+            "ENDPOINT_OVERRIDE_FORBIDDEN",
+            "PART_IDENTITY_MISMATCH",
+            "INPUT_GENERATION_MISMATCH",
+            "DEPLOYED RETEST VERIFIED",
+            "False Accept/PASS/unexpected 0",
+        ):
+            self.assertIn(reliability_claim, presentation)
         self.assertIn(
             'href="http://127.0.0.1:8765/demo/evidence-console.html"',
             presentation,

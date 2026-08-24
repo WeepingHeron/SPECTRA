@@ -15,14 +15,35 @@ private Cloud Storage synthetic object
 
 Mission Agent는 다운로드된 JSON body를 shared canonical byte 계약으로 다시 해시해 exact generation의 metadata SHA 및 expected SHA와 비교한 뒤, 고정 case/model로 production `src/spectra_sim/mvp_engine.py::run_mvp_decision`을 호출한다. 중복 방사선 계산식은 없다. mismatch는 `INPUT_BODY_SHA256_MISMATCH`로 Parts/Assurance 전에 종료한다. Parts Agent는 synthetic exact-part identity, 사건 coverage와 선언 hash를 확인한다. Assurance Agent는 앞선 두 결과의 status, data class, input/response hash를 독립 확인한다. 어떤 정상 합성 실행도 `engineering_gate=NOT_EVALUATED`, `assurance_decision=HOLD`를 벗어나지 않는다.
 
+2026-08-25 ASR-D02 Phase 1은 deployed revision `000005-32c`에서 generation 404가 구조화된 result 없이 Workflow `FAILED`로 끝나고, exact part number 단독 변조가 `EXACT_PART_IDENTITY_MATCHED`로 소비되는 결함을 확인했다. 현재 working tree는 metadata lookup 404를 `INPUT_GENERATION_MISMATCH`로 정규화하고, 관측 identity를 고정 `expected_identity_sha256`과 비교해 `PART_IDENTITY_MISMATCH`로 닫도록 보완했다. 이 보완은 로컬 테스트만 통과했으며 아직 배포하지 않았다. 기존 locked revision과 Phase 1 실패 증거는 그대로 보존한다.
+
 Workflow의 agent HTTP timeout·오류는 `AGENT_TRANSPORT_FAILURE`, response 계약 오류는 `AGENT_RESPONSE_INVALID`로 변환한다. Agent URL은 Workflow deployment environment에 고정되고 execution args의 URL override는 `ENDPOINT_OVERRIDE_FORBIDDEN`으로 Agent 호출 전에 닫힌다. production `test_mode/failure_role` 경로는 없으며 malformed fixture로 failure를 시험한다. 결과는 `ifGenerationMatch=0`으로 create-only 저장한다. 실행 후 runner가 실제 저장된 result bytes를 다시 내려받아 SHA-256을 관찰한다. 합성 input/result는 30일 후 삭제 lifecycle 대상이며, bucket 기본 soft delete 7일과 versioning off를 사용한다.
 
 ## 로컬 검증
 
 ```bash
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s platform/gcp-e2e-h04/tests -v
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.gcp_live.test_live_execution_events
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.gcp_live.test_read_only_connector
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.gcp_live.test_product_timeline
 PYTHONDONTWRITEBYTECODE=1 python3 tests/simulation/run_all.py
 PYTHONDONTWRITEBYTECODE=1 python3 tests/assurance/run_all.py
+```
+
+`src/spectra_gcp_adapter/live_execution_events.py`는 live Product connector가 사용할 실행 event contract다. `read_only_connector.py`는 trusted anchor의 고정 H05 execution·log·result object만 읽어 H06 event로 변환하며 Workflow 실행이나 GCP mutation 명령을 만들지 않는다. 고정 H05 deployment identity는 `live-deployment-anchor.json`에 두며, 정상 Workflow `SUCCEEDED`도 business PASS 또는 radiation assurance로 승격하지 않는다. 로컬 injected-runner 검증과 actual 정상 execution read-only receipt를 모두 완료했으며 caller identity attestation은 별도 범위다.
+
+고정 execution을 실제로 읽을 때는 새 실행을 만들지 않는 collector만 사용한다. 이 명령은 execution·logs·result object를 조회하고 로컬 receipt 파일만 기록한다.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 platform/gcp-e2e-h04/scripts/collect_live_execution.py \
+  --execution ea79cbd9-ada2-4d8c-a584-4ef0c5e0bc34 \
+  --output docs/workstreams/70-platform-gcp/evidence/h07-live-execution-receipt.json
+```
+
+receipt 수집 후 Product timeline data를 재생성한다. live receipt가 유효하지 않으면 builder는 이를 라이브로 표시하지 않고 verified H05 snapshot fallback을 명시한다.
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 demo/build_gcp_live_timeline.py
 ```
 
 ## 배포와 H05 실행

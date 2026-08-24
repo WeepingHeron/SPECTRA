@@ -97,6 +97,20 @@ class AgentContractTests(unittest.TestCase):
         self.assertIn("PARTS_AGENT_NOT_VALID", assurance["stable_codes"])
         self.assertEqual("HOLD", assurance["assurance_decision"])
 
+    def test_exact_part_number_mismatch_is_blocked_by_parts_and_assurance(self):
+        request = envelope(load_fixture("normal.json"))
+        request["fixture"]["part_evidence"]["exact_orderable_part_number"] = "SYNTHETIC-PART-999"
+        request["input_storage"]["expected_sha256"] = AGENTS.sha256_uri(request["fixture"])
+        request["input_storage"]["metadata_sha256"] = request["input_storage"]["expected_sha256"]
+        mission = AGENTS.evaluate(copy.deepcopy(request), "mission")
+        parts = AGENTS.evaluate(copy.deepcopy(request), "parts")
+        assurance_request = copy.deepcopy(request)
+        assurance_request["prior_results"] = {"mission": mission, "parts": parts}
+        assurance = AGENTS.evaluate(assurance_request, "assurance")
+        self.assertIn("PART_IDENTITY_MISMATCH", parts["stable_codes"])
+        self.assertIn("PARTS_AGENT_NOT_VALID", assurance["stable_codes"])
+        self.assertEqual("HOLD", assurance["assurance_decision"])
+
     def test_malformed_agent_input_is_structured_hold(self):
         request = envelope(load_fixture("malformed-part.json"))
         result = AGENTS.evaluate(request, "parts")
@@ -139,6 +153,8 @@ class AgentContractTests(unittest.TestCase):
         self.assertNotIn("AGENT_TEST_FAILURE", workflow)
         self.assertNotIn("test_mode", workflow)
         self.assertNotIn("failure_role", workflow)
+        self.assertIn("error.code == 404", workflow)
+        self.assertIn("INPUT_GENERATION_MISMATCH", workflow)
 
     def test_staged_image_context_excludes_repo_and_private_evidence(self):
         with tempfile.TemporaryDirectory(prefix="spectra-h05-stage-test-") as temp_dir:
