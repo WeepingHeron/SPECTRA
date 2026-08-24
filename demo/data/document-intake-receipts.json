@@ -1,0 +1,55 @@
+{
+  "dataset_status": "SYNTHETIC_CONTROL",
+  "ocr_performed": false,
+  "llm_extraction_performed": false,
+  "receipts": [
+    {
+      "contract_version": "DOCUMENT_INTAKE_RECEIPT_1.0.0",
+      "candidate_class": "SYNTHETIC_CONTROL",
+      "processing_status": "VALID",
+      "intake_status": "SYNTHETIC_CONTROL",
+      "source": {
+        "mime_type": "text/plain",
+        "locator_id": "SYNTHETIC-DOC-001",
+        "locator_type": "SYNTHETIC_REFERENCE",
+        "content_sha256": "sha256:41b1766e76ce2a271ece50b61123f8dadd270b2580d0751ceaed658bb4c7bb9e",
+        "text_sha256": "sha256:41b1766e76ce2a271ece50b61123f8dadd270b2580d0751ceaed658bb4c7bb9e",
+        "text_origin": "CALLER_PROVIDED",
+        "ocr_performed": false,
+        "llm_extraction_performed": false
+      },
+      "candidates": [
+        {
+          "candidate_id": "SYN-CANDIDATE-MFR",
+          "field": "MANUFACTURER",
+          "value": "SYNTHETIC-MFR",
+          "unit": null,
+          "source_span": {
+            "start": 74,
+            "end": 87
+          },
+          "candidate_status": "UNAPPROVED_CANDIDATE"
+        },
+        {
+          "candidate_id": "SYN-CANDIDATE-PN",
+          "field": "ORDERABLE_PART_NUMBER",
+          "value": "SYNTHETIC-PN-001",
+          "unit": null,
+          "source_span": {
+            "start": 114,
+            "end": 130
+          },
+          "candidate_status": "UNAPPROVED_CANDIDATE"
+        }
+      ],
+      "blocker_codes": [
+        "SYNTHETIC_ONLY"
+      ],
+      "approval_status": "NOT_EVALUATED",
+      "use_status": "NOT_FOR_DECISION",
+      "assurance_decision": "HOLD",
+      "suitability": "NOT_EVALUATED",
+      "used_for_decision": false
+    }
+  ]
+}

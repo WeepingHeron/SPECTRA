@@ -1,0 +1,22 @@
+{
+  "demo_format": "spectra-validation-demo-case-v1",
+  "data_class": "SYNTHETIC_CONTROL",
+  "case_id": "CLEAN_CONTROL",
+  "label": "정상 제어 데이터",
+  "plain_summary": "파일과 출처, 부품, 시험 범위가 모두 맞는 검사 연습용 데이터입니다.",
+  "payload_text": "spectra-control-payload-v1",
+  "declared_payload_sha256": "31b8de973e9f934c37dfd602d468e74ebeccc731d7009e6b760e0f385b1a40e5",
+  "source": {
+    "locator": "demo://spectra/clean-control",
+    "rights_status": "DEMO_ALLOWED"
+  },
+  "target": {
+    "expected_part": "5962L1420901VXC",
+    "observed_part": "5962L1420901VXC"
+  },
+  "coverage": {
+    "required": ["TID", "SEL"],
+    "observed": ["TID", "SEL"]
+  },
+  "decision_use": false
+}

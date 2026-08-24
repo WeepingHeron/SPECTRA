@@ -1,0 +1,22 @@
+{
+  "demo_format": "spectra-validation-demo-case-v1",
+  "data_class": "SYNTHETIC_ATTACK",
+  "case_id": "TAMPERED_COPY",
+  "label": "내용이 바뀐 파일",
+  "plain_summary": "등록된 원본과 내용이 달라진 공격 입력입니다. 변조 확인에서 멈춰야 합니다.",
+  "payload_text": "spectra-control-payload-v1-tampered",
+  "declared_payload_sha256": "31b8de973e9f934c37dfd602d468e74ebeccc731d7009e6b760e0f385b1a40e5",
+  "source": {
+    "locator": "demo://spectra/tampered-copy",
+    "rights_status": "DEMO_ALLOWED"
+  },
+  "target": {
+    "expected_part": "5962L1420901VXC",
+    "observed_part": "5962L1420901VXC"
+  },
+  "coverage": {
+    "required": ["TID", "SEL"],
+    "observed": ["TID", "SEL"]
+  },
+  "decision_use": false
+}

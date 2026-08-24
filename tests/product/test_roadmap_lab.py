@@ -38,11 +38,11 @@ class RoadmapLabTests(unittest.TestCase):
     def test_main_ui_is_three_actions_not_a_second_slide_deck(self) -> None:
         self.assertEqual(len(re.findall(r'<button class="stage(?: active)?"', self.html)), 3)
         for label in (
-            "근거 검사 실행",
-            "추가 근거 요청",
-            "후보 거절",
-            "다음 검토로 전달",
-            "변경 영향 불러오기",
+            "테스트 예시 3개",
+            "실제 후보 2개",
+            "검사 시작 →",
+            "변경 적용 · 다시 검사 →",
+            "검사 통과 ≠ 실제 승인",
         ):
             self.assertIn(label, self.html)
         for presentation_artifact in ('class="card"', "Q&amp;A", "7 routes", "권장 시연"):
@@ -50,10 +50,12 @@ class RoadmapLabTests(unittest.TestCase):
 
     def test_bundled_data_files_are_bound_to_runtime_fetches(self) -> None:
         expected = {
-            "evidence-source-readiness-synthetic.json",
-            "nasa-snapshot-gate-receipt.json",
-            "document-extraction-candidate-synthetic.json",
-            "mvp-product-result.json",
+            "demo-case-clean-control.json",
+            "demo-case-tampered.json",
+            "demo-case-wrong-part.json",
+            "actual-environment-bundle-receipt.json",
+            "actual-part-bundle-receipt.json",
+            "local-bundle-binding-receipt.json",
         }
         for name in expected:
             self.assertTrue((DATA / name).is_file(), name)
@@ -149,8 +151,9 @@ class RoadmapLabTests(unittest.TestCase):
         lowered = self.html.lower()
         self.assertNotRegex(
             lowered,
-            r"https?://|//cdn|<script[^>]+src=|xmlhttprequest|websocket|sendbeacon",
+            r"https?://|//cdn|xmlhttprequest|websocket|sendbeacon",
         )
+        self.assertIn('<script src="data/embedded-review-data.js"></script>', self.html)
         self.assertNotIn("localStorage", self.html)
         self.assertNotIn("sessionStorage", self.html)
 
@@ -159,7 +162,7 @@ class RoadmapLabTests(unittest.TestCase):
             "height:100vh",
             "overflow:hidden",
             "font-size:34px",
-            "font-size:42px",
+            "grid-template-columns:repeat(6,minmax(0,1fr))",
             "grid-template-columns:minmax(0,1fr) 330px",
         ):
             self.assertIn(token, self.html)

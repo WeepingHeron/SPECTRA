@@ -1,0 +1,22 @@
+{
+  "demo_format": "spectra-validation-demo-case-v1",
+  "data_class": "SYNTHETIC_ATTACK",
+  "case_id": "WRONG_PART",
+  "label": "다른 부품의 시험자료",
+  "plain_summary": "파일과 출처는 정상이지만 시험한 부품 번호가 설계 부품과 다릅니다.",
+  "payload_text": "spectra-wrong-part-payload-v1",
+  "declared_payload_sha256": "1a653654160911bd499c66abd4f9369371d762a6fa30110934807ad344c94abc",
+  "source": {
+    "locator": "demo://spectra/wrong-part",
+    "rights_status": "DEMO_ALLOWED"
+  },
+  "target": {
+    "expected_part": "5962L1420901VXC",
+    "observed_part": "5962L1420901VXB"
+  },
+  "coverage": {
+    "required": ["TID", "SEL"],
+    "observed": ["TID", "SEL"]
+  },
+  "decision_use": false
+}

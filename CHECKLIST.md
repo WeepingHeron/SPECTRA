@@ -27,7 +27,7 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 ## 발표 로드맵 확장 기능 Gate
 
-- [x] 7개 확장 화면을 `Roadmap Lab` 단일 진입점에 연결
+- [x] 발표 Phase 01~03 기능을 `Roadmap Lab` 3단계 Evidence Review에 연결
 - [x] Phase 1 source intake와 COTS 후보 registry를 decision-ineligible·fail-closed로 구현
 - [x] NASA public DB용 local snapshot hash·locator·rights·exact-part intake gate와 공격 테스트 구현
 - [x] Phase 2 합성 document candidate 검토와 processor별 AI readiness gate 구현
@@ -321,6 +321,8 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 
 > 2026-08-20 Control Tower 검증: H10은 검증된 H09 consumer를 재사용해 정상 WATCHDOG `1 / 1 / 60 s` → `60 → 999 s` stale-preimage 공격 → 수치·ID·hash 비노출과 `DATA_UNAVAILABLE / NOT_EVALUATED / HOLD` → Reset을 두 desktop viewport에서 재현했다. 아래 완료 표시는 합성 Product·runtime integrity 데모에 한정하며 실제 API·원문 evidence·GCP resource 통합은 미완료다.
 
+> 2026-08-24 Control Tower 검증: 3단계 Evidence Review가 합성 정상·변조·오부품, 브라우저 로컬 파일과 값이 제거된 실제 SPENVIS 9개·TI 5개 후보 receipt를 6개 gate로 구분한다. 실제 후보는 권리·외부 승인에서 `HOLD_NOT_ISSUED`, 임의 파일은 provenance가 없으면 gate 3에서 닫힌다. 이 완료 표시는 로컬 검토 기능에 한정하며 실제 contract 발행은 0건이다.
+
 ### 사용자 흐름
 
 - [ ] 임무·BOM·차폐·완화·정책 입력 흐름
@@ -330,6 +332,8 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [x] 변경 전후 영향 보고서
 - [x] `HOLD`·증거 공백·미지원 범위 표시
 - [x] 합성·실제 데이터 분류 표시
+- [x] 로컬 파일·묶음의 hash·경로·권리·대상·적용 범위 fail-closed 검사
+- [x] 차폐·ECC·부품 변경에 따른 영향 gate 재검사
 
 ### 제품 신뢰성
 
@@ -392,4 +396,4 @@ Stage별 주관 Workstream과 첫 채팅 번호는 [`ROADMAP.md`](ROADMAP.md)의
 - [ ] 고정 revision 실제 GCP `ASR-D02` 수행 및 관찰 증거 검증
 - [ ] 실제 contract를 합성 fallback과 구분해 Product Evidence-to-Decision 경로에 연결
 - [ ] 사용자 1명의 5분 실행·판정 이유·다음 행동 탐색 측정
-- [x] 최종 통합 단위 정리 후 전체 회귀, commit·push 완료
+- [x] 현재 로컬 Evidence Review 통합 단위 전체 회귀, commit·push

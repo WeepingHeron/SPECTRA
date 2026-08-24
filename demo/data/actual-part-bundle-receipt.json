@@ -1,0 +1,31 @@
+{
+  "assurance_decision": "HOLD",
+  "binding_status": "HOLD_NOT_ISSUED",
+  "blocker_codes": [
+    "EXTERNAL_APPROVAL_ANCHOR_MISSING",
+    "RIGHTS_COMMERCIAL_USE_UNRESOLVED",
+    "RIGHTS_DISPLAY_EXTERNAL_UNRESOLVED",
+    "RIGHTS_DISPLAY_INTERNAL_UNRESOLVED",
+    "RIGHTS_FETCH_UNRESOLVED",
+    "RIGHTS_LOCATOR_UNRESOLVED",
+    "RIGHTS_PRIVATE_STORE_UNRESOLVED",
+    "RIGHTS_PROCESS_LOCAL_AI_UNRESOLVED",
+    "RIGHTS_REDISTRIBUTE_UNRESOLVED"
+  ],
+  "bundle_class": "ACTUAL_CANDIDATE",
+  "contract_version": "LOCAL_BUNDLE_BINDING_RECEIPT_1.0.0",
+  "coverage": {
+    "bound_artifact_count": 5,
+    "manifest_artifact_count": 5,
+    "source_classes": [
+      {
+        "artifact_count": 5,
+        "source_class": "MANUFACTURER_ORIGINAL"
+      }
+    ]
+  },
+  "processing_status": "PROVENANCE_FAILURE",
+  "suitability": "NOT_EVALUATED",
+  "use_status": "NOT_FOR_DECISION",
+  "used_for_decision": false
+}

@@ -8,7 +8,7 @@
 
 - 날짜: 2026-08-24
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 통합 체크포인트: 직전 기준 `1cbf7e5` 위 Roadmap Lab·NASA snapshot gate·발표 truth boundary·Product Workspace 동선을 최종 검증했다. 이 문서를 포함하는 main commit으로 `origin/main`에 통합하며 ignored `instructions/`와 Git 밖 private evidence는 포함하지 않는다.
+- Git 통합 체크포인트: 직전 기준 `56297b2` 위 3단계 Evidence Review·로컬 bundle/document/part/review/CAD/change adapter와 실제 후보 receipt 표시를 최종 검증 중이다. 이 문서를 포함하는 main commit으로 `origin/main`에 통합하며 ignored `instructions/`와 Git 밖 private evidence는 포함하지 않는다.
 
 ## 현재 확인된 산출물
 
@@ -22,6 +22,10 @@
 
 ## 현재 진실
 
+- 2026-08-24 `Roadmap Lab`을 비전문가가 따라갈 수 있는 `자료 선택 → 6개 gate 검사 → 변경 후 재검사` 3단계로 통합했다. 합성 정상은 6개 gate를 통과하되 승인으로 승격되지 않고, 변조는 hash gate 2, 오부품은 identity gate 4에서 멈춘다. ECC·차폐·부품 변경은 각각 gate 6·5·4를 다시 연다. 브라우저 로컬 JSON/PDF/TXT는 최대 10 MB를 메모리에서만 읽고 provenance가 없으면 gate 3에서 닫는다.
+- Git 밖 실제 SPENVIS 9개와 TI 후보 5개를 새 local bundle gate로 직접 결속했다. 두 묶음 모두 파일 hash 결속은 재현됐지만 action별 권리와 외부 승인 anchor가 없어 `PROVENANCE_FAILURE / HOLD_NOT_ISSUED / HOLD`다. UI에는 raw bytes·경로·식별자·hash 없이 source class·개수·blocker code만 담은 receipt를 연결했다. SPENVIS 내부 일관성 11개는 재현됐으나 독립 comparator·승인 tolerance·독립 reviewer가 없어 과학 교차검산은 `NOT_EVALUATED`다.
+- local bundle, document intake, exact-part readiness, review audit, CAD change와 HW-SW change impact adapter를 정상·변조·경로 탈출·prompt injection·낙관 PASS·자기검토·hash rebinding 공격으로 독립 검증했다. 이 구현은 후보를 구조화하고 재검토 범위를 만드는 로컬 기능만 `VERIFIED`하며, 실제 environment contract·exact-part Evidence Packet·suitability·radiation assurance를 발행하지 않는다.
+- 최종 통합 회귀에서 schema 17개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 65, Product 140, GCP H05 local 12, 인접 readiness·parts·source·assurance gate 32 tests를 통과했다. Assurance는 평가된 공격 실행 47회·False PASS 0이고 실제 GCP `ASR-D02` 1건은 계속 `NOT_EVALUATED`다. 1280×720 브라우저에서 실제 후보 gate 3 차단, 합성 정상 6개 gate 통과, ECC·차폐·부품 변경의 gate 6·5·4 재개방, overflow·console 오류 0을 확인했다.
 - 2026-08-24 production NASA local snapshot gate를 기능형 Evidence Review 1단계에 연결했다. synthetic bytes의 hash·NASA allowlist·revision·action rights·exact identity를 검증한 deterministic receipt만 소비하며 화면 상한은 `CONTROL VALID · NO DECISION`이다. source adapter·Evidence Review·Product binding 42 tests와 localhost 1280×720 상태 표시·HOLD·overflow 0을 확인했다. live NASA fetch·actual evidence·trusted external anchors·suitability는 0건이다.
 - 2026-08-24 Roadmap Lab을 설명형 허브에서 기능형 Evidence Review로 교체했다. bundled evidence readiness·document candidate·generated MVP JSON을 실제로 읽어 `근거 검사 → 검토 action → 변경 영향`을 수행한다. 낙관 decision·fabricated approval/rights·value rebinding 공격을 포함한 직접 테스트 10개와 Product binding 17개, localhost 1280×720의 세 조작·fixture 값 표시·최종 HOLD·전체 panel overflow 0을 확인했다. 이 로컬 제품 동선만 `VERIFIED`이며 실제 evidence·connector·authenticated audit·radiation assurance 완료가 아니다.
 - 2026-08-24 발표 로드맵 Phase 01~03을 `Roadmap Lab` 7개 local 화면과 NASA snapshot intake gate로 제품화했다. Control Tower 직접 테스트 11개 module 136 tests와 red-team 후속 8개 module 95 tests, localhost 1280×720의 hub·발표 링크·수정 화면 overflow 0을 확인했다. 상태는 bounded 구현 3, readiness 2, external blocker 2이며 전체는 `SYNTHETIC / HOLD`다. 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini 호출, authenticated HITL, CAD/3D 계산, KMS와 penetration test는 완료되지 않았다.

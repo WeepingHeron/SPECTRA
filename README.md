@@ -15,7 +15,7 @@ SPECTRA는 위성 임무 조건, BOM, 방사선 환경 모델과 부품 시험 �
 - **검증된 Competition 기반:** 교육용 GCP의 private Cloud Run Agent 3개, Workflows, Storage, IAM, Logging 합성 E2E와 입력 무결성 공격 차단
 - **검증된 표현 계층:** generated 결과를 소비하는 Product UI, fail-closed 결과 전달 무결성, 13장 발표 deck의 localhost 화면·상호작용
 - **검증된 readiness 계층:** 실제 발행 전 상태를 versioned receipt로 전달하고, Environment·Part의 낙관적 승격·오염 입력을 UI까지 `HOLD`로 차단하는 Evidence Review Workspace
-- **검증된 로드맵 데모 계층:** `Roadmap Lab`의 7개 local 화면에서 source intake·COTS 후보·문서 검토·AI 처리 준비·Change Impact·CAD 결속 준비·H05 보안 posture를 `IMPLEMENTED_BOUNDED / READINESS_ONLY / BLOCKED_EXTERNAL`로 분리
+- **검증된 로컬 Evidence Review:** `Roadmap Lab`의 3단계 흐름에서 합성 정상·변조·오부품 입력과 실제 SPENVIS·TI 후보의 무결성·권리·대상·적용 범위를 순서대로 검사하고, 차폐·ECC·부품 변경 시 필요한 이전 gate를 다시 연다.
 - **미완료 실제 근거:** 승인된 환경 contract, 승인 BOM과 exact-part 시험 원문, 임무 적용성·파괴성 SEE coverage, 과학적 교차검산
 - **미평가 배포 공격:** 실제 GCP `ASR-D02`
 
@@ -41,10 +41,11 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.parts_evidence.test_evide
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.assurance.test_local_readiness_fail_closed
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_evidence_review_workspace
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_roadmap_lab
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_local_evidence_pipeline
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.source_adapters.test_nasa_snapshot_gate
 ```
 
-발표 로드맵의 로컬 기능 묶음은 loopback server에서 `http://127.0.0.1:8765/demo/roadmap-lab.html`로 연다. 7개 화면은 실제 connector·AI API·CAD 계산·KMS·침투시험 완료가 아니라, 현재 구현과 외부 선행 조건을 정직하게 보여 주는 합성 fail-closed 경로다.
+발표 로드맵의 로컬 기능 묶음은 loopback server에서 `http://127.0.0.1:8765/demo/roadmap-lab.html`로 연다. `자료 선택 → 6개 gate 검사 → 변경 후 재검사`의 3단계이며, 실제 후보는 Git 밖 원본을 복사하지 않고 값이 제거된 receipt만 표시한다. 현재 구현은 실제 connector·AI API·CAD 계산·KMS·침투시험 완료가 아니라, 외부 권리·승인·과학 검증이 없으면 `HOLD`로 닫히는 로컬 경로다.
 
 ## 핵심 원칙
 
