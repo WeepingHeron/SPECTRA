@@ -1,22 +1,16 @@
 # SPECTRA Offline HTML Demo
 
-## H25 Roadmap Lab 실행 안내
+## H27 3-Step Roadmap Demo 실행 안내
 
-`roadmap-lab.html`은 확장 기능 7개의 로컬 진입점이다. 아래 화면은 모두 `SYNTHETIC / LOCAL DEMO`이며 최종 assurance는 `HOLD`다. 상태는 다음 경계로 읽는다.
+`roadmap-lab.html`은 발표 직후 40초 안에 제품을 이해시키는 세 단계 guided demo다. 기존 7개 기능 카드는 주 화면에서 제거하고 `자료 연결 → AI 보조 검토 → 판단과 다음 행동`만 남겼다. 발표 자료와 같은 검은 배경·큰 제목·얇은 구분선·흰색 선택 상태를 사용한다.
 
-- `IMPLEMENTED_BOUNDED`: 제한된 합성·로컬 workflow가 구현됐지만 실제 승인이나 production 처리가 아니다.
-- `READINESS_ONLY`: 외부 실행 전 입력·권리·결속 조건을 확인하는 gate이며 실제 처리 호출이나 계산은 없다.
-- `BLOCKED_EXTERNAL`: 로컬 검토 화면은 있으나 승인된 외부 source·권리·BOM 같은 선행 입력이 없어 실제 연결을 시작할 수 없다.
+| 시연 단계 | 발표자가 말할 핵심 | 화면 결론 |
+|---|---|---|
+| 01 자료 연결 | 계산 전에 환경·부품·권리 identity를 확인한다. | `아직 계산하지 않음 / HOLD` |
+| 02 AI 보조 검토 | AI 값은 증거가 아니라 source-bound 검토 후보다. | `REVIEW_REQUIRED / HOLD` |
+| 03 판단과 다음 행동 | 변경 영향과 남은 근거 공백을 함께 보여 준다. | `FINAL ASSURANCE / HOLD` |
 
-| Phase | 화면 | Route | 상태 |
-|---|---|---|---|
-| 01 | Evidence Source Intake | `evidence-intake.html` | `BLOCKED_EXTERNAL` |
-| 01 | COTS Candidate Library | `cots-candidate-library.html` | `BLOCKED_EXTERNAL` |
-| 02 | Document Review | `document-review.html` | `IMPLEMENTED_BOUNDED` |
-| 02 | AI Processing Readiness | `ai-processing-readiness.html` | `READINESS_ONLY` |
-| 03 | Change Impact | `change-impact.html` | `IMPLEMENTED_BOUNDED` |
-| 03 | CAD Linkage Readiness | `cad-linkage-readiness.html` | `READINESS_ONLY` |
-| 03 | Security Posture | `security-posture.html` | `IMPLEMENTED_BOUNDED` |
+각 단계에서는 제목과 오른쪽 `SPECTRA ANSWER`만 설명한다. 기존 7개 상세 route는 삭제하지 않고 오른쪽 아래 `Q&A ↗` 링크로만 제공한다. 본 발표에서 열지 않는다.
 
 저장소 루트에서 localhost를 loopback에만 bind한다.
 
@@ -25,7 +19,7 @@ cd /Users/taehoon/Desktop/IAA/SPECTRA
 python3 -m http.server 8765 --bind 127.0.0.1
 ```
 
-브라우저에서 `http://127.0.0.1:8765/demo/roadmap-lab.html`을 연다. 각 카드는 같은 `demo/` 아래의 상대 route로 이동한다.
+브라우저에서 `http://127.0.0.1:8765/demo/roadmap-lab.html`을 열고 하단 `다음` 버튼을 두 번 누른다. 마지막 화면의 `처음부터 다시 보기`로 초기 상태를 복원한다.
 
 직접 테스트:
 
@@ -40,7 +34,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_security_pos
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.product.test_roadmap_lab
 ```
 
-이 묶음에는 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini API 호출, authenticated HITL, 실제 CAD parser·3D shielding 계산, KMS 서명 운영 또는 penetration test가 없다. 각 화면의 `VALID`, `IMPLEMENTED_BOUNDED`와 로컬 test 통과는 실제 environment/part contract, suitability 또는 방사선 assurance 완료를 뜻하지 않는다.
+이 묶음에는 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini API 호출, authenticated HITL, 실제 CAD parser·3D shielding 계산, KMS 서명 운영 또는 penetration test가 없다. guided demo와 상세 화면의 로컬 test 통과는 실제 environment/part contract, suitability 또는 방사선 assurance 완료를 뜻하지 않는다.
 
 ## H19 Readiness Receipt Integration
 

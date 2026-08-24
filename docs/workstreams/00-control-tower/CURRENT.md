@@ -22,6 +22,7 @@
 
 ## 현재 진실
 
+- 2026-08-24 Roadmap Lab을 발표 중심 3단계 제품 시연으로 전면 재설계했다. 7개 기술 카드를 주 동선에서 제거하고 `자료 연결 → AI 보조 검토 → 판단과 다음 행동`만 남겼으며, 상세 route는 Q&A 보조 링크로 유지했다. 직접 테스트 8+17개와 localhost 1280×720의 두 번 `다음` 클릭, 마지막 초기화, 전체·story·answer overflow 0을 확인했다. 이는 표현·시연 동선 `VERIFIED`이며 실제 evidence·외부 연동 완료가 아니다.
 - 2026-08-24 발표 로드맵 Phase 01~03을 `Roadmap Lab` 7개 local 화면과 NASA snapshot intake gate로 제품화했다. Control Tower 직접 테스트 11개 module 136 tests와 red-team 후속 8개 module 95 tests, localhost 1280×720의 hub·발표 링크·수정 화면 overflow 0을 확인했다. 상태는 bounded 구현 3, readiness 2, external blocker 2이며 전체는 `SYNTHETIC / HOLD`다. 실제 SPENVIS/NASA connector, production COTS library, Document AI/Gemini 호출, authenticated HITL, CAD/3D 계산, KMS와 penetration test는 완료되지 않았다.
 - 같은 회차의 독립 red-team P1 다섯 건을 보완했다. COTS audit export에서 identity-bearing record ID를 제거했고, local document action right를 `SYNTHETIC_DEMO_ONLY`로 표시했으며, AI region과 security snapshot display 값을 exact allowlist로 닫고, generated policy approval을 `SYNTHETIC_` 상태로 인접 표기했다. NASA synthetic control 권리는 `SYNTHETIC_CONTROL_ONLY`로 분리했다.
 - 통합 회귀는 schema 17개·정상 fixture 5개·실패 fixture 116개, simulation 55, environment 65, Product 125, GCP H05 local 12, source adapter 14 tests를 통과했다. Assurance는 47 attack executions·False PASS 0이고 `ASR-D02` 1건은 계속 `NOT_EVALUATED`다. 최초에 존재하지 않는 `tests/schema/run_all.py`를 호출한 명령 오류 1건은 올바른 `tests/schema/validate_contracts.py`와 readiness 8 tests로 바로 재검증했으며 제품 실패가 아니다.

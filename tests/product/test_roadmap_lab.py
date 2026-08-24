@@ -1,85 +1,120 @@
+#!/usr/bin/env python3
+"""Direct tests for the presentation-first three-step Roadmap Lab."""
+
+from __future__ import annotations
+
+import json
 import pathlib
 import re
+import subprocess
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 HTML = ROOT / "demo" / "roadmap-lab.html"
-
 ROUTES = {
-    "evidence-intake.html": "BLOCKED_EXTERNAL",
-    "cots-candidate-library.html": "BLOCKED_EXTERNAL",
-    "document-review.html": "IMPLEMENTED_BOUNDED",
-    "ai-processing-readiness.html": "READINESS_ONLY",
-    "change-impact.html": "IMPLEMENTED_BOUNDED",
-    "cad-linkage-readiness.html": "READINESS_ONLY",
-    "security-posture.html": "IMPLEMENTED_BOUNDED",
+    "evidence-intake.html",
+    "cots-candidate-library.html",
+    "document-review.html",
+    "ai-processing-readiness.html",
+    "change-impact.html",
+    "cad-linkage-readiness.html",
+    "security-posture.html",
 }
+
 
 class RoadmapLabTests(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.html = HTML.read_text(encoding="utf-8")
+        scripts = re.findall(r"<script>([\s\S]*?)</script>", cls.html)
+        assert len(scripts) == 1
+        cls.script = scripts[0]
 
-    def test_all_seven_routes_exist_and_are_relative_demo_links(self):
-        links = re.findall(r'<a class="card" href="([^"]+)" data-route="([^"]+)" data-status="([^"]+)">', self.html)
-        self.assertEqual(len(links), 7)
-        self.assertEqual({href for href, route, status in links}, set(ROUTES))
-        for href, route, status in links:
-            self.assertEqual(href, route)
-            self.assertEqual(status, ROUTES[href])
-            self.assertTrue((HTML.parent / href).is_file(), href)
-            self.assertFalse(href.startswith(("/", "http://", "https://")))
+    def stage_data(self) -> list[dict]:
+        command = (
+            "eval(" + json.dumps(self.script) + ");"
+            "process.stdout.write(JSON.stringify(globalThis.SPECTRA_ROADMAP_DEMO.STAGES));"
+        )
+        completed = subprocess.run(
+            ["node", "-e", command], check=True, capture_output=True, text=True
+        )
+        return json.loads(completed.stdout)
 
-    def test_phase_route_grouping_is_exact(self):
-        phases = re.findall(r'<article class="phase">([\s\S]*?)</article>', self.html)
-        self.assertEqual(len(phases), 3)
-        phase_routes = [re.findall(r'data-route="([^"]+)"', phase) for phase in phases]
-        self.assertEqual(phase_routes, [
-            ["evidence-intake.html", "cots-candidate-library.html"],
-            ["document-review.html", "ai-processing-readiness.html"],
-            ["change-impact.html", "cad-linkage-readiness.html", "security-posture.html"],
-        ])
+    def test_story_is_three_steps_not_seven_equal_priority_cards(self) -> None:
+        self.assertEqual(len(re.findall(r'<button class="step(?: active)?"', self.html)), 3)
+        self.assertNotIn("7 routes", self.html)
+        self.assertNotIn('class="card"', self.html)
+        for label in ("자료 연결", "AI 보조 검토", "판단과 다음 행동"):
+            self.assertIn(label, self.html)
 
-    def test_each_card_has_one_exact_status_and_all_status_classes_are_used(self):
-        for route, expected in ROUTES.items():
-            card = re.search(rf'<a class="card" href="{re.escape(route)}"[\s\S]*?</a>', self.html)
-            self.assertIsNotNone(card, route)
-            statuses = re.findall(r'>(IMPLEMENTED_BOUNDED|READINESS_ONLY|BLOCKED_EXTERNAL)<', card.group(0))
-            self.assertEqual(statuses, [expected], route)
-        self.assertEqual(set(ROUTES.values()), {"IMPLEMENTED_BOUNDED", "READINESS_ONLY", "BLOCKED_EXTERNAL"})
+    def test_three_stage_contract_is_exact_and_fail_closed(self) -> None:
+        stages = self.stage_data()
+        self.assertEqual(len(stages), 3)
+        self.assertEqual(
+            [stage["status"] for stage in stages],
+            ["BLOCKED_EXTERNAL", "IMPLEMENTED_BOUNDED", "IMPLEMENTED_BOUNDED"],
+        )
+        self.assertTrue(all(len(stage["nodes"]) == 3 for stage in stages))
+        self.assertTrue(all(len(stage["actions"]) == 2 for stage in stages))
+        self.assertTrue(all("HOLD" in stage["answerState"] for stage in stages))
 
-    def test_top_truth_boundary_and_assurance_hold_are_visible(self):
-        for text in ["SYNTHETIC · LOCAL DEMO", "ASSURANCE HOLD", "실제 서비스 연결과 과학적 적합성을 뜻하지 않는다."]:
+    def test_all_seven_detailed_tools_remain_q_and_a_only(self) -> None:
+        stages = self.stage_data()
+        links = {href for stage in stages for _label, href in stage["links"]}
+        self.assertEqual(links, ROUTES)
+        self.assertEqual([len(stage["links"]) for stage in stages], [2, 2, 3])
+        for route in links:
+            self.assertTrue((HTML.parent / route).is_file(), route)
+        self.assertIn("세부 도구는 Q&amp;A에서 연다.", self.html)
+
+    def test_plain_language_product_definition_is_prominent(self) -> None:
+        for text in (
+            "흩어진 근거를 연결해",
+            "판단 가능한지 먼저 확인한다.",
+            "SPECTRA는 무엇인가?",
+            "방사선 수치를 만들어 주는 AI가 아니라",
+            "부족한 다음 행동을 보여 주는 제품이다.",
+        ):
             self.assertIn(text, self.html)
 
-    def test_external_systems_are_explicitly_not_complete(self):
-        boundaries = [
-            "실제 connector 미연동",
-            "production library 아님",
-            "AI 호출·승인 아님",
-            "API call 0 · authenticated HITL 미구현",
-            "CAD parser·3D shielding dose 계산 없음",
-            "KMS 서명·침투시험 미완료",
-        ]
-        for boundary in boundaries:
-            self.assertIn(boundary, self.html)
-        for forbidden in ["LIVE_CONNECTED", "PRODUCTION_READY", "ASSURANCE PASS", "PENTEST_COMPLETE", "KMS_DEPLOYED", "AUTHENTICATED_HITL_COMPLETE"]:
-            self.assertNotIn(forbidden, self.html)
-
-    def test_actual_completion_conditions_are_present(self):
-        for text in ["실제 완료 조건", "provider job reference", "승인 BOM", "mission applicability", "authenticated reviewer", "승인된 penetration test"]:
+    def test_truth_boundary_and_demo_time_are_adjacent(self) -> None:
+        for text in (
+            "SYNTHETIC DEMO",
+            "실제 environment·part evidence 0건",
+            "FINAL ASSURANCE · HOLD",
+            "권장 시연 40초",
+        ):
             self.assertIn(text, self.html)
 
-    def test_no_remote_dependency_or_active_runtime(self):
+    def test_no_remote_dependency_api_or_storage(self) -> None:
         lowered = self.html.lower()
-        self.assertNotRegex(lowered, r"https?://|//cdn|<script|fetch\s*\(|xmlhttprequest|websocket|sendbeacon")
+        self.assertNotRegex(
+            lowered,
+            r"https?://|//cdn|<script[^>]+src=|fetch\s*\(|xmlhttprequest|websocket|sendbeacon",
+        )
         self.assertNotIn("localStorage", self.html)
         self.assertNotIn("sessionStorage", self.html)
 
-    def test_fixed_viewport_layout_contract_is_present(self):
-        self.assertIn("height:100vh", self.html)
-        self.assertIn("overflow:hidden", self.html)
-        self.assertIn("grid-template-columns:repeat(3,minmax(0,1fr))", self.html)
-        self.assertIn("@media(max-height:760px)", self.html)
+    def test_presentation_visual_contract_and_fixed_viewport(self) -> None:
+        for token in (
+            "--bg:#050505",
+            "letter-spacing:.22em",
+            "border-bottom:1px solid var(--line)",
+            "height:100vh",
+            "overflow:hidden",
+            "grid-template-columns:205px minmax(0,1fr) 280px",
+            "@media(max-height:760px)",
+        ):
+            self.assertIn(token, self.html)
 
-if __name__ == "__main__": unittest.main()
+    def test_javascript_syntax_and_next_reset_loop(self) -> None:
+        completed = subprocess.run(
+            ["node", "--check", "-"], input=self.script, text=True, capture_output=True
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        self.assertIn("index=index<2?index+1:0", self.script)
+        self.assertIn("처음부터 다시 보기 ↺", self.script)
+
+
+if __name__ == "__main__":
+    unittest.main()
