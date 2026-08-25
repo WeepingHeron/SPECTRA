@@ -51,7 +51,26 @@ class EvidenceBatchTests(unittest.TestCase):
 
         console = (ROOT / "demo" / "evidence-console.html").read_text(encoding="utf-8")
         self.assertIn('id="tab-batch"', console)
-        self.assertIn('src="evidence-batch.html?embedded=1"', console)
+        self.assertIn('src="test-catalog.html?embedded=1"', console)
+        self.assertIn("임무·부품·방사선 시험", console)
+
+    def test_cloud_catalog_ui_is_safe_and_has_local_fallback(self) -> None:
+        catalog = (ROOT / "demo" / "test-catalog.html").read_text(encoding="utf-8")
+        for marker in (
+            "spectra-public-test-catalog-iceu-686/v1",
+            "/demo/data/test-catalog",
+            "문서별 처리 결과",
+            "임무·부품·시험 조합 결과",
+            "감사로그 제출 영수증",
+            "최종 승인",
+            "deployment-receipt.json",
+            "공개 객체 확인",
+        ):
+            self.assertIn(marker, catalog)
+        self.assertNotIn("innerHTML=", catalog)
+        scripts = re.findall(r"<script>([\s\S]*?)</script>", catalog)
+        self.assertEqual(len(scripts), 1)
+        subprocess.run(["node", "--check", "-"], input=scripts[0], text=True, check=True)
 
     def test_fixed_manifest_has_three_distinct_hold_controls(self) -> None:
         self.assertEqual(self.manifest["source_classification"], "SYNTHETIC_CONTROL")

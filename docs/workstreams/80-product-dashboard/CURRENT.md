@@ -2,12 +2,46 @@
 
 ## 상태
 
-`VERIFIED — H38 Consolidated Two-Tab Demo; actual evidence and assurance remain HOLD`
+`VERIFIED — H42 Public Console; actual evidence and assurance remain HOLD`
+
+## H42 Final Public Console QA — 2026-08-25
+
+- Slide 08 제목을 `세 역할이 한 가지 실행의 근거를 나눠 검증한다.`로 확정해 세 역할이 서로 다른 실행을 만들거나 같은 계산을 세 번 한다는 오해를 줄였다.
+- Evidence Console 오른쪽 결과 영역을 `항목별 검사 결과` 카드로 재구성했다. 각 카드는 `확인 완료 · 불일치 · 추가 입력 필요`, 확인 대상, 세부 설명, 책임 역할을 분리하며 1280×720에서는 문서 전체가 아니라 요약 panel만 독립 스크롤한다.
+- 공개 revision `spectra-demo-console-00006-6mh`에서 합성 PDF를 실행해 `확인 2 · 불일치 0 · 추가 입력 1`, body `1280×720` overflow 0과 카드 3개를 확인했다.
+- 공개 메뉴의 실행 경계를 재확인했다. 문서 검사는 live Cloud Run parser, 3개 입력 연결은 고정 합성 입력의 production Core live 실행, 공격 검증은 저장 snapshot, 전체 문서 결과는 공개 GCP catalog live read다.
+- 전체 자동 회귀는 unit 415개와 Assurance 공격 실행 47개가 통과했다. 실제 방사선 assurance는 계속 `HOLD`다.
+
+## H41 Cloud Console Readability & Public Runtime — 2026-08-25
+
+- 네 메뉴를 2×2로 재배치하고, 결과 상단에 `확인 완료 · 불일치 · 추가 입력` 세 집계를 큰 숫자로 분리했다. event 본문·근거·상태 글자와 전체 문서 표의 행간·열 폭을 확대하고 파일명 표시는 숫자 prefix와 underscore를 제거했다.
+- 동일 HTML이 hostname을 감지해 로컬과 Cloud Run 안내를 구분한다. Cloud Run에서는 파일이 GCP 인스턴스로 전송되고 임시 처리 후 삭제되며 GCS에는 저장되지 않는다는 문구를 입력 권리 확인 바로 아래 표시한다.
+- 공개 URL에서 합성 PDF를 실제 실행해 `14 events · 확인 2 · 불일치 0 · 추가 입력 1`, Mission Case 5/5 근거 연결, 저장 공격의 hash/endpoint 차단, GCP 공개 문서 15건과 감사로그 영수증을 브라우저에서 재현했다.
+- 변경 범위 Product 테스트 35개와 `git diff --check`가 통과했다. 이는 UI·결정론적 합성 동작·저장 snapshot 표시에 대한 검증이며 실제 방사선 assurance는 아니다.
+
+## H40 Partial Evaluation Continuation — 2026-08-25
+
+- 최종 fail-closed와 조기 계산 중단을 분리했다. 필수 입력 일부가 누락돼도 원문 span에 결속된 수치는 Agent별로 구조·단위·도메인 최소/최대·범위 순서·정수 조건을 계속 검사한다.
+- `PARTIAL_EVALUATION_LEDGER_1.0.0`은 각 항목을 `VALIDATED · FAILED · NOT_EVALUATED`로 분리하고, claim boundary를 `STRUCTURE_UNIT_AND_DOMAIN_ONLY`로 제한한다. 시험값 진위·부품 rating·임무 적합성은 별도 근거 없이 승격하지 않는다.
+- Local Console의 `agent_role`은 책임 범위를 보여주는 메타데이터다. 실제 `pypdf/TXT` 처리는 독립 Agent가 아니므로 `DOCUMENT_PARSER_AGENT`를 제거하고 `LOCAL_DOCUMENT_GATE`로 정정했다. Google Document AI·OCR·Gemini 호출은 0건이며 후속 확장으로 남는다.
+- 앞 단계가 HOLD여도 완료·불일치·추가 입력 필요 수를 최종 보류 검토 단계에서 대조한다. 최종 HOLD는 유지하되 확인 가능한 결과를 숨기지 않는다.
+- 실제 NASA Micron TID 요약에 잘못된 `23LC1024-I/SN · Microchip Technology`를 입력하면 39 krad(Si), 시료 13, LDC 201816의 3개는 숫자·단위·원문 위치를 확인하고 identity 문자열 2개는 불일치, 승인 BOM·임무 요구량 2개는 추가 입력 필요로 분리한다. 이는 시험값 진위나 임무 적합성 검증이 아니다.
+- 콘솔 문구를 `확인 · 불일치 · 추가 입력 필요`, `최초 보류 책임`으로 정리하고 공개 카탈로그를 `전체 문서 결과` 메뉴에 통합했다.
+- Product 회귀 169개, Python compile, `git diff --check`를 통과했다. 브라우저에서 실제 NASA 요약의 `3 확인 · 2 불일치 · 2 추가 입력 필요`, 공개 GCP 결과 15행, 임무 문서 2건의 잘못된 제조사 불일치 0건과 최신 deployment receipt를 확인했다.
+
+## H39 Mission/Part/Test Cloud Catalog — 2026-08-25
+
+- Local parser 입력 축을 부품 중심에서 `MISSION_PLAN · PART_SPEC · RADIATION_TEST`로 확장했다. 임무명·궤도 유형·고도·경사각·기간·차폐 두께 후보를 원문 span에 결속하고, 임무 계획에는 승인 BOM 대신 방사선 환경 연결 공백을 반환한다.
+- NASA Landsat 9 `705 km · 98.2° · 5년`, ESA Sentinel-2 `786 km · 98.5° · 7년`, Microchip 23LC1024 `2.5–5.5 V · -40~85°C` 공식 출처 요약을 수동 test-data에 추가했다. 임무 조건은 방사선 환경 계산이 아니고 부품 명세는 방사선 시험이 아니다.
+- `전체 문서 결과`는 GCP 공개 JSON을 우선 읽고 로컬 snapshot으로 fallback한다. 문서 15개를 처리 단계 표로 표시하고, 실제 조합은 환경·명세·exact identity·시험 근거 공백에서 fail-closed한다. 합성 Core만 final gate까지 실행하지만 `SYNTHETIC_ONLY / HOLD`다.
+- 실제 브라우저에서 `GCP LIVE · PUBLIC READ`, 문서 15·공개 요약 6·final gate 5·승인 0, 공격·권리·손상 PDF의 구체 blocker, 16-event SHA-256 chain과 GCS generation receipt를 확인했다.
+- 공개 원문 PDF를 복제하지 않고 공식 URL이 있는 로컬 작성 요약과 synthetic fixture만 배포했다. 실제 승인 BOM·고객 문서·비밀정보·방사선 assurance는 0이다.
 
 ## H38 Consolidated Two-Tab Demo — 2026-08-25
 
 - 발표 운영을 `Presentation + spectra-demo`, 총 2개 탭으로 축소했다. Slide 03·09의 제품 링크는 `http://127.0.0.1:8765/demo/evidence-console.html`과 named target `spectra-demo`를 공유한다.
-- Raw Console 안에 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표` 세 모드를 두고, Batch 결과표를 동일 URL의 내부 패널로 내장했다. 합성 PDF 원문 링크도 새 창을 열지 않는다. `Roadmap Lab`은 유지하지만 주 발표 링크에서 제거했다.
+- 검증 콘솔 안에 `문서 1개 검사 · 3개 입력 연결 · 공격 검증 기록 · 전체 문서 결과` 네 모드를 두고, 공개 카탈로그 결과표를 동일 URL의 내부 패널로 내장했다. 합성 PDF 원문 링크도 새 창을 열지 않는다. `Roadmap Lab`은 유지하지만 주 발표 링크에서 제거했다.
+- Local PDF/TXT parser는 실제 시험 문서의 TID dose·dose rate·LET·cross-section·fluence·particle energy·temperature·voltage·sample size·LDC 값을 원문 span과 단위에 결속한다. 숫자는 모두 `UNAPPROVED_CANDIDATE`이며 failure point·근사 tolerance를 rating이나 PASS로 승격하지 않는다. NASA·ESA 공개 관측값 3종을 source URL이 있는 요약 fixture로 추가했고, 한글 파일명은 URL 인코딩 후 loopback 서버에서 안전하게 복원한다.
 - 사용자 환경의 8765에는 `/api/intake`가 없는 정적 Python server가 떠 있어 합성 3종이 빈 실패 행으로 끝나는 것을 재현했다. 해당 정적 server를 종료하고 `scripts/run_evidence_console.py --port 8765` 통합 server로 교체했다.
 - Batch는 `/api/intake` 실패를 더 이상 조용히 삼키지 않고, 통합 server 실행 명령을 인접 오류 메시지로 표시한다. `file://` 실행도 같은 안내로 fail-closed한다.
 - 교체 후 사용자 확인에서 기존 Local/GCP 두 탭은 원래부터 한 Console 안에 있었고, 별도 Batch 링크만으로는 실제 통합 화면이 아니라는 문제를 확인했다. H38에서 Batch를 Console의 세 번째 `여러 문서 표` 모드로 내장했다. 8765 실제 브라우저에서 URL이 `evidence-console.html`로 유지된 채 기존 terminal·summary가 숨겨지고 내장 결과표가 표시되는 것을 확인했으며, 합성 3종은 `documents 3 / candidates 7 / HOLD 3 / reference 3 / 3`, 3행, alert hidden으로 완료됐다.

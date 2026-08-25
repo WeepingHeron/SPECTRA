@@ -1,0 +1,23 @@
+{
+  "contract_version": "SPECTRA_PUBLIC_CATALOG_DEPLOYMENT_RECEIPT_1.0.0",
+  "verified_at": "2026-08-25T07:51:00Z",
+  "project_id": "iceu-686",
+  "bucket": "spectra-public-test-catalog-iceu-686",
+  "prefix": "v1/",
+  "public_http_status": 200,
+  "cors_allow_origin": "*",
+  "published_object_count": 20,
+  "test_data_object_count": 17,
+  "catalog": {
+    "name": "v1/catalog.json",
+    "generation": "1787644220102213",
+    "size": 33311,
+    "md5_hash_base64": "TYQO6HD00rRDB1g7etNePw=="
+  },
+  "audit_log": {
+    "name": "v1/audit-log.json",
+    "generation": "1787644222071471",
+    "size": 9977,
+    "md5_hash_base64": "vEN4GjFoRTjcJDO5xKJj9A=="
+  }
+}

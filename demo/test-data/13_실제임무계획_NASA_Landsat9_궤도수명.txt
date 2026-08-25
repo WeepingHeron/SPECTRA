@@ -1,0 +1,20 @@
+SPECTRA PUBLISHED SOURCE SUMMARY · MISSION CONDITIONS
+Data class: PUBLISHED
+Document role: MISSION_PLAN
+Mission name: Landsat 9
+Operator: NASA / USGS
+Orbit: Near-polar, sun-synchronous
+Orbit altitude: 705 km
+Orbit inclination: 98.2 deg
+Mission design life: 5 years
+Consumables: 10 years
+
+Primary source:
+https://science.nasa.gov/mission/landsat-9/
+Supporting official mission overview:
+https://ntrs.nasa.gov/api/citations/20190032037/downloads/20190032037.pdf
+
+Use boundary:
+This is a locally authored source summary for parser testing. It records published
+mission conditions, not a radiation environment calculation and not permission to
+approve any component. The official source remains the authority.

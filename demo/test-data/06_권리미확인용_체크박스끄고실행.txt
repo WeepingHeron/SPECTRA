@@ -1,0 +1,8 @@
+SYNTHETIC RIGHTS TEST FIXTURE - NOT ENGINEERING EVIDENCE
+Scenario: run this file with the local processing rights checkbox turned OFF
+
+Manufacturer: Microchip Technology
+Orderable part number: 23LC1024-I/SN
+Mentioned sections: TID, SEU, SEL, SEB, SEGR.
+
+The expected boundary comes from the unchecked console control, not from this text.

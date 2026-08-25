@@ -15,7 +15,12 @@ import unittest
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from run_evidence_console import load_gcp_snapshot_logs, local_intake_events  # noqa: E402
+from run_evidence_console import (  # noqa: E402
+    load_gcp_snapshot_logs,
+    load_mission_case_demo,
+    load_review_impact_demo,
+    local_intake_events,
+)
 
 
 class EvidenceConsoleTests(unittest.TestCase):
@@ -49,14 +54,39 @@ class EvidenceConsoleTests(unittest.TestCase):
             events[-1]["evidence"]["problem_location"], "4 · 승인 대상 대조"
         )
         self.assertIn(
-            "승인 BOM target", events[-1]["evidence"]["blocking_reason"]
+            "승인된 비교 대상 부품 정보", events[-1]["evidence"]["blocking_reason"]
         )
         parser_started = next(
             event for event in events if event["event"] == "parser.started"
         )
+        self.assertEqual(parser_started["agent_role"], "LOCAL_DOCUMENT_GATE")
         self.assertFalse(parser_started["evidence"]["raw_path_exposed"])
         self.assertFalse(parser_started["evidence"]["raw_text_exposed"])
         self.assertNotIn("spectra-console-", repr(events))
+
+    def test_mission_document_routes_to_environment_link_not_bom_review(self) -> None:
+        events = list(
+            local_intake_events(
+                "mission.txt",
+                (
+                    b"Mission name: Landsat 9\n"
+                    b"Orbit: Near-polar, sun-synchronous\n"
+                    b"Orbit altitude: 705 km\n"
+                    b"Orbit inclination: 98.2 deg\n"
+                    b"Mission design life: 5 years\n"
+                ),
+                expected_part="",
+                manufacturer=None,
+                local_review_rights_confirmed=True,
+            )
+        )
+        linked = next(item for item in events if item["event"] == "environment_link.blocked")
+        self.assertEqual(linked["stage"], "ENVIRONMENT_REVIEW")
+        self.assertEqual(
+            linked["evidence"]["stable_code"], "RADIATION_ENVIRONMENT_MISSING"
+        )
+        self.assertNotIn("approved_target.blocked", [item["event"] for item in events])
+        self.assertEqual(events[-1]["evidence"]["problem_location"], "2 · 임무 조건과 방사선 환경 연결")
 
     def test_missing_rights_stops_before_parts_review(self) -> None:
         events = list(
@@ -73,6 +103,41 @@ class EvidenceConsoleTests(unittest.TestCase):
         self.assertIn("review.not_called", by_event)
         self.assertNotIn("approved_target.blocked", by_event)
         self.assertEqual(events[-1]["evidence"]["assurance_decision"], "HOLD")
+        assurance = next(
+            item for item in events if item["event"] == "assurance.partial_review.completed"
+        )
+        self.assertEqual(assurance["agent_role"], "ASSURANCE_AGENT")
+        self.assertEqual(assurance["status"], "HOLD")
+
+    def test_partial_numeric_validation_runs_before_identity_hold(self) -> None:
+        events = list(
+            local_intake_events(
+                "nasa-micron.txt",
+                (
+                    b"Micron MT29F4T08CTHBBM5 TID 39 krad(Si) "
+                    b"Sample size: 13. LDC: 201816."
+                ),
+                expected_part="23LC1024-I/SN",
+                manufacturer="Microchip Technology",
+                local_review_rights_confirmed=True,
+            )
+        )
+        partial = next(item for item in events if item["event"] == "partial_checks.completed")
+        self.assertEqual(partial["agent_role"], "PARTS_AGENT")
+        self.assertEqual(partial["status"], "FAILED")
+        self.assertEqual(len(partial["evidence"]["validated_checks"]), 3)
+        self.assertEqual(len(partial["evidence"]["failed_checks"]), 2)
+        blocker = next(item for item in events if item["event"] == "approved_target.blocked")
+        self.assertEqual(blocker["agent_role"], "PARTS_AGENT")
+        self.assertEqual(
+            blocker["evidence"]["stable_code"], "EXPECTED_PART_TEXT_NOT_FOUND"
+        )
+        assurance = next(
+            item for item in events if item["event"] == "assurance.partial_review.completed"
+        )
+        self.assertEqual(assurance["evidence"]["validated_check_count"], 3)
+        self.assertEqual(assurance["evidence"]["failed_check_count"], 2)
+        self.assertEqual(events[-1]["evidence"]["hold_agent"], "PARTS_AGENT")
 
     def test_prompt_injection_never_emits_candidates(self) -> None:
         events = list(
@@ -116,8 +181,45 @@ class EvidenceConsoleTests(unittest.TestCase):
             self.assertEqual(log["assurance_decision"], "HOLD")
             self.assertIsInstance(log["stable_codes"], list)
         self.assertNotIn("gcloud", self.server_source)
-        self.assertIn('ThreadingHTTPServer(("127.0.0.1", args.port)', self.server_source)
-        self.assertIn("ensure_pdf_runtime()", self.server_source)
+        self.assertIn('os.environ.get("HOST", "127.0.0.1")', self.server_source)
+        self.assertIn("ThreadingHTTPServer((args.host, args.port)", self.server_source)
+        self.assertIn("_add_bundled_pdf_packages()", self.server_source)
+        self.assertNotIn("os.exec", self.server_source)
+
+    def test_mission_case_demo_runs_production_core_and_stays_hold(self) -> None:
+        payload = load_mission_case_demo()
+        result = payload["result"]
+        self.assertEqual(result["processing_status"], "VALID")
+        self.assertEqual(result["questions"]["exact_part_identity"]["status"], "EXACT_MATCH")
+        self.assertEqual(result["questions"]["event_coverage"]["status"], "COMPLETE")
+        self.assertEqual(result["questions"]["mission_test_applicability"]["status"], "NOT_EVALUATED")
+        self.assertEqual(result["assurance_decision"], "HOLD")
+        self.assertEqual([item["event_type"] for item in result["event_coverage"]], ["TID", "SEU", "SEL", "SEB", "SEGR"])
+        self.assertFalse(payload["boundary"]["parser_wired"])
+        self.assertEqual(payload["boundary"]["actual_evidence"], 0)
+        self.assertEqual(len(payload["events"]), 6)
+
+    def test_review_impact_demo_distinguishes_duration_shielding_and_part_change(self) -> None:
+        payload = load_review_impact_demo()
+        result = payload["result"]
+        self.assertEqual(result["processing_status"], "VALID")
+        self.assertEqual(result["impact_status"], "REVIEW_REQUIRED")
+        self.assertEqual(result["affected_calculations"], ["SEU", "TID"])
+        self.assertEqual(
+            [item["field_pointer"] for item in result["changed_fields"]],
+            [
+                "duration_days",
+                "shielding_mm_al_equivalent",
+                "approved_component_identity.orderable_part_number",
+            ],
+        )
+        self.assertEqual(len(result["invalidated_evidence"]), 5)
+        action_codes = [item["action_code"] for item in result["next_actions"]]
+        self.assertIn("RERUN_EXISTING_TID_SEU_CALCULATIONS", action_codes)
+        self.assertIn("RERUN_EXISTING_TID_CALCULATION", action_codes)
+        self.assertIn("REVIEW_EXACT_PART_EVIDENCE", action_codes)
+        self.assertFalse(payload["boundary"]["physics_recalculated"])
+        self.assertEqual(result["assurance_decision"], "HOLD")
 
     def test_synthetic_unstructured_pdf_matches_fixed_candidate_truth(self) -> None:
         pdf = ROOT / "output/pdf/spectra_synthetic_unstructured_radiation_report.pdf"
@@ -165,28 +267,37 @@ class EvidenceConsoleTests(unittest.TestCase):
 
     def test_console_html_streams_raw_lines_safely(self) -> None:
         for required in (
-            "LOCAL LIVE · LOOPBACK ONLY",
-            "GCP SAVED SNAPSHOT · NOT LIVE",
+            "로컬 문서 검사 · 실제 실행",
+            "공격 검증 기록 · 저장본",
             "/api/intake?",
             "/api/gcp-snapshot-logs",
+            "/api/mission-case-demo",
+            "/api/review-impact-demo",
             "response.body.getReader()",
+            '"X-Spectra-Filename":encodeURIComponent(filename)',
             'document.createTextNode(rawLine+"\\n")',
-            "NO OCR · NO LLM · NO GCP CALL",
+            "pypdf/TXT · OCR·Document AI·LLM 사용 안 함",
             "합성 비정형 PDF 예시 실행",
             "합성 PDF 원문 4쪽 보기 →",
             "원본 JSONL 보기",
-            "SYNTHETIC REFERENCE CHECK",
+            "합성 정답 대조",
             "spectra_synthetic_unstructured_radiation_report.pdf",
             "gcp-table",
             "gcp-scenarios",
             "ENDPOINT_OVERRIDE_FORBIDDEN",
             "INPUT_BODY_SHA256_MISMATCH",
+            "3개 입력 연결",
+            "여러 문서 근거 연결 실행",
+            "조건 변경 영향 확인",
+            "결정론적 production Core",
             'get("presentation")==="1"',
             "event-card",
         ):
             self.assertIn(required, self.html)
+        self.assertIn("urllib.parse.unquote(encoded_filename)", self.server_source)
         self.assertNotRegex(self.html.lower(), r"https?://|//cdn|websocket")
         self.assertNotIn("innerHTML", self.html)
+        self.assertNotIn("DOCUMENT_PARSER_AGENT", self.html)
         scripts = re.findall(r"<script>([\s\S]*?)</script>", self.html)
         self.assertEqual(len(scripts), 1)
         completed = subprocess.run(

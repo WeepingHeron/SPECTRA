@@ -1,0 +1,2 @@
+This is intentionally not a valid PDF binary.
+It exists only to verify PDF_TEXT_EXTRACTION_FAILED and fail-closed behavior.

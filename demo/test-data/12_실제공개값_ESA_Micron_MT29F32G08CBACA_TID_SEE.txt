@@ -1,0 +1,20 @@
+PUBLISHED SOURCE SUMMARY - ACTUAL TEST VALUES - NOT AN APPROVAL OR RATING
+Primary report: University of Padova / ESA, March 2013
+Locator: https://escies.org/download/webDocumentFile?id=60235
+ESA summary locator: https://sci.esa.int/c/portal/doc.cfm?fobjectid=49796
+
+Manufacturer: Micron
+Orderable part number: MT29F32G08CBACA
+Device: commercial 25 nm, 32 Gbit, two-bit-per-cell MLC NAND Flash
+Supply voltage: 2.7V-3.6V
+Package: 48-pin TSOP
+Operating range: 0°C to +70°C
+Lot code: Unknown
+
+Sample size: 10 for TID testing
+Sample size: 3 for heavy-ion SEE testing
+Sample size: 2 for proton SEE testing
+Published approximate TID tolerance: ~20 krad
+
+The report leaves lot traceability and die marking unresolved. The approximate observation
+must not be promoted to a guaranteed rating or reused for another lot.

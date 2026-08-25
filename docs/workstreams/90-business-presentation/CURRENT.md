@@ -2,7 +2,21 @@
 
 ## 상태
 
-`ACTIVE_TODAY — 11-slide 7-minute deck simplified; measured rehearsal pending`
+`RELEASE_VERIFIED — 11-slide 7-minute deck and public Console; measured rehearsal pending`
+
+## Final Slide 08 & Public Console QA — 2026-08-25
+
+- Slide 08 제목은 `실제 GCP에서는, 세 역할이 한 가지 실행의 근거를 나눠 검증한다.`로 확정했다. Mission·Parts·Assurance는 동일 Workflow의 서로 다른 증거 책임이며 같은 계산을 세 번 수행한다는 뜻이 아니다.
+- 공개 1280×720 브라우저에서 deck 가로 overflow 0과 새 제목 표시를 확인했다. Console은 항목별 결과를 세 카드로 분리하고 문서 전체 overflow 없이 요약 panel만 스크롤한다.
+- 공격 검증은 공개 live 쓰기 endpoint로 확대하지 않았다. 공개 호출자에게 Workflows 실행·Storage 쓰기 권한을 열 경우 반복 실행 비용, 로그 오염, 내부 경계 탐색과 service account 권한 확대 위험이 생기므로 독립 확인된 snapshot을 재생한다.
+- unit 415개와 Assurance 공격 실행 47개, 공개 Cloud Run 동선, 문서 정합성과 현재 revision을 최종 확인했다. 사람 낭독·클릭 시간은 계속 `NOT_MEASURED`다.
+
+## Cloud Presentation Runtime & Script v7 Refresh — 2026-08-25
+
+- 발표 자료와 검증 콘솔의 기준 URL을 `https://spectra-demo-console-mwmfe3da5q-du.a.run.app`로 전환했다. 발표자는 서버를 켜지 않고 Presentation과 Evidence Console 두 탭만 연다. localhost는 Cloud Run 장애 시 fallback이다.
+- 시작 문장은 전문어 `HOLD`와 숫자 중심 비유를 제거하고 `임무 조건·부품 정보·방사선 시험 자료를 한 흐름에서 대조해 확인한 것과 더 필요한 것을 보여준다`로 교체했다. Closing도 같은 제품 가치로 정렬했다.
+- 대본은 필수 입력이 빠져도 확인 가능한 항목은 계속 검사하고 완료·불일치·추가 입력으로 나눈다는 현재 동작을 설명한다. 문서 파서와 저장 GCP Agent 경로는 분리되어 있고, 저장 공격 snapshot을 live 공격 실행으로 주장하지 않는다.
+- Cloud Run 공개 URL의 PDF·Mission Case·공격 기록·전체 문서 결과를 실제 브라우저에서 검증했다. 7분 시간표는 계속 계산값이며 사람 낭독·클릭 실측은 `NOT_MEASURED`다.
 
 ## Evidence-backed Business Slide & Simplified Flow — 2026-08-25
 
@@ -15,9 +29,9 @@
 - Slide 07의 지원 범위는 구현에 맞춰 정밀화했다. EvidencePacket은 구조화된 임무 환경·부품 시험 근거·완화 가정을 판단 규칙과 출처에 연결하며, 일부 근거가 있어도 필수 근거가 빠지면 HOLD한다. Multi-Agent는 세 역할 모두가 같은 대조를 반복하는 구조가 아니라 Mission·Parts가 각 범위를 검증하고 Assurance가 입력 결속과 응답 해시를 재확인하는 구조다.
 - 전체 장수는 `Cover + 01~09 + Closing`, 총 11장이다. Slide 04는 NASA·ESA·GAO 자료를 타깃 사용자별 애로사항에 연결하고, 실제 시간 절감 효과와 구매 의향은 사용자 조사가 필요하다고 분리한다.
 - Slide 04 하단은 ESA를 유럽우주국, GAO를 미국 정부감사원으로 풀어 쓴다. Document AI·Gemini를 포함한 향후 확장 내용은 주 발표에서 말하지 않는다.
-- canonical `FINAL_PRESENTATION_SCRIPT_7MIN.md` v6를 현재 11장과 Evidence Console의 `LOCAL PDF/TXT · GCP LOGS` 시연에 맞췄다. 발표·시연·탭 전환 6분 30초와 돌발 여유 30초를 합쳐 7분이며, 사람 낭독·클릭 측정은 `NOT_MEASURED`다.
-- 주 발표 운영은 Presentation과 named `spectra-demo` Evidence Console 두 브라우저 탭만 사용한다. 콘솔은 발표 후반에 직접 전환하고, Slide 08의 링크도 `?presentation=1`을 사용해 `LOCAL PDF/TXT · GCP LOGS`만 표시한다. Roadmap Lab은 주 발표에서 열지 않는다.
-- Slide 08 GCP 화면은 로컬 parser와 저장 GCP 경로를 분리하고 무결성 표현을 `저장 이벤트 무결성 검증`으로 한정한다. GCP Console은 정상·body hash 위조·endpoint override의 run 결속과 정상 correlation ID, 최종 HOLD를 먼저 표시한다. Slide 09는 시스템 조치와 함께 실제 범위 `4 / 16 · SAFE_FAILURE 4 · False Accept 0 · False PASS 0 · 12 NOT_EVALUATED · FINAL HOLD`를 인접 표시한다.
+- canonical `FINAL_PRESENTATION_SCRIPT_7MIN.md` v7을 현재 11장과 검증 콘솔의 `문서 1개 검사 · 3개 입력 연결 · 공격 검증 기록` 시연에 맞췄다. 발표·시연·탭 전환 6분 30초와 돌발 여유 30초를 합쳐 7분이며, 사람 낭독·클릭 측정은 `NOT_MEASURED`다.
+- 주 발표 운영은 Presentation과 named `spectra-demo` 검증 콘솔 두 브라우저 탭만 사용한다. 콘솔은 발표 후반에 직접 전환하고, Slide 08의 링크도 `?presentation=1`을 사용한다. 네 번째 `전체 문서 결과` 메뉴에는 공개 GCP 카탈로그와 감사로그를 같은 콘솔 안에 통합했지만 7분 본 시연에서는 열지 않는다. `3개 입력 연결`은 구조화된 합성 입력으로 production Core의 다중 문서 근거 연결과 변경 영향 분류를 실제 호출하되, 실제 승인 근거·방사선 assurance로 확대하지 않는다.
+- Slide 08 GCP 화면은 로컬 parser와 저장 GCP 경로를 분리하고 무결성 표현을 `저장 이벤트 무결성 검증`으로 한정한다. GCP Console은 정상·body hash 위조·endpoint override의 run 결속과 정상 correlation ID, 최종 HOLD를 먼저 표시한다. Slide 09는 적은 공격 횟수를 전면에 내세우지 않고 Schema·Core·Identity·Hash·Fail-Closed·배포 격리의 시스템 조치에 집중한다.
 - 01~09의 영문 kicker를 장별 역할 중심으로 축약하고, 큰 한글 제목은 결론, 바로 아래 한 줄은 근거·의미를 설명하도록 통일했다. 밑줄은 큰 한글 제목 내부의 핵심 구절에만 적용한다. Slide 02 비교표는 두 줄 영문 label과 오른쪽 설명을 수직 중앙 정렬했고, Slide 04의 양쪽 비교 본문·panel label을 발표 화면 크기로 확대했다.
 - 최신 localhost 1280×720에서 11장 전체 x/y overflow 0과 Slide 02~06의 가독성을 시각 확인했다. 이번 변경의 Product·Simulation 직접 테스트 51개와 `git diff --check`가 통과했고 console warning/error는 0건이다. 사람 낭독·클릭 리허설은 계속 `NOT_MEASURED`이며, 이후 Core 통합·최종 회귀 상태는 바로 아래와 Control Tower CURRENT의 최신 항목을 따른다.
 - Slide 07 지원 범위 문구를 EvidencePacket·GCP Agent 구현에 맞춰 `필수 근거 결측 → HOLD`, `Mission·Parts 개별 검증 → Assurance 입력·응답 무결성 재확인`으로 정밀화했다. localhost 1280×720에서 좌우 박스가 각각 `181.59 px`, slide scroll `1280×720`로 겹침·overflow 없이 표시되는 것을 재확인했다. 전체 Release 회귀 결과는 Control Tower CURRENT의 최신 항목을 따른다.

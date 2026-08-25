@@ -831,7 +831,7 @@ process.stdout.write(JSON.stringify(observed));
         gcp_slide = re.search(r'<section class="slide" data-title="GCP Multi-Agent".*?</section>', presentation, re.S).group(0)
         for exact_copy in (
             "실제 GCP에서는",
-            "세 역할이 한 실행을 교차 검증한다",
+            "세 역할이 한 가지 실행의 근거를 나눠 검증한다",
             "역할별 독립 대조",
             "저장 이벤트 무결성 검증",
             "GCP 실행 성공 ≠ 방사선 보증",
@@ -974,14 +974,17 @@ process.stdout.write(JSON.stringify(observed));
             "Hash와 감사 체인",
             "Fail-Closed 정책",
             "배포 경로 격리",
+        ):
+            self.assertIn(reliability_claim, presentation)
+        for removed_attack_counter in (
             "ACTUAL GCP ATTACK SCOPE",
             "4 / 16 평가",
             "SAFE_FAILURE 4",
             "12 NOT_EVALUATED",
         ):
-            self.assertIn(reliability_claim, presentation)
+            self.assertNotIn(removed_attack_counter, presentation)
         self.assertIn(
-            'href="http://127.0.0.1:8765/demo/evidence-console.html?presentation=1"',
+            'href="evidence-console.html?presentation=1"',
             presentation,
         )
         self.assertIn('target="spectra-demo"', presentation)

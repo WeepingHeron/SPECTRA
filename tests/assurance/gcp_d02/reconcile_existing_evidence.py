@@ -42,8 +42,12 @@ def main() -> int:
     cases = {item["case"]: item for item in runs["cases"]}
     normal = cases["normal-production-core"]
 
-    target = manifest["target_lock"]
     historical_target = stopped["target_lock"]
+    # This reconciliation is intentionally bound to the already-recorded H05
+    # execution.  The package manifest may advance to a remediated deployment;
+    # that must not silently re-label historical evidence as belonging to the
+    # newer target.
+    target = historical_target
     workflow_hash = historical_target["workflow_source_sha256"]
     revisions = {
         item["role"]: item["latest_ready_revision"]
@@ -209,6 +213,7 @@ def main() -> int:
         "existing_evidence_coverage": coverage,
         "boundary_notes": [
             "The evaluated control reuses an existing H05 normal execution; this script starts no Workflow.",
+            "The historical H05 target is preserved even when the package manifest points to a newer remediation target.",
             "Related H05 attack cases are not relabeled as ASR-D02 results when mutation or required observations differ.",
             "False Accept and False PASS remain NOT_COMPUTED because zero ASR-D02 attacks are evaluated.",
             "Every input is SYNTHETIC and the final assurance boundary remains HOLD.",

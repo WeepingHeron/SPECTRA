@@ -1,0 +1,14 @@
+PUBLISHED SOURCE SUMMARY - ACTUAL TEST VALUES - NOT AN APPROVAL OR RATING
+Source: NASA GSFC Compendium of Radiation Effects Test Results (2020)
+Locator: https://nepp.nasa.gov/radhome/papers/2020-Topper-NSREC-TID-SEE-Compendium-DW-Paper-20205007136.pdf
+
+Manufacturer: Micron
+Orderable part number: MT29F4T08CTHBBM5
+Device: commercial 3D NAND Flash
+LDC: 201816
+Sample size: 13
+Test: TID, high-dose-rate gamma irradiation at NASA GSFC, April 2019
+Observed failure dose: 39 krad(Si)
+Observation: erase circuitry failed at that dose; MLC mode showed a faster increase in error rate.
+
+This observed failure point is not a guaranteed TID rating.

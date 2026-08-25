@@ -2,7 +2,9 @@
 
 ## 발표 운영 — 2개 탭
 
-발표 중에는 `demo/index.html`과 `demo/evidence-console.html?presentation=1` 두 브라우저 탭만 사용한다. 콘솔 시연은 발표 후반에 직접 전환하고, Slide 08의 링크는 같은 이름의 `spectra-demo` 탭을 재사용한다. 발표 모드는 `LOCAL PDF/TXT · GCP LOGS`만 표시해 여러 문서 표를 숨긴다. 일반 URL에서는 Batch 기능을 계속 사용할 수 있다. `Roadmap Lab`은 보조 구현으로 유지하지만 주 발표에서 열지 않는다.
+발표 중에는 `demo/index.html`과 `demo/evidence-console.html?presentation=1` 두 브라우저 탭만 사용한다. 콘솔 시연은 발표 후반에 직접 전환하고, Slide 08의 링크는 같은 이름의 `spectra-demo` 탭을 재사용한다. 콘솔 메뉴는 `문서 1개 검사 · 3개 입력 연결 · 공격 검증 기록 · 전체 문서 결과`다. `3개 입력 연결`의 두 버튼은 구조화된 합성 입력을 production Core에 전달해 다중 문서 근거 연결과 변경 영향 범위를 보여주며, 실제 승인 근거나 방사선 보증을 뜻하지 않는다. `Roadmap Lab`은 보조 구현으로 유지하지만 주 발표에서 열지 않는다.
+
+직접 파일을 골라 시험하려면 [`test-data/README.md`](test-data/README.md)를 먼저 읽고 `demo/test-data/`의 합성 fixture와 공식 출처 요약을 사용한다. 파일명에 임무 계획·부품 명세·방사선 시험·공격·권리·손상 PDF 등 시험 목적이 표시되어 있다.
 
 단순 `python3 -m http.server`는 `/api/intake`가 없어 합성 3종이 작동하지 않는다. 반드시 다음 통합 서버를 사용한다.
 
@@ -19,7 +21,11 @@ python3 scripts/run_evidence_console.py --port 8765
 
 ## Raw Evidence Console
 
-`evidence-console.html`은 선택한 PDF/TXT를 loopback 서버에서 실제로 파싱하고, 편집하지 않은 JSONL 이벤트를 발생 순서대로 보여준다. 오른쪽에는 같은 실행의 중단 위치·확인 사실·중단 이유·다음 행동을 자연어로 표시한다.
+`evidence-console.html`은 선택한 PDF/TXT를 검증 서버에서 실제로 파싱하고, 편집하지 않은 JSONL 이벤트를 발생 순서대로 보여준다. 오른쪽에는 같은 실행의 중단 위치·확인 사실·중단 이유·다음 행동을 자연어로 표시한다. 공개 Cloud Run에서는 파일이 GCP 인스턴스의 임시 디렉터리에서 처리 후 삭제되며 GCS에는 저장하지 않는다.
+
+입력 일부가 없다고 확인 가능한 항목까지 버리지 않는다. 로컬 규칙 기반 parser가 원문 span을 결속한 뒤 궤도 고도·경사각·기간과 선량·LET·단면적·fluence·에너지·전압·온도·시료 수의 숫자 형식·단위·기본 입력 범위를 항목별로 계속 검사한다. 정확한 identity·임무 요구량처럼 연결 자료가 필요한 검사는 `NOT_EVALUATED`로 남기고, ledger는 `확인 · 불일치 · 추가 입력 필요`로 분리한다. 이 로컬 경로의 역할 표시는 책임 구분이며 독립 Agent 실행을 뜻하지 않는다. 숫자 확인은 시험값의 진위나 임무 적합성 보증이 아니다.
+
+로컬 문서 추출은 `pypdf/TXT` 기반이며 Google Document AI·OCR·Gemini를 호출하지 않는다. Document AI는 권리·processor 설정·region·logging·retention 조건이 갖춰진 뒤 검토할 후속 확장 항목이지 현재의 `Document Parser Agent`가 아니다.
 
 기본 화면은 발표자가 읽기 쉬운 단계별 타임라인과 Agent 로그 표다. `원본 JSONL 보기`로 전환하면 같은 응답의 편집하지 않은 JSONL을 확인할 수 있다. `합성 비정형 PDF 예시 실행`은 표·다단 본문·차트·각주가 섞인 4쪽 synthetic report를 실제 PDF parser에 전달하고, 고정 정답 7개와 exact candidate set을 대조한다.
 
@@ -28,13 +34,15 @@ cd /Users/taehoon/Desktop/IAA/SPECTRA
 python3 scripts/run_evidence_console.py --port 8765
 ```
 
-발표에서는 `http://127.0.0.1:8765/demo/evidence-console.html?presentation=1`을 연다. 로컬 탭은 실제 deterministic parser 실행이며 OCR·LLM·GCP 호출을 하지 않는다. GCP 탭은 H05에서 이미 저장하고 검증한 정상·body hash 위조·endpoint override 실행과 구조화 로그 13건을 읽기 전용으로 표시한다. 정상 실행은 run·correlation ID를 함께, 두 공격은 snapshot에 저장된 run ID와 correlation 부재를 그대로 표시한다. 현재 Cloud Logging을 조회하거나 새 실행을 만들지 않는다.
+발표에서는 `https://spectra-demo-console-mwmfe3da5q-du.a.run.app/demo/evidence-console.html?presentation=1`을 연다. 문서 검사 메뉴는 Cloud Run에서 실제 deterministic parser를 실행하며 OCR·Document AI·LLM을 호출하지 않는다. 공격 검증 기록 메뉴는 H05에서 이미 저장하고 검증한 정상·body hash 위조·endpoint override 실행과 구조화 로그 13건을 읽기 전용으로 표시한다. 정상 실행은 run·correlation ID를 함께, 두 공격은 snapshot에 저장된 run ID와 correlation 부재를 그대로 표시한다. 현재 Cloud Logging을 조회하거나 새 Agent 실행을 만들지 않는다.
 
 기본 macOS `python3`에 `pypdf`가 없으면 서버는 이 장치에 이미 설치된 Codex bundled Python을 자동 선택한다. 해당 runtime도 없으면 PDF는 `PDF_EXTRACTOR_UNAVAILABLE / HOLD`로 닫히며 TXT 경로만 유지된다.
 
 승인 BOM target과 실제 environment/part contract가 없으므로 정상 파싱도 최종 판단은 `HOLD`다. 합성 예시의 `7 / 7 · 100%`는 공개된 고정 정답의 exact candidate set에만 적용되며 실제 PDF 일반화, OCR, 과학 정확성이나 assurance 완료를 뜻하지 않는다.
 
 `evidence-batch.html`은 같은 `/api/intake` 경로로 PDF/TXT 여러 개를 순차 검사해 문서별 파서·페이지 수, 후보 field/value, 원문 문자 위치, 최초 중단 관문, 자연어 이유, stable code와 `HOLD`를 한 표에 표시한다. `합성 3종 실행`은 정상 파싱 후 승인 BOM 공백, 지시문 공격 차단, 처리 권리 미확인 차단을 고정 정답과 대조한다. 실제 사용자가 올린 파일에는 정답률을 만들지 않는다.
+
+`전체 문서 결과` 메뉴는 공개 GCP bucket `spectra-public-test-catalog-iceu-686/v1`의 catalog·audit·deployment receipt를 같은 콘솔 안에서 우선 읽고, 실패하면 repo snapshot으로 전환한다. 15개 문서를 임무 조건·부품 명세·방사선 시험 결과·합성 테스트로 나눠 처리 단계, 확인·불일치·추가 입력 필요 수, 최초 보류 책임을 표시하고 마지막에 SHA-256 감사 체인과 GCS object generation을 보여준다. 실제 공개자료 조합은 완전한 exact-part 근거가 없어 모두 중간 단계에서 `HOLD`하고, 합성 Core만 최종 단계까지 실행한 뒤 `SYNTHETIC_ONLY / HOLD`로 닫힌다.
 
 발표 자료 `index.html`은 `방사선·차폐 기초 → COTS 맥락 → 흩어진 근거 문제 → 업계 자료 → 기존 검토 방식 → SPECTRA` 순서로 설명한다. 06번은 `임무 조건·부품 명세·시험 결과 → 근거 연결 → 3개 Agent → 검증 Gate → 판단과 행동`을 도식화한다. 본 발표의 콘솔 시연은 마지막에 별도 탭에서 진행한다.
 
@@ -111,10 +119,10 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.product.test_evidence_rev
 - `index.html`은 `Cover + 01~09 + Closing`, 총 11장의 실제 제출·발표 deck이다. 순서는 `차폐 기초 → COTS → 문제 정의 → 외부 근거가 확인한 사용자 부담 → 기존 방식 → SPECTRA 전체 흐름 → 판단 원칙 → GCP → 무결성 설계`이다. 로드맵 구현과 합성 결과 데이터는 프로젝트에 유지하지만 제출본과 7분 발표에서는 제외한다.
 - Slide 01은 비전문가가 먼저 차폐 목적을 이해하도록 우주 방사선·알루미늄 등가 차폐·전자부품의 관계를 시각적으로 설명하고, TID·SEU 계산과 파괴성 SEE 시험 근거 확인을 구분한다.
 - Slide 04는 NASA·ESA·GAO 자료를 소형위성 팀, 공급·유통사, 시험기관, 품질·미션 보증 담당자의 부담에 연결한다. 하단에서 ESA를 유럽우주국, GAO를 미국 정부감사원으로 풀어 쓰며, 실제 시간 절감 효과와 구매 의향은 사용자 조사가 필요하다고 쉬운 문장으로 표시한다.
-- Slide 06은 임무 조건·정확한 부품 정보·방사선 시험 결과를 함께 대조하는 제품 정체성만 보여 주고, 상태 rail과 콘솔 링크를 제거했다. Slide 08은 무결성 주장을 `저장 이벤트 무결성 검증`으로 한정했다. Slide 09는 시스템 조치와 함께 실제 공격 범위 `4 / 16`, 안전 실패 4, False Accept·False PASS 0, 나머지 12 `NOT_EVALUATED`, `FINAL HOLD`를 인접 표시한다.
+- Slide 05는 ESA의 문서 관리·Digital Spacecraft 자료로 문서 중심 검토와 추적 가능한 디지털 전환의 필요성을 뒷받침한다. Slide 06은 임무 조건·정확한 부품 정보·방사선 시험 결과를 함께 대조하는 제품 정체성만 보여 준다. Slide 08은 하나의 Workflow 실행에서 Mission·Parts·Assurance가 서로 다른 근거를 나눠 검증하는 구조를 명시한다. Slide 09는 입력 계약·Core·정책·GCP 경계의 안정성 조치를 설명한다.
 - 01~09는 `영문 역할명 → 한글 결론 → 한 줄 설명`의 제목 체계를 사용한다. 밑줄은 큰 한글 제목의 핵심 구절에만 적용한다. Slide 01은 쉬운 제목에서 차폐의 피해 저감 역할을 설명하고, 본문에서 TID·SEU 계산과 파괴성 SEE evidence gate를 분리한다. Slide 02는 `조달 가능성 ≠ 방사선 근거 검증`으로 엔진 범위를 한정하고 본문에 없는 QML-V 설명을 제거했다.
-- canonical 발표 대본은 `docs/workstreams/90-business-presentation/FINAL_PRESENTATION_SCRIPT_7MIN.md` v6다. 로드맵을 제외한 11장 설명과 Evidence Console의 Local PDF·GCP Logs 시연, 탭 전환을 6분 30초로 묶고 돌발 여유 30초를 둔다. 사람 리허설은 `NOT_MEASURED`다.
-- 최신 localhost 1280×720에서 11장 전체 x/y overflow 0, Slide 02~06의 가독성과 Slide 09 공격 범위를 확인했다. 이번 변경의 Product·Simulation 직접 테스트 51개와 `git diff --check`가 통과했고 console warning/error는 0건이다.
+- canonical 발표 대본은 `docs/workstreams/90-business-presentation/FINAL_PRESENTATION_SCRIPT_7MIN.md` v7이다. 로드맵을 제외한 11장 설명과 Evidence Console의 Cloud Run PDF·Mission Case·저장 공격 기록 시연, 탭 전환을 6분 30초로 묶고 돌발 여유 30초를 둔다. 사람 리허설은 `NOT_MEASURED`다.
+- 공개 Cloud Run 1280×720에서 11장 가로 overflow 0, Slide 08 최종 제목과 Console의 항목별 검사 결과 카드 3개를 확인했다. 최신 전체 회귀는 unit 415개와 Assurance 공격 실행 47개, `git diff --check`를 통과했다.
 - `product.html`은 발표본과 별도의 5단계 제품 프로토타입이다. Product 직접 테스트 16개와 JavaScript syntax는 통과했지만 최신 H17의 실제 viewport 검증은 완료되지 않아 후보 상태다.
 - 두 화면의 방사선 수치는 generated `SYNTHETIC` 결과이며 실제 환경·부품 assurance가 아니다. 5 mm와 손상·불일치 입력은 값을 만들지 않고 `NOT_EVALUATED/HOLD`로 닫는다.
 - GCP 화면은 H05 Control Tower verified snapshot을 읽기 전용으로 표시한다. 버튼은 Workflow Console을 열지만 HTML이 새 실행을 트리거하거나 live 상태를 assurance로 해석하지 않는다.

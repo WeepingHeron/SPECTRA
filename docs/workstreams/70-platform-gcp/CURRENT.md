@@ -4,6 +4,20 @@
 
 `COMPLETE — SYNTHETIC_BOUNDED; remediation deployed and live receipt refreshed`
 
+## Public Presentation Console on Cloud Run — 2026-08-25
+
+- `spectra-demo-console` revision `00006-6mh`, image digest `sha256:edeecb...d6e53`가 `asia-northeast3`에서 공개 URL `https://spectra-demo-console-mwmfe3da5q-du.a.run.app`의 100% traffic을 처리한다. 발표 자료와 Evidence Console을 2026-08-27까지 서버 수동 실행 없이 사용하는 임시 공개 배포다.
+- 실행 계정은 별도 최소권한 `spectra-demo-console@iceu-686.iam.gserviceaccount.com`이다. 실제 revision 설정은 min instance 0, max instance 100, concurrency 20, timeout 120초, CPU 1, memory 512Mi다. 기존 Mission·Parts·Assurance Cloud Run은 계속 비공개이고 이 서비스에서 새 Agent 실행을 호출하지 않는다.
+- 공개 문서 검사는 PDF/TXT를 Cloud Run 인스턴스 임시 디렉터리에서 처리 후 삭제하고 GCS에 저장하지 않는다. 화면도 클라우드 전송 사실을 명시한다. 공격 검증 화면은 H05 저장 snapshot만 읽으며 live GCP 공격 실행이 아니다.
+- 최종 health는 `CLOUD_RUN / READY / gcp_agent_live=false`, public invoker는 demo service에만 `allUsers`로 확인했다. 공개 공격 endpoint는 Workflows·Storage 쓰기 권한, 반복 호출 비용·로그 오염과 service account 권한 확대 위험 때문에 만들지 않았다. 2026-08-27 행사 후 `platform/demo-console/README.md`의 삭제 명령으로 서비스를 회수한다.
+
+## Public Test Catalog — 2026-08-25
+
+- 기존 private evidence bucket과 분리해 `spectra-public-test-catalog-iceu-686`를 `asia-northeast3`, uniform bucket-level access로 생성했다. 이 전용 bucket에만 `allUsers roles/storage.objectViewer`를 부여했고 CORS는 `GET/HEAD`와 읽기 응답 header로 제한했다.
+- `v1/`에는 test-data 17개 객체, `catalog.json`, `audit-log.json`, `deployment-receipt.json`, 총 20개 공개 객체만 둔다. 원문 권리가 불명확한 공식 PDF·승인 BOM·고객 자료·credential은 업로드하지 않았다.
+- 비로그인 HTTP HEAD는 `200`, `content-type application/json; charset=utf-8`, `access-control-allow-origin *`를 반환한다. 책임 단계·부분 확인 집계·임무 문서 제조사 기본값을 정정한 뒤 catalog generation은 `1787644220102213`, audit generation은 `1787644222071471`이며 공개 UI의 마지막 deployment receipt 행에 고정했다.
+- 이 공개 bucket은 데모 조회용 정적 자료 경로다. private Cloud Run·Workflow·H04 evidence bucket의 IAM, 실행 경로와 assurance 상태는 변경하지 않는다.
+
 ## ASR-D02 remediation deployment — 2026-08-25
 
 - 고유 image `h09-20260825-remediation`을 빌드하고 digest `sha256:cb2193...04bb`로 기존 Cloud Run Agent 3개의 revision만 갱신했다. 새 revision은 Mission `00007-s86`, Parts `00007-44k`, Assurance `00007-dk9`다.

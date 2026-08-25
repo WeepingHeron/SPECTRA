@@ -1,0 +1,8 @@
+SYNTHETIC TEST FIXTURE - NOT ENGINEERING EVIDENCE
+Scenario: the document names a different orderable part
+
+Manufacturer: Microchip Technology
+Orderable part number in this document: 23LC1024-I/P
+
+Mentioned sections: TID, SEU, SEL, SEB, SEGR.
+The console should not invent the requested target candidate.

@@ -15,7 +15,7 @@
 
 정확한 결과가 `HOLD`인 것은 정상 제품 동작이지만, 실제 evidence가 없는 상태를 MVP 완료로 부르지는 않는다.
 
-### Competition Submission Release — `ACTIVE_TODAY`
+### Competition Submission Release — `RELEASE_VERIFIED`
 
 오늘 18:00 제출 대상이다. 실제 GCP의 합성 Multi-Agent 실행, 결정론적 Core, fail-closed Product 흐름, bounded 확장 기능과 증거 한계를 하나의 발표·데모·문서 패키지로 제출한다.
 
@@ -37,11 +37,13 @@
 1. 결정론적 합성 TID·SEU·차폐·ECC·정책 결과
 2. EvidencePacket·readiness receipt·Change Impact 계약
 3. COTS source/reference comparison과 exact-part 부족 시 `NOT_COMPARABLE / HOLD`
-4. Product/Evidence Console의 local PDF/TXT, 저장 GCP 기록, batch review
+4. Product/Evidence Console의 Cloud Run/로컬 PDF·TXT 검사, 부분 검증 ledger, 저장 GCP 공격 기록과 공개 문서 카탈로그
 5. 발표 Phase 01~03의 bounded workflow와 외부 blocker 표시
 6. 실제 GCP Multi-Agent 실행·로그·generation/hash lineage
 7. 공격 검증 결과, 발견된 결함과 deployed 보완 재검증 상태
 8. 로드맵을 제외한 11장 발표본과 7분 대본, 발표 모드 Evidence Console
+
+공개 발표본과 Console은 `spectra-demo-console` Cloud Run revision `00006-6mh`에서 제공한다. 문서 검사는 요청 시 실제 규칙 기반 parser를 실행하고, 3개 입력 연결은 고정 합성 입력으로 production Core를 실행한다. 공격 기록은 공개 쓰기 권한을 열지 않기 위해 독립 확인된 snapshot을 읽으며, 전체 문서 결과는 공개 GCP catalog를 읽는 경로다. 이 네 동작은 실제 방사선 보증 완료를 뜻하지 않는다.
 
 ## 제출 Release에서 제외
 

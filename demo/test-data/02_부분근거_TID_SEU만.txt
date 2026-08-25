@@ -1,0 +1,11 @@
+SYNTHETIC TEST FIXTURE - NOT ENGINEERING EVIDENCE
+Scenario: exact part and manufacturer, but only non-destructive event mentions
+
+Manufacturer: Microchip Technology
+Orderable part number: 23LC1024-I/SN
+
+Mentioned sections:
+- TID total ionizing dose
+- SEU single-event upset
+
+Three destructive single-event mode sections are intentionally absent.

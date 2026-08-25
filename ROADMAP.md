@@ -1,8 +1,8 @@
-# SPECTRA 제출 로드맵
+# SPECTRA 제출 Release 로드맵
 
 ## 목표
 
-**2026-08-25 18:00까지 확장 계획을 bounded 구현과 외부 의존으로 명확히 분리하고, 공격 보완·발표·문서·검증을 하나의 제출 Release로 고정한다.**
+**2026-08-25 제출 Release의 bounded 구현과 외부 의존을 분리하고, 공격 보완·발표·공개 데모·문서·검증을 하나의 재현 가능한 단위로 고정한다.**
 
 현재 실행은 이 채팅에서 통합 관리한다. Workstream 번호는 증거 소유 영역을 설명하는 역사적 태그일 뿐, 별도 채팅 완료를 기다리는 진행 단위가 아니다.
 
@@ -17,8 +17,8 @@
 | Stage 5 완화·정책 | `COMPLETE — SYNTHETIC_BOUNDED` | 차폐·ECC·정책·Change Impact Exit Gate 완료 |
 | Stage 6 Assurance | `SUBMISSION_COMPLETE_WITH_LIMITS` | ASR-D02 control 1 + 공격 4 `PARTIAL_SAFE`; 나머지 12건은 제출 후 |
 | Stage 7 GCP | `COMPLETE — SYNTHETIC_BOUNDED` | 보완 revision·Core parity·LIVE_API receipt 재수집 완료 |
-| Stage 8 Product | `SUBMISSION_COMPLETE_WITH_LIMITS` | Console·Evidence Review·fallback 완료; live timeline HTML 연결은 제출 선택 항목 |
-| Stage 9 발표·제출 | `READY_EXCEPT_HUMAN_REHEARSAL` | 11장·7분 대본·발표 모드 Console 구현; 사람 낭독과 commit/push/제출 필요 |
+| Stage 8 Product | `SUBMISSION_COMPLETE_WITH_LIMITS` | Cloud Run Console·부분 검증 ledger·공개 카탈로그·fallback 완료 |
+| Stage 9 발표·제출 | `RELEASE_VERIFIED_EXCEPT_HUMAN_REHEARSAL` | 11장·7분 대본·공개 발표 모드 Console·전체 회귀 완료; 사람 낭독 실측만 별도 미완료 |
 
 ## 발표 확장 Phase 01~03
 
@@ -30,22 +30,23 @@
 | 02 AI 문서 검토 | 합성 document candidate, processor readiness, 사람 승인 전 격리 | Document AI·Gemini, authenticated HITL, actual audit trail |
 | 03 변경·보안 | generated Change Impact, CAD linkage readiness, 보안 posture | 실제 CAD/3D 계산, KMS 운영, 승인 penetration test |
 
-## 지금부터 18:00까지
+## 제출 Release 완료 내역
 
 1. **공격 작업 동결 단위 완성**
    - 로컬 보완·최소 배포·새 target lock: 완료
    - control + `D02-02/04/05/10` batch 재검증: 완료
    - 결과: control pass 1, safe failure 4, False Accept 0, False PASS 0, unexpected 0
-2. **발표 신뢰성 증거 추가 — 완료**
-   - Slide 09에 `4 / 16 · SAFE_FAILURE 4 · False Accept 0 · False PASS 0 · 12 NOT_EVALUATED · FINAL HOLD`를 인접 표시
+2. **발표 신뢰성 설명 정리 — 완료**
+   - Slide 09에서 공격 횟수 카운터를 제거하고 Schema·Core·Identity·Hash·Fail-Closed·배포 격리 조치를 설명
 3. **표현 정렬 — 완료**
    - 로컬 parser와 저장 GCP 경로를 분리하고, GCP snapshot의 정상·hash mismatch·endpoint override 결론을 먼저 표시
    - 실제 evidence 0건, 구매자·ROI 미검증, roadmap 발표 제외를 인접 표시
-4. **최종 검증 — 자동 검증 완료, 사람 낭독 남음**
-   - 변경 범위 테스트·전체 로컬 회귀·localhost 발표와 Console QA를 최종 체크리스트에 기록
-5. **제출 고정**
-   - 사람 7분 낭독·탭 전환 리허설 1회
-   - 사용자 확인 후 commit·push·제출
+4. **공개 데모 — 완료**
+   - `spectra-demo-console` Cloud Run에 발표·문서 검사·3개 입력 연결·저장 공격 기록·전체 문서 결과 배포
+   - 문서 검사는 live 실행, 3개 입력 연결은 고정 합성 입력의 production Core live 실행, 공격 기록은 저장 snapshot, 전체 문서 결과는 공개 카탈로그 live read로 구분
+5. **최종 검증 — 완료**
+   - 전체 자동 회귀, 공개 URL 1280×720 발표·Console QA, 문서 정합성 및 배포 revision 확인
+   - 사람 7분 낭독·탭 전환 리허설 2회는 `NOT_MEASURED`로 별도 유지
 
 ## 오늘 과감히 제외
 

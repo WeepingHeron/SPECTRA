@@ -1,0 +1,19 @@
+SPECTRA PUBLISHED SOURCE SUMMARY · PART SPECIFICATION
+Data class: PUBLISHED
+Document role: PART_SPEC
+Manufacturer: Microchip Technology
+Orderable part candidate: 23LC1024-I/SN
+Base device: 23LC1024
+Function: 1-Mbit SPI serial SRAM
+Production status: In Production
+Supply voltage: 2.5V-5.5V
+Industrial operating temperature: -40°C to +85°C
+
+Primary sources:
+https://www.microchip.com/en-us/product/23lc1024
+https://ww1.microchip.com/downloads/en/DeviceDoc/20005142C.pdf
+
+Use boundary:
+This is a locally authored source summary for parser testing. The manufacturer
+specification establishes commercial product characteristics only. It is not a
+radiation qualification report and does not establish mission suitability.

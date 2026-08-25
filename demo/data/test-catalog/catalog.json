@@ -1,0 +1,707 @@
+{
+  "contract_version": "SPECTRA_PUBLIC_TEST_CATALOG_1.0.0",
+  "generated_at": "2026-08-25T08:00:00Z",
+  "data_boundary": "Public-source summaries and synthetic controls only. No raw proprietary document, mission approval, or radiation assurance is published.",
+  "stage_order": [
+    "INGEST",
+    "PARSE",
+    "ROLE_LINK",
+    "CONDITION_LINK",
+    "FINAL_GATE"
+  ],
+  "documents": [
+    {
+      "document_id": "DOC-001",
+      "title": "01_정상후보_부품제조사_사건5종",
+      "filename": "01_정상후보_부품제조사_사건5종.txt",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:11ec8b2a3c2cf353d60c55a7b240bf79913c0fd71642009f8016e37379f542ce",
+      "processing_status": "VALID",
+      "candidate_count": 7,
+      "candidate_fields": [
+        "ORDERABLE_PART_NUMBER",
+        "MANUFACTURER",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 2,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 1,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 23LC1024-I/SN · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Microchip Technology · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 방사선 시험 결과가 없어 부품 명세와 시험 근거를 연결하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "CANDIDATE_ONLY",
+        "FINAL_GATE": "HOLD"
+      },
+      "stopped_at": "FINAL_GATE",
+      "first_blocker": "SYNTHETIC_OR_INCOMPLETE_EVIDENCE",
+      "pipeline_result": "COMPLETED_WITH_HOLD",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-002",
+      "title": "02_부분근거_TID_SEU만",
+      "filename": "02_부분근거_TID_SEU만.txt",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:8763992f9496ce651919dbd9a053c2f8d76bb8b94821809212540883afd3d62c",
+      "processing_status": "VALID",
+      "candidate_count": 4,
+      "candidate_fields": [
+        "ORDERABLE_PART_NUMBER",
+        "MANUFACTURER",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 2,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 1,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 23LC1024-I/SN · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Microchip Technology · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 방사선 시험 결과가 없어 부품 명세와 시험 근거를 연결하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "CANDIDATE_ONLY",
+        "FINAL_GATE": "HOLD"
+      },
+      "stopped_at": "FINAL_GATE",
+      "first_blocker": "SYNTHETIC_OR_INCOMPLETE_EVIDENCE",
+      "pipeline_result": "COMPLETED_WITH_HOLD",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-003",
+      "title": "03_부품번호불일치_다른주문형번",
+      "filename": "03_부품번호불일치_다른주문형번.txt",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:210d5c1e131dee3c3fc5ed71aa52934c3e947b89acf1cf120e30a06e36ec5783",
+      "processing_status": "VALID",
+      "candidate_count": 6,
+      "candidate_fields": [
+        "MANUFACTURER",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 1,
+        "failed_check_count": 1,
+        "not_evaluated_check_count": 1,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Microchip Technology · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "불일치 · 부품·시험 근거 검토 역할 · 입력한 주문형번 후보를 원문에서 찾지 못함",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 방사선 시험 결과가 없어 부품 명세와 시험 근거를 연결하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "CANDIDATE_ONLY",
+        "FINAL_GATE": "HOLD"
+      },
+      "stopped_at": "FINAL_GATE",
+      "first_blocker": "SYNTHETIC_OR_INCOMPLETE_EVIDENCE",
+      "pipeline_result": "COMPLETED_WITH_HOLD",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-004",
+      "title": "04_제조사누락_부품번호와사건만",
+      "filename": "04_제조사누락_부품번호와사건만.txt",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:585206699f2e8b42c73ba788653781f0a580aa9a1f3bf998f358d1f40e3dd41f",
+      "processing_status": "VALID",
+      "candidate_count": 6,
+      "candidate_fields": [
+        "ORDERABLE_PART_NUMBER",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 1,
+        "failed_check_count": 1,
+        "not_evaluated_check_count": 1,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 23LC1024-I/SN · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "불일치 · 부품·시험 근거 검토 역할 · 입력한 제조사 후보를 원문에서 찾지 못함",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 방사선 시험 결과가 없어 부품 명세와 시험 근거를 연결하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "CANDIDATE_ONLY",
+        "FINAL_GATE": "HOLD"
+      },
+      "stopped_at": "FINAL_GATE",
+      "first_blocker": "SYNTHETIC_OR_INCOMPLETE_EVIDENCE",
+      "pipeline_result": "COMPLETED_WITH_HOLD",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-005",
+      "title": "05_공격방어_프롬프트주입",
+      "filename": "05_공격방어_프롬프트주입.txt",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:40494f174970a41e980a4c09e0a3eb8000d68eaf87d1097058ccfb225e38a91e",
+      "processing_status": "CONTENT_REJECTED",
+      "candidate_count": 0,
+      "candidate_fields": [],
+      "partial_evaluation": {
+        "validated_check_count": 0,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 0,
+        "hold_agent": "LOCAL_DOCUMENT_GATE",
+        "validation_results": []
+      },
+      "stages": {
+        "INGEST": "CONTENT_REJECTED",
+        "PARSE": "NOT_REACHED",
+        "ROLE_LINK": "NOT_REACHED",
+        "CONDITION_LINK": "NOT_REACHED",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "INGEST",
+      "first_blocker": "PROMPT_INJECTION_PATTERN_DETECTED",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-006",
+      "title": "06_권리미확인용_체크박스끄고실행",
+      "filename": "06_권리미확인용_체크박스끄고실행.txt",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:c52780e4e14734e42c1544009f5784739144b5e7f996766f0cb46b1860da825d",
+      "processing_status": "PROVENANCE_FAILURE",
+      "candidate_count": 0,
+      "candidate_fields": [],
+      "partial_evaluation": {
+        "validated_check_count": 0,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 0,
+        "hold_agent": "LOCAL_DOCUMENT_GATE",
+        "validation_results": []
+      },
+      "stages": {
+        "INGEST": "PROVENANCE_FAILURE",
+        "PARSE": "NOT_REACHED",
+        "ROLE_LINK": "NOT_REACHED",
+        "CONDITION_LINK": "NOT_REACHED",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "INGEST",
+      "first_blocker": "RIGHTS_PROCESS_LOCAL_UNRESOLVED",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-007",
+      "title": "07_빈근거_부품과사건표기없음",
+      "filename": "07_빈근거_부품과사건표기없음.txt",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:cfc91af336e437d41621a9b9828870b9985c7118b2ef643c3276547a8a0f7b69",
+      "processing_status": "VALID",
+      "candidate_count": 0,
+      "candidate_fields": [],
+      "partial_evaluation": {
+        "validated_check_count": 0,
+        "failed_check_count": 2,
+        "not_evaluated_check_count": 2,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "불일치 · 부품·시험 근거 검토 역할 · 입력한 주문형번 후보를 원문에서 찾지 못함",
+          "불일치 · 부품·시험 근거 검토 역할 · 입력한 제조사 후보를 원문에서 찾지 못함",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 승인된 비교 대상 부품 정보가 없어 정확한 부품 식별 대조는 진행하지 못함",
+          "추가 입력 필요 · 임무 조건 검토 역할 · 임무 조건이 없어 시험 결과의 임무 적용성은 판단하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "NO_CANDIDATE",
+        "ROLE_LINK": "NOT_REACHED",
+        "CONDITION_LINK": "NOT_REACHED",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "PARSE",
+      "first_blocker": "NO_REVIEWABLE_CANDIDATE",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-008",
+      "title": "08_복합PDF_별도입력_5962L1420901VXC",
+      "filename": "08_복합PDF_별도입력_5962L1420901VXC.pdf",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:1026ca3faccad7a89fb28fd261b0320c134ebf9758bf4bd0032fdace2986f8de",
+      "processing_status": "VALID",
+      "candidate_count": 7,
+      "candidate_fields": [
+        "ORDERABLE_PART_NUMBER",
+        "MANUFACTURER",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 2,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 1,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 5962L1420901VXC · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Texas Instruments · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 방사선 시험 결과가 없어 부품 명세와 시험 근거를 연결하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "CANDIDATE_ONLY",
+        "FINAL_GATE": "HOLD"
+      },
+      "stopped_at": "FINAL_GATE",
+      "first_blocker": "SYNTHETIC_OR_INCOMPLETE_EVIDENCE",
+      "pipeline_result": "COMPLETED_WITH_HOLD",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-009",
+      "title": "09_손상PDF_텍스트추출실패",
+      "filename": "09_손상PDF_텍스트추출실패.pdf",
+      "document_role": "SYNTHETIC_CONTROL",
+      "source_classification": "SYNTHETIC_TEST_FIXTURE",
+      "source_urls": [],
+      "content_sha256": "sha256:0fad7db33ed170ccde435100dccf0c026cd32277a7d948b300f12ed1fed46d08",
+      "processing_status": "DATA_UNAVAILABLE",
+      "candidate_count": 0,
+      "candidate_fields": [],
+      "partial_evaluation": {
+        "validated_check_count": 0,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 0,
+        "hold_agent": "LOCAL_DOCUMENT_GATE",
+        "validation_results": []
+      },
+      "stages": {
+        "INGEST": "DATA_UNAVAILABLE",
+        "PARSE": "NOT_REACHED",
+        "ROLE_LINK": "NOT_REACHED",
+        "CONDITION_LINK": "NOT_REACHED",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "INGEST",
+      "first_blocker": "PDF_TEXT_EXTRACTION_FAILED",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-010",
+      "title": "10_실제공개값_NASA_Micron_MT29F4T08CTHBBM5_TID",
+      "filename": "10_실제공개값_NASA_Micron_MT29F4T08CTHBBM5_TID.txt",
+      "document_role": "RADIATION_TEST",
+      "source_classification": "PUBLISHED_SOURCE_SUMMARY",
+      "source_urls": [
+        "https://nepp.nasa.gov/radhome/papers/2020-Topper-NSREC-TID-SEE-Compendium-DW-Paper-20205007136.pdf"
+      ],
+      "content_sha256": "sha256:7f23570e9a3128b7964a9c791a3424fd7e23e39759cb4cc28c48d7bf6c3504ff",
+      "processing_status": "VALID",
+      "candidate_count": 6,
+      "candidate_fields": [
+        "ORDERABLE_PART_NUMBER",
+        "MANUFACTURER",
+        "EVIDENCE_EVENT_MENTION",
+        "TID_DOSE",
+        "SAMPLE_SIZE",
+        "LOT_DATE_CODE"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 5,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 2,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · 누적선량 39 krad(Si) · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 시료 수 13 · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 로트·날짜 코드 201816 · 원문 위치·식별자 형식 확인 · 실제 로트 일치 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 MT29F4T08CTHBBM5 · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Micron · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 승인된 비교 대상 부품 정보가 없어 정확한 부품 식별 대조는 진행하지 못함",
+          "추가 입력 필요 · 임무 조건 검토 역할 · 임무 조건이 없어 시험 결과의 임무 적용성은 판단하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "CANDIDATE_ONLY",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "EXACT_IDENTITY",
+      "first_blocker": "APPROVED_BOM_TARGET_MISSING",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-011",
+      "title": "11_실제공개값_NASA_Hynix_H25QFT8F4A9R-BDF_SEE",
+      "filename": "11_실제공개값_NASA_Hynix_H25QFT8F4A9R-BDF_SEE.txt",
+      "document_role": "RADIATION_TEST",
+      "source_classification": "PUBLISHED_SOURCE_SUMMARY",
+      "source_urls": [
+        "https://nepp.nasa.gov/radhome/papers/2020-Topper-NSREC-TID-SEE-Compendium-DW-Paper-20205007136.pdf"
+      ],
+      "content_sha256": "sha256:d5a87e968c71afa7d6df566f4e8ea55fb5e6a14ad120a315d68df260e1bd51e6",
+      "processing_status": "VALID",
+      "candidate_count": 15,
+      "candidate_fields": [
+        "ORDERABLE_PART_NUMBER",
+        "MANUFACTURER",
+        "EVIDENCE_EVENT_MENTION",
+        "EVIDENCE_EVENT_MENTION",
+        "SEE_LET",
+        "SEE_LET",
+        "SEE_LET",
+        "SEE_LET",
+        "SEE_CROSS_SECTION",
+        "PARTICLE_ENERGY",
+        "PARTICLE_ENERGY",
+        "TEST_TEMPERATURE",
+        "SAMPLE_SIZE",
+        "SAMPLE_SIZE",
+        "LOT_DATE_CODE"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 13,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 2,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · LET < 1.16 MeV-cm2/mg · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · LET < 3.08 MeV-cm2/mg · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · LET 1.54 to 7.27 MeV-cm2/mg · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · LET 58.8 MeV-cm2/mg · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 사건 단면적 < 1x10-12 cm2/byte · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 입자 에너지 500 keV · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 입자 에너지 1.2 MeV · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 온도 80°C · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 시료 수 2 · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 시료 수 1 · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 로트·날짜 코드 936A · 원문 위치·식별자 형식 확인 · 실제 로트 일치 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 H25QFT8F4A9R-BDF · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Hynix · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 승인된 비교 대상 부품 정보가 없어 정확한 부품 식별 대조는 진행하지 못함",
+          "추가 입력 필요 · 임무 조건 검토 역할 · 임무 조건이 없어 시험 결과의 임무 적용성은 판단하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "CANDIDATE_ONLY",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "EXACT_IDENTITY",
+      "first_blocker": "APPROVED_BOM_TARGET_MISSING",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-012",
+      "title": "12_실제공개값_ESA_Micron_MT29F32G08CBACA_TID_SEE",
+      "filename": "12_실제공개값_ESA_Micron_MT29F32G08CBACA_TID_SEE.txt",
+      "document_role": "RADIATION_TEST",
+      "source_classification": "PUBLISHED_SOURCE_SUMMARY",
+      "source_urls": [
+        "https://escies.org/download/webDocumentFile?id=60235",
+        "https://sci.esa.int/c/portal/doc.cfm?fobjectid=49796"
+      ],
+      "content_sha256": "sha256:2b1b932d3c4d885bea6f9810ee9931348444b30fb803e5ffd7b3f36d1a4d4d05",
+      "processing_status": "VALID",
+      "candidate_count": 10,
+      "candidate_fields": [
+        "ORDERABLE_PART_NUMBER",
+        "MANUFACTURER",
+        "EVIDENCE_EVENT_MENTION",
+        "TID_DOSE",
+        "TEST_TEMPERATURE",
+        "SUPPLY_VOLTAGE",
+        "SAMPLE_SIZE",
+        "SAMPLE_SIZE",
+        "SAMPLE_SIZE",
+        "LOT_DATE_CODE"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 9,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 2,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · 누적선량 ~20 krad · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 온도 0°C to +70°C · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 공급 전압 2.7V-3.6V · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 시료 수 10 · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 시료 수 3 · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 시료 수 2 · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 로트·날짜 코드 Unknown · 원문 위치·식별자 형식 확인 · 실제 로트 일치 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 MT29F32G08CBACA · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Micron · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 승인된 비교 대상 부품 정보가 없어 정확한 부품 식별 대조는 진행하지 못함",
+          "추가 입력 필요 · 임무 조건 검토 역할 · 임무 조건이 없어 시험 결과의 임무 적용성은 판단하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "CANDIDATE_ONLY",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "EXACT_IDENTITY",
+      "first_blocker": "APPROVED_BOM_TARGET_MISSING",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-013",
+      "title": "13_실제임무계획_NASA_Landsat9_궤도수명",
+      "filename": "13_실제임무계획_NASA_Landsat9_궤도수명.txt",
+      "document_role": "MISSION_PLAN",
+      "source_classification": "PUBLISHED_SOURCE_SUMMARY",
+      "source_urls": [
+        "https://science.nasa.gov/mission/landsat-9/",
+        "https://ntrs.nasa.gov/api/citations/20190032037/downloads/20190032037.pdf"
+      ],
+      "content_sha256": "sha256:abd792a251206a3ccec5bc29f1e436c42cd6d2ab4db3aac124b41bd4d6610283",
+      "processing_status": "VALID",
+      "candidate_count": 5,
+      "candidate_fields": [
+        "MISSION_NAME",
+        "ORBIT_REGIME",
+        "ORBIT_ALTITUDE",
+        "ORBIT_INCLINATION",
+        "MISSION_DURATION"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 3,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 1,
+        "hold_agent": "MISSION_AGENT",
+        "validation_results": [
+          "확인 완료 · 임무 조건 검토 역할 · 궤도 고도 705 km · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 임무 조건 검토 역할 · 궤도 경사각 98.2 deg · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 임무 조건 검토 역할 · 임무 기간 5 years · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "추가 입력 필요 · 임무 조건 검토 역할 · 방사선 환경 입력이 없어 임무 조건과 환경을 연결하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "PASS",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "ENVIRONMENT_LINK",
+      "first_blocker": "RADIATION_ENVIRONMENT_MISSING",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-014",
+      "title": "14_실제임무계획_ESA_Sentinel2_궤도수명",
+      "filename": "14_실제임무계획_ESA_Sentinel2_궤도수명.txt",
+      "document_role": "MISSION_PLAN",
+      "source_classification": "PUBLISHED_SOURCE_SUMMARY",
+      "source_urls": [
+        "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2/Facts_and_figures",
+        "https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2/Operations_Manager_Franco_Marchese"
+      ],
+      "content_sha256": "sha256:d4873e86e46e6abc4c74f78944566f79ae3aae84b6972b06375a1a5988d00f15",
+      "processing_status": "VALID",
+      "candidate_count": 5,
+      "candidate_fields": [
+        "MISSION_NAME",
+        "ORBIT_REGIME",
+        "ORBIT_ALTITUDE",
+        "ORBIT_INCLINATION",
+        "MISSION_DURATION"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 3,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 1,
+        "hold_agent": "MISSION_AGENT",
+        "validation_results": [
+          "확인 완료 · 임무 조건 검토 역할 · 궤도 고도 786 km · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 임무 조건 검토 역할 · 궤도 경사각 98.5 deg · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 임무 조건 검토 역할 · 임무 기간 7 years · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "추가 입력 필요 · 임무 조건 검토 역할 · 방사선 환경 입력이 없어 임무 조건과 환경을 연결하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "PASS",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "ENVIRONMENT_LINK",
+      "first_blocker": "RADIATION_ENVIRONMENT_MISSING",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "document_id": "DOC-015",
+      "title": "15_실제부품명세_Microchip_23LC1024",
+      "filename": "15_실제부품명세_Microchip_23LC1024.txt",
+      "document_role": "PART_SPEC",
+      "source_classification": "PUBLISHED_SOURCE_SUMMARY",
+      "source_urls": [
+        "https://www.microchip.com/en-us/product/23lc1024",
+        "https://ww1.microchip.com/downloads/en/DeviceDoc/20005142C.pdf"
+      ],
+      "content_sha256": "sha256:1706b77aa28113b39e98dde7d0b698c4d4bc50de67b4a1f883ceed5eaeb760af",
+      "processing_status": "VALID",
+      "candidate_count": 4,
+      "candidate_fields": [
+        "ORDERABLE_PART_NUMBER",
+        "MANUFACTURER",
+        "TEST_TEMPERATURE",
+        "SUPPLY_VOLTAGE"
+      ],
+      "partial_evaluation": {
+        "validated_check_count": 4,
+        "failed_check_count": 0,
+        "not_evaluated_check_count": 1,
+        "hold_agent": "PARTS_AGENT",
+        "validation_results": [
+          "확인 완료 · 부품·시험 근거 검토 역할 · 시험 온도 -40°C to +85°C · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 공급 전압 2.5V-5.5V · 원문 위치·숫자 형식·단위·기본 입력 범위 확인 · 임무 적합성 판정 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 23LC1024-I/SN · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Microchip Technology · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "추가 입력 필요 · 부품·시험 근거 검토 역할 · 방사선 시험 결과가 없어 부품 명세와 시험 근거를 연결하지 못함"
+        ]
+      },
+      "stages": {
+        "INGEST": "PASS",
+        "PARSE": "PASS",
+        "ROLE_LINK": "PASS",
+        "CONDITION_LINK": "NOT_REACHED",
+        "FINAL_GATE": "NOT_REACHED"
+      },
+      "stopped_at": "EVIDENCE_LINK",
+      "first_blocker": "RADIATION_TEST_EVIDENCE_MISSING",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "assurance_decision": "HOLD"
+    }
+  ],
+  "bundles": [
+    {
+      "bundle_id": "BUNDLE-SYNTHETIC-CORE",
+      "label": "합성 임무·부품·시험 3축 Core 회귀",
+      "data_class": "SYNTHETIC",
+      "documents": [
+        "demo/data/mvp-product-result.json"
+      ],
+      "reached_stage": "FINAL_GATE",
+      "pipeline_result": "PIPELINE_COMPLETE",
+      "first_blocker": "SYNTHETIC_ONLY",
+      "hold_agent": "ASSURANCE_AGENT",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "bundle_id": "BUNDLE-LANDSAT-MICROCHIP-NASA-MICRON",
+      "label": "Landsat 9 + 23LC1024 명세 + NASA Micron TID",
+      "data_class": "PUBLISHED_SOURCE_SUMMARY",
+      "documents": [
+        "DOC-013",
+        "DOC-015",
+        "DOC-010"
+      ],
+      "reached_stage": "EXACT_IDENTITY",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "first_blocker": "EXACT_PART_IDENTITY_MISMATCH",
+      "hold_agent": "PARTS_AGENT",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "bundle_id": "BUNDLE-LANDSAT-MICROCHIP",
+      "label": "Landsat 9 + 23LC1024 명세",
+      "data_class": "PUBLISHED_SOURCE_SUMMARY",
+      "documents": [
+        "DOC-013",
+        "DOC-015"
+      ],
+      "reached_stage": "EVIDENCE_LINK",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "first_blocker": "RADIATION_TEST_EVIDENCE_MISSING",
+      "hold_agent": "PARTS_AGENT",
+      "assurance_decision": "HOLD"
+    },
+    {
+      "bundle_id": "BUNDLE-SENTINEL-ESA-MICRON",
+      "label": "Sentinel-2 + ESA Micron TID/SEE",
+      "data_class": "PUBLISHED_SOURCE_SUMMARY",
+      "documents": [
+        "DOC-014",
+        "DOC-012"
+      ],
+      "reached_stage": "PART_SPEC_LINK",
+      "pipeline_result": "STOPPED_FAIL_CLOSED",
+      "first_blocker": "PART_SPECIFICATION_MISSING",
+      "hold_agent": "PARTS_AGENT",
+      "assurance_decision": "HOLD"
+    }
+  ],
+  "summary": {
+    "document_count": 15,
+    "published_summary_count": 6,
+    "pipeline_complete_count": 5,
+    "assurance_approved_count": 0
+  }
+}

@@ -1,0 +1,4 @@
+SYNTHETIC EMPTY-EVIDENCE TEST FIXTURE - NOT ENGINEERING EVIDENCE
+
+This document intentionally contains no requested manufacturer, orderable part number,
+or supported radiation event abbreviation. The parser must not manufacture candidates.

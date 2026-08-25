@@ -1,0 +1,14 @@
+SYNTHETIC TEST FIXTURE - NOT ENGINEERING EVIDENCE
+Scenario: exact part, manufacturer, and five radiation event mentions
+
+Manufacturer: Microchip Technology
+Orderable part number: 23LC1024-I/SN
+
+Reported review sections:
+- TID total ionizing dose
+- SEU single-event upset
+- SEL single-event latch-up
+- SEB single-event burnout
+- SEGR single-event gate rupture
+
+This fixture tests bounded candidate extraction only. It is not a test report.

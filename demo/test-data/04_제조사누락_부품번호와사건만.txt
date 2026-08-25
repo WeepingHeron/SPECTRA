@@ -1,0 +1,7 @@
+SYNTHETIC TEST FIXTURE - NOT ENGINEERING EVIDENCE
+Scenario: exact orderable part is present, manufacturer is absent
+
+Orderable part number: 23LC1024-I/SN
+Mentioned sections: TID, SEU, SEL, SEB, SEGR.
+
+The manufacturer candidate must remain absent even when the console asks for it.

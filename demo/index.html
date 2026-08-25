@@ -208,8 +208,6 @@
     .integrity-practice>span{color:#888;font:700 11px/1 "SFMono-Regular",Menlo,monospace;letter-spacing:.1em;padding-top:4px}
     .integrity-practice h3{margin:0;color:#fff;font-size:16px;line-height:1.3}
     .integrity-practice p{margin:6px 0 0;color:#999;font-size:12.5px;line-height:1.45}
-    .attack-boundary{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px;padding:10px 12px;border:1px solid #555;color:var(--muted);font:600 10px/1.4 "SFMono-Regular",Menlo,monospace;letter-spacing:.05em}
-    .attack-boundary strong{color:#fff;font-weight:750;white-space:nowrap}
 
     /* Slide 09: Roadmap & Future Expansion */
     .roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:20px;background:var(--line)}
@@ -256,7 +254,7 @@
       .demo-console{margin-top:10px;padding:10px 14px}
       .demo-pipeline-view{margin-top:8px}
       .reliability-grid{margin-top:8px}.reliability-card{min-height:76px;padding:8px 10px}
-      .attack-intro{margin-top:10px;font-size:12px}.attack-proof{margin-top:12px;padding-top:10px;gap:24px}.attack-row{min-height:48px}.attack-metric{padding:7px 0}.attack-metric b{font-size:34px}.attack-boundary{margin-top:9px;padding:7px 10px}
+      .attack-intro{margin-top:10px;font-size:12px}.attack-proof{margin-top:12px;padding-top:10px;gap:24px}.attack-row{min-height:48px}.attack-metric{padding:7px 0}.attack-metric b{font-size:34px}
     }
 
     /* 2026-08-22 post-presentation visual integration: original monochrome language, wider canvas, lower density */
@@ -466,13 +464,14 @@
     <section class="slide" data-title="기존 한계" aria-labelledby="s5-title">
       <div class="slide-inner">
         <p class="kicker">05 · CONVENTIONAL REVIEW WORKFLOW</p>
-        <h2 id="s5-title">기존 DB와 엑셀 취합에서는,<br><span class="warn">끊어진 근거를 사람이 다시 연결한다.</span></h2>
+        <h2 id="s5-title">기존 문서 중심 검토에서는,<br><span class="warn">흩어진 근거를 사람이 다시 연결한다.</span></h2>
         <p class="lead slide-summary">환경 모델·BOM·시험 PDF·승인 이력을 수기로 대조하고, 조건이 바뀔 때마다 다시 추적한다.</p>
         <div class="two-up">
           <article class="panel-flat"><span class="panel-tag">현재 방식 · 사람이 근거를 다시 연결</span><ul class="compact-list"><li><strong>정확한 부품 식별:</strong> 제조사·공정·다이·로트가 시험 원문과 같은지 다시 대조</li><li><strong>시험 조건:</strong> 조사 조건과 event coverage가 이번 임무 판단에 맞는지 다시 확인</li><li><strong>방사선 조건 적용성:</strong> 환경·차폐·수명 변경이 기존 가정을 깨는지 다시 추적</li><li><strong>권리·승인 trace:</strong> 원문 접근 권리와 검토·보완 이력을 별도로 연결</li></ul></article>
           <article class="panel-flat" style="border-color:#777"><span class="panel-tag">SPECTRA · 기계 검증 가능한 근거 체인</span><ul class="compact-list"><li><strong>기계 검증형 데이터 규칙:</strong> JSON Schema와 RFC 8785 정규화 해시로 환경·성적서·완화 정책을 결속</li><li><strong>부품 식별 정합성(Exact Identity):</strong> 제조사·공정·다이·로트 및 시험 조건이 일치하지 않는 성적서는 거절</li><li><strong>변경 파급 감사:</strong> 암호학적 해시 체인으로 궤도나 차폐 변경 시 깨진 가정을 감지</li><li><strong>Fail-Closed:</strong> 방사선 시험 증거가 결측되거나 불충분하면 HOLD로 격리</li></ul></article>
         </div>
         <div class="glossary-bar"><span><b>HOLD</b> · 근거가 부족해 결정을 잠시 멈춘 상태</span><span><b>Fail-Closed</b> · 근거가 없을 때 임의로 통과시키지 않는 방식</span></div>
+        <div class="source-line">※ <a href="https://www.esa.int/esapub/bulletin/bullet104/davis104.pdf" target="_blank" rel="noopener noreferrer">ESA Bulletin 104 · New Concepts in Document Management for Space Projects</a> · <a href="https://mb4se.esa.int/DtSC_Main.html" target="_blank" rel="noopener noreferrer">ESA Digital Spacecraft</a></div>
       </div>
     </section>
 
@@ -515,17 +514,17 @@
     <section class="slide" data-title="GCP Multi-Agent" aria-labelledby="s8-title">
       <div class="slide-inner">
         <p class="kicker">08 · GCP MULTI-AGENT EXECUTION</p>
-        <h2 id="s8-title">실제 GCP에서는,<br><span class="accent">세 역할이 한 실행을 교차 검증한다.</span></h2>
+        <h2 id="s8-title">실제 GCP에서는,<br><span class="accent">세 역할이 한 가지 실행의 근거를 나눠 검증한다.</span></h2>
         <p class="slide-summary">Cloud Workflows가 세 Agent를 호출하고, 고정된 입력과 결과를 하나의 감사 체인으로 남긴다.</p>
         <div class="gcp-simple-flow" aria-label="GCP Multi-Agent 검증 흐름">
           <article class="gcp-simple-node"><span>INPUT</span><b>Cloud Storage</b><small>입력 본문과 generation을 고정</small></article>
           <div class="gcp-simple-arrow" aria-hidden="true">→</div>
           <article class="gcp-simple-node"><span>WORKFLOWS + CLOUD RUN</span><b>역할별 독립 대조</b><div class="gcp-agent-stack"><span>Mission<br>환경·출처</span><span>Parts<br>부품·시험</span><span>Assurance<br>정책·결측</span></div></article>
           <div class="gcp-simple-arrow" aria-hidden="true">→</div>
-          <article class="gcp-simple-node output"><span>IMMUTABLE RESULT</span><b>감사로그 + HOLD</b><small>근거가 부족하면 승인하지 않음</small></article>
+          <article class="gcp-simple-node output"><span>HASH-LINKED RESULT</span><b>감사로그 + HOLD</b><small>저장 결과와 감사 해시를 연결해 변경을 탐지</small></article>
         </div>
         <div class="gcp-proof-strip"><span><b>실제 control</b>Workflow SUCCEEDED</span><span><b>무결성</b>저장 이벤트 무결성 검증</span><span><b>최종 경계</b>ACTUAL EVIDENCE 0 · HOLD</span></div>
-        <div class="gcp-simple-actions"><a class="gcp-link-btn" href="http://127.0.0.1:8765/demo/evidence-console.html?presentation=1" target="spectra-demo">Evidence Console 열기 →</a><p>로컬 PDF 파서와 저장 GCP Agent 경로는 아직 별도 · GCP 실행 성공 ≠ 방사선 보증</p></div>
+        <div class="gcp-simple-actions"><a class="gcp-link-btn" href="evidence-console.html?presentation=1" target="spectra-demo">Evidence Console 열기 →</a><p>규칙 기반 PDF 파서와 저장 GCP Agent 경로는 별도 · GCP 실행 성공 ≠ 방사선 보증</p></div>
       </div>
     </section>
 
@@ -542,7 +541,6 @@
           <article class="integrity-practice"><span>05</span><div><h3>Fail-Closed 정책</h3><p>근거 결측·범위 이탈·값 불일치가 생기면 숫자를 숨기고 후속 호출과 승인을 HOLD한다.</p></div></article>
           <article class="integrity-practice"><span>06</span><div><h3>배포 경로 격리</h3><p>비공개 Agent, endpoint override 금지, Storage generation·배포 revision 결속으로 실행 대상을 고정한다.</p></div></article>
         </div>
-        <div class="attack-boundary"><strong>ACTUAL GCP ATTACK SCOPE</strong><span>4 / 16 평가</span><span>SAFE_FAILURE 4</span><span>False Accept 0 · False PASS 0</span><span>12 NOT_EVALUATED</span><span>FINAL HOLD</span></div>
         <div class="source-line">※ 입력 계약·Core·정책·GCP 경계의 고정 회귀와 배포 재검증 범위 · 전체 침투시험·보안 인증·방사선 보증 아님</div>
       </div>
     </section>
@@ -552,7 +550,7 @@
         <p class="kicker" style="letter-spacing:.28em;margin-bottom:12px">CONCLUSION &amp; Q&amp;A</p>
         <h1 id="closing-title" class="cover-hero" style="font-size:min(160px,clamp(64px,9.5vw,160px))!important;margin-bottom:12px!important">SPECTRA</h1>
         <p class="cover-acronym">Space Parts Evidence, Component Traceability, Radiation Assurance</p>
-        <div class="cover-manifesto-grid" style="margin-top:28px;padding-top:22px"><p class="cover-sub">“계산 가능한 것과 판단 가능한 것을 명확히 구분하는 신뢰성,<br><strong>좋은 숫자보다, 믿을 수 있는 판단.</strong>”</p><div class="cover-philosophy"><span class="philosophy-kicker">Discussion &amp; Inquiries</span><p class="philosophy-text">경청해 주셔서 감사합니다.<br><strong>질의응답(Q&amp;A)</strong>을 시작하겠습니다.</p></div></div>
+        <div class="cover-manifesto-grid" style="margin-top:28px;padding-top:22px"><p class="cover-sub">“임무·부품·시험 자료를 하나의 검토 흐름으로 연결하고,<br><strong>확인한 것과 더 필요한 것을 분명하게.</strong>”</p><div class="cover-philosophy"><span class="philosophy-kicker">Discussion &amp; Inquiries</span><p class="philosophy-text">경청해 주셔서 감사합니다.<br><strong>질의응답(Q&amp;A)</strong>을 시작하겠습니다.</p></div></div>
       </div>
     </section>
   </main>

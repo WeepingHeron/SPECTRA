@@ -1,0 +1,18 @@
+SPECTRA PUBLISHED SOURCE SUMMARY · MISSION CONDITIONS
+Data class: PUBLISHED
+Document role: MISSION_PLAN
+Mission name: Sentinel-2
+Operator: European Space Agency
+Orbit: Polar, sun-synchronous
+Orbit altitude: 786 km
+Orbit inclination: 98.5 deg
+Mission lifetime: 7 years
+
+Primary sources:
+https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2/Facts_and_figures
+https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2/Operations_Manager_Franco_Marchese
+
+Use boundary:
+This is a locally authored source summary for parser testing. The seven-year value
+is ESA's published minimum lifetime. No mission dose, shielding geometry, or part
+approval is inferred from orbit and lifetime alone.
