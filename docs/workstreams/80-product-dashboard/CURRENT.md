@@ -8,10 +8,16 @@
 
 - Slide 08 제목을 `세 역할이 한 가지 실행의 근거를 나눠 검증한다.`로 확정해 세 역할이 서로 다른 실행을 만들거나 같은 계산을 세 번 한다는 오해를 줄였다.
 - Evidence Console 오른쪽 결과 영역을 `항목별 검사 결과` 카드로 재구성했다. 각 카드는 `확인 완료 · 불일치 · 추가 입력 필요`, 확인 대상, 세부 설명, 책임 역할을 분리하며 1280×720에서는 문서 전체가 아니라 요약 panel만 독립 스크롤한다.
-- 공개 revision `spectra-demo-console-00008-rwk`에서 예시 PDF와 trust-bound Mission Case를 실행하고, body `1280×720` overflow 0과 네 메뉴의 고정된 2×2 좌표를 확인했다. Mission Case는 원문 3개·정책·권리·이력 MATCH와 Core hash 결속을 표시하며 최종 적용성 판단은 `HOLD`한다.
+- 공개 revision `spectra-demo-console-00009-zpm`에서 예시 PDF와 trust-bound Mission Case, 직접 3문서 후보 연결을 실행하고, body `1280×720` overflow 0과 브라우저 warning/error 0을 확인했다. Mission Case는 원문 3개·정책·권리·이력 MATCH와 Core hash 결속을 표시하며 최종 적용성 판단은 `HOLD`한다.
 - 공개 메뉴의 실행 경계를 재확인했다. `문서 검사`는 live Cloud Run parser, `임무·부품·시험 연결`은 고정 합성 입력의 production Core live 실행, `저장된 공격 검증`은 저장 snapshot, `문서별 결과표`는 공개 GCP catalog live read다.
 - `문서별 결과표`는 8열을 5열로 줄이고 네 처리 단계를 한 칸의 2×2 흐름으로 묶었다. 공개 1280×720 콘솔 내장 화면에서 표 우측 잘림 없이 15개 문서·결과·보류 지점과 감사 기록이 함께 보임을 확인했다.
-- 전체 자동 회귀는 unit 436개와 Assurance 공격 실행 47개가 통과했다. 실제 방사선 assurance는 계속 `HOLD`다.
+- 전체 자동 회귀는 unit 447개와 Assurance 공격 실행 47개가 통과했다. 실제 방사선 assurance는 계속 `HOLD`다.
+
+- H41은 문서 검사 결과에 사건별 후보 연결 receipt를 추가했다. 사건명과 같은 원문 줄에 있는 필수값을 묶고, 문서 전체에서 TID dose 후보가 정확히 하나인 경우에만 TID 후보로 연결한다. 복수 값은 추정하지 않으며 충족·누락 필드와 다음 Gate를 표시한다. 후보 연결은 승인이나 임무 적합성 판정이 아니며 항상 `used_for_decision=false / HOLD`다.
+
+- H42는 일반 Console의 `임무·부품·시험 연결` 화면에 역할별 파일 3개와 부품번호·제조사·처리 권리 입력을 추가했다. `/api/candidate-bundle`은 세 문서를 임시 처리하고 후보 identity·사건 필드를 교차 대조한 뒤 원문을 삭제한다. 권한 미확인 시 브라우저는 파일을 전송하지 않고 API도 base64 해석 전에 403으로 차단한다. 발표 모드에서는 기존 고정 합성 Core 동선을 유지하기 위해 직접 업로드 블록을 숨긴다.
+
+- H43은 문서에 라벨로 선언된 제조사·주문형번을 별도 후보로 읽는다. 기대 문자열이 문서 다른 위치에 우연히 존재하더라도 라벨 선언값을 우선하며, 부품 문서와 시험 문서 값이 다르면 `CANDIDATE_CONFLICT`와 양쪽 후보를 함께 반환한다.
 
 ## H41 Cloud Console Readability & Public Runtime — 2026-08-25
 

@@ -6,6 +6,7 @@ from __future__ import annotations
 import pathlib
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -61,7 +62,12 @@ class LocalDocumentCandidateTests(unittest.TestCase):
     def test_missing_rights_suppresses_candidates(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = self.write_text(pathlib.Path(directory), "Part 5962L1420901VXC TID")
-            receipt = intake_document(path, expected_part="5962L1420901VXC")
+            with mock.patch.object(
+                pathlib.Path,
+                "read_bytes",
+                side_effect=AssertionError("file bytes must not be read"),
+            ):
+                receipt = intake_document(path, expected_part="5962L1420901VXC")
         self.assertEqual(receipt["processing_status"], "PROVENANCE_FAILURE")
         self.assertEqual(receipt["candidate_count"], 0)
         self.assertIn("RIGHTS_PROCESS_LOCAL_UNRESOLVED", receipt["blocker_codes"])
@@ -80,6 +86,28 @@ class LocalDocumentCandidateTests(unittest.TestCase):
         self.assertNotIn("ORDERABLE_PART_NUMBER", receipt["candidate_fields"])
         self.assertIn("MANUFACTURER", receipt["candidate_fields"])
         self.assertEqual(receipt["assurance_decision"], "HOLD")
+
+    def test_declared_identity_conflict_is_extracted_and_failed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = self.write_text(
+                pathlib.Path(directory),
+                "Manufacturer: Other Semiconductor\n"
+                "Orderable part number: EX-200-B\nTID 25 krad(Si)\n",
+            )
+            receipt = intake_document(
+                path,
+                expected_part="EX-100-A",
+                manufacturer="Example Semiconductor",
+                local_review_rights_confirmed=True,
+            )
+        by_field = {item["field"]: item["value"] for item in receipt["candidates"]}
+        self.assertEqual(by_field["ORDERABLE_PART_NUMBER"], "EX-200-B")
+        self.assertEqual(by_field["MANUFACTURER"], "Other Semiconductor")
+        failed = receipt["partial_evaluation"]["failed_checks"]
+        self.assertEqual(
+            {item["check_id"] for item in failed},
+            {"EXPECTED_PART_TEXT_MATCH", "EXPECTED_MANUFACTURER_TEXT_MATCH"},
+        )
 
     def test_prompt_injection_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

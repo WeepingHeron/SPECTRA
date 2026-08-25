@@ -99,7 +99,9 @@ class EvidenceConsoleTests(unittest.TestCase):
             )
         )
         by_event = {event["event"]: event for event in events}
+        self.assertNotIn("parser.started", by_event)
         self.assertEqual(by_event["parser.completed"]["status"], "PROVENANCE_FAILURE")
+        self.assertIn("추출 전에 중단", by_event["parser.completed"]["message"])
         self.assertIn("review.not_called", by_event)
         self.assertNotIn("approved_target.blocked", by_event)
         self.assertEqual(events[-1]["evidence"]["assurance_decision"], "HOLD")
@@ -305,6 +307,8 @@ class EvidenceConsoleTests(unittest.TestCase):
             "결정론적 계산·대조",
             'get("presentation")==="1"',
             "event-card",
+            "권한 확인 전에는 파일을 서버로 전송하지 않습니다.",
+            "/api/candidate-bundle",
         ):
             self.assertIn(required, self.html)
         self.assertIn("urllib.parse.unquote(encoded_filename)", self.server_source)

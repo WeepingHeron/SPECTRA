@@ -21,7 +21,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from spectra_document_adapter import evaluate_document_intake  # noqa: E402
+from spectra_document_adapter import evaluate_document_intake, link_event_candidates  # noqa: E402
 
 
 MAX_BYTES = 10 * 1024 * 1024
@@ -49,6 +49,7 @@ NUMERIC_FIELD_RULES: dict[str, tuple[str, float | None, float | None]] = {
     "TEST_TEMPERATURE": ("PARTS_AGENT", -273.15, None),
     "SUPPLY_VOLTAGE": ("PARTS_AGENT", 0.0, None),
     "SAMPLE_SIZE": ("PARTS_AGENT", 1.0, None),
+    "OBSERVED_EVENT_COUNT": ("PARTS_AGENT", 0.0, None),
 }
 
 MISSION_TEXT_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -64,6 +65,18 @@ MISSION_TEXT_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
         ),
     ),
 )
+
+IDENTITY_TEXT_PATTERNS: dict[str, re.Pattern[str]] = {
+    "ORDERABLE_PART_NUMBER": re.compile(
+        r"(?:orderable\s+(?:part\s+)?number|part\s*(?:number|no\.?|#)|ordering\s+number)"
+        r"\s*[:=]\s*(?P<value>[A-Za-z0-9][A-Za-z0-9._/+()-]{1,79})",
+        re.I,
+    ),
+    "MANUFACTURER": re.compile(
+        r"(?:manufacturer|mfr\.?)\s*[:=]\s*(?P<value>[^\n\r]{2,120})",
+        re.I,
+    ),
+}
 
 
 def _unit_text(value: str) -> str:
@@ -172,6 +185,14 @@ NUMERIC_PATTERNS: tuple[tuple[str, str | None, re.Pattern[str]], ...] = (
         "SAMPLE_SIZE",
         "devices",
         re.compile(r"(?:sample\s*size|samples?|DUTs?)\s*[:=]?\s*(?P<value>\d{1,4})\b", re.I),
+    ),
+    (
+        "OBSERVED_EVENT_COUNT",
+        "events",
+        re.compile(
+            r"(?:observed\s+(?:events?|failures?)|events?\s+observed)\s*[:=]?\s*(?P<value>\d{1,6})\b",
+            re.I,
+        ),
     ),
     (
         "LOT_DATE_CODE",
@@ -297,7 +318,7 @@ def _partial_evaluation(
         if valid and len(values) > 1:
             valid = values[0] <= values[-1]
             codes.append("RANGE_ORDER_CHECKED")
-        if field == "SAMPLE_SIZE" and valid:
+        if field in {"SAMPLE_SIZE", "OBSERVED_EVENT_COUNT"} and valid:
             valid = all(item.is_integer() for item in values)
             codes.append("INTEGER_CHECKED")
         item = {
@@ -331,7 +352,11 @@ def _partial_evaluation(
 
     identity_target = expected_part.strip()
     if identity_target and identity_target != "NOT-APPLICABLE":
-        identity_ok = "ORDERABLE_PART_NUMBER" in fields
+        identity_ok = any(
+            candidate["field"] == "ORDERABLE_PART_NUMBER"
+            and candidate["value"].strip().casefold() == identity_target.casefold()
+            for candidate in receipt.get("candidates", [])
+        )
         identity_check = {
             "check_id": "EXPECTED_PART_TEXT_MATCH",
             "agent_role": "PARTS_AGENT",
@@ -346,7 +371,11 @@ def _partial_evaluation(
         }
         (validated if identity_ok else failed).append(identity_check)
     if manufacturer:
-        manufacturer_ok = "MANUFACTURER" in fields
+        manufacturer_ok = any(
+            candidate["field"] == "MANUFACTURER"
+            and candidate["value"].strip().casefold() == manufacturer.strip().casefold()
+            for candidate in receipt.get("candidates", [])
+        )
         manufacturer_check = {
             "check_id": "EXPECTED_MANUFACTURER_TEXT_MATCH",
             "agent_role": "PARTS_AGENT",
@@ -419,27 +448,44 @@ def _partial_evaluation(
 
 def extract_candidates(text: str, expected_part: str, manufacturer: str | None) -> list[dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
-    part_span = _exact_span(text, expected_part)
+    declared_part = IDENTITY_TEXT_PATTERNS["ORDERABLE_PART_NUMBER"].search(text)
+    part_span = (
+        declared_part.span("value")
+        if declared_part is not None
+        else _exact_span(text, expected_part)
+    )
     if part_span is not None:
         candidates.append(
             _candidate(
-                candidate_id="exact-part-candidate",
+                candidate_id=(
+                    "declared-part-candidate"
+                    if declared_part is not None
+                    else "exact-part-candidate"
+                ),
                 field="ORDERABLE_PART_NUMBER",
                 text=text,
                 span=part_span,
             )
         )
-    if manufacturer:
-        manufacturer_span = _exact_span(text, manufacturer)
-        if manufacturer_span is not None:
-            candidates.append(
-                _candidate(
-                    candidate_id="manufacturer-candidate",
-                    field="MANUFACTURER",
-                    text=text,
-                    span=manufacturer_span,
-                )
+    declared_manufacturer = IDENTITY_TEXT_PATTERNS["MANUFACTURER"].search(text)
+    manufacturer_span = (
+        declared_manufacturer.span("value")
+        if declared_manufacturer is not None
+        else _exact_span(text, manufacturer or "")
+    )
+    if manufacturer_span is not None:
+        candidates.append(
+            _candidate(
+                candidate_id=(
+                    "declared-manufacturer-candidate"
+                    if declared_manufacturer is not None
+                    else "manufacturer-candidate"
+                ),
+                field="MANUFACTURER",
+                text=text,
+                span=manufacturer_span,
             )
+        )
     for event, field in EVENT_FIELDS.items():
         event_span = _exact_span(text, event)
         if event_span is not None:
@@ -496,10 +542,16 @@ def extract_candidates(text: str, expected_part: str, manufacturer: str | None) 
 def fail_closed_receipt(code: str) -> dict[str, Any]:
     receipt = {
         "contract_version": "LOCAL_DOCUMENT_EXTRACTION_RECEIPT_1.0.0",
-        "processing_status": "DATA_UNAVAILABLE",
+        "processing_status": (
+            "PROVENANCE_FAILURE"
+            if code == "RIGHTS_PROCESS_LOCAL_UNRESOLVED"
+            else "DATA_UNAVAILABLE"
+        ),
         "extraction_status": "HOLD_NOT_EXTRACTED",
         "candidate_count": 0,
         "candidate_fields": [],
+        "candidates": [],
+        "evidence_candidate_linkage": link_event_candidates("", []),
         "blocker_codes": [code],
         "approval_status": "NOT_EVALUATED",
         "use_status": "NOT_FOR_DECISION",
@@ -545,6 +597,7 @@ def _enrich_review_summary(receipt: dict[str, Any]) -> None:
         "TEST_TEMPERATURE": "시험 온도",
         "SUPPLY_VOLTAGE": "공급 전압",
         "SAMPLE_SIZE": "시험 시료 수",
+        "OBSERVED_EVENT_COUNT": "관측 사건 수",
         "LOT_DATE_CODE": "로트·날짜 코드",
         "ORBIT_ALTITUDE": "궤도 고도",
         "ORBIT_INCLINATION": "궤도 경사각",
@@ -552,6 +605,18 @@ def _enrich_review_summary(receipt: dict[str, Any]) -> None:
         "SHIELDING_THICKNESS": "차폐 두께",
     }
     results: list[str] = []
+    linkage = receipt.get("evidence_candidate_linkage", {})
+    for group in linkage.get("event_groups", []):
+        if group["status"] == "REQUIRED_FIELDS_PRESENT":
+            results.append(
+                f"확인 완료 · 부품·시험 근거 검토 역할 · {group['event_type']} 필수값 후보 묶음 · "
+                "승인 BOM·임무 조건 대조 전"
+            )
+        else:
+            results.append(
+                f"추가 입력 필요 · 부품·시험 근거 검토 역할 · {group['event_type']} · "
+                f"{', '.join(group['missing_fields'])} 후보 없음"
+            )
     for item in validated:
         role = agent_labels.get(item["agent_role"], item["agent_role"])
         field = field_labels.get(item["field"], item["field"])
@@ -636,7 +701,7 @@ def review_summary(receipt: dict[str, Any]) -> dict[str, Any]:
     labels = {
         "ORDERABLE_PART_NUMBER": "주문형번 후보",
         "MANUFACTURER": "제조사 후보",
-        "EVIDENCE_EVENT_MENTION": "시험 사건 언급",
+        "EVIDENCE_EVENT_MENTION": "시험 사건 후보",
         "TID_DOSE": "누적선량 값 후보",
         "DOSE_RATE": "선량률 후보",
         "SEE_LET": "LET 값 후보",
@@ -645,6 +710,7 @@ def review_summary(receipt: dict[str, Any]) -> dict[str, Any]:
         "PARTICLE_ENERGY": "입자 에너지 후보",
         "TEST_TEMPERATURE": "시험 온도 후보",
         "SAMPLE_SIZE": "시험 시료 수 후보",
+        "OBSERVED_EVENT_COUNT": "관측 사건 수 후보",
         "LOT_DATE_CODE": "로트·날짜 코드 후보",
         "SUPPLY_VOLTAGE": "공급 전압 후보",
         "MISSION_NAME": "임무명 후보",
@@ -740,6 +806,10 @@ def intake_document(
         size = resolved.stat().st_size
         if size <= 0 or size > MAX_BYTES:
             return fail_closed_receipt("DOCUMENT_SIZE_OUT_OF_RANGE")
+        if resolved.suffix.lower() not in {".pdf", ".txt", ".json"}:
+            return fail_closed_receipt("DOCUMENT_TYPE_UNSUPPORTED")
+        if not local_review_rights_confirmed:
+            return fail_closed_receipt("RIGHTS_PROCESS_LOCAL_UNRESOLVED")
         content = resolved.read_bytes()
         text, mime_type, engine, page_count = extract_text(resolved, content)
     except FileNotFoundError:
@@ -804,6 +874,7 @@ def intake_document(
         "candidate_count": len(intake["candidates"]),
         "candidate_fields": [item["field"] for item in intake["candidates"]],
         "candidates": intake["candidates"],
+        "evidence_candidate_linkage": link_event_candidates(text, intake["candidates"]),
         "blocker_codes": intake["blocker_codes"],
         "approval_status": "NOT_EVALUATED",
         "use_status": "NOT_FOR_DECISION",

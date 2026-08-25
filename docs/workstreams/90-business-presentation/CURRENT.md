@@ -9,7 +9,7 @@
 - Slide 08 제목은 `실제 GCP에서는, 세 역할이 한 가지 실행의 근거를 나눠 검증한다.`로 확정했다. Mission·Parts·Assurance는 동일 Workflow의 서로 다른 증거 책임이며 같은 계산을 세 번 수행한다는 뜻이 아니다.
 - 공개 1280×720 브라우저에서 deck 가로 overflow 0과 새 제목 표시를 확인했다. Console은 항목별 결과를 세 카드로 분리하고 문서 전체 overflow 없이 요약 panel만 스크롤한다.
 - 공격 검증은 공개 live 쓰기 endpoint로 확대하지 않았다. 공개 호출자에게 Workflows 실행·Storage 쓰기 권한을 열 경우 반복 실행 비용, 로그 오염, 내부 경계 탐색과 service account 권한 확대 위험이 생기므로 독립 확인된 snapshot을 재생한다.
-- unit 436개와 Assurance 공격 실행 47개, 공개 Cloud Run 동선, 문서 정합성과 현재 revision을 최종 확인했다. 사람 낭독·클릭 시간은 계속 `NOT_MEASURED`다.
+- unit 447개와 Assurance 공격 실행 47개, 공개 Cloud Run 동선, 문서 정합성과 현재 revision을 최종 확인했다. 사람 낭독·클릭 시간은 계속 `NOT_MEASURED`다.
 
 ## Cloud Presentation Runtime & Script v7 Refresh — 2026-08-25
 

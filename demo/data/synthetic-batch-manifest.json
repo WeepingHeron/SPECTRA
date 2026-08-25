@@ -39,7 +39,7 @@
       "filename": "rights-unresolved-control.txt",
       "rights": false,
       "expected_processing_status": "PROVENANCE_FAILURE",
-      "expected_blocker": "RIGHTS_DISPLAY_INTERNAL_UNRESOLVED",
+      "expected_blocker": "RIGHTS_PROCESS_LOCAL_UNRESOLVED",
       "expected_candidate_values": []
     }
   ],

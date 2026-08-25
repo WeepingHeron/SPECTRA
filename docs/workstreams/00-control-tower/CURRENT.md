@@ -8,15 +8,21 @@
 
 - 날짜: 2026-08-25
 - 프로젝트 경로: `/Users/taehoon/Desktop/IAA/SPECTRA`
-- Git 통합 체크포인트: 이번 통합 직전 push commit은 `719e480`이며, 현재 공개 Console·parser·catalog·발표 보완 통합 단위는 전체 회귀와 문서 정합성 검증 후 push 대상으로 승인됐다. 아래 “push 미수행” 문구는 각 과거 시점 기록이다.
+- Git 통합 기준: 사건 후보 연결·직접 3문서 후보 묶음·권한 경계 보완과 Cloud Run revision `00009-zpm` 문서를 포함한 이 검증 단위를 최신 `origin/main` 기준으로 사용한다. 아래 “push 미수행” 문구는 각 과거 시점 기록이다.
 
 ## 현재 확인된 산출물
 
-- 2026-08-25 최종 통합 회귀에서 schema 8, simulation 69, environment 65, parts evidence 39, Product 175, source adapters 14, value proof 12, GCP live adapter 35, GCP platform 13, ASR-D02 runner/reconciliation 6으로 unit 436개가 통과했다. Assurance 고정 공격 실행 47개도 failure·False PASS 0으로 통과했다. 최신 remediation manifest 때문에 historical H05 reconciliation이 실패하던 문제는 역사 target을 그대로 보존하도록 수정해, 과거 증거를 새 배포 증거로 재라벨하지 않는다.
+- 2026-08-25 최종 통합 회귀에서 schema 8, simulation 69, environment 65, parts evidence 39, Product 186, source adapters 14, value proof 12, GCP live adapter 35, GCP platform 13, ASR-D02 runner/reconciliation 6으로 unit 447개가 통과했다. Assurance 고정 공격 실행 47개도 failure·False PASS 0으로 통과했다. 최신 remediation manifest 때문에 historical H05 reconciliation이 실패하던 문제는 역사 target을 그대로 보존하도록 수정해, 과거 증거를 새 배포 증거로 재라벨하지 않는다.
 
-- 공개 `spectra-demo-console`은 revision `00008-rwk`, image digest `sha256:63f925...97ee56`, URL `https://spectra-demo-console-mwmfe3da5q-du.a.run.app`에서 100% traffic을 처리한다. 실제 설정은 min 0, max 100, concurrency 20, timeout 120초, CPU 1, memory 512Mi이며 별도 service account를 사용한다. 문서 검사와 승인·권리 trust-bound 합성 Core는 요청마다 실행하고, 공격 검증은 저장 snapshot, 문서별 결과표는 공개 catalog live read로 분리한다.
+- 공개 `spectra-demo-console`은 revision `00009-zpm`, image digest `sha256:c28f2432...e3c249`, URL `https://spectra-demo-console-mwmfe3da5q-du.a.run.app`에서 100% traffic을 처리한다. 실제 설정은 min 0, max 100, concurrency 20, timeout 120초, CPU 1, memory 512Mi이며 별도 service account를 사용한다. 문서 검사·직접 3문서 후보 연결과 승인·권리 trust-bound 합성 Core는 요청마다 실행하고, 공격 검증은 저장 snapshot, 문서별 결과표는 공개 catalog live read로 분리한다.
 
 - 공개 1280×720 브라우저 회귀에서 Slide 08 제목 `세 역할이 한 가지 실행의 근거를 나눠 검증한다.`, deck 가로 overflow 0, Console document overflow 0, 합성 PDF의 항목별 결과 카드 `확인 2 · 불일치 0 · 추가 입력 1`을 확인했다. 공개 공격 실행 endpoint는 쓰기 권한·비용·로그 오염·권한 확대 위험 때문에 추가하지 않았다.
+
+- 문서 검사에서 사건명 언급만을 근거처럼 보이게 하던 경계를 보완했다. `EVENT_CANDIDATE_LINKAGE_1.0.0`은 TID·SEU·SEL·SEB·SEGR 사건 후보와 같은 원문 줄의 수치를 연결하고, TID dose가 문서에 정확히 하나일 때만 문서 내 TID 후보로 결속한다. 사건별 필수 필드 충족·누락과 미배정 수치를 반환하며, 복수 값이나 다른 사건의 가까운 수치는 임의 연결하지 않는다. 사건 후보 묶음은 승인 BOM·Mission Case 대조 전까지 `NOT_FOR_DECISION / HOLD`다.
+
+- H42는 사용자가 역할을 지정한 임무·부품·시험 문서 3개를 같은 요청에서 처리하는 `THREE_DOCUMENT_CANDIDATE_BUNDLE_1.0.0`을 추가했다. 세 문서를 독립 intake한 뒤 임무 후보 필드, 부품·시험 주문형번·제조사 후보, 시험 사건별 필수값 후보를 교차 대조한다. 실제 HTTP에서 `CANDIDATES_LINKED_FOR_REVIEW · EXACT_TEXT_MATCH · TID · HOLD`를 확인했고 원문은 임시 디렉터리에서만 처리했다. 권한 미확인 요청은 브라우저 전송 전과 API 본문 해석 전에 `403 · RIGHTS_PROCESS_LOCAL_UNRESOLVED · HOLD`로 차단한다. 이 경로는 승인 manifest·권리 이력·Mission Case 결속을 대신하지 않는다.
+
+- H43은 사용자가 입력한 기대 문자열만 찾던 identity 경계를 보완했다. `Manufacturer:`와 `Orderable part number:`처럼 라벨이 붙은 문서 선언값을 원문 span에 결속해 추출하므로, 시험 문서가 다른 부품번호를 명시하면 누락이 아니라 `CANDIDATE_CONFLICT`로 표시한다. 기대 부품·제조사 partial check도 후보 필드 존재 여부가 아니라 실제 문자열 일치로 판정한다.
 
 - 2026-08-25 H40에서 “필수 입력 누락 → 이후 검사 전부 중단” 결함을 수정했다. 확인 가능한 수치는 계속 검사하고 확인·불일치·추가 입력 필요를 별도 ledger로 반환한다. 실제 NASA Micron 요약 + 잘못된 23LC1024 입력에서 `3 확인 · 2 불일치 · 2 추가 입력 필요`, 부품·시험 근거 검토 단계의 최종 보류를 브라우저로 재현했다. 로컬 `pypdf/TXT`는 독립 Agent가 아니므로 `DOCUMENT_PARSER_AGENT`를 제거해 `LOCAL_DOCUMENT_GATE`로 정정했다.
 

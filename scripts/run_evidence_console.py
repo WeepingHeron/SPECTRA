@@ -12,6 +12,8 @@ Uploaded bytes are processed in a temporary directory and are not persisted.
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
 import hashlib
 import json
 import os
@@ -42,8 +44,12 @@ def _add_bundled_pdf_packages() -> None:
 
 _add_bundled_pdf_packages()
 
-from intake_local_document_candidate import MAX_BYTES, intake_document
-from spectra_document_adapter import adapt_mission_package
+from intake_local_document_candidate import (
+    MAX_BYTES,
+    fail_closed_receipt,
+    intake_document,
+)
+from spectra_document_adapter import adapt_mission_package, evaluate_candidate_bundle
 from spectra_sim import synthesize_mission_case
 from spectra_value_proof import classify_review_impact, source_sha256
 
@@ -58,6 +64,8 @@ ALLOWED_SUFFIXES = frozenset({".pdf", ".txt"})
 SYNTHETIC_MODEL = REPO_ROOT / "simulation/config/synthetic-model.json"
 MISSION_PACKAGE_DIR = REPO_ROOT / "demo/data/mission-package"
 MISSION_EVENTS = ("TID", "SEU", "SEL", "SEB", "SEGR")
+UPLOAD_BUNDLE_ROLES = ("MISSION_CONDITIONS", "PART_SPEC", "RADIATION_TEST")
+MAX_BUNDLE_REQUEST_BYTES = MAX_BYTES * 4
 MISSION_IDENTITY_FIELDS = (
     "manufacturer",
     "orderable_part_number",
@@ -157,28 +165,31 @@ def local_intake_events(
         )
         return
 
-    yield _event(
-        sequence,
-        run_id,
-        "DOCUMENT_PARSER",
-        "parser.started",
-        "RUNNING",
-        "PDF/TXT 텍스트와 원문 지문을 추출합니다.",
-        suffix=suffix,
-        raw_path_exposed=False,
-        raw_text_exposed=False,
-    )
-    sequence += 1
-
-    with tempfile.TemporaryDirectory(prefix="spectra-console-") as directory:
-        document = Path(directory) / ("document" + suffix)
-        document.write_bytes(content)
-        receipt = intake_document(
-            document,
-            expected_part=expected_part,
-            manufacturer=manufacturer,
-            local_review_rights_confirmed=local_review_rights_confirmed,
+    if local_review_rights_confirmed:
+        yield _event(
+            sequence,
+            run_id,
+            "DOCUMENT_PARSER",
+            "parser.started",
+            "RUNNING",
+            "PDF/TXT 텍스트와 원문 지문을 추출합니다.",
+            suffix=suffix,
+            raw_path_exposed=False,
+            raw_text_exposed=False,
         )
+        sequence += 1
+
+        with tempfile.TemporaryDirectory(prefix="spectra-console-") as directory:
+            document = Path(directory) / ("document" + suffix)
+            document.write_bytes(content)
+            receipt = intake_document(
+                document,
+                expected_part=expected_part,
+                manufacturer=manufacturer,
+                local_review_rights_confirmed=True,
+            )
+    else:
+        receipt = fail_closed_receipt("RIGHTS_PROCESS_LOCAL_UNRESOLVED")
 
     source = receipt.get("source", {})
     yield _event(
@@ -187,7 +198,11 @@ def local_intake_events(
         "DOCUMENT_PARSER",
         "parser.completed",
         receipt["processing_status"],
-        "파서가 판단에 바로 사용할 수 없는 추출 후보 기록을 생성했습니다.",
+        (
+            "파서가 판단에 바로 사용할 수 없는 추출 후보 기록을 생성했습니다."
+            if local_review_rights_confirmed
+            else "처리 권리가 확인되지 않아 텍스트 추출 전에 중단했습니다."
+        ),
         extraction_status=receipt["extraction_status"],
         extraction_engine=source.get("extraction_engine"),
         page_count=source.get("page_count"),
@@ -216,6 +231,36 @@ def local_intake_events(
 
     summary = receipt["review_summary"]
     ledger = receipt["partial_evaluation"]
+    linkage = receipt.get("evidence_candidate_linkage", {})
+    if linkage["event_group_count"]:
+        yield _event(
+            sequence,
+            run_id,
+            "PARTS_REVIEW",
+            "evidence_candidates.grouped",
+            (
+                "VALID"
+                if linkage["incomplete_event_group_count"] == 0
+                else "NOT_EVALUATED"
+            ),
+            (
+                f"시험 사건 후보 {linkage['event_group_count']}개를 원문 줄별로 묶고 "
+                "사건별 필수값 충족 여부를 확인했습니다."
+            ),
+            linkage_status=linkage["linkage_status"],
+            event_groups=linkage["event_groups"],
+            complete_event_group_count=linkage["complete_event_group_count"],
+            incomplete_event_group_count=linkage["incomplete_event_group_count"],
+            link_rule=linkage["link_rule"],
+            next_gate=linkage["next_gate"],
+            detail=(
+                f"필수값 후보 충족 {linkage['complete_event_group_count']}개 · "
+                f"추가 입력 필요 {linkage['incomplete_event_group_count']}개 · 보수적 원문 연결"
+            ),
+            used_for_decision=False,
+            assurance_decision="HOLD",
+        )
+        sequence += 1
     if receipt["processing_status"] == "VALID":
         for agent_role, stage in (
             ("MISSION_AGENT", "ENVIRONMENT_REVIEW"),
@@ -342,6 +387,183 @@ def local_intake_events(
         use_status="NOT_FOR_DECISION",
         assurance_decision="HOLD",
     )
+
+
+def evaluate_uploaded_candidate_bundle(
+    documents: list[dict[str, Any]],
+    *,
+    expected_part: str,
+    manufacturer: str | None,
+    local_review_rights_confirmed: bool,
+) -> dict[str, Any]:
+    """Inspect three explicitly assigned documents and cross-check candidates."""
+
+    by_role = {item["role"]: item for item in documents}
+    if set(by_role) != set(UPLOAD_BUNDLE_ROLES) or len(documents) != 3:
+        raise ValueError("DOCUMENT_ROLE_SET_INVALID")
+    receipts: dict[str, dict[str, Any]] = {}
+    with tempfile.TemporaryDirectory(prefix="spectra-bundle-") as directory:
+        for role in UPLOAD_BUNDLE_ROLES:
+            item = by_role[role]
+            suffix = Path(item["filename"]).suffix.lower()
+            if suffix not in ALLOWED_SUFFIXES:
+                raise ValueError("DOCUMENT_TYPE_UNSUPPORTED")
+            path = Path(directory) / f"{role.lower()}{suffix}"
+            path.write_bytes(item["content"])
+            receipts[role] = intake_document(
+                path,
+                expected_part="" if role == "MISSION_CONDITIONS" else expected_part,
+                manufacturer=None if role == "MISSION_CONDITIONS" else manufacturer,
+                local_review_rights_confirmed=local_review_rights_confirmed,
+            )
+
+    result = evaluate_candidate_bundle(receipts)
+    run_hash = hashlib.sha256(
+        "".join(
+            str(receipts[role].get("source", {}).get("content_sha256", ""))
+            for role in UPLOAD_BUNDLE_ROLES
+        ).encode("utf-8")
+    ).hexdigest()
+    run_id = f"bundle-{run_hash[:16]}"
+    events: list[dict[str, Any]] = [
+        _event(
+            1,
+            run_id,
+            "INGEST",
+            "bundle.started",
+            "RUNNING",
+            "임무·부품·시험 문서 세 개를 하나의 후보 검토 묶음으로 접수했습니다.",
+            document_count=3,
+            decision_use=False,
+        )
+    ]
+    sequence = 2
+    role_labels = {
+        "MISSION_CONDITIONS": "임무 문서",
+        "PART_SPEC": "부품 문서",
+        "RADIATION_TEST": "시험 문서",
+    }
+    for role in UPLOAD_BUNDLE_ROLES:
+        receipt = receipts[role]
+        events.append(
+            _event(
+                sequence,
+                run_id,
+                "DOCUMENT_PARSER",
+                "bundle.document.checked",
+                receipt["processing_status"],
+                f"{role_labels[role]}에서 원문 위치에 결속된 후보를 검사했습니다.",
+                document_role=role,
+                candidate_count=receipt["candidate_count"],
+                content_sha256=receipt.get("source", {}).get("content_sha256"),
+                blocker_codes=receipt["blocker_codes"],
+                used_for_decision=False,
+            )
+        )
+        sequence += 1
+    questions = result["questions"]
+    identity = questions.get("part_test_identity", {})
+    events.append(
+        _event(
+            sequence,
+            run_id,
+            "PARTS_REVIEW",
+            "bundle.identity.checked",
+            "VALID" if identity.get("status") == "EXACT_TEXT_MATCH" else "NOT_EVALUATED",
+            "부품 문서와 시험 문서의 주문형번·제조사 후보를 서로 대조했습니다.",
+            identity_status=identity.get("status"),
+            fields=identity.get("fields", []),
+            used_for_decision=False,
+        )
+    )
+    sequence += 1
+    event_question = questions.get("event_evidence_candidates", {})
+    events.append(
+        _event(
+            sequence,
+            run_id,
+            "PARTS_REVIEW",
+            "bundle.events.checked",
+            (
+                "VALID"
+                if event_question.get("status") == "CANDIDATES_READY_FOR_REVIEW"
+                else "NOT_EVALUATED"
+            ),
+            "시험 문서의 사건별 필수값 후보와 누락 항목을 대조했습니다.",
+            event_status=event_question.get("status"),
+            complete_events=event_question.get("complete_events", []),
+            incomplete_events=event_question.get("incomplete_events", []),
+            used_for_decision=False,
+        )
+    )
+    sequence += 1
+    events.append(
+        _event(
+            sequence,
+            run_id,
+            "ASSURANCE",
+            "bundle.assurance.completed",
+            "HOLD",
+            "세 문서의 후보 대조 결과와 승인 결속의 누락을 함께 확인했습니다.",
+            bundle_status=result["bundle_status"],
+            next_gate=result["next_gate"],
+            assurance_decision="HOLD",
+        )
+    )
+    sequence += 1
+    decision_evidence = {
+        "processing_status": result["processing_status"],
+        "problem_location": "승인 manifest·권리·Mission Case 결속",
+        "blocking_reason": "문서 후보는 연결됐지만 승인된 근거 묶음으로 발행되지 않았습니다.",
+        "next_action": "검토된 세 원문의 hash와 권리·승인 정책을 manifest로 결속해 Mission Case에 제출합니다.",
+        "confirmed_facts": [
+            f"문서 입력: {questions.get('document_intake', {}).get('status', 'BLOCKED')}",
+            f"부품·시험 식별 대조: {identity.get('status', 'MISSING')}",
+            "사건별 필수값 후보: " + ", ".join(event_question.get("complete_events", [])),
+        ],
+        "validation_results": [
+            "확인 완료 · 임무 조건 검토 역할 · 임무 후보 필드 · "
+            + ", ".join(questions.get("mission_context", {}).get("present_fields", [])),
+            "확인 완료 · 부품·시험 근거 검토 역할 · 부품·시험 식별 대조 · "
+            + identity.get("status", "MISSING"),
+            "추가 입력 필요 · 최종 보류 검토 역할 · 승인 manifest·권리·Mission Case 결속",
+        ],
+        "validated_check_count": result["validated_check_count"],
+        "failed_check_count": result["failed_check_count"],
+        "not_evaluated_check_count": result["not_evaluated_check_count"],
+        "hold_agent": "ASSURANCE_AGENT",
+        "approval_status": "NOT_EVALUATED",
+        "use_status": "NOT_FOR_DECISION",
+        "assurance_decision": "HOLD",
+        "used_for_decision": False,
+    }
+    events.append(
+        _event(
+            sequence,
+            run_id,
+            "DECISION",
+            "decision.completed",
+            "HOLD",
+            "세 문서의 확인 가능한 후보를 연결했고 최종 판단은 보류했습니다.",
+            **decision_evidence,
+        )
+    )
+    return {
+        "boundary": {
+            "live": True,
+            "source_document_count": 3,
+            "raw_documents_persisted": False,
+            "candidate_only": True,
+            "assurance_decision": "HOLD",
+        },
+        "events": events,
+        "result": result,
+        "summary": {
+            **decision_evidence,
+            "headline": events[-1]["message"],
+            "decision": "후보 연결 · 최종 판단 보류",
+        },
+    }
 
 
 def _synthetic_identity() -> dict[str, str]:
@@ -647,14 +869,28 @@ class EvidenceConsoleHandler(SimpleHTTPRequestHandler):
 
     def do_POST(self) -> None:
         parsed = urllib.parse.urlparse(self.path)
-        if parsed.path != "/api/intake":
+        if parsed.path not in {"/api/intake", "/api/candidate-bundle"}:
             self._send_json(404, {"status": "NOT_FOUND"})
             return
+        if parsed.path == "/api/intake":
+            query = urllib.parse.parse_qs(parsed.query)
+            rights = query.get("confirm_local_review_rights", ["false"])[0] == "true"
+            if not rights:
+                self._send_json(
+                    403,
+                    {
+                        "status": "PROVENANCE_FAILURE",
+                        "stable_code": "RIGHTS_PROCESS_LOCAL_UNRESOLVED",
+                        "assurance_decision": "HOLD",
+                    },
+                )
+                return
         try:
             length = int(self.headers.get("Content-Length", "0"))
         except ValueError:
             length = 0
-        if length <= 0 or length > MAX_BYTES:
+        limit = MAX_BUNDLE_REQUEST_BYTES if parsed.path == "/api/candidate-bundle" else MAX_BYTES
+        if length <= 0 or length > limit:
             self._send_json(
                 413,
                 {
@@ -663,6 +899,95 @@ class EvidenceConsoleHandler(SimpleHTTPRequestHandler):
                     "assurance_decision": "HOLD",
                 },
             )
+            return
+        if parsed.path == "/api/candidate-bundle":
+            try:
+                request = json.loads(self.rfile.read(length).decode("utf-8"))
+                if not isinstance(request, dict) or set(request) != {
+                    "documents",
+                    "expected_part",
+                    "manufacturer",
+                    "confirm_local_review_rights",
+                }:
+                    raise ValueError("BUNDLE_INPUT_SHAPE_INVALID")
+                expected_part = request["expected_part"]
+                manufacturer = request["manufacturer"]
+                rights = request["confirm_local_review_rights"]
+                raw_documents = request["documents"]
+                if (
+                    not isinstance(expected_part, str)
+                    or not expected_part.strip()
+                    or len(expected_part) > 120
+                    or not isinstance(manufacturer, str)
+                    or len(manufacturer) > 120
+                    or not isinstance(rights, bool)
+                    or not isinstance(raw_documents, list)
+                    or len(raw_documents) != 3
+                ):
+                    raise ValueError("BUNDLE_INPUT_INVALID")
+                if not rights:
+                    self._send_json(
+                        403,
+                        {
+                            "status": "PROVENANCE_FAILURE",
+                            "stable_code": "RIGHTS_PROCESS_LOCAL_UNRESOLVED",
+                            "assurance_decision": "HOLD",
+                        },
+                    )
+                    return
+                documents = []
+                for raw_document in raw_documents:
+                    if not isinstance(raw_document, dict) or set(raw_document) != {
+                        "role",
+                        "filename",
+                        "content_base64",
+                    }:
+                        raise ValueError("BUNDLE_DOCUMENT_SHAPE_INVALID")
+                    role = raw_document["role"]
+                    filename = raw_document["filename"]
+                    encoded = raw_document["content_base64"]
+                    if (
+                        role not in UPLOAD_BUNDLE_ROLES
+                        or not isinstance(filename, str)
+                        or not filename
+                        or len(filename) > 180
+                        or not isinstance(encoded, str)
+                    ):
+                        raise ValueError("BUNDLE_DOCUMENT_INVALID")
+                    content = base64.b64decode(encoded, validate=True)
+                    if not content or len(content) > MAX_BYTES:
+                        raise ValueError("DOCUMENT_SIZE_OUT_OF_RANGE")
+                    documents.append(
+                        {
+                            "role": role,
+                            "filename": Path(filename).name,
+                            "content": content,
+                        }
+                    )
+                payload = evaluate_uploaded_candidate_bundle(
+                    documents,
+                    expected_part=expected_part.strip(),
+                    manufacturer=manufacturer.strip() or None,
+                    local_review_rights_confirmed=rights,
+                )
+            except (
+                UnicodeDecodeError,
+                binascii.Error,
+                json.JSONDecodeError,
+                KeyError,
+                TypeError,
+                ValueError,
+            ):
+                self._send_json(
+                    400,
+                    {
+                        "status": "INVALID_INPUT",
+                        "stable_code": "CANDIDATE_BUNDLE_INPUT_INVALID",
+                        "assurance_decision": "HOLD",
+                    },
+                )
+                return
+            self._send_json(200, payload)
             return
         params = urllib.parse.parse_qs(parsed.query)
         expected_part = params.get("expected_part", [""])[0].strip()

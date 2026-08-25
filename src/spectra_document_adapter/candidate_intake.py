@@ -38,6 +38,7 @@ CANDIDATE_FIELDS = frozenset(
         "PARTICLE_ENERGY",
         "TEST_TEMPERATURE",
         "SAMPLE_SIZE",
+        "OBSERVED_EVENT_COUNT",
         "LOT_DATE_CODE",
         "SUPPLY_VOLTAGE",
         "MISSION_NAME",
