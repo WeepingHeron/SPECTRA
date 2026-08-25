@@ -6,7 +6,7 @@
 
 ## Public Presentation Console on Cloud Run — 2026-08-25
 
-- `spectra-demo-console` revision `00011-fnh`, image digest `sha256:65e0017431ee64eb6b4ae6de1c4fda329a68e85663a6207100122521933c19b0`가 `asia-northeast3`에서 공개 URL `https://spectra-demo-console-mwmfe3da5q-du.a.run.app`의 100% traffic을 처리한다. 직접 3문서 후보 연결·검토 패킷·권한 선차단·결과 요약 보완과 H05 대표 범위 표기를 포함하며, 발표 자료와 Evidence Console을 2026-08-27까지 서버 수동 실행 없이 사용하는 임시 공개 배포다.
+- `spectra-demo-console` revision `00013-8vp`, image digest `sha256:6795cee26bbc1a498531ef2766c9aceb116744588e7c3cb47cb2a2234c98b0d1`가 `asia-northeast3`에서 공개 URL `https://spectra-demo-console-mwmfe3da5q-du.a.run.app`의 100% traffic을 처리한다. 문서 검사의 기본 정보와 사건별 요구자료를 분리하고, 세 입력 연결 결과를 `근거 연결 · TID·SEU 계산 · 최종 적용성 관문` 세 카드로 정리했으며 HTML은 `Cache-Control: no-store`로 제공한다. 발표 자료와 Evidence Console을 2026-08-27까지 서버 수동 실행 없이 사용하는 임시 공개 배포다.
 - 실행 계정은 별도 최소권한 `spectra-demo-console@iceu-686.iam.gserviceaccount.com`이다. 실제 revision 설정은 min instance 0, max instance 100, concurrency 20, timeout 120초, CPU 1, memory 512Mi다. 기존 Mission·Parts·Assurance Cloud Run은 계속 비공개이고 이 서비스에서 새 Agent 실행을 호출하지 않는다.
 - 공개 문서 검사는 PDF/TXT를 Cloud Run 인스턴스 임시 디렉터리에서 처리 후 삭제하고 GCS에 저장하지 않는다. 화면도 클라우드 전송 사실을 명시한다. 공격 검증 화면은 H05 저장 snapshot만 읽으며 live GCP 공격 실행이 아니다.
 - 최종 health는 `CLOUD_RUN / READY / gcp_agent_live=false`, public invoker는 demo service에만 `allUsers`로 확인했다. 공개 공격 endpoint는 Workflows·Storage 쓰기 권한, 반복 호출 비용·로그 오염과 service account 권한 확대 위험 때문에 만들지 않았다. 2026-08-27 행사 후 `platform/demo-console/README.md`의 삭제 명령으로 서비스를 회수한다.

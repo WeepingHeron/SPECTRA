@@ -10,7 +10,7 @@
 - 기존 7분본은 사용자 구두 리허설에서 충분한 것으로 확인됐다. 새 10분본은 같은 서사를 늘어뜨리지 않고 COTS 검토의 세 질문, 근거 연결 규칙, GCP 역할 분리와 무결성 설계를 더 설명한다. 사람 10분 전체 실측은 `NOT_MEASURED`다.
 - 직접 선택한 임무·부품·시험 문서의 대조가 끝나면 `CANDIDATE_REVIEW_PACKET_1.0.0` JSON을 내려받을 수 있다. 패킷은 역할별 원문 SHA-256, 임무 필드, 부품·시험 식별 대조, 사건별 필수값 충족·누락, 보류 이유와 다음 행동을 담고 원문·파일명·로컬 경로를 제외한다.
 - 패킷은 `CANDIDATE_REVIEW_ONLY / NOT_FOR_DECISION / HOLD`이며 승인서가 아니다. 생성 시각을 넣지 않고 정규화 JSON의 SHA-256을 계산해 같은 입력·같은 규칙이면 같은 패킷을 재현한다.
-- 전체 unit 451개와 Assurance 공격 실행 47개, schema 17종·invalid fixture 116건을 통과했다. Cloud Run revision `spectra-demo-console-00011-fnh`, image `20260826-final`(`sha256:65e0017431ee64eb6b4ae6de1c4fda329a68e85663a6207100122521933c19b0`)에 100% traffic으로 배포하고 공개 API에서 `CANDIDATES_LINKED_FOR_REVIEW / EXACT_TEXT_MATCH / TID / HOLD` 패킷을 확인했다.
+- 전체 unit 451개와 Assurance 공격 실행 47개, schema 17종·invalid fixture 116건을 통과했다. 이후 결과 정보 구조 직접 회귀 28개와 1280×720 브라우저 검증을 추가로 통과했다. Cloud Run revision `spectra-demo-console-00013-8vp`, image `20260826-three-review-gates-v2`(`sha256:6795cee26bbc1a498531ef2766c9aceb116744588e7c3cb47cb2a2234c98b0d1`)에 100% traffic으로 배포하고 공개 API와 화면에서 세 필수 결과 카드를 확인했다.
 - 공개 Console 1280×720에서 body overflow 0, 패킷 다운로드 버튼 존재·초기 숨김, 네 메뉴 정렬과 warning/error 0건을 확인했다.
 
 ## Final Slide 08 & Public Console QA — 2026-08-25

@@ -1,5 +1,7 @@
 # 80 Product & Dashboard — Current
 
+2026-08-26 문서 검사 결과에서 기본 정보 확인과 TID·SEU·SEL·SEB·SEGR 사건별 요구자료를 별도 영역으로 분리했다. 세 입력 연결은 `근거 연결 · TID·SEU 계산 · 최종 적용성 관문` 세 카드만 우선 표시하며, raw unsupported code 대신 마지막 검토 관문을 자연어로 설명한다. 직접 회귀 28개, JavaScript syntax, 1280×720 overflow 0과 공개 브라우저 warning/error 0을 확인했고 Cloud Run revision `00013-8vp`에 100% 배포했다.
+
 ## 상태
 
 `VERIFIED — H44 Candidate Review Packet; actual evidence and assurance remain HOLD`

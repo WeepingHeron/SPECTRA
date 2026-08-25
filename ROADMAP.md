@@ -45,7 +45,7 @@
    - `spectra-demo-console` Cloud Run에 발표·문서 검사·임무·부품·시험 연결·저장된 공격 검증·문서별 결과표 배포
    - 문서 검사는 live 실행, 임무·부품·시험 연결은 고정 합성 입력의 production Core live 실행, 공격 검증은 저장 snapshot, 문서별 결과표는 공개 카탈로그 live read로 구분
 5. **최종 검증 — 완료**
-   - unit 449개·Assurance 공격 47개, 공개 URL 1280×720 발표·Console QA, 문서 정합성 및 revision `00010-2w9` 확인
+   - unit 451개·Assurance 공격 47개 통합 기준선과 결과 정보 구조 직접 회귀 28개, 공개 URL 1280×720 발표·Console QA, 문서 정합성 및 revision `00013-8vp` 확인
    - 기존 7분본 구두 리허설은 완료; 사람 10분 낭독·탭 전환 리허설 2회는 `NOT_MEASURED`로 별도 유지
 
 ## 오늘 과감히 제외

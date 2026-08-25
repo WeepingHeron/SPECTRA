@@ -68,6 +68,7 @@
 - [x] 공개 revision `spectra-demo-console-00009-zpm`에서 deck 11장, Cloud Run PDF, 승인·권리 바인딩 Mission Case, 직접 3문서 후보 연결, 변경 영향, 저장 공격 기록, 공개 catalog를 브라우저에서 preflight
 - [x] 공개 revision `spectra-demo-console-00010-2w9`에서 검토 패킷 API·다운로드 버튼·1280×720 overflow 0·warning/error 0 확인
 - [x] 결과표 가독성·Mission Case 신뢰 바인딩 개선본 Cloud Run 재배포 — 1280×720 deck overflow 0, 네 메뉴 고정, 15개 문서 결과표·감사 기록, 브라우저 warning/error 0 확인
+- [x] 문서 검사의 기본 정보·사건별 요구자료를 분리하고 세 입력 연결을 `근거 연결 · TID·SEU 계산 · 최종 적용성 관문` 세 카드로 정리; Cloud Run `00013-8vp` 100% 배포와 HTML `no-store` 확인
 - [ ] 사람 10분 발표·탭 전환 리허설 2회 측정: 목표 9분 30초~9분 50초, 최대 10분, Cloud Run PDF → Mission Case 2회 → 저장 공격 기록 → Closing 포함 — 기존 7분본은 구두 리허설, 10분본 실측은 `NOT_MEASURED`
 - [x] 시연 실패 fallback 확정: 새 값을 만들지 않고 저장 화면 또는 말로 `HOLD · 이유 · 다음 행동`만 설명
 

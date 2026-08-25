@@ -186,6 +186,8 @@ class EvidenceConsoleTests(unittest.TestCase):
         self.assertIn('os.environ.get("HOST", "127.0.0.1")', self.server_source)
         self.assertIn("ThreadingHTTPServer((args.host, args.port)", self.server_source)
         self.assertIn("_add_bundled_pdf_packages()", self.server_source)
+        self.assertIn('if path.endswith(".html")', self.server_source)
+        self.assertIn('self.send_header("Cache-Control", "no-store")', self.server_source)
         self.assertNotIn("os.exec", self.server_source)
 
     def test_console_summary_uses_confirmed_facts_when_cards_are_absent(self) -> None:
@@ -216,8 +218,12 @@ class EvidenceConsoleTests(unittest.TestCase):
         self.assertEqual(len(payload["events"]), 6)
         self.assertEqual(
             payload["summary"]["headline"],
-            "원문·부품·사건 근거 대조 완료\n시험 조건 적용성 판단 보류",
+            "근거 연결·계산 완료\n최종 적용성 검토 대기",
         )
+        self.assertEqual(len(payload["summary"]["validation_results"]), 3)
+        self.assertIn("근거 연결", payload["summary"]["validation_results"][0])
+        self.assertIn("TID·SEU 계산", payload["summary"]["validation_results"][1])
+        self.assertIn("최종 적용성 관문", payload["summary"]["validation_results"][2])
         self.assertEqual(payload["adapter_receipt"]["document_count"], 3)
         self.assertTrue(
             all(

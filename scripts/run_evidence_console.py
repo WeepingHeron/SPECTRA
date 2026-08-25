@@ -632,8 +632,8 @@ def load_mission_case_demo() -> dict[str, Any]:
         _event(2, "mission-case-demo", "EXACT IDENTITY", "identity.completed", identity["status"], "승인 부품과 각 시험품의 정확한 식별 정보를 비교했습니다.", detail="manufacturer · orderable PN · package · process · die · lot 모두 일치"),
         _event(3, "mission-case-demo", "TID / SEU", "bounded_calculation.completed", "VALID", "기존 결정론적 Core로 TID 시험 범위와 SEU 예상 사건 수를 계산했습니다.", detail=f"TID {calculations['TID']['status']} · SEU {calculations['SEU']['raw_events_per_mission']:.6f} events/mission (SYNTHETIC)"),
         _event(4, "mission-case-demo", "EVENT RECORDS", "coverage.completed", coverage["status"], "사건별 시험기록의 필수 값과 출처 위치를 서로 합치거나 대체하지 않고 검사했습니다.", detail="TID limit · SEU cross-section · SEL/SEB/SEGR fluence·sample·observed events · 5/5"),
-        _event(5, "mission-case-demo", "APPLICABILITY", "applicability.blocked", applicability["status"], "현재 모델로 비교할 수 없는 시험 조건과 파괴성 SEE 적용성을 추정하지 않았습니다.", blocker_codes=applicability["blocker_codes"]),
-        _event(6, "mission-case-demo", "DECISION", "decision.completed", "HOLD", "근거 연결은 완료됐지만 현재 임무에 쓸 수 있다는 판단은 보류했습니다.", stable_code="MISSION_TEST_APPLICABILITY_NOT_EVALUATED"),
+        _event(5, "mission-case-demo", "APPLICABILITY", "applicability.blocked", applicability["status"], "시험 조건의 임무 적용성을 최종 관문으로 분리했습니다.", detail="입자 환경·시험 조건·파괴성 SEE 적용성 검토", blocker_codes=applicability["blocker_codes"]),
+        _event(6, "mission-case-demo", "DECISION", "decision.completed", "HOLD", "근거 연결과 계산을 마치고 최종 적용성 검토를 기다립니다.", stable_code="MISSION_TEST_APPLICABILITY_NOT_EVALUATED"),
     ]
     return {
         "boundary": {
@@ -646,7 +646,7 @@ def load_mission_case_demo() -> dict[str, Any]:
         },
         "events": events,
         "summary": {
-            "headline": "원문·부품·사건 근거 대조 완료\n시험 조건 적용성 판단 보류",
+            "headline": "근거 연결·계산 완료\n최종 적용성 검토 대기",
             "decision": "VALID · NOT_EVALUATED · HOLD",
             "problem_location": "Mission Case · 시험 조건 적용성",
             "confirmed_facts": [
@@ -656,8 +656,13 @@ def load_mission_case_demo() -> dict[str, Any]:
                 "TID·SEU는 기존 결정론적 Core 계산을 재사용했습니다.",
                 "TID·SEU·SEL·SEB·SEGR 시험기록의 필수 값과 출처 위치를 5/5로 검증·연결했습니다.",
             ],
-            "blocking_reason": "입자종·에너지·LET·fluence·온도·bias와 파괴성 SEE 적용성을 현재 모델이 비교하지 못합니다.",
-            "next_action": "시험 조건과 파괴성 SEE 적용성을 독립 검토하고, 지원 모델이 없으면 HOLD를 유지합니다.",
+            "validation_results": [
+                "확인 완료 · 검토 결과 · 근거 연결 · 원문 3개·정확한 부품·사건별 시험기록을 출처 위치와 함께 연결했습니다.",
+                f"확인 완료 · 검토 결과 · TID·SEU 계산 · TID 시험 범위 확인 · SEU {calculations['SEU']['raw_events_per_mission']:.6f} events/mission (합성)",
+                "추가 검토 · 검토 결과 · 최종 적용성 관문 · 입자 환경과 시험 조건을 대조한 뒤 현재 임무 적용 여부를 판단합니다.",
+            ],
+            "blocking_reason": "입자 환경과 시험 조건의 최종 대조가 남았습니다.",
+            "next_action": "시험 조건의 임무 적용성을 검토해 최종 판단을 확정합니다.",
         },
         "adapter_receipt": {
             key: value for key, value in adapter.items() if key != "mission_case"
@@ -803,9 +808,13 @@ class EvidenceConsoleHandler(SimpleHTTPRequestHandler):
     server_version = "SPECTRAEvidenceConsole/1.0"
 
     def end_headers(self) -> None:
+        path = urllib.parse.urlparse(self.path).path
+        if path.endswith(".html") or path in {"/", "/demo/"}:
+            self.send_header("Cache-Control", "no-store")
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
         self.send_header("X-Frame-Options", "SAMEORIGIN")
+        self.send_header("X-Content-Type-Options", "nosniff")
         super().end_headers()
 
     def _send_json(self, status: int, value: Any) -> None:
