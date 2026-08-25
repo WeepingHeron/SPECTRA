@@ -21,6 +21,7 @@
 - [x] 라벨이 붙은 제조사·주문형번 값을 원문에서 직접 추출해 입력한 기대값과 문서 선언값, 부품 문서와 시험 문서 사이의 명시적 불일치를 `CANDIDATE_CONFLICT / HOLD`로 반환
 - [x] 문서의 TID·SEU·SEL·SEB·SEGR 사건 후보와 같은 원문 줄의 필수 수치를 보수적으로 묶고, 문서 내 TID dose가 정확히 하나일 때만 TID 후보에 연결하며, 사건별 충족·누락 필드와 다음 승인 BOM·Mission Case 연결 Gate를 별도 receipt로 반환
 - [x] 사용자가 역할을 지정한 임무·부품·시험 문서 3개를 한 요청에서 각각 검사하고, 부품·시험 식별 후보와 사건별 필수값 후보를 교차 대조하는 `THREE_DOCUMENT_CANDIDATE_BUNDLE_1.0.0` 경로 구현; 원문은 임시 처리 후 삭제하며 승인 결속 전까지 HOLD. 처리 권리 미확인 시 브라우저 전송 전·API 본문 해석 전에 차단
+- [x] 세 문서 결과를 `CANDIDATE_REVIEW_PACKET_1.0.0` JSON으로 내려받기: 역할별 문서 SHA-256·식별 대조·사건별 충족/누락·보류 이유·다음 행동을 포함하고 원문·파일명·로컬 경로는 제외; 같은 입력은 같은 패킷 해시 반환
 - [x] NASA·ESA 공개 관측값 3종을 출처 URL이 있는 `PUBLISHED SOURCE SUMMARY` 수동 fixture로 추가하고 실제값도 최종 HOLD 유지
 - [x] 한글 수동 fixture 파일명을 URL 인코딩해 브라우저 요청 전 `LOCAL_CONSOLE_UNAVAILABLE`로 실패하던 경로 수정
 
@@ -40,13 +41,15 @@
 
 - [x] GCP 구조 뒤에 공격 방어·신뢰성 슬라이드 1장 추가
 - [x] Slide 09는 공격 횟수 카운터를 제거하고 Schema·Core·Identity·Hash·Fail-Closed·배포 격리의 시스템 조치에 집중
-- [x] 로드맵을 실제 제출·발표에서 제거하고 비즈니스 근거를 추가한 `Cover + 01~09 + Closing`, 총 11장과 7분 대본을 동기화
+- [x] 로드맵을 실제 제출·발표에서 제거하고 비즈니스 근거를 추가한 `Cover + 01~09 + Closing`, 총 11장과 10분 대본을 동기화
 - [x] 공개 Cloud Run 1280×720 제출 deck 11장 전체 x/y overflow 0
 - [x] 새 발표 deck 탭에서 console warning/error 0 확인; Console 자동화 주입 `MutationObserver` 오류는 앱 소스에 해당 API가 없어 별도 도구 잡음으로 분리
 - [x] Evidence Console 핵심 동선 smoke test
 - [x] 공개 Cloud Run `spectra-demo-console` 배포: 발표 자료·문서 검사·임무·부품·시험 연결·저장된 공격 검증·문서별 결과표를 서버 실행 없이 접근
 - [x] Cloud Run 전용 최소권한 service account, 실제 revision 설정(min 0/max 100·concurrency 20·timeout 120초), 업로드 임시 처리 후 삭제·GCS 미저장 문구와 동작 정렬
 - [x] 공개 URL에서 합성 PDF `확인 2 / 불일치 0 / 추가 입력 1`, Mission Case, 저장 공격 2건, 공개 카탈로그·감사로그 브라우저 검증
+- [x] 최신 제출본 5인 audit 완료: 평균 `85.4/100`, 전원 `CONDITIONAL GO`
+- [x] audit 즉시 수정: 결과 카드 빈 상태 오류 제거, H05 대표 3건 범위 표기, 시험비용 범위 통일
 - [x] Evidence Console 1280×720 첫 화면에 `HOLD · 중단 위치 · 7 / 7의 제한된 의미 · 다음 행동`이 스크롤 없이 함께 보이도록 정리
 - [x] GCP Logs를 정상 실행·body hash 위조·endpoint override별로 구분하고, 각 실행의 run ID와 저장 snapshot에 존재하는 정상 correlation ID, 최종 `HOLD`를 화면만으로 추적 가능하게 표시; 공격 correlation은 근거에 없음을 그대로 표시
 - [x] GCP Logs 화면에 `ENDPOINT_OVERRIDE_FORBIDDEN · Agent 호출 0회` 근거 표시
@@ -63,8 +66,9 @@
 - [x] 실제 NASA Micron 요약 + 잘못된 23LC1024 입력으로 `3개 확인 · 2개 불일치 · 2개 추가 입력 필요 · 부품·시험 근거 검토 역할에서 보류` 재현
 - [x] 공개 GCP Catalog 15개 행에 부분 확인 집계와 최초 보류 책임을 반영
 - [x] 공개 revision `spectra-demo-console-00009-zpm`에서 deck 11장, Cloud Run PDF, 승인·권리 바인딩 Mission Case, 직접 3문서 후보 연결, 변경 영향, 저장 공격 기록, 공개 catalog를 브라우저에서 preflight
+- [x] 공개 revision `spectra-demo-console-00010-2w9`에서 검토 패킷 API·다운로드 버튼·1280×720 overflow 0·warning/error 0 확인
 - [x] 결과표 가독성·Mission Case 신뢰 바인딩 개선본 Cloud Run 재배포 — 1280×720 deck overflow 0, 네 메뉴 고정, 15개 문서 결과표·감사 기록, 브라우저 warning/error 0 확인
-- [ ] 사람 7분 발표·탭 전환 리허설 2회 측정: 중앙값 6분 30초 이하, 최대 7분, Cloud Run PDF → Mission Case 2회 → 저장 공격 기록 → Closing 포함 — 자동 클릭 동선과 시간 산술은 확인, 사람 낭독은 `NOT_MEASURED`
+- [ ] 사람 10분 발표·탭 전환 리허설 2회 측정: 목표 9분 30초~9분 50초, 최대 10분, Cloud Run PDF → Mission Case 2회 → 저장 공격 기록 → Closing 포함 — 기존 7분본은 구두 리허설, 10분본 실측은 `NOT_MEASURED`
 - [x] 시연 실패 fallback 확정: 새 값을 만들지 않고 저장 화면 또는 말로 `HOLD · 이유 · 다음 행동`만 설명
 
 ## D. 메시지·비즈니스·책임 경계
@@ -87,10 +91,10 @@
 - [x] 과거 채팅/Workstream 진행 규칙을 현재 실행 기준에서 제거
 - [x] Stage 1·2·5 완료, Stage 3·4·8 제한 완료, Stage 6·7·9 오늘 활성으로 재분류
 - [x] Phase 01~03 bounded 완료와 외부 확장을 분리
-- [x] 최신 전체 자동 회귀: unit 447개와 Assurance 공격 실행 47개, failure·False PASS 0
+- [x] 최신 전체 자동 회귀: unit 451개와 Assurance 공격 실행 47개, failure·False PASS 0
 - [x] 비밀정보·private raw evidence·불필요한 생성물 Git 경계 확인
 - [x] 이전 제출 Release 체크포인트 commit·push (`516701c`, `origin/main`)
-- [x] 최신 11장 발표본·7분 대본·audit 후속 변경을 README·PROJECT_OVERVIEW·MVP·ROADMAP·CURRENT와 최종 동기화
+- [x] 최신 11장 발표본·10분 대본·audit 후속 변경을 README·PROJECT_OVERVIEW·MVP·ROADMAP·CURRENT와 동기화
 - [x] ASR-D02 historical H05 reconciliation이 최신 remediation manifest를 역사 증거에 잘못 요구하던 회귀 수정: H05 target을 보존하고 최신 target으로 재라벨하지 않음
 - [x] `git diff --check`, Python compile, 공개 catalog hash·fixture 정합성 재실행
 - [x] 발표·Evidence Console 핵심 브라우저 회귀: 공개 URL 1280×720 deck overflow 0, Cloud Run PDF·Mission Case·저장 공격·catalog 동선 정상
@@ -105,11 +109,11 @@
 2. [x] P0-2 · Slide 09 공격 횟수 블록 제거, 안정성 설계 조치 중심으로 정리
 3. [x] P0-3 · Evidence Console 720p 핵심 결론 가시성
 4. [x] P0-4 · 브라우저 제품 오류 분리와 최신 서버 preflight
-5. [ ] P0-5 · Cloud Run PDF → Mission Case 2회 → 저장 공격 기록 → Closing 자동 클릭 동선·fallback 완료; 사람 7분 낭독 리허설 2회만 남음
+5. [ ] P0-5 · Cloud Run PDF → Mission Case 2회 → 저장 공격 기록 → Closing 자동 클릭 동선·fallback 완료; 사람 10분 낭독 리허설 2회만 남음
 6. [x] P1-1 · 타깃 사용자 문제·비즈니스 가치 문장 정리, 허위 파일럿 주장 금지
 7. [x] P1-2 · reviewer/자동 승인 경계와 기술 용어 Q&A 정리
 8. [x] P1-3 · 문서 동기화·직접 테스트·최종 회귀
-9. [x] Release · 사용자 확인에 따라 현재 검증 단위를 commit·push; 사람 7분 리허설은 별도 미완료
+9. [x] Release · 사용자 확인에 따라 이전 검증 단위를 commit·push; 사람 10분 리허설은 별도 미완료
 
 ## 제출 후 Backlog — 오늘 Gate 아님
 

@@ -18,7 +18,7 @@
 | Stage 6 Assurance | `SUBMISSION_COMPLETE_WITH_LIMITS` | ASR-D02 control 1 + 공격 4 `PARTIAL_SAFE`; 나머지 12건은 제출 후 |
 | Stage 7 GCP | `COMPLETE — SYNTHETIC_BOUNDED` | 보완 revision·Core parity·LIVE_API receipt 재수집 완료 |
 | Stage 8 Product | `SUBMISSION_COMPLETE_WITH_LIMITS` | Cloud Run Console·부분 검증 ledger·공개 카탈로그·fallback 완료 |
-| Stage 9 발표·제출 | `RELEASE_VERIFIED_EXCEPT_HUMAN_REHEARSAL` | 11장·7분 대본·공개 발표 모드 Console·전체 회귀 완료; 사람 낭독 실측만 별도 미완료 |
+| Stage 9 발표·제출 | `RELEASE_VERIFIED_EXCEPT_HUMAN_REHEARSAL` | 11장·10분 대본·공개 발표 모드 Console 완료; 최신 회귀·사람 낭독 실측 별도 확인 중 |
 
 ## 발표 확장 Phase 01~03
 
@@ -45,8 +45,8 @@
    - `spectra-demo-console` Cloud Run에 발표·문서 검사·임무·부품·시험 연결·저장된 공격 검증·문서별 결과표 배포
    - 문서 검사는 live 실행, 임무·부품·시험 연결은 고정 합성 입력의 production Core live 실행, 공격 검증은 저장 snapshot, 문서별 결과표는 공개 카탈로그 live read로 구분
 5. **최종 검증 — 완료**
-   - 전체 자동 회귀, 공개 URL 1280×720 발표·Console QA, 문서 정합성 및 배포 revision 확인
-   - 사람 7분 낭독·탭 전환 리허설 2회는 `NOT_MEASURED`로 별도 유지
+   - unit 449개·Assurance 공격 47개, 공개 URL 1280×720 발표·Console QA, 문서 정합성 및 revision `00010-2w9` 확인
+   - 기존 7분본 구두 리허설은 완료; 사람 10분 낭독·탭 전환 리허설 2회는 `NOT_MEASURED`로 별도 유지
 
 ## 오늘 과감히 제외
 

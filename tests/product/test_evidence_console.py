@@ -188,6 +188,18 @@ class EvidenceConsoleTests(unittest.TestCase):
         self.assertIn("_add_bundled_pdf_packages()", self.server_source)
         self.assertNotIn("os.exec", self.server_source)
 
+    def test_console_summary_uses_confirmed_facts_when_cards_are_absent(self) -> None:
+        self.assertIn(
+            "expanded.confirmed_facts.map(value=>`확인 완료 · 검토 흐름 · ${value}`)",
+            self.html,
+        )
+        self.assertIn("holdAgent=expanded.hold_agent||decisionEvent?.agent_role", self.html)
+        self.assertNotIn('"확인된 항목이 없습니다."', self.html)
+
+    def test_console_labels_h05_as_representative_stored_scope(self) -> None:
+        self.assertIn("2026-08-20 H05 대표 기록", self.html)
+        self.assertIn("최신 보완 검증 5건은 별도 locked batch 기록", self.html)
+
     def test_mission_case_demo_runs_production_core_and_stays_hold(self) -> None:
         payload = load_mission_case_demo()
         result = payload["result"]
@@ -309,6 +321,9 @@ class EvidenceConsoleTests(unittest.TestCase):
             "event-card",
             "권한 확인 전에는 파일을 서버로 전송하지 않습니다.",
             "/api/candidate-bundle",
+            "검토 패킷 JSON 받기",
+            "spectra-candidate-review-packet.json",
+            "downloadReviewPacket",
         ):
             self.assertIn(required, self.html)
         self.assertIn("urllib.parse.unquote(encoded_filename)", self.server_source)

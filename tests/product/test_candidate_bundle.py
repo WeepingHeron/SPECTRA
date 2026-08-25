@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import pathlib
+import json
+import hashlib
 import sys
 import unittest
 
@@ -69,6 +71,29 @@ class CandidateBundleTests(unittest.TestCase):
         self.assertEqual(payload["events"][-1]["event"], "decision.completed")
         self.assertEqual(payload["events"][-1]["status"], "HOLD")
         self.assertFalse(payload["boundary"]["raw_documents_persisted"])
+        self.assertFalse(payload["boundary"]["review_packet_persisted"])
+        packet = payload["review_packet"]
+        self.assertEqual(packet["packet_class"], "CANDIDATE_REVIEW_ONLY")
+        self.assertEqual(len(packet["document_hashes"]), 3)
+        self.assertEqual(
+            packet["part_test_identity_review"]["status"],
+            "EXACT_TEXT_MATCH",
+        )
+        self.assertEqual(packet["event_evidence_review"]["complete_events"], ["TID"])
+        self.assertEqual(packet["final_review"]["assurance_decision"], "HOLD")
+        self.assertTrue(packet["review_packet_sha256"].startswith("sha256:"))
+        unsigned = dict(packet)
+        packet_hash = unsigned.pop("review_packet_sha256")
+        canonical = json.dumps(
+            unsigned,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        self.assertEqual(packet_hash, "sha256:" + hashlib.sha256(canonical).hexdigest())
+        serialized = json.dumps(packet).lower()
+        for forbidden in ("raw_text", "filename", "local_path"):
+            self.assertNotIn(f'"{forbidden}"', serialized)
 
     def test_conflicting_declared_test_identity_is_reported_not_inferred(self) -> None:
         payload = evaluate_uploaded_candidate_bundle(
@@ -89,6 +114,31 @@ class CandidateBundleTests(unittest.TestCase):
         self.assertEqual(part_number["test_candidates"], ["EX-200-B"])
         self.assertEqual(payload["result"]["bundle_status"], "CANDIDATE_CONFLICT")
         self.assertEqual(payload["result"]["assurance_decision"], "HOLD")
+        packet_identity = payload["review_packet"]["part_test_identity_review"]
+        self.assertEqual(packet_identity["status"], "CONFLICT")
+
+    def test_review_packet_is_deterministic_and_changes_with_source(self) -> None:
+        first = evaluate_uploaded_candidate_bundle(
+            documents(),
+            expected_part="EX-100-A",
+            manufacturer="Example Semiconductor",
+            local_review_rights_confirmed=True,
+        )["review_packet"]
+        second = evaluate_uploaded_candidate_bundle(
+            documents(),
+            expected_part="EX-100-A",
+            manufacturer="Example Semiconductor",
+            local_review_rights_confirmed=True,
+        )["review_packet"]
+        conflict = evaluate_uploaded_candidate_bundle(
+            documents("EX-200-B"),
+            expected_part="EX-100-A",
+            manufacturer="Example Semiconductor",
+            local_review_rights_confirmed=True,
+        )["review_packet"]
+
+        self.assertEqual(first, second)
+        self.assertNotEqual(first["review_packet_sha256"], conflict["review_packet_sha256"])
 
     def test_unconfirmed_rights_blocks_all_three_document_intakes(self) -> None:
         payload = evaluate_uploaded_candidate_bundle(

@@ -2,7 +2,13 @@
 
 ## 상태
 
-`VERIFIED — H42 Public Console; actual evidence and assurance remain HOLD`
+`VERIFIED — H44 Candidate Review Packet; actual evidence and assurance remain HOLD`
+
+## H44 Candidate Review Packet — 2026-08-26
+
+- 직접 선택한 임무·부품·시험 세 문서의 대조 결과를 `CANDIDATE_REVIEW_PACKET_1.0.0` JSON으로 내려받는다. 역할별 원문 SHA-256, 임무 필드 충족·누락, 부품·시험 식별 대조, 사건별 필수값과 원문 span, 보류 이유·다음 행동을 포함한다.
+- 패킷은 원문·파일명·로컬 경로를 포함하지 않으며 `CANDIDATE_REVIEW_ONLY / NOT_FOR_DECISION / HOLD`를 유지한다. 생성 시각을 제외한 canonical JSON SHA-256으로 같은 입력의 재현성을 확인한다.
+- unit 449개와 Assurance 공격 실행 47개가 통과했다. Cloud Run revision `spectra-demo-console-00010-2w9`에 100% 배포하고 공개 API와 1280×720 Console에서 패킷 계약·버튼·overflow 0·warning/error 0을 확인했다.
 
 ## H42 Final Public Console QA — 2026-08-25
 

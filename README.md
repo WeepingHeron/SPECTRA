@@ -8,7 +8,7 @@ SPECTRA는 위성 임무 조건, COTS 부품 증거, 방사선 계산과 완화 
 
 **`SUBMISSION RELEASE VERIFIED / CORE ASSURANCE HOLD`**
 
-오늘 18:00 제출의 기준은 장기 과학 MVP 완성이 아니라, 이미 구현한 확장 기능과 GCP Multi-Agent 데모를 사실에 맞게 고정하고 검증 가능한 제출물로 만드는 것이다.
+2026-08-25 제출 Release의 기준은 장기 과학 MVP 완성이 아니라, 구현한 확장 기능과 GCP Multi-Agent 데모를 사실에 맞게 고정하고 검증 가능한 제출물로 만드는 것이다.
 
 | 상태 | 범위 |
 |---|---|
@@ -23,6 +23,7 @@ SPECTRA는 위성 임무 조건, COTS 부품 증거, 방사선 계산과 완화 
 
 - 발표: `https://spectra-demo-console-mwmfe3da5q-du.a.run.app/demo/index.html`
 - 발표용 Evidence Console: `https://spectra-demo-console-mwmfe3da5q-du.a.run.app/demo/evidence-console.html?presentation=1`
+- 10분 발표·시연 대본: [`FINAL_PRESENTATION_SCRIPT_10MIN.md`](docs/workstreams/90-business-presentation/FINAL_PRESENTATION_SCRIPT_10MIN.md)
 - 로컬 fallback: `python3 scripts/run_evidence_console.py --port 8765`
 - 상태 기준: [`ROADMAP.md`](ROADMAP.md)
 - 제출 승인 Gate: [`CHECKLIST.md`](CHECKLIST.md)
@@ -52,7 +53,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/gcp_live -p 'tes
 - BOM 구매 수량은 identity·차폐·TID 적용성에서 제외한다. 장치 수가 필요한 총 SEU 분석에서만 별도 `analysis_device_count`를 사용한다.
 - False PASS 0은 명시된 평가 세트에만 적용하며 전체 침투시험이나 방사선 보증을 뜻하지 않는다.
 - `문서 검사`는 공개 Cloud Run에서 요청마다 실제 `pypdf/TXT` 규칙 기반 검사를 수행한다. `임무·부품·시험 연결`은 고정 합성 입력으로 production Core를 요청마다 실행한다.
-- 일반 Console에서는 사용자가 역할을 지정한 임무·부품·시험 문서 3개를 한 검토 묶음으로 직접 올릴 수 있다. 세 문서는 후보 식별 정보와 사건별 필수값을 교차 대조하지만, 승인 manifest와 Mission Case에 결속되기 전까지 `NOT_FOR_DECISION / HOLD`다. 파일 검사 권한을 확인하지 않으면 브라우저는 전송하지 않고 API도 본문 해석 전에 차단한다.
+- 일반 Console에서는 사용자가 역할을 지정한 임무·부품·시험 문서 3개를 한 검토 묶음으로 직접 올릴 수 있다. 세 문서는 후보 식별 정보와 사건별 필수값을 교차 대조하지만, 승인 manifest와 Mission Case에 결속되기 전까지 `NOT_FOR_DECISION / HOLD`다. 성공한 대조는 원문·파일명·로컬 경로 없이 문서 SHA-256, 식별 대조, 사건별 충족·누락, 보류 이유와 다음 행동을 담은 결정론적 검토 패킷 JSON으로 내려받을 수 있다. 파일 검사 권한을 확인하지 않으면 브라우저는 전송하지 않고 API도 본문 해석 전에 차단한다.
 - 문서 검사의 사건명은 언급만으로 시험 근거가 되지 않는다. 같은 원문 줄의 필수 수치 후보를 사건별로 묶고, TID dose는 문서에 정확히 하나일 때만 TID 후보에 연결한다. 여러 값이나 다른 사건의 수치는 추정하지 않으며 승인 BOM·Mission Case 대조 전까지 `NOT_FOR_DECISION / HOLD`를 유지한다.
 - 일반 Console의 `임무·부품·시험 연결`에서는 사용자가 역할별 문서 3개를 직접 선택할 수 있다. 각 문서를 독립 검사한 뒤 부품·시험 식별 후보와 사건별 필수값 후보를 교차 대조하지만, 승인 manifest·권리 이력·Mission Case 결속 전에는 후보 묶음만 반환한다.
 - `저장된 공격 검증`은 정상·body hash 위조·endpoint override의 독립 확인 저장본이며 새 Workflow를 실행하지 않는다. `문서별 결과표`는 공개 GCP 카탈로그를 live read하지만 각 문서 결과는 사전 계산·저장된 결과다.

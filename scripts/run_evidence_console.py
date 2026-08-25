@@ -49,7 +49,11 @@ from intake_local_document_candidate import (
     fail_closed_receipt,
     intake_document,
 )
-from spectra_document_adapter import adapt_mission_package, evaluate_candidate_bundle
+from spectra_document_adapter import (
+    adapt_mission_package,
+    build_candidate_review_packet,
+    evaluate_candidate_bundle,
+)
 from spectra_sim import synthesize_mission_case
 from spectra_value_proof import classify_review_impact, source_sha256
 
@@ -548,21 +552,25 @@ def evaluate_uploaded_candidate_bundle(
             **decision_evidence,
         )
     )
+    summary = {
+        **decision_evidence,
+        "headline": events[-1]["message"],
+        "decision": "후보 연결 · 최종 판단 보류",
+    }
+    review_packet = build_candidate_review_packet(result, summary)
     return {
         "boundary": {
             "live": True,
             "source_document_count": 3,
             "raw_documents_persisted": False,
             "candidate_only": True,
+            "review_packet_persisted": False,
             "assurance_decision": "HOLD",
         },
         "events": events,
         "result": result,
-        "summary": {
-            **decision_evidence,
-            "headline": events[-1]["message"],
-            "decision": "후보 연결 · 최종 판단 보류",
-        },
+        "summary": summary,
+        "review_packet": review_packet,
     }
 
 

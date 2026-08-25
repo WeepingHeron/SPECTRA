@@ -12,7 +12,7 @@
 
 ## 현재 확인된 산출물
 
-- 2026-08-25 최종 통합 회귀에서 schema 8, simulation 69, environment 65, parts evidence 39, Product 186, source adapters 14, value proof 12, GCP live adapter 35, GCP platform 13, ASR-D02 runner/reconciliation 6으로 unit 447개가 통과했다. Assurance 고정 공격 실행 47개도 failure·False PASS 0으로 통과했다. 최신 remediation manifest 때문에 historical H05 reconciliation이 실패하던 문제는 역사 target을 그대로 보존하도록 수정해, 과거 증거를 새 배포 증거로 재라벨하지 않는다.
+- 2026-08-26 최종 통합 회귀에서 schema readiness 8, simulation 69, environment 65, parts evidence 39, Product 189, source adapters 14, value proof 12, GCP live adapter 35, GCP platform 13, ASR-D02 runner/reconciliation 7로 unit 451개가 통과했다. Assurance 고정 공격 실행 47개도 failure·False PASS 0으로 통과했다. 최신 5인 audit의 즉시 수정과 검토 패킷 export를 포함한 공개 revision `spectra-demo-console-00011-fnh`를 배포했다.
 
 - 공개 `spectra-demo-console`은 revision `00009-zpm`, image digest `sha256:c28f2432...e3c249`, URL `https://spectra-demo-console-mwmfe3da5q-du.a.run.app`에서 100% traffic을 처리한다. 실제 설정은 min 0, max 100, concurrency 20, timeout 120초, CPU 1, memory 512Mi이며 별도 service account를 사용한다. 문서 검사·직접 3문서 후보 연결과 승인·권리 trust-bound 합성 Core는 요청마다 실행하고, 공격 검증은 저장 snapshot, 문서별 결과표는 공개 catalog live read로 분리한다.
 
