@@ -2,7 +2,7 @@
 
 ## 발표 운영 — 2개 탭
 
-발표 중에는 `demo/index.html`과 `demo/evidence-console.html?presentation=1` 두 브라우저 탭만 사용한다. 콘솔 시연은 발표 후반에 직접 전환하고, Slide 08의 링크는 같은 이름의 `spectra-demo` 탭을 재사용한다. 콘솔 메뉴는 `문서 1개 검사 · 3개 입력 연결 · 공격 검증 기록 · 전체 문서 결과`다. `3개 입력 연결`의 두 버튼은 구조화된 합성 입력을 production Core에 전달해 다중 문서 근거 연결과 변경 영향 범위를 보여주며, 실제 승인 근거나 방사선 보증을 뜻하지 않는다. `Roadmap Lab`은 보조 구현으로 유지하지만 주 발표에서 열지 않는다.
+발표 중에는 `demo/index.html`과 `demo/evidence-console.html?presentation=1` 두 브라우저 탭만 사용한다. 콘솔 시연은 발표 후반에 직접 전환하고, Slide 08의 링크는 같은 이름의 `spectra-demo` 탭을 재사용한다. 콘솔 메뉴는 `문서 검사 · 임무·부품·시험 연결 · 저장된 공격 검증 · 문서별 결과표`다. `임무·부품·시험 연결`의 첫 버튼은 manifest로 해시를 고정한 합성 원문 3종을 실제 adapter가 파싱해 원문 줄·승인 BOM·시험 사건을 결속한 뒤 production Core에 전달한다. 두 번째 버튼은 구조화된 변경 전후 입력으로 변경 영향 범위를 보여준다. 둘 다 실제 승인 근거나 방사선 보증을 뜻하지 않는다. `Roadmap Lab`은 보조 구현으로 유지하지만 주 발표에서 열지 않는다.
 
 직접 파일을 골라 시험하려면 [`test-data/README.md`](test-data/README.md)를 먼저 읽고 `demo/test-data/`의 합성 fixture와 공식 출처 요약을 사용한다. 파일명에 임무 계획·부품 명세·방사선 시험·공격·권리·손상 PDF 등 시험 목적이 표시되어 있다.
 
@@ -34,7 +34,7 @@ cd /Users/taehoon/Desktop/IAA/SPECTRA
 python3 scripts/run_evidence_console.py --port 8765
 ```
 
-발표에서는 `https://spectra-demo-console-mwmfe3da5q-du.a.run.app/demo/evidence-console.html?presentation=1`을 연다. 문서 검사 메뉴는 Cloud Run에서 실제 deterministic parser를 실행하며 OCR·Document AI·LLM을 호출하지 않는다. 공격 검증 기록 메뉴는 H05에서 이미 저장하고 검증한 정상·body hash 위조·endpoint override 실행과 구조화 로그 13건을 읽기 전용으로 표시한다. 정상 실행은 run·correlation ID를 함께, 두 공격은 snapshot에 저장된 run ID와 correlation 부재를 그대로 표시한다. 현재 Cloud Logging을 조회하거나 새 Agent 실행을 만들지 않는다.
+발표에서는 `https://spectra-demo-console-mwmfe3da5q-du.a.run.app/demo/evidence-console.html?presentation=1`을 연다. `문서 검사` 메뉴는 Cloud Run에서 실제 deterministic parser를 실행하며 OCR·Document AI·LLM을 호출하지 않는다. `저장된 공격 검증` 메뉴는 H05에서 이미 저장하고 검증한 정상·body hash 위조·endpoint override 실행과 구조화 로그 13건을 읽기 전용으로 표시한다. 정상 실행은 run·correlation ID를 함께, 두 공격은 snapshot에 저장된 run ID와 correlation 부재를 그대로 표시한다. 현재 Cloud Logging을 조회하거나 새 Agent 실행을 만들지 않는다.
 
 기본 macOS `python3`에 `pypdf`가 없으면 서버는 이 장치에 이미 설치된 Codex bundled Python을 자동 선택한다. 해당 runtime도 없으면 PDF는 `PDF_EXTRACTOR_UNAVAILABLE / HOLD`로 닫히며 TXT 경로만 유지된다.
 
@@ -42,7 +42,7 @@ python3 scripts/run_evidence_console.py --port 8765
 
 `evidence-batch.html`은 같은 `/api/intake` 경로로 PDF/TXT 여러 개를 순차 검사해 문서별 파서·페이지 수, 후보 field/value, 원문 문자 위치, 최초 중단 관문, 자연어 이유, stable code와 `HOLD`를 한 표에 표시한다. `합성 3종 실행`은 정상 파싱 후 승인 BOM 공백, 지시문 공격 차단, 처리 권리 미확인 차단을 고정 정답과 대조한다. 실제 사용자가 올린 파일에는 정답률을 만들지 않는다.
 
-`전체 문서 결과` 메뉴는 공개 GCP bucket `spectra-public-test-catalog-iceu-686/v1`의 catalog·audit·deployment receipt를 같은 콘솔 안에서 우선 읽고, 실패하면 repo snapshot으로 전환한다. 15개 문서를 임무 조건·부품 명세·방사선 시험 결과·합성 테스트로 나눠 처리 단계, 확인·불일치·추가 입력 필요 수, 최초 보류 책임을 표시하고 마지막에 SHA-256 감사 체인과 GCS object generation을 보여준다. 실제 공개자료 조합은 완전한 exact-part 근거가 없어 모두 중간 단계에서 `HOLD`하고, 합성 Core만 최종 단계까지 실행한 뒤 `SYNTHETIC_ONLY / HOLD`로 닫힌다.
+`문서별 결과표` 메뉴는 공개 GCP bucket `spectra-public-test-catalog-iceu-686/v1`의 catalog·audit·deployment receipt를 같은 콘솔 안에서 우선 읽고, 실패하면 repo snapshot으로 전환한다. 15개 문서를 임무 조건·부품 명세·방사선 시험 결과·합성 테스트로 나누고, `문서 · 자료 역할 · 처리 경로 · 현재 결과 · 보류 지점` 5열로 표시한다. 접수·추출·역할·조건 연결은 한 칸의 2×2 흐름으로 묶고, 마지막에 세 입력 연결 결과와 SHA-256 감사 기록을 보여준다. 실제 공개자료 조합은 완전한 exact-part 근거가 없어 모두 중간 단계에서 `HOLD`하고, 합성 Core만 최종 단계까지 실행한 뒤 `SYNTHETIC_ONLY / HOLD`로 닫힌다.
 
 발표 자료 `index.html`은 `방사선·차폐 기초 → COTS 맥락 → 흩어진 근거 문제 → 업계 자료 → 기존 검토 방식 → SPECTRA` 순서로 설명한다. 06번은 `임무 조건·부품 명세·시험 결과 → 근거 연결 → 3개 Agent → 검증 Gate → 판단과 행동`을 도식화한다. 본 발표의 콘솔 시연은 마지막에 별도 탭에서 진행한다.
 

@@ -42,8 +42,8 @@
    - 로컬 parser와 저장 GCP 경로를 분리하고, GCP snapshot의 정상·hash mismatch·endpoint override 결론을 먼저 표시
    - 실제 evidence 0건, 구매자·ROI 미검증, roadmap 발표 제외를 인접 표시
 4. **공개 데모 — 완료**
-   - `spectra-demo-console` Cloud Run에 발표·문서 검사·3개 입력 연결·저장 공격 기록·전체 문서 결과 배포
-   - 문서 검사는 live 실행, 3개 입력 연결은 고정 합성 입력의 production Core live 실행, 공격 기록은 저장 snapshot, 전체 문서 결과는 공개 카탈로그 live read로 구분
+   - `spectra-demo-console` Cloud Run에 발표·문서 검사·임무·부품·시험 연결·저장된 공격 검증·문서별 결과표 배포
+   - 문서 검사는 live 실행, 임무·부품·시험 연결은 고정 합성 입력의 production Core live 실행, 공격 검증은 저장 snapshot, 문서별 결과표는 공개 카탈로그 live read로 구분
 5. **최종 검증 — 완료**
    - 전체 자동 회귀, 공개 URL 1280×720 발표·Console QA, 문서 정합성 및 배포 revision 확인
    - 사람 7분 낭독·탭 전환 리허설 2회는 `NOT_MEASURED`로 별도 유지

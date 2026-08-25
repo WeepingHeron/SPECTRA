@@ -100,8 +100,8 @@ def page_one(c: canvas.Canvas) -> None:
 
     data = [
         ["FIELD", "REPORTED VALUE", "REVIEW NOTE"],
-        ["Manufacturer", "Texas Instruments", "String found in supplier block"],
-        ["Orderable part", "5962L1420901VXC", "Candidate only; BOM not attached"],
+        ["Manufacturer", "SYNTHETIC MANUFACTURER", "Fictional parser test value"],
+        ["Orderable part", "SYNTHETIC-PART-001", "Fictional parser test value"],
         ["Package / lot", "CFP / not stated", "Identity remains incomplete"],
         ["Mission use", "LEO avionics candidate", "No approved mission linkage"],
     ]
@@ -393,11 +393,11 @@ def build() -> None:
         "contract_version": "SYNTHETIC_UNSTRUCTURED_GROUND_TRUTH_1.0.0",
         "source_classification": "SYNTHETIC_CONTROL",
         "filename": OUTPUT.name,
-        "expected_part": "5962L1420901VXC",
-        "manufacturer": "Texas Instruments",
+        "expected_part": "SYNTHETIC-PART-001",
+        "manufacturer": "SYNTHETIC MANUFACTURER",
         "expected_candidates": [
-            {"field": "ORDERABLE_PART_NUMBER", "value": "5962L1420901VXC", "page": 1},
-            {"field": "MANUFACTURER", "value": "Texas Instruments", "page": 1},
+            {"field": "ORDERABLE_PART_NUMBER", "value": "SYNTHETIC-PART-001", "page": 1},
+            {"field": "MANUFACTURER", "value": "SYNTHETIC MANUFACTURER", "page": 1},
             {"field": "EVIDENCE_EVENT_MENTION", "value": "TID", "page": 1},
             {"field": "EVIDENCE_EVENT_MENTION", "value": "SEU", "page": 2},
             {"field": "EVIDENCE_EVENT_MENTION", "value": "SEL", "page": 3},

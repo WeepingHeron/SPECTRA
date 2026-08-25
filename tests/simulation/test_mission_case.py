@@ -38,6 +38,14 @@ def event(event_type, locator, **values):
         "source_event_type": event_type,
         "locator": locator,
     }
+    if event_type in {"SEL", "SEB", "SEGR"}:
+        value.update(
+            {
+                "fluence": {"value": 1e10, "unit": "particles/cm2"},
+                "sample_size": 3,
+                "observed_events": 0,
+            }
+        )
     value.update(values)
     return value
 
@@ -189,6 +197,18 @@ class MissionCaseSynthesisTests(unittest.TestCase):
             self.evaluate()
         self.assertEqual(1, tid_call.call_count)
         self.assertEqual(1, see_call.call_count)
+
+    def test_destructive_event_name_without_observation_is_not_coverage(self):
+        attacked = copy.deepcopy(self.case)
+        sel = attacked["sources"][2]["claims"][0]["event_evidence"][0]
+        del sel["fluence"]
+        result = self.evaluate(attacked)
+        sel_coverage = next(
+            row for row in result["event_coverage"] if row["event_type"] == "SEL"
+        )
+        self.assertEqual(result["processing_status"], "INVALID_INPUT")
+        self.assertEqual(sel_coverage["status"], "INVALID")
+        self.assertIn("SEL_OBSERVATION_INVALID", result["stable_codes"])
 
     def test_published_source_trace_does_not_promote_synthetic_core_output(self):
         case = copy.deepcopy(self.case)

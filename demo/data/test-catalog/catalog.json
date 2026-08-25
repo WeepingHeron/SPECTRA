@@ -17,7 +17,7 @@
       "document_role": "SYNTHETIC_CONTROL",
       "source_classification": "SYNTHETIC_TEST_FIXTURE",
       "source_urls": [],
-      "content_sha256": "sha256:11ec8b2a3c2cf353d60c55a7b240bf79913c0fd71642009f8016e37379f542ce",
+      "content_sha256": "sha256:72e841f164457775a4f629ef0eccd41c00727f37aa962007a6cec1c0afc2d48e",
       "processing_status": "VALID",
       "candidate_count": 7,
       "candidate_fields": [
@@ -139,7 +139,7 @@
       "document_role": "SYNTHETIC_CONTROL",
       "source_classification": "SYNTHETIC_TEST_FIXTURE",
       "source_urls": [],
-      "content_sha256": "sha256:585206699f2e8b42c73ba788653781f0a580aa9a1f3bf998f358d1f40e3dd41f",
+      "content_sha256": "sha256:8df0ddbe1a686943f74c5175020f3576ba8c87078b9fc3988f442d36eda12797",
       "processing_status": "VALID",
       "candidate_count": 6,
       "candidate_fields": [
@@ -180,7 +180,7 @@
       "document_role": "SYNTHETIC_CONTROL",
       "source_classification": "SYNTHETIC_TEST_FIXTURE",
       "source_urls": [],
-      "content_sha256": "sha256:40494f174970a41e980a4c09e0a3eb8000d68eaf87d1097058ccfb225e38a91e",
+      "content_sha256": "sha256:0c95880c8223ffdf6ee31c92de5e83d70f91ba061662c2d7b883bf9164d3e131",
       "processing_status": "CONTENT_REJECTED",
       "candidate_count": 0,
       "candidate_fields": [],
@@ -210,7 +210,7 @@
       "document_role": "SYNTHETIC_CONTROL",
       "source_classification": "SYNTHETIC_TEST_FIXTURE",
       "source_urls": [],
-      "content_sha256": "sha256:c52780e4e14734e42c1544009f5784739144b5e7f996766f0cb46b1860da825d",
+      "content_sha256": "sha256:907345cc54413dbe74a2dabdebda23a9042f9fd3d1a205809b5cdd4034b7badc",
       "processing_status": "PROVENANCE_FAILURE",
       "candidate_count": 0,
       "candidate_fields": [],
@@ -240,7 +240,7 @@
       "document_role": "SYNTHETIC_CONTROL",
       "source_classification": "SYNTHETIC_TEST_FIXTURE",
       "source_urls": [],
-      "content_sha256": "sha256:cfc91af336e437d41621a9b9828870b9985c7118b2ef643c3276547a8a0f7b69",
+      "content_sha256": "sha256:2e1d1b6300b4ba68c85aa926b3093fee139deb273059e13386215f228de47f6f",
       "processing_status": "VALID",
       "candidate_count": 0,
       "candidate_fields": [],
@@ -270,12 +270,12 @@
     },
     {
       "document_id": "DOC-008",
-      "title": "08_복합PDF_별도입력_5962L1420901VXC",
-      "filename": "08_복합PDF_별도입력_5962L1420901VXC.pdf",
+      "title": "08_복합PDF_합성부품_SYNTHETIC-PART-001",
+      "filename": "08_복합PDF_합성부품_SYNTHETIC-PART-001.pdf",
       "document_role": "SYNTHETIC_CONTROL",
       "source_classification": "SYNTHETIC_TEST_FIXTURE",
       "source_urls": [],
-      "content_sha256": "sha256:1026ca3faccad7a89fb28fd261b0320c134ebf9758bf4bd0032fdace2986f8de",
+      "content_sha256": "sha256:bf46312b1f8990c57c98060f052e6e4f83afc2abc52c446465d74d9191975c61",
       "processing_status": "VALID",
       "candidate_count": 7,
       "candidate_fields": [
@@ -293,8 +293,8 @@
         "not_evaluated_check_count": 1,
         "hold_agent": "PARTS_AGENT",
         "validation_results": [
-          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 5962L1420901VXC · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
-          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 Texas Instruments · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 주문형번 후보 SYNTHETIC-PART-001 · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
+          "확인 완료 · 부품·시험 근거 검토 역할 · 제조사 후보 SYNTHETIC MANUFACTURER · 입력한 후보 문자열을 원문에서 확인 · 승인 BOM 대조 아님",
           "추가 입력 필요 · 부품·시험 근거 검토 역할 · 방사선 시험 결과가 없어 부품 명세와 시험 근거를 연결하지 못함"
         ]
       },
@@ -317,7 +317,7 @@
       "document_role": "SYNTHETIC_CONTROL",
       "source_classification": "SYNTHETIC_TEST_FIXTURE",
       "source_urls": [],
-      "content_sha256": "sha256:0fad7db33ed170ccde435100dccf0c026cd32277a7d948b300f12ed1fed46d08",
+      "content_sha256": "sha256:b7cc19b709a0ff21e0f15cbfd205249c55370be5d0442aef2ba13a95b68fc703",
       "processing_status": "DATA_UNAVAILABLE",
       "candidate_count": 0,
       "candidate_fields": [],
@@ -396,7 +396,7 @@
       "source_urls": [
         "https://nepp.nasa.gov/radhome/papers/2020-Topper-NSREC-TID-SEE-Compendium-DW-Paper-20205007136.pdf"
       ],
-      "content_sha256": "sha256:d5a87e968c71afa7d6df566f4e8ea55fb5e6a14ad120a315d68df260e1bd51e6",
+      "content_sha256": "sha256:c68d382489472001a40d4ca346f1d4670f0e5efb8a63b7502192ed15be351107",
       "processing_status": "VALID",
       "candidate_count": 15,
       "candidate_fields": [

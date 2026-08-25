@@ -1,0 +1,40 @@
+{
+  "contract_version": "2.0.0",
+  "manifest_id": "synthetic-mission-package-manifest-001",
+  "mission_case_id": "console-mission-case",
+  "data_class": "SYNTHETIC",
+  "bundle_hash": "sha256:581e23dcdb4738e1be28a958de566d0731b6efbec4712adf914291c7c47f0c02",
+  "documents": [
+    {
+      "role": "MISSION_CONDITIONS",
+      "document_id": "mission-conditions",
+      "filename": "mission-conditions.txt",
+      "sha256": "sha256:3d30935d9ba470f5928d596ec59a9474e70cec4b71ecb4e6b63bee0c3ed3b56c"
+    },
+    {
+      "role": "APPROVED_BOM",
+      "document_id": "approved-bom",
+      "filename": "approved-bom.txt",
+      "sha256": "sha256:c0114d6becca7a61fdc0e4ad558ebc9e82052d2f82a6450a16e5fbcb9b3dbba9"
+    },
+    {
+      "role": "RADIATION_TEST",
+      "document_id": "radiation-test",
+      "filename": "radiation-test.txt",
+      "sha256": "sha256:19b1a3950ecadb615698b6e6f5bc11fb04340fe5f823f4e11acc5cc9a36d7b65"
+    }
+  ],
+  "rights_snapshot": {
+    "rights_snapshot_id": "synthetic-mission-package-rights-001",
+    "snapshot_version": "1.0.0",
+    "status": "SYNTHETIC_TEST_ONLY",
+    "tenant_id": "synthetic-tenant",
+    "approval_target_hash": "sha256:581e23dcdb4738e1be28a958de566d0731b6efbec4712adf914291c7c47f0c02",
+    "valid_from": "2026-08-25T00:00:00Z",
+    "action_grants": [
+      {"action": "PRIVATE_STORE", "grant_status": "ALLOWED", "scope_hash": "sha256:581e23dcdb4738e1be28a958de566d0731b6efbec4712adf914291c7c47f0c02"},
+      {"action": "DISPLAY_INTERNAL", "grant_status": "ALLOWED", "scope_hash": "sha256:581e23dcdb4738e1be28a958de566d0731b6efbec4712adf914291c7c47f0c02"}
+    ],
+    "history_anchor_ref": "trust-store://mission-package-rights/synthetic-001"
+  }
+}

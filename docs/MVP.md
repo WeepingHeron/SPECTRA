@@ -43,7 +43,7 @@
 7. 공격 검증 결과, 발견된 결함과 deployed 보완 재검증 상태
 8. 로드맵을 제외한 11장 발표본과 7분 대본, 발표 모드 Evidence Console
 
-공개 발표본과 Console은 `spectra-demo-console` Cloud Run revision `00006-6mh`에서 제공한다. 문서 검사는 요청 시 실제 규칙 기반 parser를 실행하고, 3개 입력 연결은 고정 합성 입력으로 production Core를 실행한다. 공격 기록은 공개 쓰기 권한을 열지 않기 위해 독립 확인된 snapshot을 읽으며, 전체 문서 결과는 공개 GCP catalog를 읽는 경로다. 이 네 동작은 실제 방사선 보증 완료를 뜻하지 않는다.
+공개 발표본과 Console은 `spectra-demo-console` Cloud Run revision `00008-rwk`에서 제공한다. `문서 검사`는 요청 시 실제 규칙 기반 parser를 실행하고, `임무·부품·시험 연결`은 세 원문과 승인·권리 신뢰 앵커를 hash-bound한 고정 합성 입력으로 production Core를 실행한다. `저장된 공격 검증`은 공개 쓰기 권한을 열지 않기 위해 독립 확인된 snapshot을 읽으며, `문서별 결과표`는 공개 GCP catalog를 읽는 경로다. 이 네 동작은 실제 방사선 보증 완료를 뜻하지 않는다.
 
 ## 제출 Release에서 제외
 

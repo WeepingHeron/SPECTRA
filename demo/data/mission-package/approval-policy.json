@@ -1,0 +1,68 @@
+{
+  "kind": "USER_POLICY",
+  "contract_version": "2.0.0",
+  "hash_contract_version": "1.0.0",
+  "policy_id": "synthetic-mission-package-policy-001",
+  "policy_version": "2.0.0",
+  "policy_content_hash": "sha256:e83ab721250cc73aba6acd2e762d5ec737807babc286e027f56966d8e67fc090",
+  "scope": {
+    "tenant_id": "synthetic-tenant",
+    "mission_ids": ["synthetic-leo-001"],
+    "component_ids": ["component-001"],
+    "scope_hash": "sha256:48e1ab4d92e687730140539ccab4bbb1d8a9010f00c03b127e83af1d393f48cb"
+  },
+  "rules": {
+    "tid_design_factor": 2,
+    "maximum_residual_seu": {
+      "value": 1,
+      "quantity_kind": "RATE",
+      "unit": "events/mission",
+      "metadata": {
+        "data_class": "SYNTHETIC",
+        "version": "2.0.0",
+        "created_at": "2026-08-25T00:00:00Z",
+        "content_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "review_status": "READY_FOR_REVIEW",
+        "calculation_run": {
+          "run_id": "mission-package-policy-fixture",
+          "engine": "synthetic-policy-fixture",
+          "engine_version": "1.0.0",
+          "input_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "output_hash": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "executed_at": "2026-08-25T00:00:00Z"
+        }
+      }
+    },
+    "required_destructive_modes": ["SEL", "SEB", "SEGR"]
+  },
+  "approval": {
+    "status": "APPROVED",
+    "approval_target_hash": "sha256:e83ab721250cc73aba6acd2e762d5ec737807babc286e027f56966d8e67fc090",
+    "approval_scope_hash": "sha256:48e1ab4d92e687730140539ccab4bbb1d8a9010f00c03b127e83af1d393f48cb",
+    "history_head_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "approved_by": "synthetic-control-reviewer",
+    "approved_at": "2026-08-25T00:00:00Z",
+    "valid_from": "2026-08-25T00:00:00Z",
+    "valid_until": "2027-08-25T00:00:00Z"
+  },
+  "immutable_history_ref": {
+    "anchor_id": "synthetic-mission-package-policy-history-001",
+    "head_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "store_ref": "trust-store://mission-package-policy/synthetic-001"
+  },
+  "metadata": {
+    "data_class": "SYNTHETIC",
+    "version": "2.0.0",
+    "created_at": "2026-08-25T00:00:00Z",
+    "content_hash": "sha256:e83ab721250cc73aba6acd2e762d5ec737807babc286e027f56966d8e67fc090",
+    "review_status": "READY_FOR_REVIEW",
+    "calculation_run": {
+      "run_id": "mission-package-policy-fixture",
+      "engine": "synthetic-policy-fixture",
+      "engine_version": "1.0.0",
+      "input_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "output_hash": "sha256:e83ab721250cc73aba6acd2e762d5ec737807babc286e027f56966d8e67fc090",
+      "executed_at": "2026-08-25T00:00:00Z"
+    }
+  }
+}

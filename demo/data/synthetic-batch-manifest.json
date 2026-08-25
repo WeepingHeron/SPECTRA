@@ -1,8 +1,8 @@
 {
   "contract_version": "SYNTHETIC_BATCH_MANIFEST_1.0.0",
   "source_classification": "SYNTHETIC_CONTROL",
-  "expected_part": "5962L1420901VXC",
-  "manufacturer": "Texas Instruments",
+  "expected_part": "SYNTHETIC-PART-001",
+  "manufacturer": "SYNTHETIC MANUFACTURER",
   "samples": [
     {
       "id": "report-candidate",
@@ -13,8 +13,8 @@
       "expected_processing_status": "VALID",
       "expected_blocker": "APPROVED_BOM_TARGET_MISSING",
       "expected_candidate_values": [
-        "5962L1420901VXC",
-        "Texas Instruments",
+        "SYNTHETIC-PART-001",
+        "SYNTHETIC MANUFACTURER",
         "TID",
         "SEU",
         "SEL",

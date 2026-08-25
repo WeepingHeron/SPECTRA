@@ -51,8 +51,8 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests/gcp_live -p 'tes
 - COTS catalog identity나 유사 부품 시험은 exact-part 비행 적합성 증거가 아니다.
 - BOM 구매 수량은 identity·차폐·TID 적용성에서 제외한다. 장치 수가 필요한 총 SEU 분석에서만 별도 `analysis_device_count`를 사용한다.
 - False PASS 0은 명시된 평가 세트에만 적용하며 전체 침투시험이나 방사선 보증을 뜻하지 않는다.
-- `문서 1개 검사`는 공개 Cloud Run에서 요청마다 실제 `pypdf/TXT` 규칙 기반 검사를 수행한다. `3개 입력 연결`은 고정 합성 입력으로 production Core를 요청마다 실행한다.
-- `공격 검증 기록`은 정상·body hash 위조·endpoint override의 독립 확인 저장본이며 새 Workflow를 실행하지 않는다. `전체 문서 결과`는 공개 GCP 카탈로그를 live read하지만 각 문서 결과는 사전 계산·저장된 결과다.
+- `문서 검사`는 공개 Cloud Run에서 요청마다 실제 `pypdf/TXT` 규칙 기반 검사를 수행한다. `임무·부품·시험 연결`은 고정 합성 입력으로 production Core를 요청마다 실행한다.
+- `저장된 공격 검증`은 정상·body hash 위조·endpoint override의 독립 확인 저장본이며 새 Workflow를 실행하지 않는다. `문서별 결과표`는 공개 GCP 카탈로그를 live read하지만 각 문서 결과는 사전 계산·저장된 결과다.
 - 구매자·예산 책임자·도입 방식·ROI는 아직 검증하지 않았고, 사람 팀의 구성이나 협업 성과도 확인된 사실 없이 주장하지 않는다.
 
 상세 역사와 개별 증거는 `docs/workstreams/*/CURRENT.md`와 `docs/workstreams/*/evidence/`에 보존한다. 현재 실행은 이 채팅에서 통합 관리하며, 과거 채팅 번호는 더 이상 로드맵 진행 단위로 사용하지 않는다.

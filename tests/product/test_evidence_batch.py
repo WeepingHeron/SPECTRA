@@ -60,9 +60,9 @@ class EvidenceBatchTests(unittest.TestCase):
             "spectra-public-test-catalog-iceu-686/v1",
             "/demo/data/test-catalog",
             "문서별 처리 결과",
-            "임무·부품·시험 조합 결과",
-            "감사로그 제출 영수증",
-            "최종 승인",
+            "세 입력 연결 결과",
+            "감사 기록",
+            "판단 보류",
             "deployment-receipt.json",
             "공개 객체 확인",
         ):

@@ -229,8 +229,8 @@ SPECTRA의 정체성은 새로운 물리 계산기를 만드는 것이 아니라
 - Stage 4의 부품 증거 출처·권리·identity·적용성 조사와 exact-part/TID 원문 후보 1건은 확보했지만, 승인 BOM·권리 manifest·임무 적용성·필요 SEE coverage를 통과한 ingest는 0건이다.
 - 실제 환경 원본은 Git 밖 private evidence bundle로만 보존하며 dose 값은 제품 입력·fixture·문서에 발행하지 않았다. 실제 부품 시험자료의 승인 ingest와 과학적 교차검산은 아직 완료하지 않았다.
 - Competition Submission Release용 합성 Multi-Agent·GCP 경로는 교육용 project에 production Core-bound Cloud Run Agent 3개, Workflows, Storage, IAM, Logging으로 실제 배포됐다. Phase 1에서 발견한 exact-part `FALSE_ACCEPT`와 generation `UNEXPECTED_RESULT`를 보완한 새 revision을 배포했고, control 1건과 네 공격의 actual 재검증은 `CONTROL_PASS 1 / SAFE_FAILURE 4 / False Accept·False PASS·unexpected 0`이다. H06~H08 read-only receipt와 Product timeline도 새 정상 execution으로 갱신했다.
-- 발표·검증 콘솔은 별도 공개 Cloud Run `spectra-demo-console` revision `00006-6mh`에 배포됐다. 문서 검사는 요청마다 `pypdf/TXT` 규칙 기반 parser를 실행하고, 3개 입력 연결은 고정 합성 입력으로 production Core를 실행한다. 공격 검증은 공개 쓰기 권한을 열지 않고 독립 확인된 snapshot을 표시하며, 전체 문서 결과는 공개 GCP catalog를 읽는다.
-- 최신 통합 회귀는 unit 415개와 Assurance 공격 실행 47개가 통과했고, 공개 1280×720 deck·Console 동선을 확인했다. 사람 7분 낭독·탭 전환 시간은 아직 `NOT_MEASURED`다.
+- 발표·검증 콘솔은 별도 공개 Cloud Run `spectra-demo-console` revision `00008-rwk`에 배포됐다. `문서 검사`는 요청마다 `pypdf/TXT` 규칙 기반 parser를 실행하고, `임무·부품·시험 연결`은 세 원문 해시와 v2 승인 정책·권리 snapshot·배포 신뢰 앵커를 Core 입력/출력 해시에 결속한 고정 합성 입력으로 production Core를 실행한다. `저장된 공격 검증`은 공개 쓰기 권한을 열지 않고 독립 확인된 snapshot을 표시하며, `문서별 결과표`는 공개 GCP catalog를 읽는다.
+- 최신 통합 회귀는 unit 436개와 Assurance 공격 실행 47개가 통과했고, 공개 1280×720 deck·Console 동선을 확인했다. 사람 7분 낭독·탭 전환 시간은 아직 `NOT_MEASURED`다.
 - 발표의 Phase 01~03 확장 항목은 source intake·document review·Change Impact/CAD readiness를 bounded workflow로 구현했다. 현재 주 시연은 발표와 단일 Evidence Console을 사용하며, 실제 connector·AI API·CAD 계산·KMS·침투시험 완료로 확대하지 않는다.
 - 실제 비행 적합성 또는 과학적 정확도 검증을 완료하지 않았다.
 

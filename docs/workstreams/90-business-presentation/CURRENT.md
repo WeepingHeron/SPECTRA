@@ -9,14 +9,14 @@
 - Slide 08 제목은 `실제 GCP에서는, 세 역할이 한 가지 실행의 근거를 나눠 검증한다.`로 확정했다. Mission·Parts·Assurance는 동일 Workflow의 서로 다른 증거 책임이며 같은 계산을 세 번 수행한다는 뜻이 아니다.
 - 공개 1280×720 브라우저에서 deck 가로 overflow 0과 새 제목 표시를 확인했다. Console은 항목별 결과를 세 카드로 분리하고 문서 전체 overflow 없이 요약 panel만 스크롤한다.
 - 공격 검증은 공개 live 쓰기 endpoint로 확대하지 않았다. 공개 호출자에게 Workflows 실행·Storage 쓰기 권한을 열 경우 반복 실행 비용, 로그 오염, 내부 경계 탐색과 service account 권한 확대 위험이 생기므로 독립 확인된 snapshot을 재생한다.
-- unit 415개와 Assurance 공격 실행 47개, 공개 Cloud Run 동선, 문서 정합성과 현재 revision을 최종 확인했다. 사람 낭독·클릭 시간은 계속 `NOT_MEASURED`다.
+- unit 436개와 Assurance 공격 실행 47개, 공개 Cloud Run 동선, 문서 정합성과 현재 revision을 최종 확인했다. 사람 낭독·클릭 시간은 계속 `NOT_MEASURED`다.
 
 ## Cloud Presentation Runtime & Script v7 Refresh — 2026-08-25
 
 - 발표 자료와 검증 콘솔의 기준 URL을 `https://spectra-demo-console-mwmfe3da5q-du.a.run.app`로 전환했다. 발표자는 서버를 켜지 않고 Presentation과 Evidence Console 두 탭만 연다. localhost는 Cloud Run 장애 시 fallback이다.
 - 시작 문장은 전문어 `HOLD`와 숫자 중심 비유를 제거하고 `임무 조건·부품 정보·방사선 시험 자료를 한 흐름에서 대조해 확인한 것과 더 필요한 것을 보여준다`로 교체했다. Closing도 같은 제품 가치로 정렬했다.
 - 대본은 필수 입력이 빠져도 확인 가능한 항목은 계속 검사하고 완료·불일치·추가 입력으로 나눈다는 현재 동작을 설명한다. 문서 파서와 저장 GCP Agent 경로는 분리되어 있고, 저장 공격 snapshot을 live 공격 실행으로 주장하지 않는다.
-- Cloud Run 공개 URL의 PDF·Mission Case·공격 기록·전체 문서 결과를 실제 브라우저에서 검증했다. 7분 시간표는 계속 계산값이며 사람 낭독·클릭 실측은 `NOT_MEASURED`다.
+- Cloud Run 공개 URL의 `문서 검사`·`임무·부품·시험 연결`·`저장된 공격 검증`·`문서별 결과표`를 실제 브라우저에서 검증했다. 7분 시간표는 계속 계산값이며 사람 낭독·클릭 실측은 `NOT_MEASURED`다.
 
 ## Evidence-backed Business Slide & Simplified Flow — 2026-08-25
 
@@ -25,12 +25,14 @@
 - 실제 제출·발표 흐름은 `01 차폐 기초 → 02 COTS → 03 문제 정의 → 04 외부 근거가 확인한 사용자 부담 → 05 기존 방식 → 06 SPECTRA 전체 흐름 → 07 판단 원칙 → 08 GCP → 09 무결성 설계`다. 로드맵은 프로젝트에는 유지하되 제출 deck과 7분 발표에서 제외한다.
 - Slide 03 제목은 도식에 없는 `계산`을 제거하고 `위성 부품을 검토할 자료가 여러 문서에 흩어져 있다`로 맞췄다. 우측은 사람 역할을 특정하지 않는 `흩어진 자료에서 확인해야 할 세 가지` 아래 `부품·조건·범위` 질문을 배치했다. 실제 공정·로트별 방사선 결과 비교 데이터는 없으므로 차이가 결과를 바꾼다고 주장하지 않고, 공개 COTS 자료의 패키지 불일치와 lot/die 미보고 때문에 동일 근거로 단정할 수 없다는 현재 증거 경계만 설명한다.
 - Slide 04 문제 정의는 SPECTRA가 없는 근거를 보충한다는 오해를 막기 위해 `COTS 근거의 부족`을 제거하고, 공식 자료가 뒷받침하는 `근거의 분산과 반복 검토`로 한정했다.
-- Slide 06의 `부품·시험·조건을 대조`는 현재 지원하지 않는 시험 조건까지 직접 비교한다는 오해가 있어 `부품·시험·조건의 연결 상태 확인`으로 낮췄다. 구조화된 임무 조건·승인 BOM·여러 시험 claim을 함께 받는 Mission Case Core를 통합했으며, 비교 불가능한 조건은 일치한다고 추정하지 않고 blocker·출처 위치·다음 행동과 함께 HOLD한다. PDF/TXT parser와 이 Core의 UI wiring은 아직 범위 밖이다.
+- Slide 06의 `부품·시험·조건을 대조`는 현재 지원하지 않는 시험 조건까지 직접 비교한다는 오해가 있어 `부품·시험·조건의 연결 상태 확인`으로 낮췄다. 임무 조건·승인 BOM·방사선 시험 합성 원문 3개는 manifest 해시와 원문 줄에 결속해 Mission Case Core까지 연결했으며, exact identity·사건별 coverage·TID/SEU를 대조한다. 비교 불가능한 조건은 일치한다고 추정하지 않고 blocker·출처 위치·다음 행동과 함께 HOLD한다. 일반 자유형식 PDF/TXT의 자동 다중 문서 의미 매핑은 아직 범위 밖이다.
 - Slide 07의 지원 범위는 구현에 맞춰 정밀화했다. EvidencePacket은 구조화된 임무 환경·부품 시험 근거·완화 가정을 판단 규칙과 출처에 연결하며, 일부 근거가 있어도 필수 근거가 빠지면 HOLD한다. Multi-Agent는 세 역할 모두가 같은 대조를 반복하는 구조가 아니라 Mission·Parts가 각 범위를 검증하고 Assurance가 입력 결속과 응답 해시를 재확인하는 구조다.
 - 전체 장수는 `Cover + 01~09 + Closing`, 총 11장이다. Slide 04는 NASA·ESA·GAO 자료를 타깃 사용자별 애로사항에 연결하고, 실제 시간 절감 효과와 구매 의향은 사용자 조사가 필요하다고 분리한다.
 - Slide 04 하단은 ESA를 유럽우주국, GAO를 미국 정부감사원으로 풀어 쓴다. Document AI·Gemini를 포함한 향후 확장 내용은 주 발표에서 말하지 않는다.
-- canonical `FINAL_PRESENTATION_SCRIPT_7MIN.md` v7을 현재 11장과 검증 콘솔의 `문서 1개 검사 · 3개 입력 연결 · 공격 검증 기록` 시연에 맞췄다. 발표·시연·탭 전환 6분 30초와 돌발 여유 30초를 합쳐 7분이며, 사람 낭독·클릭 측정은 `NOT_MEASURED`다.
-- 주 발표 운영은 Presentation과 named `spectra-demo` 검증 콘솔 두 브라우저 탭만 사용한다. 콘솔은 발표 후반에 직접 전환하고, Slide 08의 링크도 `?presentation=1`을 사용한다. 네 번째 `전체 문서 결과` 메뉴에는 공개 GCP 카탈로그와 감사로그를 같은 콘솔 안에 통합했지만 7분 본 시연에서는 열지 않는다. `3개 입력 연결`은 구조화된 합성 입력으로 production Core의 다중 문서 근거 연결과 변경 영향 분류를 실제 호출하되, 실제 승인 근거·방사선 assurance로 확대하지 않는다.
+- canonical `FINAL_PRESENTATION_SCRIPT_7MIN.md` v7을 현재 11장과 검증 콘솔의 `문서 검사 · 임무·부품·시험 연결 · 저장된 공격 검증` 시연에 맞췄다. 발표·시연·탭 전환 6분 30초와 돌발 여유 30초를 합쳐 7분이며, 사람 낭독·클릭 측정은 `NOT_MEASURED`다.
+- 콘솔 문구는 `실제 실행`을 `지금 실행`으로 바꿔 실제 evidence와 실행 시점을 구분하고, `미승인 후보`를 `원문에서 찾음`, `최종 보류 책임`을 `판단을 보류한 역할`로 교체했다. 네 메뉴는 `문서 검사 · 임무·부품·시험 연결 · 저장된 공격 검증 · 문서별 결과표`로 입력과 결과가 바로 드러나게 정렬했다.
+- 발표 운영은 `발표·시연 7분 + 별도 질의응답 3분`으로 고정했다. Slide 04와 05는 합치지 않고 각각 사용자 부담과 기존 방식 대비라는 단일 역할을 유지한다. Slide 05는 Slide 04와 같은 넓은 좌우 대비 레이아웃으로 재구성하고, 네 질문과 네 대응을 큰 글자로 일대일 정렬했다.
+- 주 발표 운영은 Presentation과 named `spectra-demo` 검증 콘솔 두 브라우저 탭만 사용한다. 콘솔은 발표 후반에 직접 전환하고, Slide 08의 링크도 `?presentation=1`을 사용한다. 네 번째 `문서별 결과표` 메뉴에는 공개 GCP 카탈로그와 감사로그를 같은 콘솔 안에 통합했지만 7분 본 시연에서는 열지 않는다. `임무·부품·시험 연결`은 합성 원문 3개의 해시·필드 위치를 adapter로 결속한 뒤 production Core의 다중 문서 대조와 변경 영향 분류를 실제 호출하되, 실제 승인 근거·방사선 assurance로 확대하지 않는다.
 - Slide 08 GCP 화면은 로컬 parser와 저장 GCP 경로를 분리하고 무결성 표현을 `저장 이벤트 무결성 검증`으로 한정한다. GCP Console은 정상·body hash 위조·endpoint override의 run 결속과 정상 correlation ID, 최종 HOLD를 먼저 표시한다. Slide 09는 적은 공격 횟수를 전면에 내세우지 않고 Schema·Core·Identity·Hash·Fail-Closed·배포 격리의 시스템 조치에 집중한다.
 - 01~09의 영문 kicker를 장별 역할 중심으로 축약하고, 큰 한글 제목은 결론, 바로 아래 한 줄은 근거·의미를 설명하도록 통일했다. 밑줄은 큰 한글 제목 내부의 핵심 구절에만 적용한다. Slide 02 비교표는 두 줄 영문 label과 오른쪽 설명을 수직 중앙 정렬했고, Slide 04의 양쪽 비교 본문·panel label을 발표 화면 크기로 확대했다.
 - 최신 localhost 1280×720에서 11장 전체 x/y overflow 0과 Slide 02~06의 가독성을 시각 확인했다. 이번 변경의 Product·Simulation 직접 테스트 51개와 `git diff --check`가 통과했고 console warning/error는 0건이다. 사람 낭독·클릭 리허설은 계속 `NOT_MEASURED`이며, 이후 Core 통합·최종 회귀 상태는 바로 아래와 Control Tower CURRENT의 최신 항목을 따른다.

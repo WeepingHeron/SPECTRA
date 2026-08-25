@@ -11,7 +11,7 @@
     {"file": "05_공격방어_프롬프트주입.txt", "rights": true, "processing_status": "CONTENT_REJECTED", "candidate_count": 0, "blocker": "PROMPT_INJECTION_PATTERN_DETECTED"},
     {"file": "06_권리미확인용_체크박스끄고실행.txt", "rights": false, "processing_status": "PROVENANCE_FAILURE", "candidate_count": 0, "blocker": "RIGHTS_PROCESS_LOCAL_UNRESOLVED"},
     {"file": "07_빈근거_부품과사건표기없음.txt", "rights": true, "processing_status": "VALID", "candidate_count": 0},
-    {"file": "08_복합PDF_별도입력_5962L1420901VXC.pdf", "expected_part": "5962L1420901VXC", "manufacturer": "Texas Instruments", "rights": true, "processing_status": "VALID", "candidate_count": 7},
+    {"file": "08_복합PDF_합성부품_SYNTHETIC-PART-001.pdf", "expected_part": "SYNTHETIC-PART-001", "manufacturer": "SYNTHETIC MANUFACTURER", "rights": true, "processing_status": "VALID", "candidate_count": 7},
     {"file": "09_손상PDF_텍스트추출실패.pdf", "rights": true, "processing_status": "DATA_UNAVAILABLE", "candidate_count": 0, "blocker": "PDF_TEXT_EXTRACTION_FAILED"},
     {"file": "10_실제공개값_NASA_Micron_MT29F4T08CTHBBM5_TID.txt", "expected_part": "MT29F4T08CTHBBM5", "manufacturer": "Micron", "rights": true, "source_classification": "PUBLISHED_SOURCE_SUMMARY", "document_role": "RADIATION_TEST", "processing_status": "VALID", "candidate_count": 6},
     {"file": "11_실제공개값_NASA_Hynix_H25QFT8F4A9R-BDF_SEE.txt", "expected_part": "H25QFT8F4A9R-BDF", "manufacturer": "Hynix", "rights": true, "source_classification": "PUBLISHED_SOURCE_SUMMARY", "document_role": "RADIATION_TEST", "processing_status": "VALID", "candidate_count": 15},

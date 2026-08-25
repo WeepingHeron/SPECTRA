@@ -23,7 +23,7 @@
 | `05_공격방어_프롬프트주입.txt` | 문서 내부 승인 지시문 방어 | `CONTENT_REJECTED`, 후보 0개, `PROMPT_INJECTION_PATTERN_DETECTED` |
 | `06_권리미확인용_체크박스끄고실행.txt` | 처리 권리 미확인 경계 | 체크박스를 끄고 실행하면 `PROVENANCE_FAILURE`, 후보 0개 |
 | `07_빈근거_부품과사건표기없음.txt` | 찾을 근거가 없는 문서 | 후보 0개, 값을 만들어내지 않고 `HOLD` |
-| `08_복합PDF_별도입력_5962L1420901VXC.pdf` | 표·다단·차트·각주가 섞인 PDF 파싱 | 주문형번 `5962L1420901VXC`, 제조사 `Texas Instruments`로 바꾸면 후보 7개, `VALID`, 최종 `HOLD` |
+| `08_복합PDF_합성부품_SYNTHETIC-PART-001.pdf` | 표·다단·차트·각주가 섞인 PDF 파싱 | 주문형번 `SYNTHETIC-PART-001`, 제조사 `SYNTHETIC MANUFACTURER`로 바꾸면 후보 7개, `VALID`, 최종 `HOLD` |
 | `09_손상PDF_텍스트추출실패.pdf` | 손상된 PDF의 fail-closed 처리 | `DATA_UNAVAILABLE`, 후보 0개, `PDF_TEXT_EXTRACTION_FAILED` |
 | `10_실제공개값_NASA_Micron_MT29F4T08CTHBBM5_TID.txt` | NASA가 공개한 COTS 3D NAND TID 관측값 | LDC·시료 수·39 krad(Si) 실패 지점 추출, 최종 `HOLD` |
 | `11_실제공개값_NASA_Hynix_H25QFT8F4A9R-BDF_SEE.txt` | NASA가 공개한 COTS 3D NAND SEE 관측값 | LET·온도·에너지·단면적 추출, 최종 `HOLD` |
@@ -44,4 +44,4 @@
 - `13`~`14`: 주문형번과 제조사를 비워서 실행
 - `15`: `23LC1024-I/SN` / `Microchip Technology`
 
-`전체 문서 결과` 메뉴는 이 폴더의 15개 문서와 manifest를 GCP 공개 읽기 전용 버킷에서 불러온다. 문서별 처리 단계와 세 입력 조합을 표시하며, 마지막 `공개 객체 확인` 행에서 공개 객체 수·HTTP 상태·catalog/audit generation을 확인할 수 있다.
+`문서별 결과표` 메뉴는 이 폴더의 15개 문서와 manifest를 GCP 공개 읽기 전용 버킷에서 불러온다. 문서별 처리 경로·현재 결과·보류 지점과 세 입력 연결 결과를 표시하며, 마지막 `공개 객체 확인` 행에서 공개 객체 수·HTTP 상태·catalog/audit generation을 확인할 수 있다.

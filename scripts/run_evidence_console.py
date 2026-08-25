@@ -43,6 +43,7 @@ def _add_bundled_pdf_packages() -> None:
 _add_bundled_pdf_packages()
 
 from intake_local_document_candidate import MAX_BYTES, intake_document
+from spectra_document_adapter import adapt_mission_package
 from spectra_sim import synthesize_mission_case
 from spectra_value_proof import classify_review_impact, source_sha256
 
@@ -55,6 +56,7 @@ GCP_LOG_EVIDENCE = (
 GCP_SNAPSHOT = REPO_ROOT / "demo/data/h05-gcp-snapshot.json"
 ALLOWED_SUFFIXES = frozenset({".pdf", ".txt"})
 SYNTHETIC_MODEL = REPO_ROOT / "simulation/config/synthetic-model.json"
+MISSION_PACKAGE_DIR = REPO_ROOT / "demo/data/mission-package"
 MISSION_EVENTS = ("TID", "SEU", "SEL", "SEB", "SEGR")
 MISSION_IDENTITY_FIELDS = (
     "manufacturer",
@@ -342,10 +344,6 @@ def local_intake_events(
     )
 
 
-def _artifact_sha256(label: str) -> str:
-    return "sha256:" + hashlib.sha256(label.encode("utf-8")).hexdigest()
-
-
 def _synthetic_identity() -> dict[str, str]:
     return {
         "manufacturer": "Example Semiconductor",
@@ -357,116 +355,53 @@ def _synthetic_identity() -> dict[str, str]:
     }
 
 
-def _mission_source(
-    source_id: str,
-    document_id: str,
-    claim_id: str,
-    events: list[dict[str, Any]],
-) -> dict[str, Any]:
-    artifact_sha256 = _artifact_sha256(document_id)
-    return {
-        "source_id": source_id,
-        "document_id": document_id,
-        "mission_case_id": "console-mission-case",
-        "data_class": "SYNTHETIC",
-        "artifact_sha256": artifact_sha256,
-        "observed_artifact_sha256": artifact_sha256,
-        "locator": f"synthetic://mission-case/{document_id}",
-        "claims": [
-            {
-                "claim_id": claim_id,
-                "component_id": "component-001",
-                "tested_identity": _synthetic_identity(),
-                "test_conditions": {},
-                "event_evidence": events,
-            }
-        ],
-    }
-
-
-def _mission_event(event_type: str, locator: str, **values: Any) -> dict[str, Any]:
-    return {
-        "event_type": event_type,
-        "source_event_type": event_type,
-        "locator": locator,
-        **values,
-    }
-
-
 def build_mission_case_demo_input() -> dict[str, Any]:
-    """Return the fixed synthetic console input, never an actual evidence claim."""
+    """Parse hash-pinned synthetic source documents into a Mission Case."""
 
-    return {
-        "contract_version": "MISSION_CASE_1.0.0",
-        "mission_case_id": "console-mission-case",
-        "data_class": "SYNTHETIC",
-        "mission_conditions": {
-            "mission_id": "synthetic-leo-001",
-            "duration": {"value": 1, "unit": "year"},
-            "environment_tid": {"value": 10, "unit": "krad(Si)"},
-            "particle_flux": {"value": 1000, "unit": "particles/cm2/s"},
-            "shielding": {"value": 2, "unit": "mm_Al_equivalent"},
-            "tid_design_factor": 2,
-            "analysis_device_count": 2,
-        },
-        "approved_bom_targets": [
-            {
-                "component_id": "component-001",
-                "approval_status": "APPROVED",
-                "identity": _synthetic_identity(),
-            }
-        ],
-        "sources": [
-            _mission_source(
-                "source-tid",
-                "synthetic-tid-report",
-                "claim-tid",
-                [
-                    _mission_event(
-                        "TID",
-                        "synthetic://mission-case/tid#page=3",
-                        tid_test_limit={"value": 25, "unit": "krad(Si)"},
-                    )
-                ],
-            ),
-            _mission_source(
-                "source-seu",
-                "synthetic-seu-report",
-                "claim-seu",
-                [
-                    _mission_event(
-                        "SEU",
-                        "synthetic://mission-case/seu#table=2",
-                        cross_section={"value": 1e-6, "unit": "cm2/device"},
-                    )
-                ],
-            ),
-            _mission_source(
-                "source-destructive",
-                "synthetic-destructive-see-report",
-                "claim-destructive",
-                [
-                    _mission_event("SEL", "synthetic://mission-case/see#sel"),
-                    _mission_event("SEB", "synthetic://mission-case/see#seb"),
-                    _mission_event("SEGR", "synthetic://mission-case/see#segr"),
-                ],
-            ),
-        ],
-    }
+    return load_mission_package_adapter()["mission_case"]
+
+
+def load_mission_package_adapter() -> dict[str, Any]:
+    manifest = json.loads((MISSION_PACKAGE_DIR / "manifest.json").read_text(encoding="utf-8"))
+    approval_policy = json.loads(
+        (MISSION_PACKAGE_DIR / "approval-policy.json").read_text(encoding="utf-8")
+    )
+    trust_store = json.loads(
+        (REPO_ROOT / "simulation/config/mission-package-trust-store.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    documents = [
+        {
+            "role": item["role"],
+            "document_id": item["document_id"],
+            "declared_sha256": item["sha256"],
+            "content": (MISSION_PACKAGE_DIR / item["filename"]).read_bytes(),
+        }
+        for item in manifest["documents"]
+    ]
+    return adapt_mission_package(
+        documents,
+        mission_case_id=manifest["mission_case_id"],
+        raw_manifest=manifest,
+        approval_policy=approval_policy,
+        trust_store=trust_store,
+    )
 
 
 def load_mission_case_demo() -> dict[str, Any]:
+    adapter = load_mission_package_adapter()
     model = json.loads(SYNTHETIC_MODEL.read_text(encoding="utf-8"))
-    result = synthesize_mission_case(build_mission_case_demo_input(), model)
+    result = synthesize_mission_case(adapter["mission_case"], model)
     identity = result["questions"]["exact_part_identity"]
     applicability = result["questions"]["mission_test_applicability"]
     coverage = result["questions"]["event_coverage"]
     calculations = {item["event_type"]: item for item in result["applicability_calculations"]}
     events = [
-        _event(1, "mission-case-demo", "INPUT", "mission_case.started", "VALID", "임무 조건·승인 BOM·합성 시험 문서 3개를 한 Mission Case로 결속했습니다.", detail="문서 3개 · source hash/locator 유지 · 실제 증거 아님"),
+        _event(1, "mission-case-demo", "SOURCE INTEGRITY", "documents.bound", "VALID", "원문 3개와 승인·권리 앵커를 대조하고 각 필드를 출처 줄에 결속했습니다.", detail=f"문서 {adapter['document_count']}개 · 정책·권리·이력 MATCH · Core hash 결속"),
         _event(2, "mission-case-demo", "EXACT IDENTITY", "identity.completed", identity["status"], "승인 부품과 각 시험품의 정확한 식별 정보를 비교했습니다.", detail="manufacturer · orderable PN · package · process · die · lot 모두 일치"),
         _event(3, "mission-case-demo", "TID / SEU", "bounded_calculation.completed", "VALID", "기존 결정론적 Core로 TID 시험 범위와 SEU 예상 사건 수를 계산했습니다.", detail=f"TID {calculations['TID']['status']} · SEU {calculations['SEU']['raw_events_per_mission']:.6f} events/mission (SYNTHETIC)"),
-        _event(4, "mission-case-demo", "EVENT COVERAGE", "coverage.completed", coverage["status"], "사건별 근거 위치를 서로 합치거나 대체하지 않고 확인했습니다.", detail="TID · SEU · SEL · SEB · SEGR 5/5 source-local coverage"),
+        _event(4, "mission-case-demo", "EVENT RECORDS", "coverage.completed", coverage["status"], "사건별 시험기록의 필수 값과 출처 위치를 서로 합치거나 대체하지 않고 검사했습니다.", detail="TID limit · SEU cross-section · SEL/SEB/SEGR fluence·sample·observed events · 5/5"),
         _event(5, "mission-case-demo", "APPLICABILITY", "applicability.blocked", applicability["status"], "현재 모델로 비교할 수 없는 시험 조건과 파괴성 SEE 적용성을 추정하지 않았습니다.", blocker_codes=applicability["blocker_codes"]),
         _event(6, "mission-case-demo", "DECISION", "decision.completed", "HOLD", "근거 연결은 완료됐지만 현재 임무에 쓸 수 있다는 판단은 보류했습니다.", stable_code="MISSION_TEST_APPLICABILITY_NOT_EVALUATED"),
     ]
@@ -475,20 +410,27 @@ def load_mission_case_demo() -> dict[str, Any]:
             "data_class": "SYNTHETIC",
             "actual_evidence": 0,
             "assurance_decision": "HOLD",
-            "parser_wired": False,
+            "parser_wired": True,
+            "source_document_count": adapter["document_count"],
+            "source_hash_status": "MATCH",
         },
         "events": events,
         "summary": {
-            "headline": "부품과 사건별 근거는 연결됐지만, 시험 조건 적용성은 판단 보류",
+            "headline": "원문·부품·사건 근거 대조 완료\n시험 조건 적용성 판단 보류",
             "decision": "VALID · NOT_EVALUATED · HOLD",
             "problem_location": "Mission Case · 시험 조건 적용성",
             "confirmed_facts": [
+                "입력 원문 3개의 해시와 v2 승인 정책·권리 snapshot·배포 신뢰 앵커가 일치합니다.",
+                "세 원문과 승인·권리 앵커 해시는 Core 입력·출력 해시에 결속됐습니다.",
                 "승인 부품과 시험품의 정확한 식별 6개 필드가 일치합니다.",
                 "TID·SEU는 기존 결정론적 Core 계산을 재사용했습니다.",
-                "TID·SEU·SEL·SEB·SEGR 근거 위치를 5/5로 연결했습니다.",
+                "TID·SEU·SEL·SEB·SEGR 시험기록의 필수 값과 출처 위치를 5/5로 검증·연결했습니다.",
             ],
             "blocking_reason": "입자종·에너지·LET·fluence·온도·bias와 파괴성 SEE 적용성을 현재 모델이 비교하지 못합니다.",
             "next_action": "시험 조건과 파괴성 SEE 적용성을 독립 검토하고, 지원 모델이 없으면 HOLD를 유지합니다.",
+        },
+        "adapter_receipt": {
+            key: value for key, value in adapter.items() if key != "mission_case"
         },
         "result": result,
     }

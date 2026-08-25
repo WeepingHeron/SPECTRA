@@ -1,0 +1,16 @@
+{
+  "contract_version": "MISSION_PACKAGE_TRUST_STORE_1.0.0",
+  "trust_store_id": "synthetic-deployment-trust-store-001",
+  "approval_policy": {
+    "policy_id": "synthetic-mission-package-policy-001",
+    "policy_content_hash": "sha256:e83ab721250cc73aba6acd2e762d5ec737807babc286e027f56966d8e67fc090",
+    "scope_hash": "sha256:48e1ab4d92e687730140539ccab4bbb1d8a9010f00c03b127e83af1d393f48cb",
+    "history_head_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "approved_bom_sha256": "sha256:c0114d6becca7a61fdc0e4ad558ebc9e82052d2f82a6450a16e5fbcb9b3dbba9"
+  },
+  "rights_snapshot": {
+    "rights_snapshot_id": "synthetic-mission-package-rights-001",
+    "bundle_hash": "sha256:581e23dcdb4738e1be28a958de566d0731b6efbec4712adf914291c7c47f0c02",
+    "history_anchor_ref": "trust-store://mission-package-rights/synthetic-001"
+  }
+}

@@ -195,9 +195,22 @@ class EvidenceConsoleTests(unittest.TestCase):
         self.assertEqual(result["questions"]["mission_test_applicability"]["status"], "NOT_EVALUATED")
         self.assertEqual(result["assurance_decision"], "HOLD")
         self.assertEqual([item["event_type"] for item in result["event_coverage"]], ["TID", "SEU", "SEL", "SEB", "SEGR"])
-        self.assertFalse(payload["boundary"]["parser_wired"])
+        self.assertTrue(payload["boundary"]["parser_wired"])
+        self.assertEqual(payload["boundary"]["source_document_count"], 3)
+        self.assertEqual(payload["boundary"]["source_hash_status"], "MATCH")
         self.assertEqual(payload["boundary"]["actual_evidence"], 0)
         self.assertEqual(len(payload["events"]), 6)
+        self.assertEqual(
+            payload["summary"]["headline"],
+            "원문·부품·사건 근거 대조 완료\n시험 조건 적용성 판단 보류",
+        )
+        self.assertEqual(payload["adapter_receipt"]["document_count"], 3)
+        self.assertTrue(
+            all(
+                item["hash_status"] == "MATCH"
+                for item in payload["adapter_receipt"]["document_receipts"]
+            )
+        )
 
     def test_review_impact_demo_distinguishes_duration_shielding_and_part_change(self) -> None:
         payload = load_review_impact_demo()
@@ -267,8 +280,8 @@ class EvidenceConsoleTests(unittest.TestCase):
 
     def test_console_html_streams_raw_lines_safely(self) -> None:
         for required in (
-            "로컬 문서 검사 · 실제 실행",
-            "공격 검증 기록 · 저장본",
+            "문서 검사 · 지금 실행",
+            "저장 검증 · 읽기 전용",
             "/api/intake?",
             "/api/gcp-snapshot-logs",
             "/api/mission-case-demo",
@@ -276,20 +289,20 @@ class EvidenceConsoleTests(unittest.TestCase):
             "response.body.getReader()",
             '"X-Spectra-Filename":encodeURIComponent(filename)',
             'document.createTextNode(rawLine+"\\n")',
-            "pypdf/TXT · OCR·Document AI·LLM 사용 안 함",
-            "합성 비정형 PDF 예시 실행",
-            "합성 PDF 원문 4쪽 보기 →",
-            "원본 JSONL 보기",
-            "합성 정답 대조",
+            "PDF/TXT 텍스트 추출",
+            "예시 PDF 검사하기",
+            "예시 PDF 4쪽 보기 →",
+            "원본 기록 보기",
+            "예시 정답과 비교",
             "spectra_synthetic_unstructured_radiation_report.pdf",
             "gcp-table",
             "gcp-scenarios",
             "ENDPOINT_OVERRIDE_FORBIDDEN",
             "INPUT_BODY_SHA256_MISMATCH",
-            "3개 입력 연결",
-            "여러 문서 근거 연결 실행",
-            "조건 변경 영향 확인",
-            "결정론적 production Core",
+            "임무·부품·시험 연결",
+            "원문 3종 검증·연결",
+            "변경 후 다시 볼 항목 확인",
+            "결정론적 계산·대조",
             'get("presentation")==="1"',
             "event-card",
         ):

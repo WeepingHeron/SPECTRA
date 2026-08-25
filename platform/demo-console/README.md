@@ -9,8 +9,8 @@ Deployment target for the 2026-08-25 presentation build:
 - project: `iceu-686`
 - region: `asia-northeast3`
 - service: `spectra-demo-console`
-- revision: `spectra-demo-console-00006-6mh` (100% traffic at final verification)
-- image digest: `sha256:edeecb043f1bf12acd50b32ee4ac425fae7a5f8ab321e2edefd7b1888c9d6e53`
+- revision: `spectra-demo-console-00008-rwk` (100% traffic at latest verification)
+- image digest: `sha256:63f925ad46b0219ced4356bbaebe68ae7b813aabe6ad6e5fa4e22c95aa97ee56`
 - public period: through 2026-08-27; remove the service after the event
 
 The public service does not expose a live attack endpoint. Doing so would require Workflow execution or Storage write permissions and would allow unauthenticated callers to create cost, logs, and repeated probe traffic. Attack evidence is therefore replayed from independently verified snapshots.

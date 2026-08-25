@@ -8,15 +8,16 @@
 
 - Slide 08 제목을 `세 역할이 한 가지 실행의 근거를 나눠 검증한다.`로 확정해 세 역할이 서로 다른 실행을 만들거나 같은 계산을 세 번 한다는 오해를 줄였다.
 - Evidence Console 오른쪽 결과 영역을 `항목별 검사 결과` 카드로 재구성했다. 각 카드는 `확인 완료 · 불일치 · 추가 입력 필요`, 확인 대상, 세부 설명, 책임 역할을 분리하며 1280×720에서는 문서 전체가 아니라 요약 panel만 독립 스크롤한다.
-- 공개 revision `spectra-demo-console-00006-6mh`에서 합성 PDF를 실행해 `확인 2 · 불일치 0 · 추가 입력 1`, body `1280×720` overflow 0과 카드 3개를 확인했다.
-- 공개 메뉴의 실행 경계를 재확인했다. 문서 검사는 live Cloud Run parser, 3개 입력 연결은 고정 합성 입력의 production Core live 실행, 공격 검증은 저장 snapshot, 전체 문서 결과는 공개 GCP catalog live read다.
-- 전체 자동 회귀는 unit 415개와 Assurance 공격 실행 47개가 통과했다. 실제 방사선 assurance는 계속 `HOLD`다.
+- 공개 revision `spectra-demo-console-00008-rwk`에서 예시 PDF와 trust-bound Mission Case를 실행하고, body `1280×720` overflow 0과 네 메뉴의 고정된 2×2 좌표를 확인했다. Mission Case는 원문 3개·정책·권리·이력 MATCH와 Core hash 결속을 표시하며 최종 적용성 판단은 `HOLD`한다.
+- 공개 메뉴의 실행 경계를 재확인했다. `문서 검사`는 live Cloud Run parser, `임무·부품·시험 연결`은 고정 합성 입력의 production Core live 실행, `저장된 공격 검증`은 저장 snapshot, `문서별 결과표`는 공개 GCP catalog live read다.
+- `문서별 결과표`는 8열을 5열로 줄이고 네 처리 단계를 한 칸의 2×2 흐름으로 묶었다. 공개 1280×720 콘솔 내장 화면에서 표 우측 잘림 없이 15개 문서·결과·보류 지점과 감사 기록이 함께 보임을 확인했다.
+- 전체 자동 회귀는 unit 436개와 Assurance 공격 실행 47개가 통과했다. 실제 방사선 assurance는 계속 `HOLD`다.
 
 ## H41 Cloud Console Readability & Public Runtime — 2026-08-25
 
 - 네 메뉴를 2×2로 재배치하고, 결과 상단에 `확인 완료 · 불일치 · 추가 입력` 세 집계를 큰 숫자로 분리했다. event 본문·근거·상태 글자와 전체 문서 표의 행간·열 폭을 확대하고 파일명 표시는 숫자 prefix와 underscore를 제거했다.
-- 동일 HTML이 hostname을 감지해 로컬과 Cloud Run 안내를 구분한다. Cloud Run에서는 파일이 GCP 인스턴스로 전송되고 임시 처리 후 삭제되며 GCS에는 저장되지 않는다는 문구를 입력 권리 확인 바로 아래 표시한다.
-- 공개 URL에서 합성 PDF를 실제 실행해 `14 events · 확인 2 · 불일치 0 · 추가 입력 1`, Mission Case 5/5 근거 연결, 저장 공격의 hash/endpoint 차단, GCP 공개 문서 15건과 감사로그 영수증을 브라우저에서 재현했다.
+- 동일 HTML이 로컬과 Cloud Run에서 같은 검사 계약을 사용한다. 화면 안내는 `파일은 검사 후 삭제됩니다.`로 줄이고, 상세 저장 경계는 운영 문서에 유지한다.
+- 로컬 브라우저에서 합성 PDF 실제 검사와 함께, manifest SHA-256으로 고정한 임무·승인 BOM·시험 원문 3개를 adapter가 파싱해 exact identity 6필드와 사건 근거 5/5를 Core에서 대조하는 경로를 재현했다. 문서의 `APPROVED` 자기 표시는 승인 근거로 쓰지 않으며, v2 승인 정책·권리 snapshot·배포 신뢰 앵커가 모두 일치해야 Core 입력이 발행된다. 세 원문과 신뢰 앵커 해시는 Core 결과 해시에 전파된다. 저장 공격의 hash/endpoint 차단과 GCP 공개 문서·감사로그 경로는 별도 저장 snapshot이다.
 - 변경 범위 Product 테스트 35개와 `git diff --check`가 통과했다. 이는 UI·결정론적 합성 동작·저장 snapshot 표시에 대한 검증이며 실제 방사선 assurance는 아니다.
 
 ## H40 Partial Evaluation Continuation — 2026-08-25

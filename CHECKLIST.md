@@ -11,10 +11,11 @@
 - [x] H06 event contract, H07 actual read-only receipt, H08 `LIVE_API` timeline data
 - [x] 환경 intake/readiness gate와 실제 후보의 fail-closed receipt
 - [x] `23LC1024-I/SN` COTS reference package와 `NOT_COMPARABLE / HOLD` gate
-- [x] Product/Evidence Console의 Cloud Run/로컬 PDF·TXT 검사·저장 GCP 기록·전체 문서 결과
+- [x] Product/Evidence Console의 Cloud Run/로컬 PDF·TXT 검사·저장 GCP 기록·문서별 결과표
 - [x] 발표 Phase 01~03 bounded workflow와 외부 blocker 표시
 - [x] 실제 evidence·합성 fallback·미지원 범위의 구분
 - [x] 구조화된 다중 문서 Mission Case Core: exact identity·TID/SEU·사건별 coverage를 source-local로 검증하고 미지원 시험 조건은 HOLD
+- [x] 원문 3종 Mission Package adapter: 임무 조건·승인 BOM·방사선 시험 UTF-8 문서를 manifest SHA-256과 원문 줄에 결속하고, v2 승인 정책 및 권리 snapshot을 배포 신뢰 저장소와 대조한 뒤 Mission Case Core로 전달한다. 세 원문·정책·권리·이력 앵커는 Core 입력/출력 해시에 포함되며 변조·누락·자기 승인 주장은 fail-closed한다.
 - [x] 변경 영향 가치 증명 Core: 기간·차폐·부품·사건별 근거 변경의 재검토 범위와 다음 행동을 결정론적으로 반환
 - [x] 실제 PDF/TXT numeric 후보 추출: TID dose·dose rate·LET·cross-section·fluence·energy·temperature·voltage·sample size·LDC를 원문 span·단위에 결속하며 관측값을 rating으로 승격하지 않음
 - [x] NASA·ESA 공개 관측값 3종을 출처 URL이 있는 `PUBLISHED SOURCE SUMMARY` 수동 fixture로 추가하고 실제값도 최종 HOLD 유지
@@ -40,7 +41,7 @@
 - [x] 공개 Cloud Run 1280×720 제출 deck 11장 전체 x/y overflow 0
 - [x] 새 발표 deck 탭에서 console warning/error 0 확인; Console 자동화 주입 `MutationObserver` 오류는 앱 소스에 해당 API가 없어 별도 도구 잡음으로 분리
 - [x] Evidence Console 핵심 동선 smoke test
-- [x] 공개 Cloud Run `spectra-demo-console` 배포: 발표 자료·문서 검사·3개 입력 연결·공격 기록·전체 문서 결과를 서버 실행 없이 접근
+- [x] 공개 Cloud Run `spectra-demo-console` 배포: 발표 자료·문서 검사·임무·부품·시험 연결·저장된 공격 검증·문서별 결과표를 서버 실행 없이 접근
 - [x] Cloud Run 전용 최소권한 service account, 실제 revision 설정(min 0/max 100·concurrency 20·timeout 120초), 업로드 임시 처리 후 삭제·GCS 미저장 문구와 동작 정렬
 - [x] 공개 URL에서 합성 PDF `확인 2 / 불일치 0 / 추가 입력 1`, Mission Case, 저장 공격 2건, 공개 카탈로그·감사로그 브라우저 검증
 - [x] Evidence Console 1280×720 첫 화면에 `HOLD · 중단 위치 · 7 / 7의 제한된 의미 · 다음 행동`이 스크롤 없이 함께 보이도록 정리
@@ -49,16 +50,17 @@
 - [x] 근거 범위를 넘던 `8-event hash chain 검증`을 `저장 이벤트 무결성 검증`으로 낮춤
 - [x] Local PDF parser와 저장 GCP Agent 경로가 아직 별도라는 사실을 Slide 06·08·시연 대본에서 같은 문장으로 유지
 - [x] GCP 13개 로그 표보다 먼저 핵심 세 결론 노출: `정상 실행도 HOLD · hash mismatch 조기 차단 · endpoint 사전 차단`
-- [x] `?presentation=1` 발표 모드의 메뉴를 `문서 1개 검사 · 3개 입력 연결 · 공격 검증 기록 · 전체 문서 결과`로 정리하고 공개 카탈로그를 같은 콘솔 내부에 표시
+- [x] `?presentation=1` 발표 모드의 메뉴를 `문서 검사 · 임무·부품·시험 연결 · 저장된 공격 검증 · 문서별 결과표`로 정리하고 공개 카탈로그를 같은 콘솔 내부에 표시
 - [x] NASA Landsat 9·ESA Sentinel-2 임무 조건, Microchip 23LC1024 명세, NASA·ESA 방사선 시험 공개값 요약을 분리된 입력 축으로 추가
 - [x] 전용 공개 GCS bucket에 test-data 17개 객체와 catalog·audit·deployment receipt를 업로드하고 비로그인 HTTP 200·CORS·generation 확인
-- [x] `전체 문서 결과`에서 문서 15개·공개 요약 6개·최종 단계 도달 5개·승인 0개, 세 입력 조합 4개와 16-event hash chain + GCP receipt를 브라우저 확인
+- [x] `문서별 결과표`를 `문서 · 자료 역할 · 처리 경로 · 현재 결과 · 보류 지점` 5열로 정리하고, 문서 15개·공개 요약 6개·최종 단계 도달 5개·판단 보류 15개, 세 입력 조합 4개와 16-event hash chain + GCP receipt를 브라우저 확인
 - [x] 필수 입력 일부가 누락돼도 확인 가능한 수치의 원문 위치·숫자 형식·단위·기본 입력 범위 검사를 계속 수행하고 `확인 / 불일치 / 추가 입력 필요`를 분리
 - [x] Local Console에는 실행 Agent가 아닌 책임 역할을 표시하고, `Document Parser Agent` 오인을 제거해 실제 `pypdf/TXT` 단계는 `문서 입력·추출 단계`로 명시
 - [x] 앞 단계가 보류돼도 완료·불일치·추가 입력 필요 ledger를 최종 보류 검토 단계에서 대조하고, 가능한 검사 결과를 숨기지 않음
 - [x] 실제 NASA Micron 요약 + 잘못된 23LC1024 입력으로 `3개 확인 · 2개 불일치 · 2개 추가 입력 필요 · 부품·시험 근거 검토 역할에서 보류` 재현
 - [x] 공개 GCP Catalog 15개 행에 부분 확인 집계와 최초 보류 책임을 반영
-- [x] 공개 revision `spectra-demo-console-00006-6mh`에서 deck 11장, Cloud Run PDF, Mission Case, 저장 공격 기록, 공개 catalog를 브라우저에서 preflight
+- [x] 공개 revision `spectra-demo-console-00008-rwk`에서 deck 11장, Cloud Run PDF, 승인·권리 바인딩 Mission Case, 변경 영향, 저장 공격 기록, 공개 catalog를 브라우저에서 preflight
+- [x] 결과표 가독성·Mission Case 신뢰 바인딩 개선본 Cloud Run 재배포 — 1280×720 deck overflow 0, 네 메뉴 고정, 15개 문서 결과표·감사 기록, 브라우저 warning/error 0 확인
 - [ ] 사람 7분 발표·탭 전환 리허설 2회 측정: 중앙값 6분 30초 이하, 최대 7분, Cloud Run PDF → Mission Case 2회 → 저장 공격 기록 → Closing 포함 — 자동 클릭 동선과 시간 산술은 확인, 사람 낭독은 `NOT_MEASURED`
 - [x] 시연 실패 fallback 확정: 새 값을 만들지 않고 저장 화면 또는 말로 `HOLD · 이유 · 다음 행동`만 설명
 
@@ -82,7 +84,7 @@
 - [x] 과거 채팅/Workstream 진행 규칙을 현재 실행 기준에서 제거
 - [x] Stage 1·2·5 완료, Stage 3·4·8 제한 완료, Stage 6·7·9 오늘 활성으로 재분류
 - [x] Phase 01~03 bounded 완료와 외부 확장을 분리
-- [x] 최신 전체 자동 회귀: unit 415개와 Assurance 공격 실행 47개, failure·False PASS 0
+- [x] 최신 전체 자동 회귀: unit 436개와 Assurance 공격 실행 47개, failure·False PASS 0
 - [x] 비밀정보·private raw evidence·불필요한 생성물 Git 경계 확인
 - [x] 이전 제출 Release 체크포인트 commit·push (`516701c`, `origin/main`)
 - [x] 최신 11장 발표본·7분 대본·audit 후속 변경을 README·PROJECT_OVERVIEW·MVP·ROADMAP·CURRENT와 최종 동기화

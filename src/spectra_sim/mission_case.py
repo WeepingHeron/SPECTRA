@@ -18,7 +18,8 @@ from .tid import calculate_tid
 from .units import tid_krad_si
 
 
-CONTRACT_VERSION = "MISSION_CASE_1.0.0"
+CONTRACT_VERSION = "MISSION_CASE_1.1.0"
+LEGACY_CONTRACT_VERSION = "MISSION_CASE_1.0.0"
 RESULT_VERSION = "MISSION_CASE_RESULT_1.0.0"
 EVENT_TYPES = ("TID", "SEU", "SEL", "SEB", "SEGR")
 DESTRUCTIVE_EVENTS = frozenset({"SEL", "SEB", "SEGR"})
@@ -35,12 +36,31 @@ _IDENTITY_KEYS = frozenset(IDENTITY_FIELDS)
 _CONDITION_KEYS = frozenset(UNSUPPORTED_CONDITIONS)
 
 _ROOT_KEYS = frozenset(
-    {"contract_version", "mission_case_id", "data_class", "mission_conditions", "approved_bom_targets", "sources"}
+    {"contract_version", "mission_case_id", "data_class", "evidence_binding", "mission_conditions", "approved_bom_targets", "sources"}
 )
 _MISSION_KEYS = frozenset(
     {"mission_id", "duration", "environment_tid", "particle_flux", "shielding", "tid_design_factor", "analysis_device_count"}
 )
-_TARGET_KEYS = frozenset({"component_id", "approval_status", "identity"})
+_TARGET_KEYS = frozenset(
+    {"component_id", "approval_status", "approval_policy_id", "approval_target_hash", "identity"}
+)
+_BINDING_KEYS = frozenset(
+    {
+        "contract_version",
+        "manifest_id",
+        "bundle_hash",
+        "document_hashes",
+        "rights_snapshot_id",
+        "rights_history_anchor_ref",
+        "approval_policy_id",
+        "approval_policy_content_hash",
+        "approval_scope_hash",
+        "approval_history_head_hash",
+        "trust_store_id",
+        "trust_store_hash",
+    }
+)
+_DOCUMENT_BINDING_KEYS = frozenset({"role", "document_id", "sha256"})
 _SOURCE_KEYS = frozenset(
     {
         "source_id",
@@ -57,7 +77,16 @@ _CLAIM_KEYS = frozenset(
     {"claim_id", "component_id", "tested_identity", "test_conditions", "event_evidence"}
 )
 _EVENT_KEYS = frozenset(
-    {"event_type", "source_event_type", "locator", "tid_test_limit", "cross_section"}
+    {
+        "event_type",
+        "source_event_type",
+        "locator",
+        "tid_test_limit",
+        "cross_section",
+        "fluence",
+        "sample_size",
+        "observed_events",
+    }
 )
 
 
@@ -134,12 +163,54 @@ def synthesize_mission_case(case: Any, model: Any) -> dict[str, Any]:
     blockers: set[str] = {"SYNTHETIC_OR_PUBLISHED_NOT_APPROVED_ASSURANCE"}
     root = _object(case, _ROOT_KEYS, invalid)
     mission_case_id = root.get("mission_case_id")
-    if root.get("contract_version") != CONTRACT_VERSION:
+    contract_version = root.get("contract_version")
+    if contract_version not in {CONTRACT_VERSION, LEGACY_CONTRACT_VERSION}:
         invalid.add("CONTRACT_VERSION_UNSUPPORTED")
     if not _text(mission_case_id):
         invalid.add("MISSION_CASE_ID_MISSING")
     if root.get("data_class") != "SYNTHETIC":
         invalid.add("MISSION_CASE_DATA_CLASS_INVALID")
+
+    has_evidence_binding = root.get("evidence_binding") is not None
+    if contract_version == CONTRACT_VERSION and not has_evidence_binding:
+        invalid.add("EVIDENCE_BINDING_MISSING")
+    evidence_binding: Mapping[str, Any] = {}
+    if has_evidence_binding:
+        evidence_binding = _object(root.get("evidence_binding"), _BINDING_KEYS, invalid)
+        if evidence_binding.get("contract_version") != "MISSION_CASE_EVIDENCE_BINDING_1.0.0":
+            invalid.add("EVIDENCE_BINDING_VERSION_UNSUPPORTED")
+        for key in (
+            "bundle_hash",
+            "approval_policy_content_hash",
+            "approval_scope_hash",
+            "approval_history_head_hash",
+            "trust_store_hash",
+        ):
+            if not _sha256(evidence_binding.get(key)):
+                invalid.add("EVIDENCE_BINDING_HASH_INVALID")
+        for key in (
+            "manifest_id",
+            "rights_snapshot_id",
+            "rights_history_anchor_ref",
+            "approval_policy_id",
+            "trust_store_id",
+        ):
+            if not _text(evidence_binding.get(key)):
+                invalid.add("EVIDENCE_BINDING_ID_INVALID")
+        document_hashes = evidence_binding.get("document_hashes")
+        bound_roles: set[str] = set()
+        if not isinstance(document_hashes, list) or len(document_hashes) != 3:
+            invalid.add("EVIDENCE_DOCUMENT_BINDING_INVALID")
+        else:
+            for raw_binding in document_hashes:
+                binding = _object(raw_binding, _DOCUMENT_BINDING_KEYS, invalid)
+                role = binding.get("role")
+                if role not in {"MISSION_CONDITIONS", "APPROVED_BOM", "RADIATION_TEST"} or role in bound_roles:
+                    invalid.add("EVIDENCE_DOCUMENT_BINDING_INVALID")
+                else:
+                    bound_roles.add(role)
+                if not _text(binding.get("document_id")) or not _sha256(binding.get("sha256")):
+                    invalid.add("EVIDENCE_DOCUMENT_BINDING_INVALID")
 
     mission = _object(root.get("mission_conditions"), _MISSION_KEYS, invalid)
     required_quantities = ("duration", "environment_tid", "particle_flux", "shielding")
@@ -179,6 +250,11 @@ def synthesize_mission_case(case: Any, model: Any) -> dict[str, Any]:
             continue
         if target.get("approval_status") != "APPROVED":
             blockers.add("BOM_TARGET_NOT_APPROVED")
+        if has_evidence_binding and (
+            target.get("approval_policy_id") != evidence_binding.get("approval_policy_id")
+            or target.get("approval_target_hash") != evidence_binding.get("approval_policy_content_hash")
+        ):
+            invalid.add("BOM_APPROVAL_BINDING_MISMATCH")
         identity = target.get("identity")
         if not isinstance(identity, Mapping):
             invalid.add("BOM_IDENTITY_INVALID")
@@ -191,6 +267,7 @@ def synthesize_mission_case(case: Any, model: Any) -> dict[str, Any]:
     coverage_sources: dict[str, list[dict[str, Any]]] = {event: [] for event in EVENT_TYPES}
     coverage_invalid: dict[str, list[dict[str, Any]]] = {event: [] for event in EVENT_TYPES}
     calculations: list[dict[str, Any]] = []
+    event_observations: list[dict[str, Any]] = []
     condition_comparisons: list[dict[str, Any]] = []
     applicability_codes: set[str] = set()
     identity_codes: set[str] = set()
@@ -326,20 +403,44 @@ def synthesize_mission_case(case: Any, model: Any) -> dict[str, Any]:
                 if not source_valid:
                     coverage_invalid[event_type].append(event_trace)
                     continue
-                coverage_sources[event_type].append(event_trace)
-
                 if event_type in DESTRUCTIVE_EVENTS:
+                    fluence = event.get("fluence")
+                    sample_size = event.get("sample_size")
+                    observed_events = event.get("observed_events")
+                    if (
+                        not _quantity_shape(fluence)
+                        or not isinstance(sample_size, int)
+                        or isinstance(sample_size, bool)
+                        or sample_size < 1
+                        or not isinstance(observed_events, int)
+                        or isinstance(observed_events, bool)
+                        or observed_events < 0
+                    ):
+                        invalid.add(f"{event_type}_OBSERVATION_INVALID")
+                        coverage_invalid[event_type].append(event_trace)
+                        continue
+                    event_observations.append(
+                        {
+                            "event_type": event_type,
+                            "status": "STRUCTURE_VALID",
+                            "fluence": dict(fluence),
+                            "sample_size": sample_size,
+                            "observed_events": observed_events,
+                            "source_trace": event_trace,
+                        }
+                    )
                     applicability_codes.add(f"{event_type}_APPLICABILITY_UNSUPPORTED")
-                    continue
-                if event_type == "TID":
+                elif event_type == "TID":
                     limit = event.get("tid_test_limit")
                     if not _quantity_shape(limit) or not isinstance(tid_requirement, Mapping) or "required_tid_krad_si" not in tid_requirement:
                         invalid.add("TID_TEST_LIMIT_INVALID")
+                        coverage_invalid[event_type].append(event_trace)
                         continue
                     try:
                         tested_limit = tid_krad_si(limit["value"], limit["unit"])
                     except (KeyError, TypeError, ValueError):
                         invalid.add("TID_TEST_LIMIT_INVALID")
+                        coverage_invalid[event_type].append(event_trace)
                         continue
                     required = tid_requirement["required_tid_krad_si"]
                     status = "WITHIN_TESTED_RANGE" if tested_limit >= required else "OUTSIDE_TESTED_RANGE"
@@ -352,6 +453,7 @@ def synthesize_mission_case(case: Any, model: Any) -> dict[str, Any]:
                     cross_section = event.get("cross_section")
                     if not _quantity_shape(cross_section):
                         invalid.add("SEU_CROSS_SECTION_INVALID")
+                        coverage_invalid[event_type].append(event_trace)
                         continue
                     try:
                         see = calculate_see(
@@ -359,10 +461,12 @@ def synthesize_mission_case(case: Any, model: Any) -> dict[str, Any]:
                         )
                     except (KeyError, TypeError, ValueError):
                         invalid.add("SEU_MODEL_INPUT_INVALID")
+                        coverage_invalid[event_type].append(event_trace)
                         continue
                     calculations.append(
                         {"event_type": "SEU", "status": "BOUNDED_SYNTHETIC_CALCULATION", "raw_events_per_mission": see["raw_events_per_mission"], "source_trace": event_trace}
                     )
+                coverage_sources[event_type].append(event_trace)
 
     coverage_rows: list[dict[str, Any]] = []
     coverage_codes: set[str] = set()
@@ -438,6 +542,7 @@ def synthesize_mission_case(case: Any, model: Any) -> dict[str, Any]:
         "questions": questions,
         "identity_comparisons": identity_rows,
         "applicability_calculations": calculations,
+        "event_observations": event_observations,
         "test_condition_comparisons": condition_comparisons,
         "event_coverage": coverage_rows,
         "input_hash": _safe_input_hash(case),

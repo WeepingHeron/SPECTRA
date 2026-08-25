@@ -2,17 +2,17 @@
   "contract_version": "SYNTHETIC_UNSTRUCTURED_GROUND_TRUTH_1.0.0",
   "source_classification": "SYNTHETIC_CONTROL",
   "filename": "spectra_synthetic_unstructured_radiation_report.pdf",
-  "expected_part": "5962L1420901VXC",
-  "manufacturer": "Texas Instruments",
+  "expected_part": "SYNTHETIC-PART-001",
+  "manufacturer": "SYNTHETIC MANUFACTURER",
   "expected_candidates": [
     {
       "field": "ORDERABLE_PART_NUMBER",
-      "value": "5962L1420901VXC",
+      "value": "SYNTHETIC-PART-001",
       "page": 1
     },
     {
       "field": "MANUFACTURER",
-      "value": "Texas Instruments",
+      "value": "SYNTHETIC MANUFACTURER",
       "page": 1
     },
     {
