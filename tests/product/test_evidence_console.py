@@ -101,6 +101,16 @@ class EvidenceConsoleTests(unittest.TestCase):
         )
         self.assertEqual(payload["boundary"]["log_count"], 13)
         self.assertEqual(len(payload["logs"]), 13)
+        self.assertEqual(
+            payload["scenarios"]["body_hash_forgery"]["stable_code"],
+            "INPUT_BODY_SHA256_MISMATCH",
+        )
+        self.assertEqual(
+            payload["scenarios"]["endpoint_override"]["stable_code"],
+            "ENDPOINT_OVERRIDE_FORBIDDEN",
+        )
+        self.assertEqual(payload["scenarios"]["endpoint_override"]["agent_call_count"], 0)
+        self.assertTrue(payload["scenarios"]["normal"]["correlation_id"].startswith("spectra-h05-"))
         for log in payload["logs"]:
             self.assertIn(log["agent"], {"mission", "parts", "assurance"})
             self.assertEqual(log["assurance_decision"], "HOLD")
@@ -168,6 +178,10 @@ class EvidenceConsoleTests(unittest.TestCase):
             "SYNTHETIC REFERENCE CHECK",
             "spectra_synthetic_unstructured_radiation_report.pdf",
             "gcp-table",
+            "gcp-scenarios",
+            "ENDPOINT_OVERRIDE_FORBIDDEN",
+            "INPUT_BODY_SHA256_MISMATCH",
+            'get("presentation")==="1"',
             "event-card",
         ):
             self.assertIn(required, self.html)

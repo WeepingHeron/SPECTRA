@@ -35,7 +35,7 @@
     .philosophy-text{font-size:clamp(15px,1.5vw,19px);font-weight:500;color:#c8c8c4;margin:0;line-height:1.4;letter-spacing:-.015em}
     .philosophy-text strong{color:#fff;font-weight:700;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:2px}
     @media(max-width:860px){.cover-manifesto-grid{grid-template-columns:1fr;gap:24px}.cover-philosophy{border-left:0;padding-left:0;border-top:1px solid rgba(255,255,255,.1);padding-top:16px}}
-    .kicker{margin:0 0 20px;color:var(--muted);font-family:"SF Pro Text","Helvetica Neue",Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}.eyebrow{color:var(--muted);font-size:13px}.slide:not(.cover) h1,.slide:not(.cover) h2{margin:0;letter-spacing:-.025em;line-height:1.14;font-weight:500;word-break:keep-all}.slide:not(.cover) h1{font-size:clamp(46px,5.7vw,78px);max-width:920px}.slide:not(.cover) h2{font-size:clamp(36px,4.25vw,58px);max-width:980px}.lead{font-size:clamp(17px,1.5vw,21px);line-height:1.68;color:var(--muted);max-width:820px;margin:32px 0 0;word-break:keep-all}.slide:first-child .lead{margin-top:38px}.slide2-note,.slide4-note{max-width:none;white-space:nowrap;margin-top:18px}.accent,.warn,.danger{color:#fff}.warn,.danger{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em}
+    .kicker{margin:0 0 20px;color:var(--muted);font-family:"SF Pro Text","Helvetica Neue",Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}.eyebrow{color:var(--muted);font-size:13px}.slide:not(.cover) h1,.slide:not(.cover) h2{margin:0;letter-spacing:-.025em;line-height:1.14;font-weight:500;word-break:keep-all}.slide:not(.cover) h1{font-size:clamp(46px,5.7vw,78px);max-width:920px}.slide:not(.cover) h2{font-size:clamp(36px,4.25vw,58px);max-width:1060px}.lead{font-size:clamp(17px,1.5vw,21px);line-height:1.68;color:var(--muted);max-width:820px;margin:32px 0 0;word-break:keep-all}.slide-summary{max-width:1120px;margin:12px 0 0;color:#aaa;font-size:16px;line-height:1.5;word-break:keep-all}.slide:first-child .lead{margin-top:38px}.slide2-note,.slide4-note{max-width:none;white-space:nowrap;margin-top:18px}.accent,.warn,.danger{color:#fff}.slide:not(.cover) h1 .accent,.slide:not(.cover) h1 .warn,.slide:not(.cover) h1 .danger,.slide:not(.cover) h2 .accent,.slide:not(.cover) h2 .warn,.slide:not(.cover) h2 .danger{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.18em;text-decoration-color:#aaa}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:42px;background:var(--line)}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:36px;background:var(--line)}.card{border:1px solid var(--line);background:rgba(8,8,8,.95);border-radius:0;padding:clamp(20px,2.3vw,32px);box-shadow:none}.grid-2>.card,.grid-3>.card{border:0}.card h3{margin:0 0 16px;font-size:18px;font-weight:600}.card p{color:var(--muted);line-height:1.55;margin:8px 0}.card-label{font-size:10px;letter-spacing:.17em;color:var(--dim);font-weight:700;text-transform:uppercase}
 
     /* Slide 01: Industry Reality & Statistics */
@@ -79,7 +79,23 @@
     .guard-note{margin-top:auto;padding-top:6px;color:var(--dim);font-size:10px;line-height:1.3}
     .slide-src{margin-top:14px;font-size:10px;color:var(--dim);font-family:"SFMono-Regular",Menlo,monospace;letter-spacing:.02em;border-top:1px dashed rgba(255,255,255,.08);padding-top:6px}
 
-    /* Slide 08: Live Multi-Agent Workflow & Interactive Real-Time Executor */
+    /* Slide 07: simplified GCP Multi-Agent workflow */
+    .gcp-simple-flow{display:grid;grid-template-columns:minmax(150px,.8fr) 34px minmax(330px,1.8fr) 34px minmax(170px,.9fr);align-items:stretch;margin-top:28px}
+    .gcp-simple-arrow{display:grid;place-items:center;color:#777;font-size:30px}
+    .gcp-simple-node{display:grid;align-content:center;min-height:190px;padding:22px;border:1px solid #353535;background:#080808}
+    .gcp-simple-node.output{border-color:#8a772d;background:#0d0b04}
+    .gcp-simple-node>span{color:#777;font:700 9.5px/1 "SFMono-Regular",Menlo,monospace;letter-spacing:.13em}
+    .gcp-simple-node>b{margin-top:10px;color:#fff;font-size:20px;line-height:1.25}
+    .gcp-simple-node>small{margin-top:8px;color:#777;font-size:11px;line-height:1.45}
+    .gcp-agent-stack{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:16px;background:#333}
+    .gcp-agent-stack span{padding:12px 8px;background:#0d0d0d;text-align:center;color:#ddd;font-size:11px;font-weight:650}
+    .gcp-proof-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:18px;background:#2b2b2b}
+    .gcp-proof-strip span{padding:11px 13px;background:#080808;color:#777;font-size:10.5px;line-height:1.35}
+    .gcp-proof-strip b{display:block;margin-bottom:4px;color:#fff;font-size:12px}
+    .gcp-simple-actions{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:14px}
+    .gcp-simple-actions p{margin:0;color:#777;font-size:10.5px;line-height:1.4}
+
+    /* Legacy interactive GCP styles retained for historical snapshot logic. */
     .gcp-flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;margin-top:16px;border:1px solid var(--line);background:var(--line);position:relative;overflow:visible}
     .gcp-node{position:relative;display:grid;align-content:center;min-width:0;min-height:86px;padding:10px 12px;background:#080808;transition:all .28s cubic-bezier(.2,.8,.2,1);border-top:2px solid transparent}
     .gcp-node:after{content:"→";position:absolute;right:-10px;top:50%;z-index:5;transform:translateY(-50%);color:#888;background:#050505;border:1px solid #333;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;line-height:1;transition:all .24s ease;box-sizing:border-box}
@@ -184,27 +200,18 @@
     .system-node.output .system-icon{border-color:#f4d35e;color:#f4d35e;font-size:19px;letter-spacing:.05em}
     .system-node b{display:block;color:#fff;font-size:18px;line-height:1.2}
     .system-node small{display:block;margin-top:6px;color:#777;font-size:12px;line-height:1.35}
-    .system-truth{display:flex;align-items:center;justify-content:center;gap:26px;margin-top:13px;color:#777;font-size:11px}
-    .system-truth b{color:#ddd}.system-truth a{color:#fff;text-underline-offset:3px}
 
-    /* Slide 09: Actual adversarial reliability evidence */
-    .attack-intro{margin:16px 0 0;color:var(--muted);font-size:14px;line-height:1.5;max-width:960px}
-    .attack-proof{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(250px,.55fr);gap:36px;margin-top:22px;padding-top:18px;border-top:1px solid #555}
-    .attack-list{display:grid;gap:0}
-    .attack-row{display:grid;grid-template-columns:minmax(180px,.9fr) minmax(260px,1.2fr) auto;align-items:center;gap:18px;min-height:60px;border-bottom:1px solid var(--line)}
-    .attack-row:first-child{border-top:1px solid var(--line)}
-    .attack-name{font-size:14px;font-weight:600;color:#fff;line-height:1.3}
-    .attack-code{font:500 10.5px/1.4 "SFMono-Regular",Menlo,monospace;color:var(--muted)}
-    .attack-state{min-width:108px;padding:5px 8px;border:1px solid #555;text-align:center;font-size:9.5px;font-weight:750;letter-spacing:.08em;color:#ddd;white-space:nowrap}
-    .attack-state.detected{border-style:dashed;color:#fff}
-    .attack-summary{display:grid;align-content:start;border-left:1px solid var(--line);padding-left:28px}
-    .attack-metric{display:grid;grid-template-columns:58px 1fr;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
-    .attack-metric b{font:650 42px/.9 "SF Pro Display","Helvetica Neue",Arial,sans-serif;letter-spacing:-.05em;color:#fff}
-    .attack-metric span{font-size:12px;color:var(--muted);line-height:1.35}.attack-metric span strong{display:block;color:#fff;font-weight:600}
+    /* Slide 08: integrity by design */
+    .attack-intro{margin:12px 0 0;color:var(--muted);font-size:14px;line-height:1.5;max-width:1080px}
+    .integrity-practices{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:20px;background:#333;border-top:1px solid #666}
+    .integrity-practice{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;min-height:96px;padding:14px 16px;background:#080808}
+    .integrity-practice>span{color:#888;font:700 11px/1 "SFMono-Regular",Menlo,monospace;letter-spacing:.1em;padding-top:4px}
+    .integrity-practice h3{margin:0;color:#fff;font-size:16px;line-height:1.3}
+    .integrity-practice p{margin:6px 0 0;color:#999;font-size:12.5px;line-height:1.45}
     .attack-boundary{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px;padding:10px 12px;border:1px solid #555;color:var(--muted);font:600 10px/1.4 "SFMono-Regular",Menlo,monospace;letter-spacing:.05em}
     .attack-boundary strong{color:#fff;font-weight:750;white-space:nowrap}
 
-    /* Slide 10: Roadmap & Future Expansion */
+    /* Slide 09: Roadmap & Future Expansion */
     .roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:20px;background:var(--line)}
     .roadmap-card{padding:18px 16px;background:#090909;display:flex;flex-direction:column}
     .roadmap-phase-tag{font-size:9.5px;letter-spacing:.15em;font-weight:700;text-transform:uppercase;margin-bottom:6px}
@@ -281,7 +288,7 @@
     .slide[data-title="문제"] .slide-main{position:absolute;inset:50% 0 auto;transform:translateY(-50%)}
     .slide[data-title="문제"] .slide-heading{width:min(1276px,100%);margin-inline:auto;transform:none}
     .slide[data-title="문제"] .kicker{margin:0 0 24px}
-    .slide[data-title="문제"] #s1-title{max-width:1120px;white-space:normal;font-size:clamp(32px,3.35vw,52px)}
+    .slide[data-title="문제"] #s3-title{max-width:1120px;white-space:normal;font-size:clamp(32px,3.35vw,52px)}
     .slide[data-title="문제"] .lead{max-width:none;margin:6px 0 0}
     .slide[data-title="문제"] .evidence-overview{width:min(1276px,100%);grid-template-columns:minmax(540px,580px) minmax(0,640px);gap:56px;margin:56px auto 0;flex-shrink:0}
     .slide[data-title="문제"] .evidence-ring{margin-inline:auto}
@@ -290,27 +297,61 @@
     .slide[data-title="문제"] .ring-node.n2{right:-78px}
     .slide[data-title="문제"] .ring-node.n3{bottom:-32px}
     .slide[data-title="문제"] .ring-node.n4{left:-78px}
-    .slide[data-title="문제"] .stat-lines{width:100%;gap:16px;background:transparent}
+    .slide[data-title="문제"] .stat-lines{position:relative;width:100%;gap:16px;background:transparent}
+    .slide[data-title="문제"] .stat-context{position:absolute;top:-34px;left:28px;color:#aaa;font-size:13px;font-weight:650;letter-spacing:-.01em}
     .slide[data-title="문제"] .stat-line{grid-template-columns:144px 1fr;gap:40px;min-height:114px;padding:22px 0 22px 28px;border-top:1px solid #252525;border-bottom:1px solid #181818;text-align:left}
-    .slide[data-title="문제"] .slide-endnotes{margin-top:auto;transform:translateY(6px)}
+    .slide[data-title="문제"] .slide-endnotes{margin-top:auto}
     .slide[data-title="문제"] .slide-endnotes .glossary-bar{margin:0;padding:0;border-top:0;gap:24px}
     .slide[data-title="문제"] .slide-endnotes .source-line{margin:5px 0 0;padding:0;border-top:0}
 
     .comparison-table{width:100%;border-collapse:collapse}.comparison-table td{padding:7px 4px;border-bottom:1px solid #1d1d1d;font-size:10.5px;line-height:1.35;vertical-align:top}.comparison-table td:first-child{width:92px;color:#777;font-family:"SFMono-Regular",Menlo,monospace}.comparison-table td:last-child{color:#ddd}
     .bridge-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:10px;background:#252525}.bridge-item{padding:10px 12px;background:#080808}.bridge-item b{display:block;margin-bottom:4px;font-size:11px}.bridge-item span{color:#777;font-size:9.5px;line-height:1.35}
+    .slide[data-title="COTS 비교"] .slide-summary{font-size:18px;line-height:1.45}
+    .slide[data-title="COTS 비교"] .two-up{gap:16px;margin-top:16px}
+    .slide[data-title="COTS 비교"] .panel-flat{padding:17px 19px}
+    .slide[data-title="COTS 비교"] .panel-tag{margin-bottom:10px;font-size:12.5px;line-height:1.3;letter-spacing:.08em}
+    .slide[data-title="COTS 비교"] .comparison-table td{padding:9px 5px;font-size:13.5px;line-height:1.42;vertical-align:middle}
+    .slide[data-title="COTS 비교"] .comparison-table td:first-child{width:128px;font-size:12px}
+    .slide[data-title="COTS 비교"] .bridge-row{margin-top:12px}
+    .slide[data-title="COTS 비교"] .bridge-item{padding:12px 14px}
+    .slide[data-title="COTS 비교"] .bridge-item b{font-size:13px}
+    .slide[data-title="COTS 비교"] .bridge-item span{font-size:12px;line-height:1.42}
+    .slide[data-title="COTS 비교"] .glossary-bar{font-size:11.5px}
+    .slide[data-title="기존 한계"] .two-up{gap:16px;margin-top:16px}
+    .slide[data-title="기존 한계"] .panel-flat{padding:17px 19px}
+    .slide[data-title="기존 한계"] .panel-tag{margin-bottom:10px;font-size:12.5px;line-height:1.3;letter-spacing:.08em}
+    .slide[data-title="기존 한계"] .compact-list li{padding:8px 0;font-size:14px;line-height:1.48}
+    .slide[data-title="기존 한계"] .glossary-bar{font-size:11.5px}
+    .business-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);gap:18px;margin-top:20px;min-height:0}
+    .business-evidence,.business-value{border:1px solid #2c2c2a;background:#080808;padding:18px 20px}
+    .business-panel-tag{display:block;margin-bottom:8px;color:#888;font:700 11.5px/1.2 "SFMono-Regular",Menlo,monospace;letter-spacing:.12em;text-transform:uppercase}
+    .business-evidence-list{display:grid;gap:0}
+    .business-evidence-row{display:grid;grid-template-columns:160px 1fr;gap:18px;align-items:center;min-height:58px;border-bottom:1px solid #1d1d1d}
+    .business-evidence-row:last-child{border-bottom:0}
+    .business-evidence-row b{font-size:14px;color:#fff;line-height:1.35}
+    .business-evidence-row span{font-size:13px;color:#999;line-height:1.42}
+    .business-value{border-color:#777;display:flex;flex-direction:column}
+    .business-value-list{margin:0;padding:0;list-style:none}
+    .business-value-list li{padding:13px 0;border-bottom:1px solid #222;color:#aaa;font-size:14px;line-height:1.45}
+    .business-value-list strong{display:block;margin-bottom:3px;color:#fff;font-size:15px;font-weight:650}
+    .business-boundary{margin-top:auto;padding-top:13px;color:#888;font-size:12px;line-height:1.45}
+    .business-boundary b{color:#fff;font-weight:650}
+    .business-glossary{display:flex;gap:22px;margin-top:auto;padding-top:10px;color:#888;font-size:10.5px;line-height:1.35}
+    .business-glossary b{color:#ddd;font-weight:700}
+    .slide[data-title="비즈니스 근거"] .source-line{font-size:9.5px;line-height:1.4}
     .shield-primer{display:grid;grid-template-columns:1fr 90px 1fr 90px 1fr;align-items:center;margin-top:30px}.primer-stage{text-align:center}.primer-visual{display:grid;place-items:center;width:112px;height:112px;margin:0 auto 18px;border:2px solid #eee;border-radius:50%;color:#fff;font:700 30px/1 "SF Pro Display","Helvetica Neue",Arial,sans-serif}.primer-stage.radiation .primer-visual{border-style:dashed;font-size:25px;letter-spacing:8px}.primer-stage.shield .primer-visual{border-width:12px;border-color:#bbb;font-size:26px}.primer-stage.component .primer-visual{border-radius:12px;font-size:46px}.primer-stage b{display:block;font-size:23px}.primer-stage p{max-width:260px;margin:8px auto 0;color:#888;font-size:13px;line-height:1.5}.primer-arrow{text-align:center;color:#777;font-size:42px}.shield-rule{display:grid;grid-template-columns:auto 1fr auto 1fr auto;gap:12px;align-items:center;margin:26px auto 0;width:min(900px,100%);color:#999;font-size:13px}.shield-bar{height:18px;background:#555}.shield-bar.thin{width:34%}.shield-bar.thick{width:100%;background:#ddd}.shield-rule strong{color:#fff}.shield-takeaway{text-align:center;margin-top:14px;color:#ddd;font-size:15px}.shield-takeaway b{color:#fff}.shield-takeaway span{color:#888;margin-left:18px}
     .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.spec-table{width:100%;border-collapse:collapse}.spec-table td{padding:9px 0;border-bottom:1px solid #1d1d1d;font-size:11.5px}.spec-table td:first-child{color:#777}.spec-table td:last-child{text-align:right;color:#eee;font-family:"SFMono-Regular",Menlo,monospace;font-weight:650}
     .context-strip{display:flex;gap:10px;margin-top:12px;color:#777;font-size:10px}.context-strip span{padding-right:10px;border-right:1px solid #292929}.context-strip span:last-child{border:0}
     .metric-stage{margin-top:0}.metric-stage .card{padding:18px}.big-metric{min-height:178px}.metric-number{font-size:clamp(54px,7vw,92px)}.segmented{margin:16px 0 12px}.segmented button{padding:8px 13px;font-size:11px}
     .parts-mitigation{display:grid;grid-template-columns:.95fr 1.05fr;gap:14px;margin-top:18px}.parts-mitigation .event-row{padding:9px 0;font-size:11px;grid-template-columns:54px 1fr auto}.parts-mitigation .compare{margin-top:0;grid-template-columns:1fr 30px 1fr}.parts-mitigation .compare-card{padding:12px 8px}.parts-mitigation .compare-card .value{font-size:38px}
-    .identity-grid{gap:14px;background:transparent}.identity-box{border:1px solid #292929;padding:14px 16px}.identity-box li{font-size:11px;line-height:1.45;margin-bottom:5px}.reliability-grid{margin-top:10px}.reliability-card{min-height:72px;padding:9px 11px}
-    .system-map{margin-top:18px}.system-node{min-height:146px}.system-icon{width:60px;height:60px;margin-bottom:12px;font-size:30px}.system-node b{font-size:16px}.system-node small{font-size:10px}
+    .identity-grid{gap:16px;background:transparent}.identity-box{border:1px solid #292929;padding:17px 19px}.identity-box li{font-size:14px;line-height:1.52;margin-bottom:8px}.identity-tag{font-size:13px}.reliability-grid{margin-top:12px}.reliability-card{min-height:86px;padding:12px 14px}.guard-head,.guard-head b{font-size:12.5px}.guard-name{font-size:16px}.guard-note{font-size:12.5px}
+    .system-map{margin-top:22px}.system-node{min-height:164px}.system-icon{width:66px;height:66px;margin-bottom:12px;font-size:33px}.system-node b{font-size:20px}.system-node small{font-size:14px}.slide[data-title="범위·신뢰성"] .source-line{font-size:10px;line-height:1.4}.slide[data-title="범위·신뢰성"] .glossary-bar{font-size:11.5px}
     .gcp-flow{margin-top:4px}.gcp-node{min-height:78px}.demo-console{padding:6px 12px;margin-top:10px}.demo-controls{border-bottom:0;padding-bottom:0}.demo-controls-title{display:none}.demo-buttons{display:grid;grid-template-columns:repeat(3,1fr);width:100%}.demo-btn{justify-content:center;padding:7px 6px;font-size:9.5px}.demo-pipeline-view{grid-template-columns:1fr 1fr 1fr;margin-top:8px;gap:8px}.demo-stage-box{min-height:82px;padding:8px 10px}.live-telemetry-bar{margin-top:7px}.failclosed-alert{margin-top:7px;min-height:46px;padding:7px 9px;font-size:10px}.gcp-actions{margin-top:7px}.gcp-link-btn{padding:6px 10px;font-size:10px}
     .demo-pipeline-view.simplified{grid-template-columns:1.25fr .75fr}
     .roadmap-grid{margin-top:18px}.roadmap-card{padding:13px}.roadmap-card li{font-size:10px;line-height:1.42;margin-bottom:4px}
     .footer{height:var(--bottom);padding:0 var(--side);background:rgba(5,5,5,.9)}.nav button{width:30px;height:30px}.dot{width:17px}
-    @media(max-height:760px){.slide{padding-top:52px;padding-bottom:50px}.slide-inner{max-height:618px}.slide:not(.cover) h1,.slide:not(.cover) h2{font-size:40px}.evidence-overview{grid-template-columns:minmax(390px,.9fr) minmax(0,1.1fr);gap:28px}.evidence-ring{width:360px}.evidence-ring .ring-center{width:112px;height:112px}.evidence-ring .ring-node{width:150px}.evidence-ring .ring-node.n2{right:-38px}.evidence-ring .ring-node.n4{left:-38px}.slide[data-title="문제"] .slide-inner{height:calc(100vh - 102px)}.slide[data-title="문제"] .kicker{margin-bottom:16px}.slide[data-title="문제"] #s1-title{font-size:40px}.slide[data-title="문제"] .lead{margin-top:6px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:500px minmax(0,1fr);gap:40px;margin-top:52px}.slide[data-title="문제"] .evidence-ring{width:296px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-75px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-75px}.slide[data-title="문제"] .stat-lines{gap:16px}.slide[data-title="문제"] .stat-line{grid-template-columns:132px 1fr;gap:36px;min-height:96px;padding:16px 0 16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:auto}.slide[data-title="문제"] .source-line{margin-top:16px}.cover-manifesto-grid{margin-top:28px}.glossary-bar{font-size:9.5px}.source-line,.slide-src{font-size:8.5px}}
-    @media(max-width:900px){.evidence-overview,.two-up,.spec-grid,.parts-mitigation{grid-template-columns:1fr}.evidence-ring{width:340px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:1fr;gap:24px;margin-top:24px}.slide[data-title="문제"] .evidence-ring{width:286px}.slide[data-title="문제"] .evidence-ring .ring-node{width:132px;padding-inline:9px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-66px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-66px}.slide[data-title="문제"] .stat-line{grid-template-columns:126px 1fr;gap:32px;min-height:90px;padding:16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:24px}.shield-primer{grid-template-columns:1fr 36px 1fr 36px 1fr}.primer-visual{width:86px;height:86px}.primer-stage p{font-size:10px}.primer-arrow{font-size:28px}.reliability-grid,.roadmap-grid{grid-template-columns:1fr 1fr}.system-flow{grid-template-columns:repeat(5,1fr);gap:5px}.system-node{min-height:130px}.system-node small{display:none}.system-truth{flex-wrap:wrap}.demo-buttons{grid-template-columns:1fr 1fr}}
+    @media(max-height:760px){.slide{padding-top:52px;padding-bottom:50px}.slide-inner{max-height:618px}.slide:not(.cover) h1,.slide:not(.cover) h2{font-size:40px}.evidence-overview{grid-template-columns:minmax(390px,.9fr) minmax(0,1.1fr);gap:28px}.evidence-ring{width:360px}.evidence-ring .ring-center{width:112px;height:112px}.evidence-ring .ring-node{width:150px}.evidence-ring .ring-node.n2{right:-38px}.evidence-ring .ring-node.n4{left:-38px}.slide[data-title="문제"] .slide-inner{height:calc(100vh - 102px)}.slide[data-title="문제"] .kicker{margin-bottom:16px}.slide[data-title="문제"] #s3-title{font-size:40px}.slide[data-title="문제"] .lead{margin-top:6px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:500px minmax(0,1fr);gap:40px;margin-top:52px}.slide[data-title="문제"] .evidence-ring{width:296px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-75px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-75px}.slide[data-title="문제"] .stat-lines{gap:16px}.slide[data-title="문제"] .stat-line{grid-template-columns:132px 1fr;gap:36px;min-height:96px;padding:16px 0 16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:auto}.slide[data-title="문제"] .source-line{margin-top:16px}.cover-manifesto-grid{margin-top:28px}.glossary-bar{font-size:9.5px}.source-line,.slide-src{font-size:8.5px}}
+    @media(max-width:900px){.evidence-overview,.two-up,.spec-grid,.parts-mitigation,.business-grid{grid-template-columns:1fr}.evidence-ring{width:340px}.slide[data-title="문제"] .evidence-overview{width:100%;grid-template-columns:1fr;gap:24px;margin-top:24px}.slide[data-title="문제"] .evidence-ring{width:286px}.slide[data-title="문제"] .evidence-ring .ring-node{width:132px;padding-inline:9px}.slide[data-title="문제"] .ring-node.n1{top:-31px}.slide[data-title="문제"] .ring-node.n2{right:-66px}.slide[data-title="문제"] .ring-node.n3{bottom:-31px}.slide[data-title="문제"] .ring-node.n4{left:-66px}.slide[data-title="문제"] .stat-line{grid-template-columns:126px 1fr;gap:32px;min-height:90px;padding:16px 22px}.slide[data-title="문제"] .glossary-bar{margin-top:24px}.shield-primer{grid-template-columns:1fr 36px 1fr 36px 1fr}.primer-visual{width:86px;height:86px}.primer-stage p{font-size:10px}.primer-arrow{font-size:28px}.reliability-grid,.roadmap-grid,.integrity-practices{grid-template-columns:1fr 1fr}.system-flow{grid-template-columns:repeat(5,1fr);gap:5px}.system-node{min-height:130px}.system-node small{display:none}.demo-buttons{grid-template-columns:1fr 1fr}.gcp-simple-flow{grid-template-columns:1fr 26px 1.6fr 26px 1fr}.gcp-agent-stack{grid-template-columns:1fr}.business-evidence-row{grid-template-columns:130px 1fr;min-height:50px}}
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
   </style>
 </head>
@@ -332,59 +373,119 @@
 
     <section class="slide" data-title="차폐 기초" aria-labelledby="s1-title">
       <div class="slide-inner">
-        <p class="kicker">01 · WHY RADIATION SHIELDING</p>
-        <h2 id="s1-title">우주 방사선은 전자부품에 영향을 주고,<br><span class="accent">알루미늄 차폐는 누적선량을 줄인다.</span></h2>
+        <p class="kicker">01 · RADIATION &amp; SHIELDING BASICS</p>
+        <h2 id="s1-title">우주 방사선은 전자부품에 영향을 주고,<br><span class="accent">알루미늄 차폐는 방사선 피해를 줄인다.</span></h2>
+        <p class="slide-summary">차폐로 누적 피해는 줄일 수 있지만, 단일사건 오류와 파괴 위험은 부품별 시험 근거를 따로 확인해야 한다.</p>
         <div class="shield-primer" aria-label="우주 방사선이 알루미늄 차폐를 지나 전자부품에 도달하는 흐름">
           <article class="primer-stage radiation"><span class="primer-visual">✦··</span><b>우주 방사선</b><p>궤도와 임무 기간에 따라 누적선량(TID)과 단일사건 영향(SEE)이 달라진다.</p></article>
           <div class="primer-arrow" aria-hidden="true">→</div>
           <article class="primer-stage shield"><span class="primer-visual">AL</span><b>알루미늄 차폐</b><p>위성 구조에 쓰이는 알루미늄의 등가 두께로 입자 에너지 감쇠를 비교한다.</p></article>
           <div class="primer-arrow" aria-hidden="true">→</div>
-          <article class="primer-stage component"><span class="primer-visual">▦</span><b>전자부품</b><p>남은 TID·SEE가 정확한 부품의 시험 근거 안에 있는지 확인한다.</p></article>
+          <article class="primer-stage component"><span class="primer-visual">▦</span><b>전자부품</b><p>TID·SEU를 계산하고, 파괴성 SEE 시험 근거가 있는지 별도로 확인한다.</p></article>
         </div>
         <div class="shield-rule" aria-label="알루미늄 차폐 두께 비교"><strong>1 mm</strong><span class="shield-bar thin"></span><strong>4 mm</strong><span class="shield-bar thick"></span><strong>TID ↓</strong></div>
         <div class="source-line">※ Al 등가 차폐의 기본 개념 · <a href="https://ntrs.nasa.gov/citations/20210018053" target="_blank" rel="noopener noreferrer">NASA Avionics Radiation Hardness Assurance Guidelines</a> · 실제 임무 환경·부품 근거는 아직 0건</div>
       </div>
     </section>
 
-    <section class="slide" data-title="문제" aria-labelledby="s2-title">
+    <section class="slide" data-title="COTS 비교" aria-labelledby="s2-title">
+      <div class="slide-inner">
+        <p class="kicker">02 · COTS IN SPACE</p>
+        <h2 id="s2-title">COTS는 쉽게 조달할 수 있지만,<br><span class="accent">방사선 근거는 따로 검증해야 한다.</span></h2>
+        <p class="slide-summary">임무 기간·환경·차폐 조건에 맞춰, 정확한 부품의 TID·SEU와 파괴성 SEE 시험 범위를 확인한다.</p>
+        <div class="two-up">
+          <article class="panel-flat"><span class="panel-tag">우주급 부품 (Rad-Hard)</span><table class="comparison-table"><tr><td>Commercial availability</td><td>임무·조달 조건에 맞는 공급 가능성을 개별 확인</td></tr><tr><td>Evidence package</td><td>제공된 qualification·시험 근거의 정확한 부품 적용성을 대조</td></tr><tr><td>Decision rule</td><td>우주급 분류만으로 자동 승인하지 않고 임무 조건과 함께 판단</td></tr></table></article>
+          <article class="panel-flat" style="border-color:#777"><span class="panel-tag">상용 기성 부품 (COTS)</span><table class="comparison-table"><tr><td>Commercial availability</td><td>산업용 시장에서 조달 가능하지만 우주 방사선 검증과는 별개</td></tr><tr><td>Space use</td><td>실제 위성에도 사용되지만 우주급 인증과는 별개</td></tr><tr><td>Radiation evidence check</td><td>정확한 부품 식별·TID·SEU·파괴성 SEE 시험 범위·권리를 임무 조건과 대조</td></tr></table></article>
+        </div>
+        <div class="bridge-row"><div class="bridge-item"><b>정확한 부품 확인</b><span>제조사·공정·다이·로트와 시험 대상이 같은지 확인</span></div><div class="bridge-item"><b>방사선 조건 비교</b><span>환경 선량·입자 흐름·차폐·기간과 시험 범위를 대조</span></div><div class="bridge-item"><b>근거가 부족하면 보류</b><span>필수 시험 자료나 사용 권한이 없으면 승인하지 않음</span></div></div>
+        <div class="glossary-bar"><span><b>COTS</b> 상용 기성 부품</span><span><b>Rad-Hard</b> 방사선 경화 특수 소자</span></div>
+        <div class="source-line">※ 부품 이름이 같아도 제조 공정과 시험 조건이 다르면 같은 근거로 보지 않습니다.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="문제" aria-labelledby="s3-title">
       <div class="slide-inner">
         <div class="slide-main">
           <div class="slide-heading">
-            <p class="kicker">02 · THE BROKEN EVIDENCE CHAIN &amp; REALITY</p>
-            <h1 id="s2-title">계산은 끝났는데,<br><span class="danger">근거는 연결되지 않았다.</span></h1>
-            <p class="lead">임무·부품·시험·완화 정보가 서로 다른 파일에 흩어지면, 계산 결과의 근거를 끝까지 추적할 수 없다.</p>
+            <p class="kicker">03 · THE EVIDENCE GAP</p>
+            <h1 id="s3-title">위성 부품을 검토할 자료가,<br><span class="danger">여러 문서에 흩어져 있다.</span></h1>
+            <p class="lead slide-summary">임무 환경·부품 명세·방사선 시험 결과가 서로 다른 문서에 흩어져, 이 시험이 현재 부품과 조건에 맞는지 한 번에 확인하기 어렵다.</p>
           </div>
           <div class="evidence-overview">
             <div class="evidence-ring" aria-label="순서가 아닌 상호 연결형 근거 체인">
-              <div class="ring-center"><b>근거 체인 단절</b><span>기계적 추적 불가</span></div>
-              <div class="ring-node n1"><b>궤도 환경 계산</b><span>SPENVIS / SHIELDOSE</span></div>
-              <div class="ring-node n2"><b>소자 식별 명세</b><span>PN · 공정 · 로트 번호</span></div>
-              <div class="ring-node n3"><b>완화 &amp; 보증 판정</b><span>ECC 완화 · RDM 마진</span></div>
-              <div class="ring-node n4"><b>가속기 빔 성적서</b><span>중이온 PDF 원문</span></div>
+              <div class="ring-center"><b>자료가 흩어짐</b><span>한 번에 대조하기 어려움</span></div>
+              <div class="ring-node n1"><b>임무 방사선 환경</b><span>궤도 · 기간 · 차폐</span></div>
+              <div class="ring-node n2"><b>부품 명세</b><span>부품번호 · 공정 · 로트</span></div>
+              <div class="ring-node n3"><b>검토 기준</b><span>허용 한계 · 완화 설계</span></div>
+              <div class="ring-node n4"><b>방사선 시험 결과</b><span>TID · SEU · 파괴성 SEE</span></div>
             </div>
             <div class="stat-lines">
-              <article class="stat-line"><span class="stat-num">COTS</span><div><div class="stat-label">비용·성능 때문에 쓰는 상용 부품</div><div class="stat-sub">MIL/QML 부품보다 방사선·신뢰성 검증이 일반적으로 덜 엄격하다.</div></div></article>
-              <article class="stat-line"><span class="stat-num">조건별</span><div><div class="stat-label">임무마다 달라지는 검증 범위</div><div class="stat-sub">application·orbit·lifetime·spacecraft 위치가 필요한 부품 증거를 바꾼다.</div></div></article>
-              <article class="stat-line"><span class="stat-num">GAP</span><div><div class="stat-label">시험 자원보다 먼저 확인할 근거 공백</div><div class="stat-sub">exact identity와 event coverage를 확인해 필요한 검증의 우선순위를 정한다.</div></div></article>
+              <div class="stat-context">흩어진 자료에서 확인해야 할 세 가지</div>
+              <article class="stat-line"><span class="stat-num">부품</span><div><div class="stat-label">시험받은 부품과 실제 사용할 부품이 같은가?</div><div class="stat-sub">부품번호·패키지·공정·생산 로트를 대조하고, 정보가 빠져 있으면 같은 근거로 단정하지 않는다.</div></div></article>
+              <article class="stat-line"><span class="stat-num">조건</span><div><div class="stat-label">시험 조건과 현재 임무 조건이 맞는가?</div><div class="stat-sub">궤도·기간·차폐가 바뀌면 필요한 방사선 시험 범위도 다시 확인해야 한다.</div></div></article>
+              <article class="stat-line"><span class="stat-num">범위</span><div><div class="stat-label">필요한 시험 결과가 모두 갖춰졌는가?</div><div class="stat-sub">TID·SEU·파괴성 SEE 중 빠진 근거가 무엇인지 사람이 다시 찾아야 한다.</div></div></article>
             </div>
           </div>
         </div>
         <div class="slide-endnotes">
-          <div class="glossary-bar"><span><b>COTS</b> 상용 기성 부품</span><span><b>RDM</b> 방사선 설계 마진 계수</span></div>
           <div class="source-line">※ <a href="https://ntrs.nasa.gov/citations/20250000142" target="_blank" rel="noopener noreferrer">NASA Small Spacecraft Technology 2024</a> · <a href="https://ntrs.nasa.gov/citations/20210018053" target="_blank" rel="noopener noreferrer">NASA Avionics RHA Guidelines</a> · <a href="https://ntrs.nasa.gov/citations/20220018183" target="_blank" rel="noopener noreferrer">NASA COTS Parts Phase II</a> · accessed 2026-08-24</div>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-title="전체 흐름" aria-labelledby="s3-title">
+    <section class="slide" data-title="비즈니스 근거" aria-labelledby="s4-title">
       <div class="slide-inner">
-        <p class="kicker">03 · EVIDENCE-TO-DECISION</p>
-        <h2 id="s3-title">흩어진 문서가,<br><span class="accent">검증 가능한 판단으로 이어진다.</span></h2>
+        <p class="kicker">04 · EVIDENCE-BACKED CUSTOMER PAIN</p>
+        <h2 id="s4-title">업계가 이미 겪는 문제는,<br><span class="accent">COTS 근거의 분산과 반복 검토다.</span></h2>
+        <p class="slide-summary">NASA·ESA·GAO 자료는 예산·일정 제약, 데이터 공백, 부품 추적성과 감사 부담을 공통적으로 보여준다.</p>
+        <div class="business-grid">
+          <article class="business-evidence">
+            <span class="business-panel-tag">공식 자료가 확인한 사용자 부담</span>
+            <div class="business-evidence-list">
+              <div class="business-evidence-row"><b>소형위성·CubeSat 팀</b><span>제한된 예산·일정에서는 전통적인 우주급 부품과 전수 방사선 시험이 현실적으로 어렵다.</span></div>
+              <div class="business-evidence-row"><b>공급사·부품 유통사</b><span>상용 부품은 로트 편차·단종·추적성 부족과 공정 변경으로 기존 근거가 무효화될 수 있다.</span></div>
+              <div class="business-evidence-row"><b>방사선 시험기관</b><span>특정 NASA 사례에서 시험은 시간당 5–7천 달러, 시설 가용성은 수년 단위 제약으로 보고됐다.</span></div>
+              <div class="business-evidence-row"><b>품질·미션 보증</b><span>부품·공정 적합성, 구성관리, 감사·검사와 시정조치를 계속 추적해야 한다.</span></div>
+            </div>
+          </article>
+          <article class="business-value">
+            <span class="business-panel-tag">SPECTRA가 제공하는 현재 가치</span>
+            <ul class="business-value-list">
+              <li><strong>승인 전 공백 발견</strong>빠진 근거와 적용 조건을 정확한 위치에서 표면화한다.</li>
+              <li><strong>변경 영향 추적</strong>궤도·차폐·부품이 바뀌면 다시 검토할 연결 지점을 찾는다.</li>
+              <li><strong>다음 행동 반환</strong>추가 확인·시험이 필요한 범위를 좁혀 HOLD 이유와 함께 남긴다.</li>
+            </ul>
+            <div class="business-boundary"><b>아직 확인하지 않은 것</b> · 실제 시간 절감 효과와 고객의 구매 의향은 사용자 조사가 필요하다.</div>
+          </article>
+        </div>
+        <div class="business-glossary" aria-label="기관 약어 설명"><span><b>ESA</b> · European Space Agency, 유럽우주국</span><span><b>GAO</b> · U.S. Government Accountability Office, 미국 정부감사원</span></div>
+        <div class="source-line">※ <a href="https://ntrs.nasa.gov/citations/20205006762" target="_blank" rel="noopener noreferrer">NASA CubeSat RHA</a> · <a href="https://ntrs.nasa.gov/api/citations/20240011849/downloads/COTS-parts-reliability.pdf" target="_blank" rel="noopener noreferrer">NASA COTS Reliability 2024</a> · <a href="https://ntrs.nasa.gov/citations/20240009339" target="_blank" rel="noopener noreferrer">NASA COTS Test Methodology 2024</a> · <a href="https://www.gao.gov/products/gao-11-404" target="_blank" rel="noopener noreferrer">GAO-11-404</a> · <a href="https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Product_Assurance" target="_blank" rel="noopener noreferrer">ESA Product Assurance</a> · 시험 비용은 단일 프로젝트 사례이며 산업 평균 아님</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="기존 한계" aria-labelledby="s5-title">
+      <div class="slide-inner">
+        <p class="kicker">05 · CONVENTIONAL REVIEW WORKFLOW</p>
+        <h2 id="s5-title">기존 DB와 엑셀 취합에서는,<br><span class="warn">끊어진 근거를 사람이 다시 연결한다.</span></h2>
+        <p class="lead slide-summary">환경 모델·BOM·시험 PDF·승인 이력을 수기로 대조하고, 조건이 바뀔 때마다 다시 추적한다.</p>
+        <div class="two-up">
+          <article class="panel-flat"><span class="panel-tag">현재 방식 · 사람이 근거를 다시 연결</span><ul class="compact-list"><li><strong>정확한 부품 식별:</strong> 제조사·공정·다이·로트가 시험 원문과 같은지 다시 대조</li><li><strong>시험 조건:</strong> 조사 조건과 event coverage가 이번 임무 판단에 맞는지 다시 확인</li><li><strong>방사선 조건 적용성:</strong> 환경·차폐·수명 변경이 기존 가정을 깨는지 다시 추적</li><li><strong>권리·승인 trace:</strong> 원문 접근 권리와 검토·보완 이력을 별도로 연결</li></ul></article>
+          <article class="panel-flat" style="border-color:#777"><span class="panel-tag">SPECTRA · 기계 검증 가능한 근거 체인</span><ul class="compact-list"><li><strong>기계 검증형 데이터 규칙:</strong> JSON Schema와 RFC 8785 정규화 해시로 환경·성적서·완화 정책을 결속</li><li><strong>부품 식별 정합성(Exact Identity):</strong> 제조사·공정·다이·로트 및 시험 조건이 일치하지 않는 성적서는 거절</li><li><strong>변경 파급 감사:</strong> 암호학적 해시 체인으로 궤도나 차폐 변경 시 깨진 가정을 감지</li><li><strong>Fail-Closed:</strong> 방사선 시험 증거가 결측되거나 불충분하면 HOLD로 격리</li></ul></article>
+        </div>
+        <div class="glossary-bar"><span><b>HOLD</b> · 근거가 부족해 결정을 잠시 멈춘 상태</span><span><b>Fail-Closed</b> · 근거가 없을 때 임의로 통과시키지 않는 방식</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="전체 흐름" aria-labelledby="s6-title">
+      <div class="slide-inner">
+        <p class="kicker">06 · SPECTRA · EVIDENCE TO DECISION</p>
+        <h2 id="s6-title">흩어진 문서가,<br><span class="accent">검증 가능한 판단으로 이어진다.</span></h2>
+        <p class="slide-summary">임무 조건·부품 명세·방사선 시험 결과를 함께 받아, 그 시험 근거를 현재 부품 판단에 쓸 수 있는지 검증한다.</p>
         <div class="system-map" aria-label="SPECTRA 전체 Evidence-to-Decision 흐름">
           <div class="system-flow">
-            <article class="system-node"><span class="system-icon">▤</span><b>문서</b><small>PDF · BOM · 임무</small></article>
+            <article class="system-node"><span class="system-icon">▤</span><b>입력 자료</b><small>임무 · 부품 명세 · 시험 결과</small></article>
             <div class="system-arrow" aria-hidden="true">→</div>
-            <article class="system-node"><span class="system-icon">⌕</span><b>근거 후보</b><small>원문 위치와 함께 추출</small></article>
+            <article class="system-node"><span class="system-icon">⌕</span><b>근거 연결</b><small>부품 · 시험 · 조건의 연결 상태 확인</small></article>
             <div class="system-arrow" aria-hidden="true">→</div>
             <article class="system-node agents"><span class="system-icon">●●●</span><b>3개 Agent</b><small>Mission · Parts · Assurance</small></article>
             <div class="system-arrow" aria-hidden="true">→</div>
@@ -392,140 +493,57 @@
             <div class="system-arrow" aria-hidden="true">→</div>
             <article class="system-node output"><span class="system-icon">HOLD</span><b>판단과 행동</b><small>문제 위치 · 이유 · 다음 조치</small></article>
           </div>
-          <div class="system-truth"><span><b>NOW</b> pypdf 로컬 파싱</span><span><b>GCP</b> 저장된 합성 Agent 경로</span><a href="http://127.0.0.1:8765/demo/evidence-console.html" target="spectra-demo">통합 제품 시연 →</a></div>
         </div>
-        <div class="source-line">※ Document AI·Gemini API 호출 0건 · 현재 로컬 파서와 GCP 저장 경로는 별도 · ACTUAL EVIDENCE 0 / ASSURANCE HOLD</div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="기존 한계" aria-labelledby="s4-title">
-      <div class="slide-inner">
-        <p class="kicker">04 · CONVENTIONAL APPROACHES VS SPECTRA</p>
-        <h2 id="s4-title">기존 DB와 엑셀 취합은<br><span class="warn">왜 근거 체인을 보증하지 못하는가.</span></h2>
-        <p class="lead">환경 모델 출력 → BOM spreadsheet → 시험 PDF → 수기 조건 대조 → 검토·보완으로 이어지는 동안, 사람이 끊어진 근거를 다시 연결해야 한다.</p>
-        <div class="two-up">
-          <article class="panel-flat"><span class="panel-tag">현재 취합 workflow · 서로 다른 파일과 승인 단계</span><ul class="compact-list"><li><strong>정확한 부품 식별:</strong> 제조사·공정·다이·로트가 시험 원문과 같은지 다시 대조</li><li><strong>시험 조건:</strong> 조사 조건과 event coverage가 이번 임무 판단에 맞는지 다시 확인</li><li><strong>임무 적용성:</strong> 환경·차폐·수명 변경이 기존 가정을 깨는지 다시 추적</li><li><strong>권리·승인 trace:</strong> 원문 접근 권리와 검토·보완 이력을 별도로 연결</li></ul></article>
-          <article class="panel-flat" style="border-color:#777"><span class="panel-tag">SPECTRA가 지원하는 방식 · Multi-Agent Evidence Assurance</span><ul class="compact-list"><li><strong>기계 검증형 데이터 규칙:</strong> JSON Schema와 RFC 8785 정규화 해시로 환경·성적서·완화 정책을 결속</li><li><strong>부품 식별 정합성(Exact Identity):</strong> 제조사·공정·다이·로트 및 시험 조건이 일치하지 않는 성적서는 거절</li><li><strong>변경 파급 감사:</strong> 암호학적 해시 체인으로 궤도나 차폐 변경 시 깨진 가정을 감지</li><li><strong>Fail-Closed:</strong> 방사선 시험 증거가 결측되거나 불충분하면 HOLD로 격리</li></ul></article>
-        </div>
-        <div class="glossary-bar"><span><b>NASA REAG</b> NASA 고다드 방사선 효과 DB</span><span><b>ESA ESCIES</b> 유럽우주국 부품 정보교환 포털</span><span><b>Fail-Closed</b> 근거 결측 시 HOLD로 닫는 원칙</span></div>
-        <div class="source-line">※ 현재 업무 시간·반려율은 아직 측정하지 않음 · BUSINESS_VALIDATION_PROTOCOL 기준 UNSET / UNVALIDATED</div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="COTS 비교" aria-labelledby="s5-title">
-      <div class="slide-inner">
-        <p class="kicker">05 · COTS ADOPTION &amp; RADIATION UNCERTAINTY</p>
-        <h2 id="s5-title">왜 COTS인가, 그리고 왜 검증인가.<br><span class="accent">조달 가능성과 임무별 검증 사이의 간극.</span></h2>
-        <p class="lead">COTS는 상용 조달 선택지를 넓히지만, 조달 가능성이 곧 우주 임무 적합성을 뜻하지 않는다. exact identity와 시험 근거를 임무 조건에 맞춰 다시 검증해야 한다.</p>
-        <div class="two-up">
-          <article class="panel-flat"><span class="panel-tag">우주급 부품 (Rad-Hard)</span><table class="comparison-table"><tr><td>Commercial availability</td><td>임무·조달 조건에 맞는 공급 가능성을 개별 확인</td></tr><tr><td>Evidence package</td><td>제공된 qualification·시험 근거의 정확한 부품 적용성을 대조</td></tr><tr><td>Decision rule</td><td>우주급 분류만으로 자동 승인하지 않고 임무 조건과 함께 판단</td></tr></table></article>
-          <article class="panel-flat" style="border-color:#777"><span class="panel-tag">상용 기성 부품 (COTS · Microchip 23LC1024)</span><table class="comparison-table"><tr><td>Commercial availability</td><td>현재 양산되는 산업용 SRAM이지만 우주 임무 적합성과는 별개</td></tr><tr><td>Space use</td><td>GOMX-4B CHIMERA에서 방사선 실험용 COTS 메모리로 탑재</td></tr><tr><td>Mission-specific verification</td><td>exact 비행 suffix·lot·TID·SEE·권리·적용성을 임무별 확인</td></tr></table></article>
-        </div>
-        <div class="bridge-row"><div class="bridge-item"><b>부품 식별 정합성 (Exact Identity)</b><span>제조사·공정·다이·로트와 시험 대상의 일치를 검증</span></div><div class="bridge-item"><b>임무 적용성 (Mission Applicability)</b><span>환경·차폐·수명과 시험 조건의 적용 범위를 대조</span></div><div class="bridge-item"><b>Fail-Closed 보증 (HOLD)</b><span>필수 event 근거·권리·승인이 부족하면 판단을 보류</span></div></div>
-        <div class="glossary-bar"><span><b>COTS</b> 상용 기성 부품</span><span><b>Rad-Hard</b> 방사선 경화 특수 소자</span><span><b>QML-V</b> 미국 우주 규격 최고 등급 인증</span></div>
-        <div class="source-line">※ 정성적 검토 구조 · 외부 가격·납기·성능 수치를 사용하지 않음 · 정확한 부품·임무별 원문·조건·권리·적용성 검증 필요 · NOT_EVALUATED / HOLD</div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="임무·부품" aria-labelledby="s6-title">
-      <div class="slide-inner">
-        <p class="kicker">06 · TARGET MISSION &amp; COMPONENT EVIDENCE</p>
-        <h2 id="s6-title">단 1바이트의 차이가,<br><span class="accent">전체 궤도 해석을 무효화한다.</span></h2>
-        <p class="lead">LEO SSO 550 km 궤도 조건과 COTS SRAM 부품을 정의하고, 제조사·로트 번호 기반으로 방사선 시험 증거의 일치성을 검증합니다.</p>
-        <div class="spec-grid">
-          <article class="panel-flat"><span class="panel-tag">01 · TARGET MISSION PROFILE</span><div class="panel-title">LEO SSO 550 km</div><table class="spec-table"><tr><td>궤도 형태 (Orbit)</td><td>태양동기궤도 (SSO)</td></tr><tr><td>운용 고도 (Altitude)</td><td>550 km</td></tr><tr><td>궤도 경사각 (Inc.)</td><td>97.6°</td></tr><tr><td>임무 수명 (Duration)</td><td>1년 (365일)</td></tr></table><div class="source-line">※ 궤도 고도·경사각 파라미터가 다음 차폐 해석으로 전달됨</div></article>
-          <article class="panel-flat"><span class="panel-tag">02 · TARGET COMPONENT BOM</span><div class="panel-title">COTS SPI SRAM (23LC1024)</div><table class="spec-table"><tr><td>제조사 (Vendor)</td><td>Microchip Technology</td></tr><tr><td>승인 검토 부품번호</td><td>23LC1024-I/SN</td></tr><tr><td>실제 우주 사용 역할</td><td>CHIMERA 방사선 실험용 SRAM</td></tr><tr><td>남은 identity 공백</td><td>비행 suffix·lot·die revision 미공개</td></tr></table><div class="context-strip"><span>✓ 현재 양산 COTS</span><span>⚠ 비행 적합성은 HOLD</span></div></article>
-        </div>
-        <div class="glossary-bar"><span><b>SSO</b> 태양동기궤도</span><span><b>COTS</b> 우주 전용이 아닌 상용 기성 부품</span><span><b>Lot ID</b> 동일 제조 공정 배치의 생산 로트 식별 번호</span></div>
-        <div class="source-line">※ 데이터 규격: JSON Schema Draft 2020-12 · IETF RFC 8785 (JCS) · SYNTHETIC DEMO</div>
       </div>
     </section>
 
     <section class="slide" data-title="범위·신뢰성" aria-labelledby="s7-title">
       <div class="slide-inner">
-        <p class="kicker">07 · SCOPE &amp; RELIABILITY</p>
-        <h2 id="s7-title">SPECTRA가 지원하는 범위와,<br><span class="accent">지원하지 않는 범위를 함께 보여준다.</span></h2>
+        <p class="kicker">07 · DECISION BOUNDARY</p>
+        <h2 id="s7-title">SPECTRA는 근거를 연결해 판단을 돕고,<br><span class="accent">근거가 없으면 멈춘다.</span></h2>
+        <p class="slide-summary">근거 연결과 보수적 판단을 지원하지만, 임무 인증과 물리 시험을 대신하지 않는다.</p>
         <div class="identity-grid">
-          <article class="identity-box is-box"><span class="identity-tag is">지원하는 범위</span><ul><li><strong>방사선 근거 체인 &amp; 감사:</strong> 궤도 환경·부품 시험 성적서·완화 가정을 추적 가능한 증거 패킷으로 결합</li><li><strong>Fail-Closed 판단:</strong> 근거가 0건이거나 모델 지원 범위 밖이면 HOLD로 판단 보류</li><li><strong>결정론적 Multi-Agent 실행:</strong> 환경·부품·판정 역할이 데이터 무결성을 독립 대조</li></ul></article>
+          <article class="identity-box is-box"><span class="identity-tag is">지원하는 범위</span><ul><li><strong>방사선 근거 체인 &amp; 감사:</strong> 임무 환경·부품 시험 근거·완화 가정을 판단 규칙과 출처에 연결</li><li><strong>Fail-Closed 판단:</strong> 필수 근거가 없거나 모델 지원 범위 밖이면 승인하지 않고 HOLD</li><li><strong>결정론적 Multi-Agent 실행:</strong> 환경·부품을 각각 검증하고, 판정 역할이 입력과 결과 무결성을 재확인</li></ul></article>
           <article class="identity-box isnot-box"><span class="identity-tag isnot">지원하지 않는 범위</span><ul><li><strong>임무 적합성 자동 인증 도구가 아님:</strong> AI가 부품 적합성을 임의로 보증하거나 단독 승인하지 않음</li><li><strong>생성형 AI 추측에 의존하지 않음:</strong> 물리 규칙과 불변 데이터 검증 경로를 사용</li><li><strong>가속기 빔 시험의 대체가 아님:</strong> 시험 성적서 없이 숫자를 지어내지 않음</li></ul></article>
         </div>
         <div class="reliability-grid"><article class="reliability-card"><div class="guard-head"><b>01</b><span>재현성</span></div><div class="guard-name">같은 입력 → 같은 결과</div><div class="guard-note">결정론적 고정 재현</div></article><article class="reliability-card"><div class="guard-head"><b>02</b><span>범위 보호</span></div><div class="guard-name">범위 밖 → 계산 안 함</div><div class="guard-note">보간·외삽 엄격 금지</div></article><article class="reliability-card"><div class="guard-head"><b>03</b><span>보수적 안전</span></div><div class="guard-name">근거 결측 → 즉시 HOLD</div><div class="guard-note">Fail-Closed 의사결정</div></article><article class="reliability-card"><div class="guard-head"><b>04</b><span>무결성</span></div><div class="guard-name">바뀐 숫자 → 즉시 무효화</div><div class="guard-note">변조 감지 해시 체인</div></article></div>
-        <div class="glossary-bar"><span><b>Fail-Closed</b> 미검증·결측 시 HOLD로 닫는 원칙</span><span><b>결정론적</b> 동일 입력에 동일 결과를 내는 연산</span><span><b>Multi-Agent</b> 역할별 전문 모듈이 독립 대조하는 구조</span></div>
+        <div class="glossary-bar"><span><b>Fail-Closed</b> 미검증·결측 시 HOLD로 닫는 원칙</span><span><b>결정론적</b> 동일 입력에 동일 결과를 내는 연산</span><span><b>Multi-Agent</b> 역할별 검증 뒤 판정 역할이 다시 확인하는 구조</span></div>
         <div class="source-line">※ ISO/IEC 25010 · IETF RFC 8785 (JCS) · NIST FIPS 180-4 (SHA-256)</div>
       </div>
     </section>
 
     <section class="slide" data-title="GCP Multi-Agent" aria-labelledby="s8-title">
       <div class="slide-inner">
-        <p class="kicker">08 · MULTI-AGENT ON GCP &amp; FAIL-CLOSED PIPELINE</p>
-        <h2 id="s8-title">세 Agent가 서로 다른 증거를 검증하고,<br><span class="accent">오류는 발견된 경계에서 멈춘다.</span></h2>
-        <div class="gcp-section-label"><strong>역할 분담</strong> · 검증 구조</div>
-        <div class="gcp-flow" id="workflow-flowchart" aria-label="GCP Multi-Agent Workflow 6단계">
-          <div class="gcp-node state-valid" id="node-01"><div class="gcp-node-header"><span>01 STORAGE</span><span class="node-pill">OK</span></div><b>샘플 입력</b></div>
-          <div class="gcp-node state-valid" id="node-02"><div class="gcp-node-header"><span>02 WORKFLOWS</span><span class="node-pill">OK</span></div><b>오케스트레이터</b></div>
-          <div class="gcp-node state-valid" id="node-03"><div class="gcp-node-header"><span>03 MISSION</span><span class="node-pill">VALID</span></div><b>환경 독립검증</b><small class="role-duty">임무·환경 입력과 출처 확인</small></div>
-          <div class="gcp-node state-valid" id="node-04"><div class="gcp-node-header"><span>04 PARTS</span><span class="node-pill">VALID</span></div><b>BOM·증거검증</b><small class="role-duty">부품 identity·시험 근거 확인</small></div>
-          <div class="gcp-node state-valid" id="node-05"><div class="gcp-node-header"><span>05 ASSURANCE</span><span class="node-pill">VALID</span></div><b>판정 독립대조</b><small class="role-duty">결과 일관성·HOLD 조건 확인</small></div>
-          <div class="gcp-node state-valid" id="node-06"><div class="gcp-node-header"><span>06 STORAGE</span><span class="node-pill">SAVED</span></div><b>감사로그 기록</b></div>
+        <p class="kicker">08 · GCP MULTI-AGENT EXECUTION</p>
+        <h2 id="s8-title">실제 GCP에서는,<br><span class="accent">세 역할이 한 실행을 교차 검증한다.</span></h2>
+        <p class="slide-summary">Cloud Workflows가 세 Agent를 호출하고, 고정된 입력과 결과를 하나의 감사 체인으로 남긴다.</p>
+        <div class="gcp-simple-flow" aria-label="GCP Multi-Agent 검증 흐름">
+          <article class="gcp-simple-node"><span>INPUT</span><b>Cloud Storage</b><small>입력 본문과 generation을 고정</small></article>
+          <div class="gcp-simple-arrow" aria-hidden="true">→</div>
+          <article class="gcp-simple-node"><span>WORKFLOWS + CLOUD RUN</span><b>역할별 독립 대조</b><div class="gcp-agent-stack"><span>Mission<br>환경·출처</span><span>Parts<br>부품·시험</span><span>Assurance<br>정책·결측</span></div></article>
+          <div class="gcp-simple-arrow" aria-hidden="true">→</div>
+          <article class="gcp-simple-node output"><span>IMMUTABLE RESULT</span><b>감사로그 + HOLD</b><small>근거가 부족하면 승인하지 않음</small></article>
         </div>
-        <div class="gcp-section-label"><strong>검증 기록과 차단 예시</strong> · 저장 화면 / 실시간 실행 아님</div>
-        <div class="demo-console">
-          <div class="demo-controls"><span class="demo-controls-title">하나의 흐름으로 비교</span><div class="demo-buttons" id="scenario-buttons-group"><button type="button" class="demo-btn active" data-scenario="normal">● 1. 정상 합성 실행</button><button type="button" class="demo-btn" data-scenario="body_hash_forgery">● 2. 입력 body hash 위조</button><button type="button" class="demo-btn" data-scenario="endpoint_override">● 3. endpoint override 차단</button><button type="button" class="demo-btn design" data-design-scenario="parts_block">● 4. Parts 차단 예시</button><button type="button" class="demo-btn design" data-design-scenario="assurance_block">● 5. Assurance 차단 예시</button></div><p class="scenario-note">1–3은 독립 확인된 저장 기록, 4–5는 역할을 설명하는 동작 예시입니다. 모든 버튼은 새 Workflow를 시작하지 않습니다.</p></div>
-          <div id="demo-input-view" hidden></div>
-          <div class="demo-pipeline-view simplified">
-            <div class="demo-stage-box"><span class="demo-stage-label">Cloud Run Agent Execution</span><div id="demo-agent-view"><div class="demo-agent-pill"><span><strong>Mission Agent</strong> · LEO SSO 550km 환경 범위 검증</span><span class="demo-badge valid" id="badge-mission">VALID</span></div><div class="demo-agent-pill"><span><strong>Parts Agent</strong> · BOM 및 시험성적서 해시 대조</span><span class="demo-badge valid" id="badge-parts">VALID</span></div><div class="demo-agent-pill"><span><strong>Assurance Agent</strong> · 정책·결측 독립 대조</span><span class="demo-badge valid" id="badge-assurance">VALID</span></div></div></div>
-          <div class="demo-stage-box"><span class="demo-stage-label">저장된 판정</span><div class="demo-stage-val"><b>Status:</b> <span id="demo-status-text">VALID · NOT_EVALUATED</span><br><b>Decision:</b> <span class="demo-badge hold" id="demo-decision-badge">HOLD</span><br><span id="demo-reason-text">실제 환경·부품 시험 근거 결측</span></div></div>
-          </div>
-          <div class="live-telemetry-bar"><span class="live-pill sim" id="live-status-pill">검증된 고정 GCP 실행 기록 · SNAPSHOT / NOT LIVE</span><span class="live-meta-text">Stored execution: <a id="live-exec-id" href="#" target="_blank" rel="noopener">execution ↗</a></span><span class="live-time-text" id="live-time-text">Agent 3개 VALID</span></div>
-          <div class="failclosed-alert alert-normal" id="demo-failclosed-alert"><strong>정상 합성 실행:</strong> 세 Agent가 역할을 나눠 실행해도 실제 환경·부품 근거가 없으면 최종 판단은 HOLD.</div>
-        </div>
-        <div class="gcp-actions"><a class="gcp-link-btn" id="gcp-console-btn" target="_blank" rel="noopener noreferrer">Google Cloud Console Workflows 열기 ↗</a><span class="gcp-scope">iceu-686 · asia-northeast3 · Cloud Run Agent 3종</span></div>
-        <div class="trust-integrity-bar" aria-label="Trust and Integrity Controls"><span class="trust-title">TRUST &amp; INTEGRITY<small>SNAPSHOT + LOCAL REGRESSION · NOT PEN TEST / KMS / ASSURANCE</small></span><span><b>Private Agent Access</b>공개 IAM 주체 0</span><span><b>Input Binding</b>body hash·revision 결속</span><span><b>Evidence Boundary</b>자체 승인·낙관 승격 차단</span><span><b>Fail-Closed Output</b>값 숨김·후속 호출 중단·HOLD</span></div>
+        <div class="gcp-proof-strip"><span><b>실제 control</b>Workflow SUCCEEDED</span><span><b>무결성</b>저장 이벤트 무결성 검증</span><span><b>최종 경계</b>ACTUAL EVIDENCE 0 · HOLD</span></div>
+        <div class="gcp-simple-actions"><a class="gcp-link-btn" href="http://127.0.0.1:8765/demo/evidence-console.html?presentation=1" target="spectra-demo">Evidence Console 열기 →</a><p>로컬 PDF 파서와 저장 GCP Agent 경로는 아직 별도 · GCP 실행 성공 ≠ 방사선 보증</p></div>
       </div>
     </section>
 
-    <section class="slide" data-title="공격 검증" aria-labelledby="s9-title">
+    <section class="slide" data-title="무결성 설계" aria-labelledby="s9-title">
       <div class="slide-inner">
-        <p class="kicker">09 · ADVERSARIAL RELIABILITY ON ACTUAL GCP</p>
-        <h2 id="s9-title">무결점이라 주장하지 않는다.<br><span class="accent">결함을 발견하면, 승인하지 않는다.</span></h2>
-        <p class="attack-intro">실제 GCP에서 정상 control과 합성 무결성 공격 4건을 재실행했다. 발견했던 두 결함까지 배포 경로에서 기대한 경계로 차단됐다.</p>
-        <div class="attack-proof">
-          <div class="attack-list" aria-label="ASR-D02 Phase 1 공격 결과">
-            <div class="attack-row"><span class="attack-name">부품 증거 hash 변조</span><span class="attack-code">PART_EVIDENCE_HASH_MISMATCH</span><span class="attack-state">경계 차단 확인</span></div>
-            <div class="attack-row"><span class="attack-name">Agent endpoint override</span><span class="attack-code">ENDPOINT_OVERRIDE_FORBIDDEN</span><span class="attack-state">경계 차단 확인</span></div>
-            <div class="attack-row"><span class="attack-name">exact part number 변조</span><span class="attack-code">PART_IDENTITY_MISMATCH</span><span class="attack-state">재검증 차단</span></div>
-            <div class="attack-row"><span class="attack-name">존재하지 않는 generation</span><span class="attack-code">INPUT_GENERATION_MISMATCH</span><span class="attack-state">재검증 차단</span></div>
-          </div>
-          <div class="attack-summary" aria-label="공격 검증 요약">
-            <div class="attack-metric"><b>4</b><span><strong>SAFE FAILURE</strong>평가한 공격 전부</span></div>
-            <div class="attack-metric"><b>1</b><span><strong>CONTROL PASS</strong>Core hash·semantic 일치</span></div>
-            <div class="attack-metric"><b>0</b><span><strong>False Accept / PASS</strong>평가한 공격 4건 범위</span></div>
-          </div>
+        <p class="kicker">09 · INTEGRITY BY DESIGN</p>
+        <h2 id="s9-title">안정성은 테스트 횟수보다,<br><span class="accent">틀린 입력이 승인으로 넘어가지 않는 구조에서 만든다.</span></h2>
+        <p class="attack-intro slide-summary">입력부터 결과 저장까지 각 경계가 다음 단계로 넘겨도 되는지를 다시 확인한다.</p>
+        <div class="integrity-practices" aria-label="SPECTRA 무결성 및 안정성 설계 조치">
+          <article class="integrity-practice"><span>01</span><div><h3>Schema-first 입력 계약</h3><p>중첩 타입·단위·필수 필드·비유한 수가 틀리면 계산 전에 stable code로 거절한다.</p></div></article>
+          <article class="integrity-practice"><span>02</span><div><h3>결정론적 Core</h3><p>같은 canonical 입력은 같은 결과를 내고, 브라우저나 Agent가 핵심 계산을 다시 만들지 않는다.</p></div></article>
+          <article class="integrity-practice"><span>03</span><div><h3>Exact Identity 결속</h3><p>제조사·부품번호·package·lot/die·시험 조건이 다르면 다른 부품의 근거로 판단하지 않는다.</p></div></article>
+          <article class="integrity-practice"><span>04</span><div><h3>Hash와 감사 체인</h3><p>RFC 8785 정규화와 SHA-256으로 입력·증거·결과·실행 이벤트의 변경을 추적한다.</p></div></article>
+          <article class="integrity-practice"><span>05</span><div><h3>Fail-Closed 정책</h3><p>근거 결측·범위 이탈·값 불일치가 생기면 숫자를 숨기고 후속 호출과 승인을 HOLD한다.</p></div></article>
+          <article class="integrity-practice"><span>06</span><div><h3>배포 경로 격리</h3><p>비공개 Agent, endpoint override 금지, Storage generation·배포 revision 결속으로 실행 대상을 고정한다.</p></div></article>
         </div>
-        <div class="attack-boundary"><strong>DEPLOYED RETEST VERIFIED</strong><span>나머지 12건 NOT_EVALUATED → FINAL ASSURANCE HOLD</span></div>
-        <div class="source-line">※ locked actual GCP 5 executions: control 1 + 합성 공격 4 · False Accept/PASS/unexpected 0 · 전체 침투시험·KMS·방사선 보증 아님</div>
-      </div>
-    </section>
-
-    <section class="slide" data-title="향후 로드맵" aria-labelledby="s10-title">
-      <div class="slide-inner">
-        <p class="kicker">10 · ROADMAP &amp; FUTURE EXPANSION TOOLS</p>
-        <h2 id="s10-title">검증된 기반 위에서,<br><span class="accent">실제 데이터와 AI 파이프라인으로 확장한다.</span></h2>
-        <div class="roadmap-grid">
-          <article class="roadmap-card"><span class="roadmap-phase-tag p1">Phase 01 · 단기 확장</span><div class="roadmap-title">공인 우주환경 DB 및 상용 부품 성적서 연동</div><div class="roadmap-tools"><span class="roadmap-tool-badge">ESA SPENVIS 연동</span><span class="roadmap-tool-badge">NASA 공인 DB</span><span class="roadmap-tool-badge">COTS 성적서 라이브러리</span></div><ul><li>우주 환경 연동</li><li>부품 증거 라이브러리</li><li>국제 표준 교차검산</li></ul></article>
-          <article class="roadmap-card"><span class="roadmap-phase-tag p2">Phase 02 · 중기 확장</span><div class="roadmap-title">AI 성적서 자동 분석 &amp; 엔지니어 검토 체계</div><div class="roadmap-tools"><span class="roadmap-tool-badge">Document AI</span><span class="roadmap-tool-badge">Gemini 멀티모달</span><span class="roadmap-tool-badge">Human-in-the-Loop</span></div><ul><li>PDF 성적서 자동 분석</li><li>AI 추출값 후보 격리</li><li>생산 로트 추적</li></ul></article>
-          <article class="roadmap-card"><span class="roadmap-phase-tag p3">Phase 03 · 장기 확장</span><div class="roadmap-title">설계 변경 영향 분석 &amp; 엔터프라이즈 보안</div><div class="roadmap-tools"><span class="roadmap-tool-badge">Change Impact Analyzer</span><span class="roadmap-tool-badge">3D 위성 CAD 연계</span><span class="roadmap-tool-badge">기업 보안 암호화</span></div><ul><li>설계 변경 영향 분석</li><li>물리·하드웨어 연계</li><li>고객사 비공개 evidence 보호</li></ul></article>
-        </div>
-        <div class="pilot-impact" aria-label="측정 가능한 파일럿 효과">
-          <div class="pilot-impact-head"><b>기대 효과 → 파일럿 검증</b><span>EXPECTED / UNVALIDATED</span></div>
-          <p class="pilot-impact-copy">근거를 연결하고 누락·다음 행동을 먼저 드러내, 반복 조사·재검토 부담과 제한된 시험 자원의 우선순위를 개선할 가능성을 측정한다.</p>
-          <div class="pilot-measures">
-            <div class="pilot-measure"><b>case당 active review time</b><small>PILOT MEASURE · UNVALIDATED</small></div>
-            <div class="pilot-measure"><b>trace completeness</b><small>PILOT MEASURE · UNVALIDATED</small></div>
-            <div class="pilot-measure"><b>보완 return rate</b><small>PILOT MEASURE · UNVALIDATED</small></div>
-          </div>
-        </div>
-        <div class="source-line">※ 실제 연동·권리·과학 교차검산·일정 및 파일럿 KPI는 향후 검증 대상 · 현재 값 UNSET <a class="roadmap-lab-link" href="http://127.0.0.1:8765/demo/evidence-console.html" target="spectra-demo">통합 제품 시연 열기 ↗</a></div>
+        <div class="attack-boundary"><strong>ACTUAL GCP ATTACK SCOPE</strong><span>4 / 16 평가</span><span>SAFE_FAILURE 4</span><span>False Accept 0 · False PASS 0</span><span>12 NOT_EVALUATED</span><span>FINAL HOLD</span></div>
+        <div class="source-line">※ 입력 계약·Core·정책·GCP 경계의 고정 회귀와 배포 재검증 범위 · 전체 침투시험·보안 인증·방사선 보증 아님</div>
       </div>
     </section>
 
@@ -921,7 +939,8 @@
       }
     }
 
-    document.getElementById('scenario-buttons-group').addEventListener('click', e => {
+    const scenarioButtonsGroup=document.getElementById('scenario-buttons-group');
+    if(scenarioButtonsGroup)scenarioButtonsGroup.addEventListener('click', e => {
       const btn = e.target.closest('button[data-scenario],button[data-design-scenario]');
       if(!btn) return;
       if(btn.dataset.scenario)applyScenario(btn.dataset.scenario);
@@ -962,7 +981,7 @@
 
     if(eccControls)renderCoreEcc('off');
     renderGcpSnapshot();
-    applyScenario('normal');
+    if(scenarioButtonsGroup)applyScenario('normal');
     show(0);
   </script>
 </body>

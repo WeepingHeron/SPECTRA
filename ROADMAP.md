@@ -18,7 +18,7 @@
 | Stage 6 Assurance | `SUBMISSION_COMPLETE_WITH_LIMITS` | ASR-D02 control 1 + 공격 4 `PARTIAL_SAFE`; 나머지 12건은 제출 후 |
 | Stage 7 GCP | `COMPLETE — SYNTHETIC_BOUNDED` | 보완 revision·Core parity·LIVE_API receipt 재수집 완료 |
 | Stage 8 Product | `SUBMISSION_COMPLETE_WITH_LIMITS` | Console·Evidence Review·fallback 완료; live timeline HTML 연결은 제출 선택 항목 |
-| Stage 9 발표·제출 | `ACTIVE_TODAY` | 신뢰성 슬라이드·최종 QA·리허설·commit/push/제출 필요 |
+| Stage 9 발표·제출 | `READY_EXCEPT_HUMAN_REHEARSAL` | 11장·7분 대본·발표 모드 Console 구현; 사람 낭독과 commit/push/제출 필요 |
 
 ## 발표 확장 Phase 01~03
 
@@ -36,19 +36,16 @@
    - 로컬 보완·최소 배포·새 target lock: 완료
    - control + `D02-02/04/05/10` batch 재검증: 완료
    - 결과: control pass 1, safe failure 4, False Accept 0, False PASS 0, unexpected 0
-2. **발표 신뢰성 증거 추가**
-   - GCP 구조 뒤에 실제 공격 4건과 발견·보완 경계를 한 슬라이드로 추가
-   - deployed 재검증 완료와 나머지 12건 `NOT_EVALUATED / HOLD`를 함께 표시
-3. **표현 정렬**
-   - GCP `LIVE_API` data layer와 화면의 snapshot/fallback 표현을 모순 없이 구분
-   - 실제 evidence 0건, COTS 비교 한계, Phase 외부 의존을 인접 표시
-4. **최종 검증 한 번**
-   - 변경 범위 테스트 → 배포 batch 공격 → 전체 로컬 회귀 → localhost 발표/Product QA
-   - 중간 변경마다 전체 공격·전체 회귀를 반복하지 않는다.
+2. **발표 신뢰성 증거 추가 — 완료**
+   - Slide 09에 `4 / 16 · SAFE_FAILURE 4 · False Accept 0 · False PASS 0 · 12 NOT_EVALUATED · FINAL HOLD`를 인접 표시
+3. **표현 정렬 — 완료**
+   - 로컬 parser와 저장 GCP 경로를 분리하고, GCP snapshot의 정상·hash mismatch·endpoint override 결론을 먼저 표시
+   - 실제 evidence 0건, 구매자·ROI 미검증, roadmap 발표 제외를 인접 표시
+4. **최종 검증 — 자동 검증 완료, 사람 낭독 남음**
+   - 변경 범위 테스트·전체 로컬 회귀·localhost 발표와 Console QA를 최종 체크리스트에 기록
 5. **제출 고정**
-   - 문서·evidence·발표 파일 정합성 확인
-   - 7분 실제 리허설 1회
-   - commit·push 후 제출
+   - 사람 7분 낭독·탭 전환 리허설 1회
+   - 사용자 확인 후 commit·push·제출
 
 ## 오늘 과감히 제외
 

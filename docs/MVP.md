@@ -41,6 +41,7 @@
 5. 발표 Phase 01~03의 bounded workflow와 외부 blocker 표시
 6. 실제 GCP Multi-Agent 실행·로그·generation/hash lineage
 7. 공격 검증 결과, 발견된 결함과 deployed 보완 재검증 상태
+8. 로드맵을 제외한 11장 발표본과 7분 대본, 발표 모드 Evidence Console
 
 ## 제출 Release에서 제외
 
@@ -51,5 +52,6 @@
 - Cloud SQL·BigQuery·KMS 운영, 침투시험, 프로덕션 고가용성
 - 모든 궤도·부품 지원, 대량 BOM, 결제·조직 관리
 - 사용자 인터뷰·가격·절감 효과를 검증된 수치처럼 제시하는 것
+- 구매자·예산 책임자·도입 방식 또는 사람 팀 시너지를 확인 없이 주장하는 것
 
 이 제외 항목은 실패한 제출 작업이 아니라 `POST_SUBMISSION` 또는 `DEFERRED_EXTERNAL` 범위다.

@@ -2,32 +2,37 @@
 
 ## 상태
 
-`ACTIVE_TODAY — 12-slide deployed attack evidence integrated; measured rehearsal pending`
+`ACTIVE_TODAY — 11-slide 7-minute deck simplified; measured rehearsal pending`
 
-## Radiation-first Opening & Simplified Flow — 2026-08-25
+## Evidence-backed Business Slide & Simplified Flow — 2026-08-25
 
-- Slide 05·06의 가상 `EX-100` BOM을 현재 양산 COTS SRAM `Microchip 23LC1024-I/SN` catalog 검토 대상으로 교체했다. ESA가 base product `23LC1024`를 GOMX-4B/CHIMERA 방사선 실험용 메모리로 탑재한 사실만 표시하고, 비행 exact suffix·lot/die와 적합성은 `HOLD`로 남겼다. Core의 `Example Semi / EX-100` 합성 계산 fixture는 실제 부품 수치로 오인되지 않도록 별도 경계로 유지한다.
-- 기존 05 차폐 설명을 발표 첫 본문으로 이동하고 `01 · WHY RADIATION SHIELDING`으로 재구성했다. 비전문가가 먼저 `우주 방사선 → 알루미늄 차폐 → 전자부품`을 이해한 뒤 문제 정의로 들어간다. TID 감소와 SEE 잔여 위험은 화면 문장에서 제거하고 대본에서만 설명한다.
-- 기존 문제 정의는 02로 이동했다. 전체 Evidence-to-Decision 흐름은 03으로 이동하고 제목·현재 로컬/GCP 경계·결과표 연결·source safety line과 다섯 단계 그림을 유지했다. 그림 아래의 Document AI future rail만 제거했다.
-- 전체 장수는 `Cover + 01~10 + Closing`, 총 12장이다. GCP 구조 뒤 새 09에 새 locked target의 `CONTROL PASS 1 / SAFE FAILURE 4 / False Accept·PASS·unexpected 0`과 나머지 12건 `NOT_EVALUATED / HOLD` 경계를 함께 표시했다.
-- Document AI·Gemini는 로드맵에만 남아 있으며 현재 API 호출은 0건이다. 사람 발표 리허설과 전체 회귀는 실행하지 않았다.
-- Git 밖 Downloads의 `spectra_7min_presentation_script_v4.md`는 이전 11장 기준이므로 새 09를 포함한 사람 낭독·클릭 리허설 전까지 참고본이다. 사람 측정은 `NOT_MEASURED`다.
-- 주 발표 운영은 Presentation과 named `spectra-demo` 두 브라우저 탭만 사용한다. Slide 03·10은 동일한 loopback Console 탭을 재사용하고, Console 내부의 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표` 세 모드로 시연한다. Roadmap Lab은 주 발표에서 열지 않는다.
-- 신뢰성 슬라이드 결속을 포함한 Product 직접 테스트 17개가 통과했고, localhost 1280×720에서 12장 전체 document·active slide x/y overflow 0과 console warning/error 0을 확인했다. Slide 03·10 링크는 새 탭을 늘리지 않고 동일 제품 탭 ID를 재사용한다.
-- 이전 v4 대본의 `Cover + 01~09 + Closing` 시간 산술은 새 09 삽입 뒤 더 이상 현재 deck의 측정값이 아니다. 사람 낭독·클릭 리허설은 계속 `NOT_MEASURED`이며 전체 회귀와 Git 통합은 아직 수행하지 않았다.
+- Slide 02 본문은 특정 catalog part와 위성 사례를 발표 핵심에서 내려 `상용 기성 부품 (COTS)`만 표시한다. 엔진 범위를 넘는 `임무 적합성 입증` 대신 `조달 가능성 ≠ 방사선 근거 검증`으로 고치고, 정확한 부품 식별·TID·SEU·파괴성 SEE coverage·권리를 임무 조건과 대조한다고 명시했다. 본문에 없는 QML-V 용어 설명은 제거했다.
+- 차폐 설명을 발표 첫 본문으로 이동하고 `01 · RADIATION & SHIELDING BASICS`로 재구성했다. 비전문가가 먼저 `우주 방사선 → 알루미늄 차폐 → 전자부품`을 이해한 뒤 문제 정의로 들어가며, TID·SEU 계산과 파괴성 SEE 시험 근거 확인을 구분한다.
+- 실제 제출·발표 흐름은 `01 차폐 기초 → 02 COTS → 03 문제 정의 → 04 외부 근거가 확인한 사용자 부담 → 05 기존 방식 → 06 SPECTRA 전체 흐름 → 07 판단 원칙 → 08 GCP → 09 무결성 설계`다. 로드맵은 프로젝트에는 유지하되 제출 deck과 7분 발표에서 제외한다.
+- Slide 03 제목은 도식에 없는 `계산`을 제거하고 `위성 부품을 검토할 자료가 여러 문서에 흩어져 있다`로 맞췄다. 우측은 사람 역할을 특정하지 않는 `흩어진 자료에서 확인해야 할 세 가지` 아래 `부품·조건·범위` 질문을 배치했다. 실제 공정·로트별 방사선 결과 비교 데이터는 없으므로 차이가 결과를 바꾼다고 주장하지 않고, 공개 COTS 자료의 패키지 불일치와 lot/die 미보고 때문에 동일 근거로 단정할 수 없다는 현재 증거 경계만 설명한다.
+- Slide 04 문제 정의는 SPECTRA가 없는 근거를 보충한다는 오해를 막기 위해 `COTS 근거의 부족`을 제거하고, 공식 자료가 뒷받침하는 `근거의 분산과 반복 검토`로 한정했다.
+- Slide 06의 `부품·시험·조건을 대조`는 현재 지원하지 않는 시험 조건까지 직접 비교한다는 오해가 있어 `부품·시험·조건의 연결 상태 확인`으로 낮췄다. 구조화된 임무 조건·승인 BOM·여러 시험 claim을 함께 받는 Mission Case Core를 통합했으며, 비교 불가능한 조건은 일치한다고 추정하지 않고 blocker·출처 위치·다음 행동과 함께 HOLD한다. PDF/TXT parser와 이 Core의 UI wiring은 아직 범위 밖이다.
+- Slide 07의 지원 범위는 구현에 맞춰 정밀화했다. EvidencePacket은 구조화된 임무 환경·부품 시험 근거·완화 가정을 판단 규칙과 출처에 연결하며, 일부 근거가 있어도 필수 근거가 빠지면 HOLD한다. Multi-Agent는 세 역할 모두가 같은 대조를 반복하는 구조가 아니라 Mission·Parts가 각 범위를 검증하고 Assurance가 입력 결속과 응답 해시를 재확인하는 구조다.
+- 전체 장수는 `Cover + 01~09 + Closing`, 총 11장이다. Slide 04는 NASA·ESA·GAO 자료를 타깃 사용자별 애로사항에 연결하고, 실제 시간 절감 효과와 구매 의향은 사용자 조사가 필요하다고 분리한다.
+- Slide 04 하단은 ESA를 유럽우주국, GAO를 미국 정부감사원으로 풀어 쓴다. Document AI·Gemini를 포함한 향후 확장 내용은 주 발표에서 말하지 않는다.
+- canonical `FINAL_PRESENTATION_SCRIPT_7MIN.md` v6를 현재 11장과 Evidence Console의 `LOCAL PDF/TXT · GCP LOGS` 시연에 맞췄다. 발표·시연·탭 전환 6분 30초와 돌발 여유 30초를 합쳐 7분이며, 사람 낭독·클릭 측정은 `NOT_MEASURED`다.
+- 주 발표 운영은 Presentation과 named `spectra-demo` Evidence Console 두 브라우저 탭만 사용한다. 콘솔은 발표 후반에 직접 전환하고, Slide 08의 링크도 `?presentation=1`을 사용해 `LOCAL PDF/TXT · GCP LOGS`만 표시한다. Roadmap Lab은 주 발표에서 열지 않는다.
+- Slide 08 GCP 화면은 로컬 parser와 저장 GCP 경로를 분리하고 무결성 표현을 `저장 이벤트 무결성 검증`으로 한정한다. GCP Console은 정상·body hash 위조·endpoint override의 run 결속과 정상 correlation ID, 최종 HOLD를 먼저 표시한다. Slide 09는 시스템 조치와 함께 실제 범위 `4 / 16 · SAFE_FAILURE 4 · False Accept 0 · False PASS 0 · 12 NOT_EVALUATED · FINAL HOLD`를 인접 표시한다.
+- 01~09의 영문 kicker를 장별 역할 중심으로 축약하고, 큰 한글 제목은 결론, 바로 아래 한 줄은 근거·의미를 설명하도록 통일했다. 밑줄은 큰 한글 제목 내부의 핵심 구절에만 적용한다. Slide 02 비교표는 두 줄 영문 label과 오른쪽 설명을 수직 중앙 정렬했고, Slide 04의 양쪽 비교 본문·panel label을 발표 화면 크기로 확대했다.
+- 최신 localhost 1280×720에서 11장 전체 x/y overflow 0과 Slide 02~06의 가독성을 시각 확인했다. 이번 변경의 Product·Simulation 직접 테스트 51개와 `git diff --check`가 통과했고 console warning/error는 0건이다. 사람 낭독·클릭 리허설은 계속 `NOT_MEASURED`이며, 이후 Core 통합·최종 회귀 상태는 바로 아래와 Control Tower CURRENT의 최신 항목을 따른다.
+- Slide 07 지원 범위 문구를 EvidencePacket·GCP Agent 구현에 맞춰 `필수 근거 결측 → HOLD`, `Mission·Parts 개별 검증 → Assurance 입력·응답 무결성 재확인`으로 정밀화했다. localhost 1280×720에서 좌우 박스가 각각 `181.59 px`, slide scroll `1280×720`로 겹침·overflow 없이 표시되는 것을 재확인했다. 전체 Release 회귀 결과는 Control Tower CURRENT의 최신 항목을 따른다.
 
 ## Compact 11-slide Main Deck — 2026-08-25
 
-- 제품 시연과 겹치던 기존 Slide 07 차폐 계산, Slide 08 ECC·시험 공백 상세를 주 발표에서 제거했다. 기능·합성 snapshot·Q&A 근거는 코드에 유지하며 본문은 `Cover + 01~09 + Closing`, 총 11장이다.
-- 당시 Slide 02를 다섯 개 큰 기호로 재구성했고, 최신 기준선에서는 이를 03으로 이동했다. 제목과 현재 경계·결과표 연결·source safety line은 유지하고 미래 연결만 제거했다.
-- 후속 번호는 범위·신뢰성 07, GCP Multi-Agent 08, 로드맵 09를 유지한다. 최신 시각 확인은 Slide 01과 03의 가로·세로 overflow 0이다.
+- 제품 시연과 겹치던 차폐 계산·ECC 상세 및 임무·부품 상세를 주 발표에서 제거했다. 기능·합성 snapshot·Q&A 근거는 코드에 유지하며 본문은 `Cover + 01~09 + Closing`, 총 11장이다.
+- Slide 04를 다섯 개 큰 기호의 Evidence-to-Decision 흐름으로 유지하고, 후속 번호는 범위·신뢰성 06, GCP Multi-Agent 07, 공격 검증 08, 로드맵 09로 정렬했다.
 - 변경 범위 Presentation/Product 결속 테스트 21개가 통과했다. 전체 회귀와 사람 7분 리허설은 실행하지 않았다.
 
 ## Early Evidence-to-Decision Architecture — 2026-08-24
 
 - 멘토링 피드백을 반영해 전체 흐름을 초반으로 이동했고, 최신 기준선에서는 차폐 기초 01·문제 02 다음인 Slide 03에 현재 경계와 함께 다섯 단계 그림을 배치했다.
 - `비정형 자료 → pypdf·SHA-256 intake → decision-ineligible 후보 → Mission·Parts·Assurance → 결정론적 gate → HOLD·근거·다음 행동`을 한 줄로 도식화했다.
-- 현재 로컬 PDF 경로와 별도 검증된 GCP H05 합성 Agent 경로를 하나의 live pipeline으로 오인하지 않도록 분리 표기했다. Document AI·Gemini 미래 rail은 이 화면에서 제거했으며 API 호출은 0건이다.
+- 06번은 임무 조건·정확한 부품 정보·방사선 시험 결과를 함께 대조하는 제품 정체성에 집중하고, 로컬/GCP 상태 rail과 콘솔 링크는 제거했다. 콘솔 시연은 발표 후반의 별도 화면에서만 진행한다.
 - 다중 문서 결과표 링크는 주 발표 흐름과 Raw Evidence Console에 유지한다. 사람 7분 리허설은 계속 `NOT_MEASURED`다.
 
 ## Final Trust & Integrity alignment — 2026-08-24

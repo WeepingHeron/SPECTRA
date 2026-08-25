@@ -823,25 +823,25 @@ process.stdout.write(JSON.stringify(observed));
         combined = presentation + self.html
         for stale in ("GCP resource 0개", "GCP 리소스 0개", "GCP cost 0", "비용 0원", "멀티에이전트 미구현"):
             self.assertNotIn(stale, combined)
-        for term in ("WORKFLOWS", "MISSION", "PARTS", "ASSURANCE", "STORAGE", "HOLD"):
+        for term in ("WORKFLOWS", "Mission", "Parts", "Assurance", "Storage", "HOLD"):
             self.assertIn(term, presentation)
         self.assertNotIn("평가 비중 35점", presentation)
         for term in ("Mission Agent", "Parts Agent", "Assurance Agent", "최소권한"):
             self.assertIn(term, combined)
         gcp_slide = re.search(r'<section class="slide" data-title="GCP Multi-Agent".*?</section>', presentation, re.S).group(0)
         for exact_copy in (
-            "세 Agent가 서로 다른 증거를 검증하고",
-            "4. Parts 차단 예시",
-            "5. Assurance 차단 예시",
-            "1–3은 독립 확인된 저장 기록, 4–5는 역할을 설명하는 동작 예시입니다.",
-            "검증된 고정 GCP 실행 기록 · SNAPSHOT / NOT LIVE",
+            "실제 GCP에서는",
+            "세 역할이 한 실행을 교차 검증한다",
+            "역할별 독립 대조",
+            "저장 이벤트 무결성 검증",
+            "GCP 실행 성공 ≠ 방사선 보증",
         ):
             self.assertIn(exact_copy, gcp_slide)
         for hidden_value in (self.gcp_payload["workflow"]["revision"], *(item["id"] for item in self.gcp_payload["executions"].values())):
             self.assertNotIn(str(hidden_value), gcp_slide)
-        self.assertEqual(len(re.findall(r'class="gcp-node state-valid"', gcp_slide)), 6)
-        self.assertEqual(gcp_slide.count('class="demo-btn'), 5)
-        self.assertIn('class="demo-pipeline-view simplified"', gcp_slide)
+        self.assertEqual(len(re.findall(r'class="gcp-simple-node', gcp_slide)), 3)
+        self.assertEqual(gcp_slide.count('class="demo-btn'), 0)
+        self.assertIn('class="gcp-agent-stack"', gcp_slide)
         self.assertNotRegex(presentation, r"\bfetch\s*\(")
         product_flow = re.search(r'<div class="gcp-workflow".*?</div>', self.html, re.S)
         self.assertIsNotNone(product_flow)
@@ -866,21 +866,13 @@ process.stdout.write(JSON.stringify(observed));
             embedded["executions"],
             self.gcp_payload["executions"],
         )
-        self.assertEqual(
-            re.findall(r'data-scenario="([^"]+)"', presentation),
-            ["normal", "body_hash_forgery", "endpoint_override"],
-        )
-        self.assertEqual(
-            re.findall(r'data-design-scenario="([^"]+)"', presentation),
-            ["parts_block", "assurance_block"],
-        )
+        self.assertEqual(re.findall(r'data-scenario="([^"]+)"', presentation), [])
+        self.assertEqual(re.findall(r'data-design-scenario="([^"]+)"', presentation), [])
         for exact_copy in (
             "INPUT_BODY_SHA256_MISMATCH",
             "Core / Parts / Assurance 미호출",
             "ENDPOINT_OVERRIDE_FORBIDDEN",
             "Agent 호출 0회",
-            "1–3은 독립 확인된 저장 기록, 4–5는 역할을 설명하는 동작 예시입니다.",
-            "모든 버튼은 새 Workflow를 시작하지 않습니다.",
         ):
             self.assertIn(exact_copy, presentation)
         for stale_copy in (
@@ -903,32 +895,40 @@ process.stdout.write(JSON.stringify(observed));
     def test_presentation_feedback_structure_and_scope_contract(self) -> None:
         presentation = (ROOT / "demo/index.html").read_text(encoding="utf-8")
         for inserted_copy in (
-            '01 · WHY RADIATION SHIELDING',
-            '알루미늄 차폐는 누적선량을 줄인다.',
+            '01 · RADIATION &amp; SHIELDING BASICS',
+            '알루미늄 차폐는 방사선 피해를 줄인다.',
             '우주 방사선',
             '알루미늄 차폐',
             '전자부품',
-            '05 · COTS ADOPTION &amp; RADIATION UNCERTAINTY',
+            '02 · COTS IN SPACE',
             '우주급 부품 (Rad-Hard)',
-            '상용 기성 부품 (COTS · Microchip 23LC1024)',
+            '상용 기성 부품 (COTS)',
+            '방사선 근거는 따로 검증해야 한다.',
             'Commercial availability',
             'Space use',
-            'Mission-specific verification',
-            '정성적 검토 구조 · 외부 가격·납기·성능 수치를 사용하지 않음',
-            'NOT_EVALUATED / HOLD',
-            '06 · TARGET MISSION &amp; COMPONENT EVIDENCE',
-            'LEO SSO 550 km 궤도 조건과 COTS SRAM 부품을 정의하고',
+            'Radiation evidence check',
+            '부품 이름이 같아도 제조 공정과 시험 조건이 다르면 같은 근거로 보지 않습니다.',
+            '04 · EVIDENCE-BACKED CUSTOMER PAIN',
+            'COTS 근거의 분산과 반복 검토다.',
+            '실제 시간 절감 효과와 고객의 구매 의향은 사용자 조사가 필요하다.',
+            '05 · CONVENTIONAL REVIEW WORKFLOW',
+            '06 · SPECTRA · EVIDENCE TO DECISION',
+            '07 · DECISION BOUNDARY',
+            '08 · GCP MULTI-AGENT EXECUTION',
         ):
             self.assertIn(inserted_copy, presentation)
-        primer_at = presentation.index('01 · WHY RADIATION SHIELDING')
-        problem_at = presentation.index('02 · THE BROKEN EVIDENCE CHAIN')
+        primer_at = presentation.index('01 · RADIATION &amp; SHIELDING BASICS')
+        cots_at = presentation.index('02 · COTS IN SPACE')
+        problem_at = presentation.index('03 · THE EVIDENCE GAP')
+        business_at = presentation.index('04 · EVIDENCE-BACKED CUSTOMER PAIN')
+        limits_at = presentation.index('05 · CONVENTIONAL REVIEW WORKFLOW')
         architecture_at = presentation.index('<section class="slide" data-title="전체 흐름"')
-        cots_at = presentation.index('05 · COTS ADOPTION')
-        mission_at = presentation.index('06 · TARGET MISSION')
-        self.assertLess(primer_at, problem_at)
-        self.assertLess(problem_at, architecture_at)
-        self.assertLess(architecture_at, cots_at)
-        self.assertLess(primer_at, mission_at)
+        self.assertLess(primer_at, cots_at)
+        self.assertLess(cots_at, problem_at)
+        self.assertLess(problem_at, business_at)
+        self.assertLess(business_at, limits_at)
+        self.assertLess(limits_at, architecture_at)
+        self.assertNotIn('TARGET MISSION &amp; COMPONENT EVIDENCE', presentation)
         self.assertIn('class="evidence-ring"', presentation)
         self.assertIn('class="glossary-bar"', presentation)
         self.assertIn('기계 검증형 데이터 규칙', presentation)
@@ -962,24 +962,30 @@ process.stdout.write(JSON.stringify(observed));
             "100 krad", "5~25 krad", "$1,000", "$1k",
         ):
             self.assertNotIn(unsupported_comparison, cots_slide)
-        self.assertEqual(len(re.findall(r'<section class="slide(?: [^"]*)?"', presentation)), 12)
+        self.assertEqual(len(re.findall(r'<section class="slide(?: [^"]*)?"', presentation)), 11)
+        self.assertNotIn('data-title="향후 로드맵"', presentation)
+        self.assertNotIn('09 · FROM SYNTHETIC TO ACTUAL', presentation)
         for reliability_claim in (
-            "09 · ADVERSARIAL RELIABILITY ON ACTUAL GCP",
-            "무결점이라 주장하지 않는다",
-            "PART_EVIDENCE_HASH_MISMATCH",
-            "ENDPOINT_OVERRIDE_FORBIDDEN",
-            "PART_IDENTITY_MISMATCH",
-            "INPUT_GENERATION_MISMATCH",
-            "DEPLOYED RETEST VERIFIED",
-            "False Accept/PASS/unexpected 0",
+            "09 · INTEGRITY BY DESIGN",
+            "틀린 입력이 승인으로 넘어가지 않는 구조",
+            "Schema-first 입력 계약",
+            "결정론적 Core",
+            "Exact Identity 결속",
+            "Hash와 감사 체인",
+            "Fail-Closed 정책",
+            "배포 경로 격리",
+            "ACTUAL GCP ATTACK SCOPE",
+            "4 / 16 평가",
+            "SAFE_FAILURE 4",
+            "12 NOT_EVALUATED",
         ):
             self.assertIn(reliability_claim, presentation)
         self.assertIn(
-            'href="http://127.0.0.1:8765/demo/evidence-console.html"',
+            'href="http://127.0.0.1:8765/demo/evidence-console.html?presentation=1"',
             presentation,
         )
         self.assertIn('target="spectra-demo"', presentation)
-        self.assertIn('통합 제품 시연 열기 ↗', presentation)
+        self.assertIn('Evidence Console 열기 →', presentation)
         self.assertIn("String(slides.length - 2).padStart(2,'0')", presentation)
         self.assertIn("@keyframes slide-enter", presentation)
         self.assertIn("animation:slide-enter", presentation)

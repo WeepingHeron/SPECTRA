@@ -29,6 +29,7 @@ GCP_LOG_EVIDENCE = (
     REPO_ROOT
     / "docs/workstreams/70-platform-gcp/evidence/h05-gcp-inventory-and-logs.json"
 )
+GCP_SNAPSHOT = REPO_ROOT / "demo/data/h05-gcp-snapshot.json"
 ALLOWED_SUFFIXES = frozenset({".pdf", ".txt"})
 
 
@@ -241,11 +242,19 @@ def local_intake_events(
 
 def load_gcp_snapshot_logs() -> dict[str, Any]:
     payload = json.loads(GCP_LOG_EVIDENCE.read_text(encoding="utf-8"))
+    snapshot = json.loads(GCP_SNAPSHOT.read_text(encoding="utf-8"))
     logs = payload.get("cloud_run_structured_logs")
+    executions = snapshot.get("executions")
+    logging = snapshot.get("logging")
     if (
         payload.get("schema_version") != "1.0.0"
         or payload.get("project_id") != "iceu-686"
         or payload.get("region") != "asia-northeast3"
+        or snapshot.get("schema_version") != "1.0.0"
+        or snapshot.get("project_id") != payload.get("project_id")
+        or snapshot.get("region") != payload.get("region")
+        or not isinstance(executions, dict)
+        or not isinstance(logging, dict)
         or not isinstance(logs, list)
         or not logs
         or any(not isinstance(item, dict) for item in logs)
@@ -259,6 +268,14 @@ def load_gcp_snapshot_logs() -> dict[str, Any]:
             "region": payload["region"],
             "log_count": len(logs),
             "assurance_decision": "HOLD",
+        },
+        "scenarios": {
+            "normal": {
+                **executions["normal"],
+                "correlation_id": logging.get("normal_correlation_id"),
+            },
+            "body_hash_forgery": executions["body_hash_forgery"],
+            "endpoint_override": executions["endpoint_override"],
         },
         "logs": logs,
     }

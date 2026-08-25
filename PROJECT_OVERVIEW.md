@@ -24,8 +24,10 @@ Competition Submission Release의 실제 GCP 보완 검증은 locked Workflow `0
 | NASA RHA 지침은 부품의 application, 궤도·trajectory, 임무 기간과 spacecraft 내 위치가 검증 parameter space를 결정한다고 명시한다. | 같은 부품 시험자료도 임무와 적용 조건이 달라지면 그대로 재사용할 수 없다. |
 | NASA NESC의 COTS Phase II 보고서는 TID·SEL 성능이 제조 공정과 lot에 민감하고, 작은 공정 변경도 방사선 성능을 바꿀 수 있다고 지적한다. | exact part number만으로는 부족하며 process·die·lot와 변경 이력을 함께 추적해야 한다. |
 | 같은 NASA 보고서는 heavy-ion beam time을 대략 **시간당 1,000~5,000달러**로 제시하고 시설 확보도 점점 어렵다고 설명한다. | 모든 부품을 무차별 재시험하기보다 증거 공백과 위험을 먼저 좁혀 제한된 시험 예산의 우선순위를 정해야 한다. |
+| GAO는 전자부품 공급망에서 단종·위조·추적성 위험과 구성관리 필요성을 다룬다. | 공급·공정·로트 변경이 기존 근거에 미치는 영향을 다시 검토해야 한다. |
+| ESA Product Assurance는 부품·공정 적합성, 구성관리, 검사·감사와 시정조치의 통제를 요구한다. | 품질·미션 보증 담당자는 계산값뿐 아니라 근거와 변경 이력을 감사 가능한 형태로 유지해야 한다. |
 
-출처: [NASA Small Spacecraft Technology 2024](https://ntrs.nasa.gov/citations/20250000142), [NASA Avionics RHA Guidelines](https://ntrs.nasa.gov/citations/20210018053), [NASA COTS Parts Phase II](https://ntrs.nasa.gov/citations/20220018183)
+출처: [NASA Small Spacecraft Technology 2024](https://ntrs.nasa.gov/citations/20250000142), [NASA Avionics RHA Guidelines](https://ntrs.nasa.gov/citations/20210018053), [NASA COTS Parts Phase II](https://ntrs.nasa.gov/citations/20220018183), [GAO-11-404](https://www.gao.gov/products/gao-11-404), [ESA Product Assurance](https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Product_Assurance)
 
 ### 실제 업무에서 끊기는 지점
 
@@ -48,7 +50,7 @@ Competition Submission Release의 실제 GCP 보완 검증은 locked Workflow `0
 | 부품 유통사·시험기관 | 추가 시험 수요와 대체 부품 식별 | 시험·컨설팅 기회 구체화 |
 | 품질·미션 보증 담당자 | 설계 변경과 승인 근거 감사 | 재현 가능한 계산·출처·승인 이력 확보 |
 
-초기 비즈니스 모델은 임무·BOM 단위 분석, 조직용 구독, 비공개 시험자료를 포함한 전용 배포, 시험기관 연계로 확장할 수 있다. 단, 실제 고객 인터뷰와 비용 절감 검증 전까지 이는 **가설**이다.
+현재 입증된 제품 가치는 빠진 근거와 재검토 지점을 승인 전에 찾고, `HOLD` 이유와 다음 행동을 반환하는 동작까지다. 임무·BOM 단위 분석, 조직용 구독, 전용 배포와 시험기관 연계는 확장 가설이며, 구매자·예산 책임자·도입 방식·비용 절감·지불 의향은 실제 인터뷰 전까지 **UNVALIDATED**다. 실제 운영 계약이 없으므로 UI에 임의의 owner·reviewer·승인 상태를 만들지 않는다.
 
 ## 4. 프로젝트 범위
 

@@ -81,28 +81,28 @@ class EvidenceBatchTests(unittest.TestCase):
             self.assertFalse(any(item["event"] == "candidate.found" for item in events))
             self.assertEqual(events[-1]["status"], "HOLD")
 
-    def test_architecture_is_slide_three_without_the_future_connector(self) -> None:
+    def test_architecture_slide_matches_the_current_evidence_to_decision_flow(self) -> None:
         sections = re.findall(r'<section class="slide"[\s\S]*?</section>', self.deck)
-        self.assertEqual(sections[2].count("data-title=\"전체 흐름\""), 1)
+        architecture = next(
+            section for section in sections if 'data-title="전체 흐름"' in section
+        )
         for marker in (
-            "03 · EVIDENCE-TO-DECISION",
+            "06 · SPECTRA · EVIDENCE TO DECISION",
             "흩어진 문서가,",
-            "근거 후보",
+            "입력 자료",
+            "근거 연결",
+            "부품 · 시험 · 조건의 연결 상태 확인",
             "3개 Agent",
             "검증 Gate",
             "판단과 행동",
+            "문제 위치 · 이유 · 다음 조치",
             "Mission · Parts · Assurance",
-            "NOW</b> pypdf 로컬 파싱",
-            "GCP</b> 저장된 합성 Agent 경로",
-            'href="http://127.0.0.1:8765/demo/evidence-console.html"',
-            'target="spectra-demo"',
-            "Document AI·Gemini API 호출 0건",
         ):
-            self.assertIn(marker, sections[2])
-        self.assertEqual(sections[2].count('class="system-node'), 5)
-        self.assertEqual(sections[2].count('class="system-arrow"'), 4)
+            self.assertIn(marker, architecture)
+        self.assertEqual(architecture.count('class="system-node'), 5)
+        self.assertEqual(architecture.count('class="system-arrow"'), 4)
         for removed_copy in ("future-plug", "FUTURE · NOT CONNECTED", "Document AI + Gemini가"):
-            self.assertNotIn(removed_copy, sections[2])
+            self.assertNotIn(removed_copy, architecture)
         self.assertNotIn("IMPLEMENTATION TOOLS &amp; TECH STACK", self.deck)
 
 

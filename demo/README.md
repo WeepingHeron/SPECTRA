@@ -2,7 +2,7 @@
 
 ## 발표 운영 — 2개 탭
 
-발표 중에는 `demo/index.html`과 `demo/evidence-console.html` 두 브라우저 탭만 사용한다. Slide 03과 10의 `통합 제품 시연` 링크는 같은 이름의 `spectra-demo` 탭을 재사용한다. 제품 콘솔 한 URL 안에서 `LOCAL PDF/TXT · GCP LOGS · 여러 문서 표` 세 모드를 전환하며, Batch 결과표는 콘솔 내부 패널에 내장된다. `Roadmap Lab`은 보조 구현으로 유지하지만 주 발표에서 열지 않는다.
+발표 중에는 `demo/index.html`과 `demo/evidence-console.html?presentation=1` 두 브라우저 탭만 사용한다. 콘솔 시연은 발표 후반에 직접 전환하고, Slide 08의 링크는 같은 이름의 `spectra-demo` 탭을 재사용한다. 발표 모드는 `LOCAL PDF/TXT · GCP LOGS`만 표시해 여러 문서 표를 숨긴다. 일반 URL에서는 Batch 기능을 계속 사용할 수 있다. `Roadmap Lab`은 보조 구현으로 유지하지만 주 발표에서 열지 않는다.
 
 단순 `python3 -m http.server`는 `/api/intake`가 없어 합성 3종이 작동하지 않는다. 반드시 다음 통합 서버를 사용한다.
 
@@ -28,7 +28,7 @@ cd /Users/taehoon/Desktop/IAA/SPECTRA
 python3 scripts/run_evidence_console.py --port 8765
 ```
 
-브라우저에서 `http://127.0.0.1:8765/demo/evidence-console.html`을 연다. 로컬 탭은 실제 deterministic parser 실행이며 OCR·LLM·GCP 호출을 하지 않는다. GCP 탭은 H05에서 이미 저장하고 검증한 구조화 로그 13건을 읽기 전용으로 표시하며 현재 Cloud Logging을 조회하거나 새 실행을 만들지 않는다. 파일 원문과 임시 경로는 이벤트에 노출하지 않고 실행 후 임시 파일을 제거한다.
+발표에서는 `http://127.0.0.1:8765/demo/evidence-console.html?presentation=1`을 연다. 로컬 탭은 실제 deterministic parser 실행이며 OCR·LLM·GCP 호출을 하지 않는다. GCP 탭은 H05에서 이미 저장하고 검증한 정상·body hash 위조·endpoint override 실행과 구조화 로그 13건을 읽기 전용으로 표시한다. 정상 실행은 run·correlation ID를 함께, 두 공격은 snapshot에 저장된 run ID와 correlation 부재를 그대로 표시한다. 현재 Cloud Logging을 조회하거나 새 실행을 만들지 않는다.
 
 기본 macOS `python3`에 `pypdf`가 없으면 서버는 이 장치에 이미 설치된 Codex bundled Python을 자동 선택한다. 해당 runtime도 없으면 PDF는 `PDF_EXTRACTOR_UNAVAILABLE / HOLD`로 닫히며 TXT 경로만 유지된다.
 
@@ -36,7 +36,7 @@ python3 scripts/run_evidence_console.py --port 8765
 
 `evidence-batch.html`은 같은 `/api/intake` 경로로 PDF/TXT 여러 개를 순차 검사해 문서별 파서·페이지 수, 후보 field/value, 원문 문자 위치, 최초 중단 관문, 자연어 이유, stable code와 `HOLD`를 한 표에 표시한다. `합성 3종 실행`은 정상 파싱 후 승인 BOM 공백, 지시문 공격 차단, 처리 권리 미확인 차단을 고정 정답과 대조한다. 실제 사용자가 올린 파일에는 정답률을 만들지 않는다.
 
-발표 자료 `index.html`은 01번에서 `우주 방사선 → 알루미늄 차폐 → 전자부품`의 기본 개념을 먼저 설명한다. 03번은 제목과 현재 구현 경계·결과표 연결·출처 안전 문구를 유지한 채 `문서 → 근거 후보 → 3개 Agent → 검증 Gate → 판단과 행동`을 도식화하며, 그림 아래의 Document AI·Gemini 미래 연결만 제거했다. 현재 후보 추출은 `pypdf`이고 Document AI·Gemini API 호출은 0건이다.
+발표 자료 `index.html`은 `방사선·차폐 기초 → COTS 맥락 → 흩어진 근거 문제 → 업계 자료 → 기존 검토 방식 → SPECTRA` 순서로 설명한다. 06번은 `임무 조건·부품 명세·시험 결과 → 근거 연결 → 3개 Agent → 검증 Gate → 판단과 행동`을 도식화한다. 본 발표의 콘솔 시연은 마지막에 별도 탭에서 진행한다.
 
 직접 테스트:
 
@@ -108,14 +108,17 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.product.test_evidence_rev
 
 ## 현재 기준선 — 2026-08-25
 
-- `index.html`은 `Cover + 01~10 + Closing`, 총 12장의 현재 발표 deck이다. 기존 07 차폐 계산과 08 ECC·시험 공백 상세는 제품 시연과 중복되어 주 발표에서 제외했고, 새 locked GCP target의 `CONTROL PASS 1 / SAFE FAILURE 4 / False Accept·PASS·unexpected 0`과 나머지 12건 `NOT_EVALUATED / HOLD` 경계를 새 09에 추가했다. 구현과 합성 결과 데이터는 삭제하지 않았다.
-- Slide 01은 비전문가가 먼저 차폐 목적을 이해하도록 우주 방사선·알루미늄 등가 차폐·전자부품의 관계를 시각적으로 설명한다. TID 감소와 SEE 잔여 위험은 화면 문장 대신 발표 대본에서 말한다.
-- Slide 03은 제목·현재 구현 경계·결과표 연결·출처 안전 문구와 다섯 단계 흐름을 유지한다. 그림 아래의 Document AI·Gemini 미래 연결만 제거했다. localhost 1280×720에서 12장 전체의 x/y overflow 0과 console warning/error 0을 확인했다.
-- Slide 08의 `TRUST & INTEGRITY`는 private IAM·input binding의 고정 GCP snapshot 범위와 자체 승인·낙관 승격·fail-closed의 로컬 회귀 범위를 함께 요약한다. 침투시험, KMS 서명 배포, 전체 보안 완성 또는 실제 방사선 보증을 뜻하지 않는다.
+- `index.html`은 `Cover + 01~09 + Closing`, 총 11장의 실제 제출·발표 deck이다. 순서는 `차폐 기초 → COTS → 문제 정의 → 외부 근거가 확인한 사용자 부담 → 기존 방식 → SPECTRA 전체 흐름 → 판단 원칙 → GCP → 무결성 설계`이다. 로드맵 구현과 합성 결과 데이터는 프로젝트에 유지하지만 제출본과 7분 발표에서는 제외한다.
+- Slide 01은 비전문가가 먼저 차폐 목적을 이해하도록 우주 방사선·알루미늄 등가 차폐·전자부품의 관계를 시각적으로 설명하고, TID·SEU 계산과 파괴성 SEE 시험 근거 확인을 구분한다.
+- Slide 04는 NASA·ESA·GAO 자료를 소형위성 팀, 공급·유통사, 시험기관, 품질·미션 보증 담당자의 부담에 연결한다. 하단에서 ESA를 유럽우주국, GAO를 미국 정부감사원으로 풀어 쓰며, 실제 시간 절감 효과와 구매 의향은 사용자 조사가 필요하다고 쉬운 문장으로 표시한다.
+- Slide 06은 임무 조건·정확한 부품 정보·방사선 시험 결과를 함께 대조하는 제품 정체성만 보여 주고, 상태 rail과 콘솔 링크를 제거했다. Slide 08은 무결성 주장을 `저장 이벤트 무결성 검증`으로 한정했다. Slide 09는 시스템 조치와 함께 실제 공격 범위 `4 / 16`, 안전 실패 4, False Accept·False PASS 0, 나머지 12 `NOT_EVALUATED`, `FINAL HOLD`를 인접 표시한다.
+- 01~09는 `영문 역할명 → 한글 결론 → 한 줄 설명`의 제목 체계를 사용한다. 밑줄은 큰 한글 제목의 핵심 구절에만 적용한다. Slide 01은 쉬운 제목에서 차폐의 피해 저감 역할을 설명하고, 본문에서 TID·SEU 계산과 파괴성 SEE evidence gate를 분리한다. Slide 02는 `조달 가능성 ≠ 방사선 근거 검증`으로 엔진 범위를 한정하고 본문에 없는 QML-V 설명을 제거했다.
+- canonical 발표 대본은 `docs/workstreams/90-business-presentation/FINAL_PRESENTATION_SCRIPT_7MIN.md` v6다. 로드맵을 제외한 11장 설명과 Evidence Console의 Local PDF·GCP Logs 시연, 탭 전환을 6분 30초로 묶고 돌발 여유 30초를 둔다. 사람 리허설은 `NOT_MEASURED`다.
+- 최신 localhost 1280×720에서 11장 전체 x/y overflow 0, Slide 02~06의 가독성과 Slide 09 공격 범위를 확인했다. 이번 변경의 Product·Simulation 직접 테스트 51개와 `git diff --check`가 통과했고 console warning/error는 0건이다.
 - `product.html`은 발표본과 별도의 5단계 제품 프로토타입이다. Product 직접 테스트 16개와 JavaScript syntax는 통과했지만 최신 H17의 실제 viewport 검증은 완료되지 않아 후보 상태다.
 - 두 화면의 방사선 수치는 generated `SYNTHETIC` 결과이며 실제 환경·부품 assurance가 아니다. 5 mm와 손상·불일치 입력은 값을 만들지 않고 `NOT_EVALUATED/HOLD`로 닫는다.
 - GCP 화면은 H05 Control Tower verified snapshot을 읽기 전용으로 표시한다. 버튼은 Workflow Console을 열지만 HTML이 새 실행을 트리거하거나 live 상태를 assurance로 해석하지 않는다.
-- 아래 H02~H17 절은 구현 이력이다. 과거 11장·13장 및 예전 Slide 번호가 현재 12장 기준선과 충돌하면 이 기준선을 우선한다.
+- 아래 H02~H17 절은 구현 이력이다. 과거 10장·12장·13장 및 예전 Slide 번호가 현재 11장 기준선과 충돌하면 이 기준선을 우선한다.
 
 Workstream 80 오프라인 데모는 서버, 외부 폰트·asset 없이 로컬 snapshot wrapper로 동작한다. 발표 deck은 localhost 사용을 권장한다.
 
